@@ -5,7 +5,7 @@
 
 using namespace bbx;
 
-RenderContext::RenderContext()
+Context::Context()
 {
 	this->width = 400;
 	this->height = 400;
@@ -15,7 +15,7 @@ RenderContext::RenderContext()
 
 }
 
-RenderContext::RenderContext(int width, int height, const std::string name)
+Context::Context(int width, int height, const std::string name)
 {
 	this->width = width;
 	this->height = height;

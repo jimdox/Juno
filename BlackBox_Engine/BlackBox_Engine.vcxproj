@@ -58,7 +58,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MCBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;_MCBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,14 +92,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\render\Shader.cpp" />
+    <ClCompile Include="src\render\Context.cpp" />
     <ClCompile Include="src\core\Program.cpp" />
     <ClCompile Include="src\core\Log.cpp" />
     <ClCompile Include="src\core\EntryPoint.cpp" />
+    <ClCompile Include="src\render\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\EngineConfig.h" />
+    <ClInclude Include="include\core\KeyMap.h" />
     <ClInclude Include="include\core\Log.h" />
     <ClInclude Include="include\core\Program.h" />
+    <ClInclude Include="include\render\Context.h" />
+    <ClInclude Include="include\render\Shader.h" />
+    <ClInclude Include="include\render\Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
