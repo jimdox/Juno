@@ -1,0 +1,9 @@
+# config file
+
+[General Settings]
+Build_Platform = Windows
+
+
+[Graphics Options]
+Render_API = OpenGL 
+Resolution = 1920x1080 
