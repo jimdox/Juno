@@ -1,35 +1,34 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#define BX_PLATFORM_WIN
-#define BX_API_OPENGL
-#include "core/Program.h"
+#include "core/bxProgram.h"
 #include "core/Log.h"
 
 
 namespace bbx {
 const std::string BBX_VERSION = "v0.0.1";
 
-void init()
+void bxInit()
 {
 	Log::init();
 	BBX_INFO(BBX_VERSION + ": " + " Launching");
 }
 
-Program* createProgram()
+bxProgram* createProgram()
 {
 
-	return new Program();
+	bxProgram* prog = new bxProgram();
+	return prog;
 }
+
 }
 
 
 int main()
 {
-	bbx::init();
+	bbx::bxInit();
 	auto program = bbx::createProgram();
+	program->init();
 	program->run();
 	program->exit();
-	delete program;
+	BBX_CLI_INFO("Closing...");
 }
 
