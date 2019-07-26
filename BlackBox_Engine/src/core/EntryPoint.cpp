@@ -26,7 +26,6 @@ int main()
 {
 	bbx::bxInit();
 	auto program = bbx::createProgram();
-	program->init();
 	program->run();
 	program->exit();
 	BBX_CLI_INFO("Closing...");

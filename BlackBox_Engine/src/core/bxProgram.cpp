@@ -6,7 +6,7 @@ using namespace bbx;
 
 bxProgram::bxProgram()
 {
-	// setup config file fetching here
+	init();
 }
 
 bxProgram::~bxProgram()
@@ -17,7 +17,6 @@ bxProgram::~bxProgram()
 void bxProgram::init()
 {
 	this->renderContext = new bxContext(440, 440, " ", false);
-	renderContext->init();
 	this->shader = new Shader();
 	BBX_INFO("Loading shaders");
 	shader->loadShader();
