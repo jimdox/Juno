@@ -2,7 +2,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "core/KeyMap.h"
-
+/*
+	(OpenGL/Vulkan) Rendering context
+*/
 using namespace bbx;
 
 bxContext::bxContext()
@@ -68,7 +70,7 @@ void bxContext::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);                                  // Oldest allowable version of GLSL (4.3)
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 
 
 
@@ -98,8 +100,7 @@ void bxContext::init()
 
 
 	// todo: list graphics device through openGL
-
-
+	BBX_WARN(glGetString(GL_RENDERER));
 }
 
 void bxContext::update()
@@ -156,7 +157,7 @@ void bxContext::splashImage()
 	stbi_set_flip_vertically_on_load(true);
 
 
-	Texture bootImage("./res/logo.png");
+	Texture bootImage("./res/engine.png");
 	glGenerateMipmap(GL_TEXTURE_2D);
 	Texture image2("./res/fordo.png");
 

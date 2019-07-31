@@ -13,8 +13,7 @@ void bxInit()
 }
 
 bxProgram* createProgram()
-{
-
+{	
 	bxProgram* prog = new bxProgram();
 	return prog;
 }

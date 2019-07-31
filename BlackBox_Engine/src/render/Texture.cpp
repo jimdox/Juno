@@ -21,7 +21,7 @@ Texture::Texture(const std::string& filepath)
 	}
 	else
 	{
-		Log::clientLog()->error("Failed to load image: " + filepath);
+		BBX_CLI_INFO("Failed to load image: " + filepath);
 	}
 	stbi_image_free(imageData);
 

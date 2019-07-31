@@ -16,7 +16,7 @@ bxProgram::~bxProgram()
 
 void bxProgram::init()
 {
-	this->renderContext = new bxContext(440, 440, " ", false);
+	this->renderContext = new bxContext(670, 670, " ", false);
 	this->shader = new Shader();
 	BBX_INFO("Loading shaders");
 	shader->loadShader();
