@@ -13,6 +13,8 @@ public:
 	void run();
 	void exit();
 
+	// need to impl. config file manager for core engine
+
 protected:
 private:
 	bxContext* renderContext;

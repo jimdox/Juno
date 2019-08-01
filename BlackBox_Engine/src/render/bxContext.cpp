@@ -2,6 +2,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "core/KeyMap.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 /*
 	(OpenGL/Vulkan) Rendering context
 */
@@ -90,7 +93,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
+	glfwSwapInterval(1); /* limits fps to 60 */
 
 
 	glfwSetErrorCallback(setErrCallback);
@@ -99,8 +102,7 @@ void bxContext::init()
 	if (glewInit() != GLEW_OK) { BBX_CRIT("GLEW failed to init!"); }
 
 
-	// todo: list graphics device through openGL
-	BBX_WARN(glGetString(GL_RENDERER));
+	BBX_WARN(glGetString(GL_RENDERER)); // list video card
 }
 
 void bxContext::update()
@@ -156,6 +158,7 @@ void bxContext::splashImage()
 
 	stbi_set_flip_vertically_on_load(true);
 
+	/* image loader */
 
 	Texture bootImage("./res/engine.png");
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -165,14 +168,41 @@ void bxContext::splashImage()
 	glUniform1i(glGetUniformLocation(shaderID, "diffuse"), 0);
 	glUniform1i(glGetUniformLocation(shaderID, "normal"), 1);
 
+	/* setup transform */
+
+	glm::mat4 transf = glm::mat4(1.0f);
+	transf = glm::rotate(transf, glm::radians(0.0f), glm::vec3(0.0, 0.0, 1.0));
+	transf = glm::scale(transf, glm::vec3(1.0f, 1.0f, 1.0f));
 
 
+	//
 
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	
+	glm::mat4 view = glm::mat4(1.0f);
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-
-
+	glm::mat4 projection;
+	projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.f);
+	
+	double previousT = glfwGetTime();
+	int frameCount = 0;
+	
+	
+	//
 	while (!glfwWindowShouldClose(window))
 	{
+		double currentT = glfwGetTime();
+		frameCount++;
+		if (currentT - previousT >= 1.0)
+		{
+			BBX_INFO(frameCount);
+			frameCount = 0;
+			previousT = currentT;
+		}
+
+
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -181,8 +211,28 @@ void bxContext::splashImage()
 		glBindTexture(GL_TEXTURE_2D, bootImage.getID());
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, image2.getID());
+		
+		/*
+		if (c > 200)
+		{
+			c = 0.05f;
+		}
+		c += 0.001f;
+		transf = glm::rotate(transf, glm::radians(c), glm::vec3(0.0, 0.0, 1.0));
 
+		*/
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(5.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
+		unsigned int modelLoc = glGetUniformLocation(shaderID, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+		unsigned int viewLoc = glGetUniformLocation(shaderID, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+
+		unsigned int projLoc = glGetUniformLocation(shaderID, "projection");
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+		//
 
 		//glBindTexture(GL_TEXTURE_2D, bootImage.getID());
 		glUseProgram(shaderID);

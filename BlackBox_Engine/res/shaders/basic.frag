@@ -1,5 +1,4 @@
 #version 400 core
-
 in vec3 passColor;
 in vec2 passTexCoord;
 
@@ -10,7 +9,7 @@ uniform sampler2D normal;
 	
 void main()
 {
-        FragColor = mix(texture(normal, passTexCoord), texture(normal, passTexCoord), 0.8);
+        FragColor = mix(texture(normal, passTexCoord), texture(normal, passTexCoord), 0.9);
 
 
 
