@@ -5,6 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "render/glRenderCore.h"
+
 /*
 	(OpenGL/Vulkan) Rendering context
 */
@@ -114,6 +116,7 @@ void bxContext::update()
 
 void bxContext::splashImage()
 {
+	BBX_WARN(BX_GFX_DEVICE);
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right

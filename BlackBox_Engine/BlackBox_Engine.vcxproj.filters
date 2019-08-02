@@ -71,7 +71,7 @@
     <ClInclude Include="include\entity\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\render\glRender.h">
+    <ClInclude Include="include\render\glRenderCore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
