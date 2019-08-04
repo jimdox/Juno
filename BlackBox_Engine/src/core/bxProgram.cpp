@@ -1,6 +1,6 @@
 #include "core/bxProgram.h"
-
-
+#include "render/glRenderCore.h"
+#include "core/Log.h"
 using namespace bbx;
 
 
@@ -28,8 +28,20 @@ void bxProgram::init()
 
 void bxProgram::run()
 {
-	renderContext->splashImage();
+	BBX_WARN(BX_GFX_DEVICE);
+	//renderContext->splashImage();
+	while (renderContext->isRunning())
+	{
+		bxRender::clear();
+		
 
+
+
+
+
+
+		renderContext->update();
+	}
 
 }
 

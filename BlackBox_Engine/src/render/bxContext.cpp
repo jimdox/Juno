@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "render/glRenderCore.h"
 
 /*
 	(OpenGL/Vulkan) Rendering context
@@ -95,7 +94,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); /* limits fps to 60 */
+	glfwSwapInterval(1);				/* limits fps to 60 */
 
 
 	glfwSetErrorCallback(setErrCallback);
@@ -104,7 +103,7 @@ void bxContext::init()
 	if (glewInit() != GLEW_OK) { BBX_CRIT("GLEW failed to init!"); }
 
 
-	BBX_WARN(glGetString(GL_RENDERER)); // list video card
+	BBX_WARN(glGetString(GL_RENDERER)); /* list video card */
 }
 
 void bxContext::update()
@@ -116,7 +115,6 @@ void bxContext::update()
 
 void bxContext::splashImage()
 {
-	BBX_WARN(BX_GFX_DEVICE);
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
@@ -196,6 +194,7 @@ void bxContext::splashImage()
 	//
 	while (!glfwWindowShouldClose(window))
 	{
+		/*
 		double currentT = glfwGetTime();
 		frameCount++;
 		if (currentT - previousT >= 1.0)
@@ -204,7 +203,7 @@ void bxContext::splashImage()
 			frameCount = 0;
 			previousT = currentT;
 		}
-
+		*/
 
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -224,7 +223,7 @@ void bxContext::splashImage()
 		transf = glm::rotate(transf, glm::radians(c), glm::vec3(0.0, 0.0, 1.0));
 
 		*/
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(5.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(1.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		unsigned int modelLoc = glGetUniformLocation(shaderID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
@@ -247,8 +246,9 @@ void bxContext::splashImage()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glfwPollEvents();
 
 	}
 }
@@ -267,5 +267,5 @@ void bxContext::setShader(GLuint id)
 
 bool bxContext::isRunning()
 {
-	return this->isValid;
+	return window;
 }

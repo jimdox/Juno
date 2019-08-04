@@ -19,6 +19,7 @@ public:
 	void init();
 	void splashImage();
 	void update();
+
 	void destroy();
 	void setVisible(bool flag);
 	void setShader(GLuint id);
