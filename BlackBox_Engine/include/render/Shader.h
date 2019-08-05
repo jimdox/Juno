@@ -13,7 +13,7 @@ public:
 	virtual ~Shader();
 	bool loadShader();
 	void useProgram();
-	GLuint getProgram();
+	GLuint getID();
 	void setInt(const std::string& var, int value) const;
 	void setBool(const std::string& var, bool flag) const;
 	void setFloat(const std::string& var, float value) const;

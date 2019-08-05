@@ -128,7 +128,7 @@ bool Shader::loadShader()
 }
 
 
-GLuint Shader::getProgram()
+GLuint Shader::getID()
 {
 	const GLuint p = progID;
 	return p;

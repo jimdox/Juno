@@ -1,7 +1,8 @@
 #pragma once
-
 #include <GL/glew.h>
 #include <string>
+#include "stb_image.h"
+
 namespace bbx {
 class Texture
 {

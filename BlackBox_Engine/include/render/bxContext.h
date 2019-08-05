@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <time.h>
-#include "render/Texture.h"
 #include "core/Log.h"
 namespace bbx {
 class bxContext

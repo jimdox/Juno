@@ -7,7 +7,7 @@ Mesh::Mesh(std::vector<float> &vertCoords, std::vector<float> &textureCoords, st
 	this->vertexCoords = vertCoords;
 	this->textureCoords = textureCoords;
 	this->indices = indices;
-	numVertices = vertexCoords.size();
+	this->numVertices = vertexCoords.size();
 }
 
 Mesh::~Mesh()

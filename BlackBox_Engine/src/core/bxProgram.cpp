@@ -22,25 +22,26 @@ void bxProgram::init()
 	shader->loadShader();
 	BBX_INFO("Shaders loaded.");
 
-	GLuint shaderID = shader->getProgram();
+	GLuint shaderID = shader->getID();
 	this->renderContext->setShader(shaderID);
 }
 
 void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
+	bxRender::init();
 	//renderContext->splashImage();
 	while (renderContext->isRunning())
 	{
 		bxRender::clear();
-		
+		bxRender::instancedRender
 
 
 
 
 
 
-		renderContext->update();
+		//renderContext->update();
 	}
 
 }

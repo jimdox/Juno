@@ -1,11 +1,10 @@
 #include "render/bxContext.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 #include "core/KeyMap.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "render/texture.h"
 /*
 	(OpenGL/Vulkan) Rendering context
 */
@@ -108,19 +107,19 @@ void bxContext::init()
 
 void bxContext::update()
 {
-
-
+	glfwSwapBuffers(window);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwPollEvents();
 }
 
 void bxContext::splashImage()
 {
 	float vertices[] = {
-		// positions          // colors           // texture coords
-		 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-		 1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-		-1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-		-1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+		// positions          // colors           // texture 
+		 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, 
+		 1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, 
+		-1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 
+		-1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  
 	};
 
 	unsigned int indices[] = {

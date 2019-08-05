@@ -1,5 +1,8 @@
 #pragma once
-	#include <vector>
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 /*
 	Stores geometry and texture data to be used when rendering mesh.
 */
@@ -10,6 +13,7 @@ struct Material {
 	// PBR related things go here (reflectivity, shine damper, etc...)
 
 };
+
 
 
 class Mesh
@@ -29,6 +33,8 @@ private:
 	std::vector<float> vertexCoords;
 	std::vector<float> textureCoords;
 	std::vector<unsigned int> indices;
+
+	glm::mat4 transform;
 };
 
 }

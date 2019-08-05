@@ -1,13 +1,28 @@
 #pragma once
 #include <GL/glew.h>
 #include <vector>
-#include "render/Mesh.h"
+#include "render/Shader.h"
 #include "entity/Entity.h"
+#include "render/Mesh.h"
+#include "render/Texture.h"
+
 #include "core/Log.h"
 
 #define BX_GFX_DEVICE glGetString(GL_RENDERER)
 
 namespace bxRender {
+
+	static void init()
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		stbi_set_flip_vertically_on_load(true);
+
+
+		glEnable(GL_DEPTH_TEST);
+	}
 
 	/* clear screen */
 	static void clear()
@@ -20,18 +35,55 @@ namespace bxRender {
 	/* render static mesh */
 	static void render(bbx::Entity)
 	{
-		glGenVertexArrays
+		
 	}
 
-	static void instancedRender(std::vector<bbx::Entity>)
+	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)
 	{
 		float vertices[] = {
-			// positions          // colors           // texture coords
-			 1.0f,  1.0f, 0.0f,   0.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-			 1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-			-1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-			-1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 		};
+
 
 		unsigned int indices[] = {
 			0, 1, 3,
@@ -45,6 +97,7 @@ namespace bxRender {
 
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -61,23 +114,18 @@ namespace bxRender {
 		glEnableVertexAttribArray(2);
 
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		// set texture filtering parameters
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		stbi_set_flip_vertically_on_load(true);
+
 
 		/* image loader */
 
-		Texture bootImage("./res/engine.png");
+		bbx::Texture bootImage("./res/engine.png");
 		glGenerateMipmap(GL_TEXTURE_2D);
-		Texture image2("./res/fordo.png");
+		bbx::Texture image2("./res/fordo.png");
 
 
-		glUniform1i(glGetUniformLocation(shaderID, "diffuse"), 0);
-		glUniform1i(glGetUniformLocation(shaderID, "normal"), 1);
+		glUniform1i(glGetUniformLocation(shader->getID(), "diffuse"), 0);
+		glUniform1i(glGetUniformLocation(shader->getID(), "normal"), 1);
 
 		/* setup transform */
 
@@ -96,6 +144,8 @@ namespace bxRender {
 
 		glm::mat4 projection;
 		projection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.f);
+
+
 	}
 
 
