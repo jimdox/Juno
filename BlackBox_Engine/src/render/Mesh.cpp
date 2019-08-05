@@ -33,3 +33,8 @@ unsigned int& Mesh::getNumVertices()
 {
 	return numVertices;
 }
+
+glm::mat4& Mesh::getTransform()
+{
+	return this->transform;
+}

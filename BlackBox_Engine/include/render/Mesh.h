@@ -24,7 +24,7 @@ public:
 	std::vector<float>& getVertexCoords();
 	std::vector<float>& getTextureCoords();
 	std::vector<unsigned int>& getIndices();
-
+	glm::mat4& getTransform();
 	unsigned int& getNumVertices();
 
 
@@ -33,7 +33,6 @@ private:
 	std::vector<float> vertexCoords;
 	std::vector<float> textureCoords;
 	std::vector<unsigned int> indices;
-
 	glm::mat4 transform;
 };
 

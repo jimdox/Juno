@@ -15,7 +15,6 @@ public:
 
 
 private:
-	glm::mat4& transformMatrix;
 	Mesh& mesh;
 };
 }
