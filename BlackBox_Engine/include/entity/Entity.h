@@ -7,11 +7,11 @@ namespace bbx {
 class Entity
 {
 public:
-	Entity(Mesh& mesh, glm::mat4& transform);
+	Entity(Mesh& mesh);
 	~Entity();
 
 	Mesh& getMesh();
-	glm::mat4& getPosition();
+	//glm::mat4& getPosition();
 
 
 private:

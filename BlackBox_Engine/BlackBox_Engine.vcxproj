@@ -58,7 +58,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glad\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glad\include; $(ProjectDir)lib\glfw\include; $(ProjectDir)lib\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glad\include; $(ProjectDir)lib\glfw\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include; $(ProjectDir)lib\glm; $(ProjectDir)lib\stb; $(ProjectDir)lib\spdlog\include; $(ProjectDir)lib\glew\include; $(ProjectDir)lib\glad\include; $(ProjectDir)lib\glfw\include; $(ProjectDir)lib\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -92,6 +92,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\render\bxGUI.cpp" />
+    <ClCompile Include="src\render\Camera.cpp" />
     <ClCompile Include="src\entity\Entity.cpp" />
     <ClCompile Include="lib\glad\src\glad.c" />
     <ClCompile Include="src\render\Mesh.cpp" />
@@ -103,6 +105,8 @@
     <ClCompile Include="src\render\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\render\bxGUI.h" />
+    <ClInclude Include="include\render\Camera.h" />
     <ClInclude Include="include\entity\Entity.h" />
     <ClInclude Include="include\core\EngineConfig.h" />
     <ClInclude Include="include\core\KeyMap.h" />
@@ -113,6 +117,7 @@
     <ClInclude Include="include\render\Shader.h" />
     <ClInclude Include="include\render\Texture.h" />
     <ClInclude Include="include\render\Mesh.h" />
+    <ClInclude Include="include\core\bxAssetLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
