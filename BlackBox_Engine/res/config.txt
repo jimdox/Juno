@@ -2,8 +2,11 @@
 
 [General Settings]
 Build_Platform = Windows
-
+Debug = true
 
 [Graphics Options]
-Render_API = OpenGL 
+Graphics_API = OpenGL 
 Resolution = 1920x1080 
+Fullscreen = false
+Windowed = true
+VSync = true
