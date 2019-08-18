@@ -5,6 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "render/texture.h"
+#include "render/glRenderCore.h"
 /*
 	(OpenGL/Vulkan) Rendering context
 */
@@ -79,7 +80,7 @@ void bxContext::init()
 
 	glfwInit();
 
-	if (!glfwInit())
+	if (!glfwInit())	
 	{
 		BBX_ERR("GLFW failed to initialize!");
 	}
@@ -99,8 +100,7 @@ void bxContext::init()
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, kbdLayout);
 
-	if (glewInit() != GLEW_OK) { BBX_CRIT("GLEW failed to init!"); }
-
+	bxRender::init();
 
 	BBX_WARN(glGetString(GL_RENDERER)); /* list video card */
 }
@@ -222,8 +222,11 @@ void bxContext::splashImage()
 		transf = glm::rotate(transf, glm::radians(c), glm::vec3(0.0, 0.0, 1.0));
 
 		*/
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(1.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(1.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
+		unsigned int transformMatrix = glGetUniformLocation(shaderID, "transformMat");
+		glUniformMatrix4fv(transformMatrix, 1, GL_FALSE, glm::value_ptr(transf));
+		/*
 		unsigned int modelLoc = glGetUniformLocation(shaderID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -232,7 +235,7 @@ void bxContext::splashImage()
 
 		unsigned int projLoc = glGetUniformLocation(shaderID, "projection");
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
+		*/
 		//
 
 		//glBindTexture(GL_TEXTURE_2D, bootImage.getID());

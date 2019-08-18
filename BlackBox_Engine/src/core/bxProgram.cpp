@@ -19,7 +19,7 @@ bxProgram::~bxProgram()
 void bxProgram::init()
 {
 	this->renderContext = new bxContext(670, 670, " ", false);
-	this->shader = new Shader();
+	this->shader = new Shader("./res/shaders/gui");
 	BBX_INFO("Loading shaders");
 	shader->loadShader();
 	BBX_INFO("Shaders loaded.");
@@ -77,8 +77,8 @@ void bxProgram::run()
 	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
 	};
 	std::vector<Entity> entities;
-	//renderContext->splashImage();
 	//loadOBJ("res/Artemis.obj");
+	renderContext->splashImage();
 
 	while (renderContext->isRunning())
 	{
@@ -90,7 +90,7 @@ void bxProgram::run()
 
 
 
-		//renderContext->update();
+		renderContext->update();
 	}
 
 }
