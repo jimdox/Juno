@@ -2,6 +2,7 @@
 #include "core/bxProgram.h"
 #include "core/Log.h"
 
+/* This project is dedicated in memory of John Doxtader. */
 
 namespace bbx {
 const std::string BBX_VERSION = "v0.0.1";

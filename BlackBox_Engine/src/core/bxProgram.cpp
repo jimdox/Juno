@@ -78,7 +78,7 @@ void bxProgram::run()
 	};
 	std::vector<Entity> entities;
 	//loadOBJ("res/Artemis.obj");
-	renderContext->splashImage();
+	//renderContext->splashImage();
 
 	while (renderContext->isRunning())
 	{
