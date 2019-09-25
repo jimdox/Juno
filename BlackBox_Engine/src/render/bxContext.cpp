@@ -73,8 +73,8 @@ static void setErrCallback(int code, const char* message)
 void bxContext::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);                                  // Oldest allowable version of GLSL (4.3)
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Oldest allowable version of GLSL (4.3)
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
 
 
 
@@ -86,7 +86,7 @@ void bxContext::init()
 	}
 
 
-	this->window = glfwCreateWindow(width, height, this->title.c_str(), NULL, NULL); // third argument makes window full screen if:
+	this->window = glfwCreateWindow(width, height, this->title.c_str(), NULL, NULL);	// third argument makes window full screen if:
 
 	if (!window)
 	{
@@ -94,7 +94,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);				/* limits fps to 60 */
+	glfwSwapInterval(1);																/* limits fps to 60 */
 
 
 	glfwSetErrorCallback(setErrCallback);
@@ -102,7 +102,7 @@ void bxContext::init()
 
 	bxRender::init();
 
-	BBX_WARN(glGetString(GL_RENDERER)); /* list video card */
+	BBX_WARN(glGetString(GL_RENDERER));													/* list video card */
 }
 
 void bxContext::update()
