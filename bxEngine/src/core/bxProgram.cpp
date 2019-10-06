@@ -19,19 +19,16 @@ bxProgram::~bxProgram()
 void bxProgram::init()
 {
 	this->renderContext = new bxContext(670, 670, " ", false);
-	this->shader = new Shader("./res/shaders/gui");
-	BBX_INFO("Loading shaders");
-	shader->loadShader();
-	BBX_INFO("Shaders loaded.");
+	this->shader = new Shader("/home/dox/dev/BlackBox/bxEngine/res/shaders/basic");
 
-	GLuint shaderID = shader->getID();
-	this->renderContext->setShader(shaderID);
+	//GLuint shaderID = shader->getID();
+	//this->renderContext->setShader(shaderID);
 }
 
 void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
-	bxRender::init();
+	//bxRender::init();
 
 	
 	std::vector<Entity> entities;

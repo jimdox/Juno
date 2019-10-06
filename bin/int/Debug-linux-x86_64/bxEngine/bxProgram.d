@@ -23,11 +23,9 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/render/Shader.h include/render/glRenderCore.h lib/imgui/imgui.h \
- lib/imgui/imconfig.h lib/imgui/imgui_impl_glfw.h \
- lib/imgui/imgui_impl_opengl3.h include/entity/Entity.h \
- include/render/Mesh.h include/render/Texture.h lib/stb/stb_image.h \
- include/core/bxAssetLoader.h
+ include/render/Shader.h include/render/glRenderCore.h \
+ include/entity/Entity.h include/render/Mesh.h include/render/Texture.h \
+ lib/stb/stb_image.h include/core/bxAssetLoader.h
 
 include/core/bxProgram.h:
 
@@ -86,14 +84,6 @@ lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
 include/render/Shader.h:
 
 include/render/glRenderCore.h:
-
-lib/imgui/imgui.h:
-
-lib/imgui/imconfig.h:
-
-lib/imgui/imgui_impl_glfw.h:
-
-lib/imgui/imgui_impl_opengl3.h:
 
 include/entity/Entity.h:
 

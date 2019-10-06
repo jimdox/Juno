@@ -1,9 +1,9 @@
 #pragma once
 #include "bxContext.h"
 #include <vector>
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+//#include "imgui.h"
+//#include "imgui_impl_glfw.h"
+//#include "imgui_impl_opengl3.h"
 #include "render/Shader.h"
 #include "entity/Entity.h"
 #include "render/Mesh.h"
@@ -50,7 +50,7 @@ namespace bxRender {
 
 		
 	}
-
+	/*
 	static void initGUI(GLFWwindow* window, unsigned int glslVersion)
 	{
 		IMGUI_CHECKVERSION();
@@ -72,7 +72,7 @@ namespace bxRender {
 		ImGui::NewFrame();
 		ImGui::Begin("testing");
 		ImGui::Text("texting?"); /* sample code */
-		/* add function calls to bxGUI here */
+		/* add function calls to bxGUI here 
 		ImGui::End();
 	}
 
@@ -82,6 +82,7 @@ namespace bxRender {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 	}
+	*/
 	/* todo: move certain functions to debug build only (#ifdef BX_DEBUG) */
 	static void testShader()
 	{

@@ -23,9 +23,8 @@
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/core/KeyMap.h include/render/Texture.h lib/stb/stb_image.h \
- include/render/glRenderCore.h lib/imgui/imgui.h lib/imgui/imconfig.h \
- lib/imgui/imgui_impl_glfw.h lib/imgui/imgui_impl_opengl3.h \
- include/render/Shader.h include/entity/Entity.h include/render/Mesh.h
+ include/render/glRenderCore.h include/render/Shader.h \
+ include/entity/Entity.h include/render/Mesh.h
 
 include/render/bxContext.h:
 
@@ -86,14 +85,6 @@ include/render/Texture.h:
 lib/stb/stb_image.h:
 
 include/render/glRenderCore.h:
-
-lib/imgui/imgui.h:
-
-lib/imgui/imconfig.h:
-
-lib/imgui/imgui_impl_glfw.h:
-
-lib/imgui/imgui_impl_opengl3.h:
 
 include/render/Shader.h:
 

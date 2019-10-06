@@ -12,7 +12,7 @@ workspace "BlackBox"
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 	
 	IncludeDir = {}
-	IncludeDir["ImGui"] = "%{prj.name}/lib/imgui"
+	--IncludeDir["ImGui"] = "%{prj.name}/lib/imgui"
 	IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
 	IncludeDir["stb"] = "%{prj.name}/lib/stb"
 	
@@ -58,7 +58,7 @@ workspace "BlackBox"
 			"%{prj.name}/include",
 			"%{prj.name}/lib/stb",
 			"%{prj.name}/lib/spdlog/include",
-			"%{prj.name}/lib/imgui",
+			--"%{prj.name}/lib/imgui",
 		}
 		
 		links 

@@ -102,7 +102,7 @@ void bxContext::init()
 
 	bxRender::init();
 
-	BBX_WARN(glGetString(GL_RENDERER));													/* list video card */
+	//BBX_WARN(glGetString(GL_RENDERER));													/* list video card */
 }
 
 void bxContext::update()
