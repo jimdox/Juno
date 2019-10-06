@@ -31,7 +31,7 @@ bxContext::bxContext(int width, int height, const std::string name)
 	init();
 }
 
-/* set window border */
+/* set window border T/F */
 bxContext::bxContext(int width, int height, std::string title, bool border)
 {
 	this->width = width;
