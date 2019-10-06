@@ -1,6 +1,6 @@
 workspace "BlackBox"
 	architecture "x64"
-	startproject "Userspace"
+	startproject "bxEngine"
 	
 	configurations
 	{
@@ -12,46 +12,38 @@ workspace "BlackBox"
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 	
 	IncludeDir = {}
-	IncludeDir["GLFW"] = "BlackBox_Engine/lib/glfw/include"
-	IncludeDir["Glad"] = "BlackBox_Engine/lib/glew/include"
-	IncludeDir["ImGui"] = "BlackBox_Engine/lib/imgui"
-	IncludeDir["glm"] = "BlackBox_Engine/lib/glm"
-	IncludeDir["spdlog"] = "BlackBox_Engine/lib/spdlog"
-	IncludeDir["stb"] = "BlackBox_Engine/lib/stb"
+	IncludeDir["ImGui"] = "%{prj.name}/lib/imgui"
+	IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
+	IncludeDir["stb"] = "%{prj.name}/lib/stb"
 	
 	
 	
-	group "Dependencies"
-		include "BlackBox/lib/GLFW"
-		include "BlackBox/lib/Glad"
-		include "BlackBox/lib/imgui"
-		include "BlackBox/lib/spdlog"
-		include "BlackBox/lib/stb"
-		include "BlackBox/lib/assimp"
+
 		
 
 
-	project "BlackBox"
-		location "BlackBox"
-		kind "StaticLib"
+	project "bxEngine"
+		location "bxEngine"
+		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
 		staticruntime "on"
 		
-		targetdir ("bin/ .. outputdir .. "/%{prj.name}")
-		objdir ("bin/int/" .. outputdir .. "/%{prj.name}")
+		targetdir ("./bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("./bin/int/" .. outputdir .. "/%{prj.name}")
 		
-		pchheader "pch.h"
-		
-		pchsource "BlackBox/src/pch.cpp"
+		pchheader "%{prj.name}/pch.h"
+		pchsource "%{prj.name}/pch.cpp"
 		
 		
 		files
 		{
-			"%{prj.name}/src/**.h",
+			"%{prj.name}/include/core/**.h",
+			"%{prj.name}/include/render/**.h",
+			"%{prj.name}/include/entity/**.h",
+			"%{prj.name}/include/events/**.h",
 			"%{prj.name}/src/**.cpp",
-			"%{prj.name}/vendor/glm/glm/**.hpp",
-			"%{prj.name}/vendor/glm/glm/**.inl",
+			"%{prj.name}/lib/stb/stb_image.h"
 		
 		}
 		
@@ -63,20 +55,16 @@ workspace "BlackBox"
 		includedirs
 		{
 			"%{prj.name}/src",
-			"%{prj.name}/vendor/spdlog/include",
-			"%{IncludeDir.GLFW}",
-			"%{IncludeDir.Glad}",
-			"%{IncludeDir.ImGui}",
-			"%{IncludeDir.glm}"
+			"%{prj.name}/include",
+			"%{prj.name}/lib/stb",
+			"%{prj.name}/lib/spdlog/include",
+			"%{prj.name}/lib/imgui",
 		}
 		
 		links 
 		{ 
-			"GLFW",
-			"Glad",
-			"ImGui",
-			"opengl32.lib"
+            "GL",
+            "GLEW",
+			"glfw"
+			
 		}
-	
-		
-	
