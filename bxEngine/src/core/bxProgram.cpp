@@ -28,7 +28,7 @@ void bxProgram::init()
 void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
-	std::string entityPath = "/home/dox/dev/BlackBox/bxEngine/res/";
+	std::string entityPath = "/home/dox/dev/BlackBox/bxEngine/res/rock/rock.obj";
 	Entity testEntity(entityPath);
 	
 

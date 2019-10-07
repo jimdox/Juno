@@ -26,7 +26,8 @@ namespace bxImport {
         {
             aiString str;
             mat->GetTexture(type, i, &str);
-            bbx::Texture tex(dir, typeStr);
+            std::string texPath = dir + "/" + (str).C_Str();
+            bbx::Texture tex(texPath, typeStr);
     
             textures.push_back(tex);
         }
@@ -34,7 +35,7 @@ namespace bxImport {
     }
 
 
-    static bbx::Mesh assimp_processMesh(aiMesh *mesh, const aiScene *scene, std::string& dir)
+    static bbx::Mesh assimp_processMesh(aiMesh *mesh, const aiScene *scene, std::string& directory)
     {
         std::vector<bbx::Vertex> vertices;
         std::vector<unsigned int> indices;
@@ -59,7 +60,7 @@ namespace bxImport {
 
             if(!mesh->mTextureCoords[0])
             {
-                BBX_CLI_ERR("Imported object does not have texture coordinates.");
+                BBX_CLI_WARN("Imported object does not have texture coordinates.");
             }
 
             tex.x = mesh->mTextureCoords[0][i].x;
@@ -82,24 +83,24 @@ namespace bxImport {
         if(mesh->mMaterialIndex >= 0)
         {
             aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-            textures.diffuse = assimp_loadMatTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", dir);
-            textures.specular = assimp_loadMatTextures(material, aiTextureType_SPECULAR, "texture_specular", dir);
+            textures.diffuse = assimp_loadMatTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", directory);
+            textures.specular = assimp_loadMatTextures(material, aiTextureType_SPECULAR, "texture_specular", directory);
 
         }
         return bbx::Mesh(vertices, indices, textures);
     }
 
-    static void assimp_processNode(aiNode *node, const aiScene *scene, std::string& dir, std::vector<bbx::Mesh> &meshes)
+    static void assimp_processNode(aiNode *node, const aiScene *scene, std::string& directory, std::vector<bbx::Mesh> &meshes)
     {
         for(unsigned int i = 0; i <node->mNumMeshes; i++)
         {
             aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-            meshes.push_back(assimp_processMesh(mesh, scene, dir));
+            meshes.push_back(assimp_processMesh(mesh, scene, directory));
         }   
         /* repeat for descendent meshes */
         for(unsigned int j = 0; j < node->mNumChildren; j++)
         {
-            assimp_processNode(node->mChildren[j], scene, dir,  meshes);
+            assimp_processNode(node->mChildren[j], scene, directory,  meshes);
         }
     }
 
@@ -111,14 +112,14 @@ namespace bxImport {
     {
         Assimp::Importer aimport;
         const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
-
         if(!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
         {
-            BBX_CLI_ERR(("Error Loading Model: " + filepath).c_str());
+            BBX_CLI_ERR(("Error loading model: " + filepath).c_str());
             return;
         }
+        BBX_INFO((filepath.substr(0, filepath.find_last_of("/"))).c_str());
         std::string directory = filepath.substr(0, filepath.find_last_of("/"));
-        assimp_processNode(scene->mRootNode, scene, filepath, meshList);
+        assimp_processNode(scene->mRootNode, scene, directory, meshList);
     }
 
 
