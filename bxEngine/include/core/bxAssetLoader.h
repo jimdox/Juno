@@ -56,6 +56,6 @@ namespace bbx {
 
 	Mesh* loadMesh(ModelData data)
 	{
-
+		return nullptr;
 	}
 }

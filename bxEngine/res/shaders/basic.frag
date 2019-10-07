@@ -2,14 +2,14 @@
 in vec3 passColor;
 in vec2 passTexCoord;
 
-out vec4 FragColor; 
+out vec4 outColor; 
 
 uniform sampler2D diffuse;
 uniform sampler2D normal;
 	
 void main()
 {
-        FragColor = mix(texture(normal, passTexCoord), texture(normal, passTexCoord), 0.9);
+        outColor = mix(texture(normal, passTexCoord), texture(normal, passTexCoord), 0.9);
 
 
 

@@ -3,37 +3,51 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "render/Texture.h"
 /*
 	Stores geometry and texture data to be used when rendering mesh.
 */
 
 namespace bbx {
 
-struct Material {
-	// PBR related things go here (reflectivity, shine damper, etc...)
+typedef struct Material 
+{
+	// PBR related things will go here (reflectivity, shine damper, etc...)
 
-};
+} Material;
 
+typedef struct Vertex
+{
+	glm::vec3 &position; 
+	glm::vec3 &normal;
+	glm::vec2 &textureCoord;
+} Vertex;
 
 
 class Mesh
 {
 public:
-	Mesh(std::vector<float> &vrtCoords, std::vector<float> &texCoords, std::vector<unsigned int> &indices);
+	Mesh(std::vector<Vertex> data, std::vector<unsigned int> &indices, std::vector<Texture> &textures);
 	virtual ~Mesh();
-	std::vector<float>& getVertexCoords();
-	std::vector<float>& getTextureCoords();
-	std::vector<unsigned int>& getIndices();
-	glm::mat4& getTransform();
-	unsigned int& getNumVertices();
+	
 
+
+	glm::mat4& getTransform();
+	unsigned int getNumVertices();
+
+	void regenerateMesh();
 
 private:
-	unsigned int numVertices;
-	std::vector<float> vertexCoords;
-	std::vector<float> textureCoords;
-	std::vector<unsigned int> indices;
+
+	std::vector<Vertex> &meshData;
+	std::vector<unsigned int> &indices;
+	std::vector<Texture> &textures;
+
 	glm::mat4 transform;
+	unsigned int numVertices;
+	unsigned int numIndices;
+	unsigned int VAO_ID, VBO_ID, IBO_ID;
+	/* Vertex Array, Vertex Buffer, Index Buffer Objects */
 };
 
 }

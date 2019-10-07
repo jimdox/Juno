@@ -111,7 +111,7 @@ void bxContext::update()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwPollEvents();
 }
-
+/*   ---   */
 void bxContext::splashImage()
 {
 	float vertices[] = {
@@ -160,9 +160,9 @@ void bxContext::splashImage()
 
 	/* image loader */
 
-	Texture bootImage("./res/engine.png");
+	Texture bootImage("/home/dox/dev/BlackBox/bxEngine/res/engine.png");
 	glGenerateMipmap(GL_TEXTURE_2D);
-	Texture image2("./res/fordo.png");
+	Texture image2("/home/dox/dev/BlackBox/bxEngine/res/fordo.png");
 
 
 	glUniform1i(glGetUniformLocation(shaderID, "diffuse"), 0);
@@ -204,7 +204,7 @@ void bxContext::splashImage()
 		}
 		*/
 
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.4f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -220,13 +220,9 @@ void bxContext::splashImage()
 		}
 		c += 0.001f;
 		transf = glm::rotate(transf, glm::radians(c), glm::vec3(0.0, 0.0, 1.0));
-
 		*/
-		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(1.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(0.01f), glm::vec3(0.5f, 1.0f, 0.0f));
 
-		unsigned int transformMatrix = glGetUniformLocation(shaderID, "transformMat");
-		glUniformMatrix4fv(transformMatrix, 1, GL_FALSE, glm::value_ptr(transf));
-		/*
 		unsigned int modelLoc = glGetUniformLocation(shaderID, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -235,17 +231,17 @@ void bxContext::splashImage()
 
 		unsigned int projLoc = glGetUniformLocation(shaderID, "projection");
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-		*/
+
 		//
 
-		//glBindTexture(GL_TEXTURE_2D, bootImage.getID());
+		glBindTexture(GL_TEXTURE_2D, bootImage.getID());
 		glUseProgram(shaderID);
 
 		glBindVertexArray(VAO);
 
 
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_LINES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -253,6 +249,7 @@ void bxContext::splashImage()
 		glfwPollEvents();
 
 	}
+	isValid = false;
 }
 /*
 bool RenderContext::isVisible()
@@ -269,5 +266,5 @@ void bxContext::setShader(GLuint id)
 
 bool bxContext::isRunning()
 {
-	return window;
+	return isValid;
 }
