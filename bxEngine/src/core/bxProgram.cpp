@@ -28,11 +28,8 @@ void bxProgram::init()
 void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
-	
-	Vertex vertex;
-	vertex.position = glm::vec3(0.2f, 0.4f, 0.6f);
-	vertex.normal = glm::vec3(0.2f, 0.4f, 0.6f);
-	vertex.textureCoord = glm::vec2(1.0f, 0.0f);
+	std::string entityPath = "/home/dox/dev/BlackBox/bxEngine/res/";
+	Entity testEntity(entityPath);
 	
 
 	while (renderContext->isRunning())

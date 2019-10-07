@@ -55,7 +55,7 @@ private:
 	std::vector<Vertex> &vertexData;
 	std::vector<unsigned int> &indices;
 	
-	TextureList textureList;
+	TextureList& textureList;
 
 	glm::mat4 transform;
 	unsigned int numVertices;
