@@ -2,11 +2,11 @@
 	
 using namespace bbx;
 
-Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, std::vector<Texture> &textures)
+Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures) 
+	: vertexData(data), indices(indices), diffuseTextures(textures.diffuse), specularTextures(textures.specular)
 {
-	this->meshData = data;
+	this->vertexData = data;
 	this->indices = indices;
-	this->textures = textures;
 
 	this->numVertices = data.size();
 	this->numIndices = indices.size();
@@ -18,7 +18,7 @@ Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, std::v
 	glBindVertexArray(VAO_ID);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
 
-	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertexData[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_ID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
@@ -32,7 +32,7 @@ Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, std::v
 	/* offsetof finds the offset of the glm::vec3 normal within struct Vertex */
 
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, textureCoords));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
 
 	glBindVertexArray(0);
 	/* unbind */
@@ -46,18 +46,38 @@ Mesh::~Mesh()
 
 }
 
-std::vector<float>& Mesh::getVertexCoords()
+std::vector<Texture>& Mesh::getDiffuseTextures()
 {
-	return vertexCoords;
+	return diffuseTextures;
+}
+std::vector<Texture>& Mesh::getSpecTextures()
+{
+	return specularTextures;
 }
 
-std::vector<float>& Mesh::getTextureCoords()
+std::vector<Vertex>& Mesh::getVertices()
 {
-	return textureCoords;
+	return vertexData;
 }
+
 std::vector<unsigned int>& Mesh::getIndices()
 {
 	return indices;
+}
+
+unsigned int Mesh::getVAO_ID()
+{
+	return VAO_ID;
+}
+
+unsigned int Mesh::getVBO_ID()
+{
+	return VBO_ID;
+}
+
+unsigned int Mesh::getIBO_ID()
+{
+	return IBO_ID;
 }
 
 unsigned int Mesh::getNumVertices()
@@ -70,7 +90,7 @@ glm::mat4& Mesh::getTransform()
 	return this->transform;
 }
 
-void regenerateMesh()
+void Mesh::regenerateMesh()
 {
 	/* TODO: if the texture uv coordinates need to be remapped, regen mesh */
 }

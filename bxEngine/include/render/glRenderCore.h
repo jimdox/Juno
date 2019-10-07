@@ -40,9 +40,34 @@ namespace bxRender {
 
 
 	/* render static mesh */
-	static void render(bbx::Entity)
+	static void render(bbx::Entity &entity, bbx::Shader& shader)
 	{
-		
+		std::string textureNum;
+		std::vector<bbx::Texture> &diffuseTextures = entity.getMesh().getDiffuseTextures();
+		std::vector<bbx::Texture> &specTextures = entity.getMesh().getSpecTextures();
+		unsigned int index;
+		std::string num;
+		for(index = 0; index < diffuseTextures.size(); index++)
+		{
+			num = std::to_string(index);
+			glActiveTexture(GL_TEXTURE0 + index);
+			shader.setFloat(("material.diffuse" + (std::to_string(index))).c_str(), index);
+			glBindTexture(GL_TEXTURE_2D,diffuseTextures[index].getID());
+		}
+		index++;	/* push index 'over' for specular ID's */
+
+		for(unsigned int i = 0; i < specTextures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + index);
+			shader.setFloat(("material.specular" + (std::to_string(i))).c_str(), index);
+			glBindTexture(GL_TEXTURE_2D,specTextures[i].getID());
+		}
+		glActiveTexture(GL_TEXTURE0);
+
+		/* draw entity */
+		glBindVertexArray(entity.getMesh().getVAO_ID());
+		glDrawElements(GL_TRIANGLES, entity.getMesh().getIndices().size(), GL_UNSIGNED_INT, 0);
+		/* --- */
 	}
 
 	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)

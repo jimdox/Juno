@@ -18,30 +18,48 @@ typedef struct Material
 
 typedef struct Vertex
 {
-	glm::vec3 &position; 
-	glm::vec3 &normal;
-	glm::vec2 &textureCoord;
+	glm::vec3 position; 
+	glm::vec3 normal;
+	glm::vec2 textureCoord;
 } Vertex;
+
+/* Texture refs are separately stored */
+class TextureList
+{
+public:
+	TextureList(std::vector<Texture> &diff, std::vector<Texture> &spec) : diffuse(diff), specular(spec){}
+	std::vector<Texture> &diffuse;
+	std::vector<Texture> &specular;
+};
 
 
 class Mesh
 {
 public:
-	Mesh(std::vector<Vertex> data, std::vector<unsigned int> &indices, std::vector<Texture> &textures);
+	Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures);
 	virtual ~Mesh();
 	
+	unsigned int getVAO_ID();
+	unsigned int getVBO_ID();
+	unsigned int getIBO_ID();
 
+	std::vector<Texture>& getDiffuseTextures();
+	std::vector<Texture>& getSpecTextures();
 
-	glm::mat4& getTransform();
+	std::vector<Vertex>& getVertices();
+	std::vector<unsigned int>& getIndices();
 	unsigned int getNumVertices();
-
+	
+	glm::mat4& getTransform();
 	void regenerateMesh();
 
 private:
 
-	std::vector<Vertex> &meshData;
+	std::vector<Vertex> &vertexData;
 	std::vector<unsigned int> &indices;
-	std::vector<Texture> &textures;
+	
+	std::vector<bbx::Texture> &diffuseTextures;
+	std::vector<bbx::Texture> &specularTextures;
 
 	glm::mat4 transform;
 	unsigned int numVertices;
