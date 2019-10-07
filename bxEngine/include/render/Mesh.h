@@ -23,15 +23,12 @@ typedef struct Vertex
 	glm::vec2 textureCoord;
 } Vertex;
 
-/* Texture refs are separately stored */
-class TextureList
+/* Texture types are sequentially stored */
+typedef struct TextureList
 {
-public:
-	TextureList(std::vector<Texture> &diff, std::vector<Texture> &spec) : diffuse(diff), specular(spec){}
-	std::vector<Texture> &diffuse;
-	std::vector<Texture> &specular;
-};
-
+	std::vector<Texture> diffuse;
+	std::vector<Texture> specular;
+} TextureList;
 
 class Mesh
 {
@@ -58,8 +55,7 @@ private:
 	std::vector<Vertex> &vertexData;
 	std::vector<unsigned int> &indices;
 	
-	std::vector<bbx::Texture> &diffuseTextures;
-	std::vector<bbx::Texture> &specularTextures;
+	TextureList textureList;
 
 	glm::mat4 transform;
 	unsigned int numVertices;

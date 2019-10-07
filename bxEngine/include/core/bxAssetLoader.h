@@ -1,61 +1,74 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <stb_image.h>
 #include <string>
+#include <map>
 #include <vector>
-#include <ios>
+#include <fstream>
 #include <sstream>
-#include "render/Mesh.h"
+#include <iostream>
+#include "entity/Entity.h"
 #include "core/Log.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
+
 /* */
-namespace bbx {
+namespace bxImport {
 
-	struct ModelData
-	{
-		//float* vertices[] = nullptr;
-		//float* textureCoords[] = nullptr;
-		//float* normals[] = nullptr;
-		unsigned int* indices = nullptr;
-	};
+    static void loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
+    {
+        Assimp::Importer aimport;
+        const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-	static void loadOBJ(const std::string& filepath)
-	{
-		std::vector<glm::vec3> vertexData;
-		std::vector<glm::vec3> normalData;
-		std::vector<glm::vec2> textureData;
-		std::vector<unsigned int> indexData;
-		ModelData data;
+        if(!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
+        {
+            BBX_CLI_ERR(("Error Loading Model: " + filepath).c_str());
+            return;
+        }
+        std::string directory = filepath.substr(0, filepath.find_last_of("/"));
+        assimp_processNode(scene->mRootNode, scene);
+    }
 
+    static void assimp_processNode(aiNode *node, const aiScene *scene)
+    {
+        for(unsigned int i = 0; i <node->mNumMeshes; i++)
+        {
+            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+            meshes.push_back(processMesh(mesh, scene));
+        }   
+        /* repeat for descendent meshes */
+        for(unsigned int j = 0; j < node->mNumChildren; j++)
+        {
+            assimp_processNode(node->mChildren[j], scene);
+        }
+    }
 
-		std::string obj;
-		std::ifstream sourceStream(filepath, std::ios::in);
-		if (sourceStream.is_open())
-		{
-			std::stringstream src;
-			src << sourceStream.rdbuf();
-			obj = src.str();
+    bbx::Mesh processMesh(aiMesh *mesh, const aiScene *scene)
+    {
+        std::vector<bbx::Vertex> vertices;
+        std::vector<unsigned int> indices;
+        bbx::TextureList textures;
 
-			sourceStream.close();
-		}
-		else {
-			BBX_CLI_ERR("Error: cannot access file: " + filepath);
-		}
-		//BBX_CLI_CRIT(obj);
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++)
+        {
+            bbx::Vertex v; 
 
-		std::string temp;
-		unsigned int i;
-		while (obj.length() != 0)
-		{
-			i = obj.find_first_of('\n');
-			temp = obj.substr(0, i);
-			BBX_WARN(temp);
-			obj = obj.substr(i, obj.length());
-		}
+            vertices.push_back(v);
+        }
 
+        if(mesh->mMaterialIndex >= 0)
+        {
 
-	}
+        }
+        return bbx::Mesh(vertices, indices, textures);
+    }
 
-	Mesh* loadMesh(ModelData data)
-	{
-		return nullptr;
-	}
+    bbx::TextureList& loadTextures(aiMaterial *mat, aiTextureType type, std::string typeStr)
+
+   
+	
 }

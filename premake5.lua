@@ -65,6 +65,7 @@ workspace "BlackBox"
 		{ 
             "GL",
             "GLEW",
-			"glfw"
+			"glfw",
+			"assimp"
 			
 		}

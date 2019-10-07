@@ -7,15 +7,22 @@ namespace bbx {
 class Entity
 {
 public:
-	Entity(Mesh& mesh);
+	Entity(std::string& filepath, std::vector<Mesh>& meshes);
+	Entity(std::string& filepath);
 	~Entity();
 
-	Mesh& getMesh();
-	//glm::mat4& getPosition();
+	void loadModelData(std::string& filepath);
+
+	
+
+	std::vector<Mesh>& getMeshList();
+	//std::vector<glm::vec3>& getMeshPositions();
 
 
 private:
-	Mesh& mesh;
+	std::vector<Mesh> meshList;
+	std::string& assetFilePath;
+
 };
 }
 

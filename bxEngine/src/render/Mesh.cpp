@@ -2,8 +2,7 @@
 	
 using namespace bbx;
 
-Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures) 
-	: vertexData(data), indices(indices), diffuseTextures(textures.diffuse), specularTextures(textures.specular)
+Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures) : vertexData(data), indices(indices), textureList(textures)
 {
 	this->vertexData = data;
 	this->indices = indices;
@@ -48,11 +47,11 @@ Mesh::~Mesh()
 
 std::vector<Texture>& Mesh::getDiffuseTextures()
 {
-	return diffuseTextures;
+	return textureList.diffuseTextures;
 }
 std::vector<Texture>& Mesh::getSpecTextures()
 {
-	return specularTextures;
+	return textureList.specularTextures;
 }
 
 std::vector<Vertex>& Mesh::getVertices()

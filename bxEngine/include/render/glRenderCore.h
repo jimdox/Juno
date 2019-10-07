@@ -40,11 +40,11 @@ namespace bxRender {
 
 
 	/* render static mesh */
-	static void render(bbx::Entity &entity, bbx::Shader& shader)
+	static void render(bbx::Mesh& mesh, bbx::Shader& shader)
 	{
 		std::string textureNum;
-		std::vector<bbx::Texture> &diffuseTextures = entity.getMesh().getDiffuseTextures();
-		std::vector<bbx::Texture> &specTextures = entity.getMesh().getSpecTextures();
+		std::vector<bbx::Texture> &diffuseTextures = mesh.getDiffuseTextures();
+		std::vector<bbx::Texture> &specTextures = mesh.getSpecTextures();
 		unsigned int index;
 		std::string num;
 		for(index = 0; index < diffuseTextures.size(); index++)
@@ -65,9 +65,17 @@ namespace bxRender {
 		glActiveTexture(GL_TEXTURE0);
 
 		/* draw entity */
-		glBindVertexArray(entity.getMesh().getVAO_ID());
-		glDrawElements(GL_TRIANGLES, entity.getMesh().getIndices().size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(mesh.getVAO_ID());
+		glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
 		/* --- */
+	}
+
+	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)
+	{
+		for(unsigned int n = 0; n < entity.getMeshList().size(); n++)
+		{
+
+		}
 	}
 
 	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)
