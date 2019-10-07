@@ -24,6 +24,6 @@ std::vector<Mesh>& Entity::getMeshList()
 
 void Entity::loadModelData(std::string& filepath)
 {
-	//bxImport::loadModel(filepath, &meshList)
+	bxImport::loadModel(filepath, meshList);
 }
 

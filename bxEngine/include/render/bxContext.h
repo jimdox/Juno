@@ -16,7 +16,7 @@ public:
 	GLFWwindow* getWindow();
 	void renderUpdate();
 	void init();
-	void splashImage();
+	//void splashImage();
 	void update();
 
 	void destroy();

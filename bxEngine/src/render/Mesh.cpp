@@ -47,11 +47,11 @@ Mesh::~Mesh()
 
 std::vector<Texture>& Mesh::getDiffuseTextures()
 {
-	return textureList.diffuseTextures;
+	return textureList.diffuse;
 }
 std::vector<Texture>& Mesh::getSpecTextures()
 {
-	return textureList.specularTextures;
+	return textureList.specular;
 }
 
 std::vector<Vertex>& Mesh::getVertices()
