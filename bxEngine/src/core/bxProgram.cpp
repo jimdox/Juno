@@ -33,7 +33,6 @@ void bxProgram::run()
 	Entity testEntity(entityPath);
 	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
-	BBX_CLI_CRIT(testEntity.getMeshList().size());
 
 	//splashShader();
 	
@@ -48,7 +47,10 @@ void bxProgram::run()
 		dt = currentTime - lastTime;
 		lastTime = currentTime;
 
-		bxRender::clear();
+		//bxRender::clear();
+		glClearColor(0.04f, 0.2f, 0.2f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 		glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 100.0f);
 		glm::mat4 view = camera->getViewMatrix();
 
@@ -65,8 +67,9 @@ void bxProgram::run()
 
 		bxRender::renderEntity(testEntity, *shader);
 
-
-		renderContext->update();
+		glfwSwapBuffers(renderContext->getWindow());
+		glfwPollEvents();
+		//renderContext->update();
 	}
 
 }

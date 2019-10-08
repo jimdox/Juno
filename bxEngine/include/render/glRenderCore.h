@@ -37,35 +37,16 @@ namespace bxRender {
 	/* render static mesh */
 	static void render(bbx::Mesh& mesh, bbx::Shader& shader)
 	{
-		std::string textureNum;
-		std::vector<bbx::Texture> &diffuseTextures = mesh.getDiffuseTextures();
-		std::vector<bbx::Texture> &specTextures = mesh.getSpecTextures();
-		unsigned int index;
-		std::string num;
 		
-		for(index = 0; index < diffuseTextures.size(); index++)
-		{
-			std::string id = "texture_diffuse" + index;
-
-			glUniform1i(glGetUniformLocation(shader.getID(), (id).c_str()), index);
-			glBindTexture(GL_TEXTURE_2D,diffuseTextures[index].getID());
-		}
-		index++;	/* push index 'over' for specular ID's */
-		
-		for(unsigned int i = 0; i < specTextures.size(); i++)
-		{
-			std::string id = "texture_specular" + i;
-
-			glUniform1i(glGetUniformLocation(shader.getID(), (id).c_str()), (index+i));
-			glBindTexture(GL_TEXTURE_2D,specTextures[i].getID());
-		}
-		
+		glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
+		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
 
 		/* draw entity */
 		glBindVertexArray(mesh.getVAO_ID());
 		glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		/* --- */
+		glActiveTexture(GL_TEXTURE0);
 	}
 
 	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)

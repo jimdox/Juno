@@ -143,3 +143,8 @@ int bxContext::getHeight()
 {
 	return height;
 }
+
+GLFWwindow* bxContext::getWindow()
+{
+	return this->window;
+}
