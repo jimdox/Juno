@@ -12,6 +12,7 @@ public:
 	void run();
 	void exit();
 
+	void splashShader();
 	// todo: config-file manager for core engine
 
 protected:

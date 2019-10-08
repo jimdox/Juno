@@ -17,11 +17,6 @@ workspace "BlackBox"
 	IncludeDir["stb"] = "%{prj.name}/lib/stb"
 	
 	
-	
-
-		
-
-
 	project "bxEngine"
 		location "bxEngine"
 		kind "ConsoleApp"
@@ -29,7 +24,7 @@ workspace "BlackBox"
 		cppdialect "C++17"
 		staticruntime "on"
 		
-		targetdir ("./bin/" .. outputdir .. "/%{prj.name}")
+		targetdir ("./bin/")
 		objdir ("./bin/int/" .. outputdir .. "/%{prj.name}")
 		
 		pchheader "%{prj.name}/pch.h"

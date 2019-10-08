@@ -12,7 +12,7 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = ../bin/Debug-linux-x86_64/bxEngine
+  TARGETDIR = ../bin
   TARGET = $(TARGETDIR)/bxEngine
   OBJDIR = ../bin/int/Debug-linux-x86_64/bxEngine
   PCH = pch.h
@@ -41,7 +41,7 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = ../bin/Release-linux-x86_64/bxEngine
+  TARGETDIR = ../bin
   TARGET = $(TARGETDIR)/bxEngine
   OBJDIR = ../bin/int/Release-linux-x86_64/bxEngine
   PCH = pch.h

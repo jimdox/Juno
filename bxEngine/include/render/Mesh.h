@@ -47,6 +47,7 @@ public:
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumVertices();
 	
+	//void setTransform(glm::mat4& transf);
 	glm::mat4& getTransform();
 	void regenerateMesh();
 
