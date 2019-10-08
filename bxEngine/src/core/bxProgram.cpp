@@ -19,7 +19,7 @@ bxProgram::~bxProgram()
 
 void bxProgram::init()
 {
-	this->renderContext = new bxContext(670, 670, " ", false);
+	this->renderContext = new bxContext(1070, 1070, " ", false);
 	this->shader = new Shader("/home/dox/dev/BlackBox/bxEngine/res/shaders/test");
 
 	GLuint shaderID = shader->getID();
@@ -57,9 +57,6 @@ void bxProgram::run()
 
 
 		renderContext->update();
-		
-
-
 	}
 
 }
