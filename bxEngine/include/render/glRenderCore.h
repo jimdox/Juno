@@ -60,7 +60,6 @@ namespace bxRender {
 			glBindTexture(GL_TEXTURE_2D,specTextures[i].getID());
 		}
 		
-		//glActiveTexture(GL_TEXTURE0);
 
 		/* draw entity */
 		glBindVertexArray(mesh.getVAO_ID());
