@@ -134,10 +134,10 @@ GLuint Shader::getID()
 	return p;
 }
 
-
+/* binds shader */
 void Shader::useProgram()
 {
-	glUseProgram(this->progID);
+	glUseProgram(progID);
 }
 
 

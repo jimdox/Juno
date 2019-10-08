@@ -25,7 +25,7 @@
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/render/Shader.h include/render/glRenderCore.h \
  include/entity/Entity.h include/render/Mesh.h include/render/Texture.h \
- lib/stb/stb_image.h include/core/bxAssetLoader.h
+ lib/stb/stb_image.h include/core/bxAssetLoader.h include/render/Camera.h
 
 include/core/bxProgram.h:
 
@@ -94,3 +94,5 @@ include/render/Texture.h:
 lib/stb/stb_image.h:
 
 include/core/bxAssetLoader.h:
+
+include/render/Camera.h:

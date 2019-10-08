@@ -24,6 +24,7 @@ namespace bxImport {
         std::vector<bbx::Texture> textures;
         for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
+
             aiString str;
             mat->GetTexture(type, i, &str);
             std::string texPath = dir + "/" + (str).C_Str();
@@ -105,9 +106,6 @@ namespace bxImport {
     }
 
 
-
-
-
     static void loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
     {
         Assimp::Importer aimport;
@@ -117,7 +115,6 @@ namespace bxImport {
             BBX_CLI_ERR(("Error loading model: " + filepath).c_str());
             return;
         }
-        BBX_INFO((filepath.substr(0, filepath.find_last_of("/"))).c_str());
         std::string directory = filepath.substr(0, filepath.find_last_of("/"));
         assimp_processNode(scene->mRootNode, scene, directory, meshList);
     }

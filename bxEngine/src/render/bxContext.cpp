@@ -94,7 +94,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);																/* limits fps to 60 */
+	glfwSwapInterval(2);																/* limits fps to 60 */
 
 
 	glfwSetErrorCallback(setErrCallback);
@@ -107,9 +107,11 @@ void bxContext::init()
 
 void bxContext::update()
 {
-	glfwSwapBuffers(window);
 	glBindTexture(GL_TEXTURE_2D, 0);
+	glfwSwapBuffers(window);
 	glfwPollEvents();
+
+
 }
 /*   ---   */
 
@@ -130,4 +132,14 @@ void bxContext::setShader(GLuint id)
 bool bxContext::isRunning()
 {
 	return isValid;
+}
+
+int bxContext::getWidth()
+{
+	return width;
+}
+
+int bxContext::getHeight()
+{
+	return height;
 }

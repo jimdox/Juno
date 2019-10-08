@@ -21,12 +21,7 @@ namespace bxRender {
 	{
 		if (glewInit() != GLEW_OK) { BBX_ERR("GLEW failed to init!"); }
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		stbi_set_flip_vertically_on_load(true);
-
 
 		glEnable(GL_DEPTH_TEST);
 	}
@@ -34,7 +29,7 @@ namespace bxRender {
 	/* clear screen */
 	static void clear()
 	{
-		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.4f, 0.2f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -47,21 +42,27 @@ namespace bxRender {
 		std::vector<bbx::Texture> &specTextures = mesh.getSpecTextures();
 		unsigned int index;
 		std::string num;
+		
 		for(index = 0; index < diffuseTextures.size(); index++)
 		{
+			std::string id = "" + index;
+			BBX_INFO("Diffuse Tex: ");
 			num = std::to_string(index);
 			glActiveTexture(GL_TEXTURE0 + index);
-			shader.setFloat(("material.diffuse" + (std::to_string(index))).c_str(), index);
+			shader.setFloat(("material_diffuse" + (std::to_string(index))).c_str(), index);
 			glBindTexture(GL_TEXTURE_2D,diffuseTextures[index].getID());
 		}
 		index++;	/* push index 'over' for specular ID's */
-
+		
 		for(unsigned int i = 0; i < specTextures.size(); i++)
 		{
+			std::string id = "" + i;
 			glActiveTexture(GL_TEXTURE0 + index);
-			shader.setFloat(("material.specular" + (std::to_string(i))).c_str(), index);
+			shader.setFloat(("material_specular" + (std::to_string(i))).c_str(), index);
 			glBindTexture(GL_TEXTURE_2D,specTextures[i].getID());
+			index++;
 		}
+		
 		glActiveTexture(GL_TEXTURE0);
 
 		/* draw entity */
@@ -74,7 +75,7 @@ namespace bxRender {
 	{
 		for(unsigned int n = 0; n < entity.getMeshList().size(); n++)
 		{
-
+			render(entity.getMeshList()[n], shader);	
 		}
 	}
 

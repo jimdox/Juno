@@ -1,37 +1,38 @@
+#pragma once
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
-namespace bbx {
-
-enum CameraTranslation 
-{
-	FORWARD, BACKWARD, LEFT, RIGHT
-};
-
-	
+namespace bbx { 
 class Camera
 {
 public:
-	Camera(glm::vec3& pos, glm::vec3& axisUp, glm::vec3& rotation);
+	Camera(glm::vec3 pos);
+    Camera(glm::vec3 pos, glm::vec3 upDir, float yaw, float pitch);
 	~Camera();
 
+	glm::mat4 getViewMatrix();
+	float getZoom();
+	float getRoll();
+	float getPitch();
+	float getYaw();
 
-	glm::mat4& getViewMat();
 	void update();
 
+
 private:
-	glm::vec3 positition;
-	glm::vec3 front;
+	glm::vec3 position;
 	glm::vec3 up;
+	glm::vec3 front;
+	glm::vec3 right;
 	glm::vec3 globalUp;
 
-	glm::vec3 rotation;
-
+	float yaw;
+	float pitch;
+	float roll;
+	float moveSpeed;
+	float mouseSpeed;
 	float zoom;
-
-
-	const float DEFAULT_SPEED = 1.1f;
-	//float speed;
-	float mouseSensitivity;
 
 };
 }

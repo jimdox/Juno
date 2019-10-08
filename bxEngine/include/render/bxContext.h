@@ -25,7 +25,8 @@ public:
 
 	bool isRunning();
 
-
+	int getHeight();
+	int getWidth();
 
 protected:
 
