@@ -166,26 +166,15 @@ namespace bxImport {
             }
             else if(lineData[0] == "f")
             {
-                
-                break;
+                std::string sV3 = lineData[1].substr(lineData[1].find_last_of("/")+1, lineData[1].length());
+                std::string sV1 = lineData[1].substr(0, lineData[1].find_first_of("/"));
+                std::string sV2 = lineData[1].substr(sV1.length(), lineData[1].length() - sV3.length());
+                BBX_CLI_INFO(sV2);
+                                
             }
-        }
-        while(!ioStream.eof())
-        {
-            std::getline(ioStream, line);
-            std::stringstream ss(line);
-            std::string token;
-            while(std::getline(ss, token, ' '))
-            {
-                lineData.push_back(token);          /* split line by ' '  */
-            }
-            
-            std::string sV3 = lineData[1].substr(lineData[1].find_last_of("/"), lineData[1].length());
-            BBX_CLI_INFO(sV3)
-              
-            
             lineData.clear();
         }
+  
     }
 
     
