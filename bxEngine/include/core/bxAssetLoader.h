@@ -138,10 +138,10 @@ namespace bxImport {
         std::vector<unsigned int> indices;
 
         std::vector<std::string> lineData;
-        
-        while(!ioStream.eof())
+        std::getline(ioStream, line);
+
+        do
         {
-            std::getline(ioStream, line);
             std::stringstream ss(line);
             std::string token;
             while(std::getline(ss, token, ' '))
@@ -165,15 +165,24 @@ namespace bxImport {
                 normals.push_back(norm);
             }
             else if(lineData[0] == "f")
-            {
-                std::string sV3 = lineData[1].substr(lineData[1].find_last_of("/")+1, lineData[1].length());
-                std::string sV1 = lineData[1].substr(0, lineData[1].find_first_of("/"));
-                std::string sV2 = lineData[1].substr(sV1.length(), lineData[1].length() - sV3.length());
-                BBX_CLI_INFO(sV2);
+            {   /* reading in all v, vt, vn's complete */
+                std::vector<float> faceVertices;
+                std::stringstream ssVert(lineData[1]);
+                std::string tokVert;
+                while(std::getline(ssVert, tokVert, '/'))
+                {
+                    faceVertices.push_back(atof((tokVert).c_str()));          /* split line by ' '  */
+                }
+
+
+                BBX_CLI_INFO(faceVertices[2]);
                                 
             }
             lineData.clear();
-        }
+            std::getline(ioStream, line);
+
+        }while(!ioStream.eof());
+
   
     }
 
