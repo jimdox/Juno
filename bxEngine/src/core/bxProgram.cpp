@@ -35,6 +35,8 @@ void bxProgram::run()
 
 
 	//splashShader();
+	std::string objPath = "./bxEngine/res/stall/stall.obj";
+	bxImport::loadOBJ(objPath);
 	
 	float dt;
 	float currentTime;
@@ -118,7 +120,7 @@ void bxProgram::splashShader()
 	glEnableVertexAttribArray(2);
 
 
-	std::string texFilePath = "/home/dox/dev/BlackBox/bxEngine/res/bx_logo-400.png";
+	std::string texFilePath = "/home/dox/dev/BlackBox/bxEngine/res/fordo.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 

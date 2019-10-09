@@ -5,15 +5,16 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <istream>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include "entity/Entity.h"
 #include "core/Log.h"
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <stdlib.h>
 
 
 /* */
@@ -106,7 +107,7 @@ namespace bxImport {
     }
 
 
-    static void loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
+    static void assimp_loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
     {
         Assimp::Importer aimport;
         const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -119,7 +120,73 @@ namespace bxImport {
         assimp_processNode(scene->mRootNode, scene, directory, meshList);
     }
 
+    /* ------------------------------------ */
 
+    /* custom obj importer */
+    static void loadOBJ(std::string& filepath)
+    {
+        std::string line;                            /* per line .obj info */
+        std::ifstream ioStream(filepath.c_str());
+        if(!ioStream.is_open())
+        {
+            BBX_CLI_ERR(("Error loading file: " + filepath).c_str());
+        }
+        std::vector<bbx::Vertex> vertexData;
+        std::vector<glm::vec3> vertices;
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> textureCoords;
+        std::vector<unsigned int> indices;
+
+        std::vector<std::string> lineData;
+        
+        while(!ioStream.eof())
+        {
+            std::getline(ioStream, line);
+            std::stringstream ss(line);
+            std::string token;
+            while(std::getline(ss, token, ' '))
+            {
+                lineData.push_back(token);          /* split line by ' '  */
+            }
+
+            if(lineData[0] == "v")
+            {
+                glm::vec3 vert(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
+                vertices.push_back(vert);
+            }
+            else if (lineData[0] == "vt")
+            {
+                glm::vec2 texCoord(atof(lineData[1].c_str()), atof(lineData[2].c_str()));
+                textureCoords.push_back(texCoord);
+            }
+            else if(lineData[0] == "vn")
+            {
+                glm::vec3 norm(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
+                normals.push_back(norm);
+            }
+            else if(lineData[0] == "f")
+            {
+                
+                break;
+            }
+        }
+        while(!ioStream.eof())
+        {
+            std::getline(ioStream, line);
+            std::stringstream ss(line);
+            std::string token;
+            while(std::getline(ss, token, ' '))
+            {
+                lineData.push_back(token);          /* split line by ' '  */
+            }
+            
+            std::string sV3 = lineData[1].substr(lineData[1].find_last_of("/"), lineData[1].length());
+            BBX_CLI_INFO(sV3)
+              
+            
+            lineData.clear();
+        }
+    }
 
     
    
