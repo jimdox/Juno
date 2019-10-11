@@ -33,7 +33,9 @@ typedef struct TextureList
 class Mesh
 {
 public:
-	Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures);
+
+	Mesh(std::vector<float> vertices, std::vector<float> textureCoords, std::vector<float> normals, std::vector<unsigned int> indices);
+	//Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures);
 	virtual ~Mesh();
 	
 	unsigned int getVAO_ID();
@@ -43,17 +45,24 @@ public:
 	std::vector<Texture>& getDiffuseTextures();
 	std::vector<Texture>& getSpecTextures();
 
-	std::vector<Vertex>& getVertices();
+	std::vector<float>& getVertices();
+	std::vector<float>& getNormals();
+	std::vector<float>& getTextureCoords();
+	
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumVertices();
 	
 	//void setTransform(glm::mat4& transf);
 	glm::mat4& getTransform();
 	void regenerateMesh();
+	//static Mesh loadMesh();
 
 private:
 
-	std::vector<Vertex> &vertexData;
+	//std::vector<Vertex> &vertexData;
+	std::vector<float> &vertices;
+	std::vector<float> &textureCoords;
+	std::vector<float> &normals;
 	std::vector<unsigned int> &indices;
 	
 	TextureList textureList;

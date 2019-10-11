@@ -29,12 +29,11 @@ void bxProgram::init()
 void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
-	std::string entityPath = "./bxEngine/res/nanosuit/nanosuit.obj";
-	Entity testEntity(entityPath);
+
 	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 
-	//splashShader();
+	splashShader();
 	std::string objPath = "./bxEngine/res/stall/stall.obj";
 	bxImport::loadOBJ(objPath);
 	
@@ -49,9 +48,8 @@ void bxProgram::run()
 		dt = currentTime - lastTime;
 		lastTime = currentTime;
 
-		//bxRender::clear();
-		glClearColor(0.04f, 0.2f, 0.2f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		bxRender::clear();
+	
 		
 		glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 100.0f);
 		glm::mat4 view = camera->getViewMatrix();
@@ -67,11 +65,10 @@ void bxProgram::run()
 		
 
 
-		bxRender::renderEntity(testEntity, *shader);
+		//bxRender::renderEntity(testEntity, *shader);
 
-		glfwSwapBuffers(renderContext->getWindow());
-		glfwPollEvents();
-		//renderContext->update();
+
+		renderContext->update();
 	}
 
 }
@@ -124,18 +121,18 @@ void bxProgram::splashShader()
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 
-	while(renderContext->isRunning())
+	while(true)
 	{
 		bxRender::clear();
 
 		/* -------- */
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture1.getID());
-	
-	shader->useProgram();
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	
-	renderContext->update();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture1.getID());
+		
+		shader->useProgram();
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+		renderContext->update();
 	}
 }

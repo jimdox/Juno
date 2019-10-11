@@ -94,7 +94,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(2);																/* limits fps to 60 */
+	glfwSwapInterval(1);																/* limits fps to 60 */
 
 
 	glfwSetErrorCallback(setErrCallback);
@@ -110,6 +110,10 @@ void bxContext::update()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
+	if(glfwWindowShouldClose(this->window))
+	{
+		destroy();
+	}
 
 
 }
@@ -131,7 +135,7 @@ void bxContext::setShader(GLuint id)
 
 bool bxContext::isRunning()
 {
-	return isValid;
+	return !glfwWindowShouldClose(this->window);
 }
 
 int bxContext::getWidth()
