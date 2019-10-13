@@ -16,7 +16,8 @@ public:
 	float getRoll();
 	float getPitch();
 	float getYaw();
-
+	
+	void setZoom(float z);
 	void update();
 
 

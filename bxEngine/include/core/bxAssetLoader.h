@@ -20,105 +20,105 @@
 /* */
 namespace bxImport {
 
-    // static std::vector<bbx::Texture> assimp_loadMatTextures(aiMaterial *mat, aiTextureType type, std::string typeStr, std::string& dir)
-    // {
-    //     std::vector<bbx::Texture> textures;
-    //     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    //     {
+    static std::vector<bbx::Texture> assimp_loadMatTextures(aiMaterial *mat, aiTextureType type, std::string typeStr, std::string& dir)
+    {
+        std::vector<bbx::Texture> textures;
+        for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+        {
 
-    //         aiString str;
-    //         mat->GetTexture(type, i, &str);
-    //         std::string texPath = dir + "/" + (str).C_Str();
-    //         bbx::Texture tex(texPath, typeStr);
+            aiString str;
+            mat->GetTexture(type, i, &str);
+            std::string texPath = dir + "/" + (str).C_Str();
+            bbx::Texture tex(texPath, typeStr);
     
-    //         textures.push_back(tex);
-    //     }
-    //     return textures;
-    // }
+            textures.push_back(tex);
+        }
+        return textures;
+    }
 
 
-    // static bbx::Mesh assimp_processMesh(aiMesh *mesh, const aiScene *scene, std::string& directory)
-    // {
-    //     std::vector<bbx::Vertex> vertices;
-    //     std::vector<unsigned int> indices;
-    //     bbx::TextureList textures;
+    static bbx::Mesh assimp_processMesh(aiMesh *mesh, const aiScene *scene, std::string& directory)
+    {
+        std::vector<bbx::Vertex> vertices;
+        std::vector<unsigned int> indices;
+        bbx::TextureList textures;
 
-    //     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
-    //     {
-    //         bbx::Vertex vertex;
-    //         glm::vec3 pos;
-    //         glm::vec3 norm;
-    //         glm::vec2 tex(0.0f, 0.0f);
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++)
+        {
+            bbx::Vertex vertex;
+            glm::vec3 pos;
+            glm::vec3 norm;
+            glm::vec2 tex(0.0f, 0.0f);
  
-    //         pos.x = mesh->mVertices[i].x;
-    //         norm.x = mesh->mNormals[i].x;
-    //         pos.y = mesh->mVertices[i].y;
-    //         norm.y = mesh->mNormals[i].y;
-    //         pos.z = mesh->mVertices[i].z;
-    //         norm.z = mesh->mVertices[i].z;
+            pos.x = mesh->mVertices[i].x;
+            norm.x = mesh->mNormals[i].x;
+            pos.y = mesh->mVertices[i].y;
+            norm.y = mesh->mNormals[i].y;
+            pos.z = mesh->mVertices[i].z;
+            norm.z = mesh->mVertices[i].z;
             
-    //         vertex.position = pos;
-    //         vertex.normal = norm;
+            vertex.position = pos;
+            vertex.normal = norm;
 
-    //         if(!mesh->mTextureCoords[0])
-    //         {
-    //             BBX_CLI_WARN("Imported object does not have texture coordinates.");
-    //         }
+            if(!mesh->mTextureCoords[0])
+            {
+                BBX_CLI_WARN("Imported object does not have texture coordinates.");
+            }
 
-    //         tex.x = mesh->mTextureCoords[0][i].x;
-    //         tex.y = mesh->mTextureCoords[0][i].y;
-    //         vertex.textureCoord = tex;
-    //         vertices.push_back(vertex);
+            tex.x = mesh->mTextureCoords[0][i].x;
+            tex.y = mesh->mTextureCoords[0][i].y;
+            vertex.textureCoord = tex;
+            vertices.push_back(vertex);
             
-    //     }
+        }
         
-    //     for(unsigned int j = 0; j < mesh->mNumFaces; j++)
-    //     {
-    //         aiFace face = mesh->mFaces[j];
-    //         for(unsigned int k = 0; k < face.mNumIndices; k++)
-    //         {
-    //             indices.push_back(face.mIndices[k]);
-    //         }
-    //     }
+        for(unsigned int j = 0; j < mesh->mNumFaces; j++)
+        {
+            aiFace face = mesh->mFaces[j];
+            for(unsigned int k = 0; k < face.mNumIndices; k++)
+            {
+                indices.push_back(face.mIndices[k]);
+            }
+        }
 
 
-    //     if(mesh->mMaterialIndex >= 0)
-    //     {
-    //         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-    //         textures.diffuse = assimp_loadMatTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", directory);
-    //         textures.specular = assimp_loadMatTextures(material, aiTextureType_SPECULAR, "texture_specular", directory);
+        if(mesh->mMaterialIndex >= 0)
+        {
+            aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+            textures.diffuse = assimp_loadMatTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", directory);
+            textures.specular = assimp_loadMatTextures(material, aiTextureType_SPECULAR, "texture_specular", directory);
 
-    //     }
-    //     //return bbx::Mesh(vertices, indices, textures);
-    // }
+        }
+        return bbx::Mesh(vertices, indices);
+    }
 
-    // static void assimp_processNode(aiNode *node, const aiScene *scene, std::string& directory, std::vector<bbx::Mesh> &meshes)
-    // {
-    //     for(unsigned int i = 0; i <node->mNumMeshes; i++)
-    //     {
-    //         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-    //         meshes.push_back(assimp_processMesh(mesh, scene, directory));
-    //     }   
-    //     /* repeat for descendent meshes */
-    //     for(unsigned int j = 0; j < node->mNumChildren; j++)
-    //     {
-    //         assimp_processNode(node->mChildren[j], scene, directory,  meshes);
-    //     }
-    // }
+    static void assimp_processNode(aiNode *node, const aiScene *scene, std::string& directory, std::vector<bbx::Mesh> &meshes)
+    {
+        for(unsigned int i = 0; i <node->mNumMeshes; i++)
+        {
+            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+            meshes.push_back(assimp_processMesh(mesh, scene, directory));
+        }   
+        /* repeat for descendent meshes */
+        for(unsigned int j = 0; j < node->mNumChildren; j++)
+        {
+            assimp_processNode(node->mChildren[j], scene, directory,  meshes);
+        }
+    }
 
 
-    // static void assimp_loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
-    // {
-    //     Assimp::Importer aimport;
-    //     const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
-    //     if(!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
-    //     {
-    //         BBX_CLI_ERR(("Error loading model: " + filepath).c_str());
-    //         return;
-    //     }
-    //     std::string directory = filepath.substr(0, filepath.find_last_of("/"));
-    //     assimp_processNode(scene->mRootNode, scene, directory, meshList);
-    // }
+    static void assimp_loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
+    {
+        Assimp::Importer aimport;
+        const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
+        if(!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
+        {
+            BBX_CLI_ERR(("Error loading model: " + filepath).c_str());
+            return;
+        }
+        std::string directory = filepath.substr(0, filepath.find_last_of("/"));
+        assimp_processNode(scene->mRootNode, scene, directory, meshList);
+    }
 
     /* ------------------------------------ */
 
@@ -147,7 +147,7 @@ namespace bxImport {
 
 
     /* custom obj importer */
-    static bbx::Mesh* loadOBJ(std::string& filepath)
+    static bbx::Mesh loadOBJ(std::string& filepath)
     {
         std::string line;                            /* per line .obj info */
         std::ifstream openFile(filepath.c_str());
@@ -163,6 +163,8 @@ namespace bxImport {
         std::vector<float> verticesData;
         std::vector<float> texturesData;
         std::vector<float> normalsData;
+
+        std::vector<bbx::Vertex> meshData;
 
 
         std::vector<std::string> lineData;
@@ -248,17 +250,25 @@ namespace bxImport {
         }
         openFile.close();
         /* done parsing obj */
-
-
-        int vPtr = 0;
-        for(glm::vec3 v : vertices)
+        int j, k = 0;
+        for(int i = 0; i < vertices.size(); i++)
         {
-            verticesData[vPtr++] = v.x;
-            verticesData[vPtr++] = v.y;
-            verticesData[vPtr++] = v.z;
+            bbx::Vertex vertex;
+            vertex.position = vertices[i];
+
+            vertex.textureCoord = glm::vec2(texturesData[j], texturesData[j+1]);
+
+            vertex.normal = glm::vec3(normalsData[k], normalsData[k+1], normalsData[k+1]);
+
+            meshData.push_back(vertex);
+
+            j += 2;
+            k += 3;
         }
 
-        return new bbx::Mesh(verticesData, texturesData, normalsData, indices);
+        BBX_CLI_WARN(meshData.size());
+        
+        return bbx::Mesh(meshData, indices);    
     }
 
     

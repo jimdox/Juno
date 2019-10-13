@@ -9,7 +9,7 @@ Entity::Entity(std::string& filepath, std::vector<Mesh>& meshes) :  assetFilePat
 
 Entity::Entity(std::string& filepath) : assetFilePath(filepath)
 {
-	loadModelData(filepath);
+	bxImport::assimp_loadModel(filepath, meshList);
 
 }
 Entity::~Entity()

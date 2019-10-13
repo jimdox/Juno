@@ -35,26 +35,29 @@ namespace bxRender {
 
 
 	/* render static mesh */
-	static void render(bbx::Mesh *mesh, bbx::Shader& shader)
+	static void render(bbx::Mesh *m, bbx::Shader &shader)
 	{
-		
-		glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
-		glBindTexture(GL_TEXTURE_2D, mesh->getDiffuseTextures()[0].getID());
+		if(m)
+		{
+			bbx::Mesh mesh = *m;
+			glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
+			glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
 
-		/* draw entity */
-		//BBX_CLI_WARN("RENDERING...");
-		glBindVertexArray(mesh->getVAO_ID());
-		glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
-		/* --- */
-		glActiveTexture(GL_TEXTURE0);
+			/* draw entity */
+			//BBX_CLI_WARN("RENDERING...");
+			glBindVertexArray(mesh.getVAO_ID());
+			glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+			/* --- */
+			glActiveTexture(GL_TEXTURE0);
+		}
 	}
 
 	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)
 	{
 		for(unsigned int n = 0; n < entity.getMeshList().size(); n++)
 		{
-			//render(entity.getMeshList()[n], shader);	
+			render(& entity.getMeshList()[n], shader);	
 		}
 	}
 

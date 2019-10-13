@@ -1,6 +1,6 @@
 ../bin/int/Debug-linux-x86_64/bxEngine/Entity.o: src/entity/Entity.cpp \
  include/entity/Entity.h include/render/Mesh.h include/render/Texture.h \
- lib/stb/stb_image.h include/core/bxAssetLoader.h include/core/Log.h \
+ lib/stb/stb_image.h include/core/Log.h \
  lib/spdlog/include/spdlog/spdlog.h lib/spdlog/include/spdlog/common.h \
  lib/spdlog/include/spdlog/tweakme.h \
  lib/spdlog/include/spdlog/details/null_mutex.h \
@@ -22,7 +22,8 @@
  lib/spdlog/include/spdlog/sinks/ansicolor_sink.h \
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
- lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h
+ lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
+ include/core/bxAssetLoader.h
 
 include/entity/Entity.h:
 
@@ -31,8 +32,6 @@ include/render/Mesh.h:
 include/render/Texture.h:
 
 lib/stb/stb_image.h:
-
-include/core/bxAssetLoader.h:
 
 include/core/Log.h:
 
@@ -83,3 +82,5 @@ lib/spdlog/include/spdlog/details/console_globals.h:
 lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
+
+include/core/bxAssetLoader.h:

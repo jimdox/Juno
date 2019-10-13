@@ -68,3 +68,8 @@ float Camera::getYaw()
 {
 	return yaw;
 }
+
+void Camera::setZoom(float z)
+{
+	this->zoom = z;
+}

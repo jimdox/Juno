@@ -30,18 +30,19 @@ void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
 
-	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f));
+	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 6.0f));
 
 
 	//splashShader();
 	std::string objPath = "./bxEngine/res/stall/stall.obj";
-	Mesh *stall = bxImport::loadOBJ(objPath);
+	Mesh stall = bxImport::loadOBJ(objPath);
 
+	
 	std::string texFilePath = "./bxEngine/res/fordo.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
-	stall->addTexture(&texture1);
 
+	stall.addTexture(&texture1);
 
 	float dt;
 	float currentTime;
@@ -57,22 +58,23 @@ void bxProgram::run()
 		bxRender::clear();
 	
 		
-		glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 100.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 1000.0f);
 		glm::mat4 view = camera->getViewMatrix();
 
 		shader->setMat4("projection", projection);
 		shader->setMat4("view", view);
 
 		glm::mat4 model = glm::mat4(1.0f);
-		model = translate(model, glm::vec3(0.0f, -2.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 1.2f));
+		model = translate(model, glm::vec3(0.0f, -1.75f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.2f));
 		shader->setMat4("model", model);
 		shader->useProgram();
 		
+		/* --- */
+		bxRender::render(&stall, *shader);
 
-		bxRender::render(stall, *shader);
-
-
+		camera->setZoom(camera->getZoom() + dt*0.001f);
+		camera->update();
 		renderContext->update();
 	}
 
@@ -127,14 +129,14 @@ void bxProgram::splashShader()
 	glEnableVertexAttribArray(2);
 
 
-	std::string texFilePath = "./bxEngine/res/fordo.png";
+	std::string texFilePath = "./bxEngine/res/bx_logo-400.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 
 	while(true)
 	{
-		bxRender::clear();
-
+		glClearColor(0.055f, 0.055f, 0.055f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		/* -------- */
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1.getID());

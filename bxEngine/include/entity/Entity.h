@@ -16,7 +16,6 @@ public:
 	
 
 	std::vector<Mesh>& getMeshList();
-	//std::vector<glm::vec3>& getMeshPositions();
 
 
 private:
