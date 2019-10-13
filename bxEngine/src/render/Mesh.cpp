@@ -5,6 +5,31 @@ using namespace bbx;
 Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
 {
 
+	glGenVertexArrays(1, &VAO_ID);
+	glGenBuffers(1, &VBO_ID);
+	glGenBuffers(1, &IBO_ID);
+
+	glBindVertexArray(VAO_ID);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+
+	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertexData[0], GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_ID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+	/* positions ^ */
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	/* offsetof finds the offset of the glm::vec3 normal within struct Vertex */
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
+
+	glBindVertexArray(0);
+// 	/* unbind */
 }
 
 // Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures) : vertexData(data), indices(indices), textureList(textures)

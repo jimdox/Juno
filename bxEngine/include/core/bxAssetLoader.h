@@ -166,17 +166,10 @@ namespace bxImport {
 
 
         std::vector<std::string> lineData;
-<<<<<<< HEAD
         
         while(!openFile.eof())
         {
             std::getline(openFile, line);
-=======
-        std::getline(ioStream, line);
-
-        do
-        {
->>>>>>> 8a38745e432597639195ae8e8baf39680914c2ef
             std::stringstream ss(line);
             std::string token;
             while(std::getline(ss, token, ' '))
@@ -199,7 +192,6 @@ namespace bxImport {
                 glm::vec3 norm(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
                 normals.push_back(norm);
             }
-<<<<<<< HEAD
             if(lineData[0] == "f"){ break; }
             lineData.clear();
         }
@@ -277,28 +269,6 @@ namespace bxImport {
         // }
 
         return new bbx::Mesh(verticesData, textureData, normalsData, indices);
-=======
-            else if(lineData[0] == "f")
-            {   /* reading in all v, vt, vn's complete */
-                std::vector<float> faceVertices;
-                std::stringstream ssVert(lineData[1]);
-                std::string tokVert;
-                while(std::getline(ssVert, tokVert, '/'))
-                {
-                    faceVertices.push_back(atof((tokVert).c_str()));          /* split line by ' '  */
-                }
-
-
-                BBX_CLI_INFO(faceVertices[2]);
-                                
-            }
-            lineData.clear();
-            std::getline(ioStream, line);
-
-        }while(!ioStream.eof());
-
-  
->>>>>>> 8a38745e432597639195ae8e8baf39680914c2ef
     }
 
     
