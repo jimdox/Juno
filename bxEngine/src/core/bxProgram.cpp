@@ -20,7 +20,7 @@ bxProgram::~bxProgram()
 void bxProgram::init()
 {
 	this->renderContext = new bxContext(1070, 1070, "v0.0.0", false);
-	this->shader = new Shader("./bxEngine/res/shaders/gui");
+	this->shader = new Shader("./bxEngine/res/shaders/test");
 
 	GLuint shaderID = shader->getID();
 	this->renderContext->setShader(shaderID);
@@ -30,13 +30,19 @@ void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
 
-	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 5.0f));
 
 
-	splashShader();
+	//splashShader();
 	std::string objPath = "./bxEngine/res/stall/stall.obj";
-	bxImport::loadOBJ(objPath);
-	
+	Mesh *stall = bxImport::loadOBJ(objPath);
+
+	std::string texFilePath = "./bxEngine/res/fordo.png";
+	std::string texType = "diffuse";
+	Texture texture1(texFilePath, texType);
+	stall->addTexture(&texture1);
+
+
 	float dt;
 	float currentTime;
 	float lastTime = 0.0f;
@@ -59,13 +65,12 @@ void bxProgram::run()
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = translate(model, glm::vec3(0.0f, -2.75f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 1.2f));
 		shader->setMat4("model", model);
 		shader->useProgram();
 		
 
-
-		//bxRender::renderEntity(testEntity, *shader);
+		bxRender::render(stall, *shader);
 
 
 		renderContext->update();
@@ -78,8 +83,13 @@ void bxProgram::exit()
 	renderContext->destroy();
 }
 
+
+
+
+/* ------------- */
 void bxProgram::splashShader()
 {
+	this->shader = new Shader("./bxEngine/res/shaders/gui");
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
@@ -117,7 +127,7 @@ void bxProgram::splashShader()
 	glEnableVertexAttribArray(2);
 
 
-	std::string texFilePath = "/home/dox/dev/BlackBox/bxEngine/res/fordo.png";
+	std::string texFilePath = "./bxEngine/res/fordo.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 

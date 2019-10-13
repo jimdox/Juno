@@ -124,7 +124,7 @@ namespace bxImport {
 
 
     static void processFace(int faceVertices[3][3], std::vector<unsigned int> &indices, std::vector<glm::vec2> &textures, 
-                                std::vector<glm::vec3> &normals, std::vector<float> &textureData, std::vector<float> &normalsData )
+                                std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float> &normalsData )
     {
         for(int i = 0; i < 3; i++)
         {
@@ -132,14 +132,15 @@ namespace bxImport {
             indices.push_back(currentVertPtr);
 
             glm::vec2 currentTexCoord = textures[faceVertices[i][1]-1];
-            textureData[currentVertPtr*2] = currentTexCoord.x;
-            textureData[currentVertPtr*2+1] = 1 - currentTexCoord.y;
+            texturesData[currentVertPtr*2] = currentTexCoord.x;
+            texturesData[currentVertPtr*2 +1] = 1 - currentTexCoord.y;
+
+
 
             glm::vec3 currentNormal = normals[faceVertices[i][2]-1];
             normalsData[currentVertPtr * 3] = currentNormal.x;
             normalsData[currentVertPtr * 3 +1] = currentNormal.y;
             normalsData[currentVertPtr * 3 +2] = currentNormal.z;
-         
         }
     }
 
@@ -160,9 +161,8 @@ namespace bxImport {
         std::vector<unsigned int> indices;
         
         std::vector<float> verticesData;
-        std::vector<float> textureData;
+        std::vector<float> texturesData;
         std::vector<float> normalsData;
-        std::vector<unsigned int> indicesData;
 
 
         std::vector<std::string> lineData;
@@ -196,8 +196,20 @@ namespace bxImport {
             lineData.clear();
         }
 
-        textureData.reserve(vertices.size() * 2);
+        verticesData.reserve(vertices.size() * 3);
         normalsData.reserve(vertices.size() * 3);
+        texturesData.reserve(vertices.size() * 2);
+
+        for(unsigned int i = 0; i < vertices.size() * 2; i++)
+        {
+            texturesData.push_back(0.0f);
+        }
+
+        for(unsigned int i = 0; i < vertices.size() * 3; i++)
+        {
+            normalsData.push_back(0.0f);
+        }
+
         lineData.clear();
 
         while(!openFile.eof())    
@@ -224,13 +236,12 @@ namespace bxImport {
                     {
                         std::getline(ssVert, tokVert, '/');
                         faceVertices[i][j] = atoi(tokVert.c_str());
-                        //BBX_CLI_INFO(tokVert.c_str());
                     }
 
                                     
 
                 }
-                processFace(faceVertices, indices, textures, normals, textureData, normalsData);
+                processFace(faceVertices, indices, textures, normals, texturesData, normalsData);
 
             }
             lineData.clear();
@@ -238,10 +249,6 @@ namespace bxImport {
         openFile.close();
         /* done parsing obj */
 
-        verticesData.reserve(vertices.size() * 3);
-        normalsData.reserve(normals.size() * 3);
-        indicesData.reserve(indices.size());
-        
 
         int vPtr = 0;
         for(glm::vec3 v : vertices)
@@ -250,25 +257,8 @@ namespace bxImport {
             verticesData[vPtr++] = v.y;
             verticesData[vPtr++] = v.z;
         }
-        vPtr = 0;
-        for(glm::vec3 norm : normals)
-        {
-            normalsData[vPtr++] = norm.x;
-            normalsData[vPtr++] = norm.y;
-            normalsData[vPtr++] = norm.z;
 
-        }
-
-
-
-
-        // unsigned int i = 0;
-        // for(glm::vec3 index : indices)
-        // {
-        //     indicesData[i++] = index;
-        // }
-
-        return new bbx::Mesh(verticesData, textureData, normalsData, indices);
+        return new bbx::Mesh(verticesData, texturesData, normalsData, indices);
     }
 
     

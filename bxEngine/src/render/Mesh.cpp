@@ -2,34 +2,51 @@
 	
 using namespace bbx;
 
+
+
+
+
+
+
+
 Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
 {
 
 	glGenVertexArrays(1, &VAO_ID);
-	glGenBuffers(1, &VBO_ID);
 	glGenBuffers(1, &IBO_ID);
 
+	for(int i = 0; i < 3; i++)
+	{
+		glGenBuffers(1, &VBO_IDs[i]);
+	}
+
+
 	glBindVertexArray(VAO_ID);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_IDs[0]);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
-	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertexData[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, IBO_ID);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO_ID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-
+	/* positions */
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
-	/* positions ^ */
-
+	glVertexAttribPointer(0,3,GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	
+	/* normals */
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_IDs[1]);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(float), &normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
-	/* offsetof finds the offset of the glm::vec3 normal within struct Vertex */
+	glVertexAttribPointer(1,3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+	/* texture coordinates */
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_IDs[2]);
+	glBufferData(GL_ARRAY_BUFFER, textureCoords.size() * sizeof(float), &textureCoords[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, textureCoord));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 	glBindVertexArray(0);
-// 	/* unbind */
+
+
 }
 
 // Mesh::Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures) : vertexData(data), indices(indices), textureList(textures)
@@ -75,6 +92,12 @@ Mesh::~Mesh()
 
 }
 
+void Mesh::addTexture(Texture* tex)
+{
+	Texture tx = *tex;
+	this->textureList.diffuse.push_back(tx);
+}
+
 std::vector<Texture>& Mesh::getDiffuseTextures()
 {
 	return textureList.diffuse;
@@ -109,9 +132,9 @@ unsigned int Mesh::getVAO_ID()
 	return VAO_ID;
 }
 
-unsigned int Mesh::getVBO_ID()
+unsigned int Mesh::getVBO_ID(unsigned int n)
 {
-	return VBO_ID;
+	return VBO_IDs[n];
 }
 
 unsigned int Mesh::getIBO_ID()

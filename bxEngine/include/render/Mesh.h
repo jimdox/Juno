@@ -30,6 +30,7 @@ typedef struct TextureList
 	std::vector<Texture> specular;
 } TextureList;
 
+
 class Mesh
 {
 public:
@@ -38,8 +39,10 @@ public:
 	//Mesh(std::vector<Vertex> &data, std::vector<unsigned int> &indices, TextureList &textures);
 	virtual ~Mesh();
 	
+	void addTexture(Texture* tex);
+
 	unsigned int getVAO_ID();
-	unsigned int getVBO_ID();
+	unsigned int getVBO_ID(unsigned int n);
 	unsigned int getIBO_ID();
 
 	std::vector<Texture>& getDiffuseTextures();
@@ -59,10 +62,9 @@ public:
 
 private:
 
-	//std::vector<Vertex> &vertexData;
 	std::vector<float> &vertices;
-	std::vector<float> &textureCoords;
 	std::vector<float> &normals;
+	std::vector<float> &textureCoords;
 	std::vector<unsigned int> &indices;
 	
 	TextureList textureList;
@@ -70,7 +72,8 @@ private:
 	glm::mat4 transform;
 	unsigned int numVertices;
 	unsigned int numIndices;
-	unsigned int VAO_ID, VBO_ID, IBO_ID;
+	unsigned int VAO_ID, IBO_ID;
+	unsigned int VBO_IDs[3];
 	/* Vertex Array, Vertex Buffer, Index Buffer Objects */
 };
 
