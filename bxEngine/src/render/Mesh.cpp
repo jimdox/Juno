@@ -80,8 +80,6 @@ Mesh::Mesh(std::vector<Vertex> data, std::vector<unsigned int> indices) : vertic
 	glBindVertexArray(0);
 	/* unbind */
 
-
-
 }
 
 Mesh::~Mesh()

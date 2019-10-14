@@ -47,20 +47,19 @@ namespace bxRender {
 	/* render static mesh */
 	static void render(bbx::Mesh *m, bbx::Shader &shader)
 	{
-		if(m)
-		{
-			bbx::Mesh mesh = *m;
-			glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
-			glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
 
-			/* draw entity */
-			//BBX_CLI_WARN("RENDERING...");
-			glBindVertexArray(mesh.getVAO_ID());
-			glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-			/* --- */
-			glActiveTexture(GL_TEXTURE0);
-		}
+		bbx::Mesh mesh = *m;
+		glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
+		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
+
+		/* draw entity */
+		//BBX_CLI_WARN("RENDERING...");
+		glActiveTexture(GL_TEXTURE0);
+		glBindVertexArray(mesh.getVAO_ID());
+		glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+		/* --- */
+		
 	}
 
 	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)
