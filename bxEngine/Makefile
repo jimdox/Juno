@@ -18,7 +18,7 @@ ifeq ($(config),debug)
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
-  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include
+  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/imgui
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
@@ -47,7 +47,7 @@ ifeq ($(config),release)
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
-  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include
+  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/imgui
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64

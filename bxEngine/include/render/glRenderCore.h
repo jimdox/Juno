@@ -1,9 +1,10 @@
 #pragma once
 #include "bxContext.h"
 #include <vector>
-//#include "imgui.h"
-//#include "imgui_impl_glfw.h"
-//#include "imgui_impl_opengl3.h"
+// #include "imgui.h"
+// #include "imgui_impl_glfw.h"
+// #include "imgui_ogl3.h"
+
 #include "render/Shader.h"
 #include "entity/Entity.h"
 #include "render/Mesh.h"
@@ -17,13 +18,22 @@
 
 namespace bxRender {
 
-	static void init()
+	static void init(GLFWwindow* window)
 	{
 		if (glewInit() != GLEW_OK) { BBX_ERR("GLEW failed to init!"); }
 
 		stbi_set_flip_vertically_on_load(true);
 
 		glEnable(GL_DEPTH_TEST);
+
+		// IMGUI_CHECKVERSION();
+		// ImGui::CreateContext();
+		// ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+		// ImGui::StyleColorsDark();
+
+		// ImGui_ImplGlfw_InitForOpenGL(window, true);
+		// ImGui_ImplOpenGL3_Init("#version 410");
 	}
 
 	/* clear screen */
@@ -66,49 +76,29 @@ namespace bxRender {
 
 		
 	}
-	/*
-	static void initGUI(GLFWwindow* window, unsigned int glslVersion)
-	{
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-		ImGui::StyleColorsDark();
 
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		std::string glslVer = "#version " + glslVersion;
-		ImGui_ImplOpenGL3_Init("#version 400");
+	// static void guiUpdate()
+	// {
+	// 	ImGui_ImplOpenGL3_NewFrame();
+	// 	ImGui_ImplGlfw_NewFrame();
+	// 	ImGui::NewFrame();
+	// 	ImGui::Begin("testing");
+	// 	ImGui::Text("testing?"); 
 		
-	}
+	// 	ImGui::End();
 
-	inline static void guiUpdate()
-	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		ImGui::Begin("testing");
-		ImGui::Text("texting?"); /* sample code */
-		/* add function calls to bxGUI here 
-		ImGui::End();
-	}
+	// 	ImGui::Render();
+	// 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	// }
 
-	inline static void guiRender()
-	{
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	// inline static void guiRender()
+	// {
 		
-	}
-	*/
-	/* todo: move certain functions to debug build only (#ifdef BX_DEBUG) */
-	static void testShader()
-	{
 		
+	// }
 
 
-
-	}
-
-	
 
 
 };

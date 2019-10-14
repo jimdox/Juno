@@ -19,7 +19,7 @@ bxProgram::~bxProgram()
 
 void bxProgram::init()
 {
-	this->renderContext = new bxContext(1070, 1070, "v0.0.0", false);
+	this->renderContext = new bxContext(1070, 1070, "v0.0.1", false);
 	this->shader = new Shader("./bxEngine/res/shaders/test");
 
 	GLuint shaderID = shader->getID();
@@ -30,23 +30,23 @@ void bxProgram::run()
 {
 	BBX_WARN(BX_GFX_DEVICE);
 
-	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 6.0f));
+	// Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 6.0f));
 
 
-	//splashShader();
-	std::string objPath = "./bxEngine/res/stall/stall.obj";
-	Mesh stall = bxImport::loadOBJ(objPath);
+	splashShader();
+	// std::string objPath = "./bxEngine/res/stall/stall.obj";
+	// Mesh stall = bxImport::loadOBJ(objPath);
 
 	
-	std::string texFilePath = "./bxEngine/res/fordo.png";
-	std::string texType = "diffuse";
-	Texture texture1(texFilePath, texType);
+	// std::string texFilePath = "./bxEngine/res/fordo.png";
+	// std::string texType = "diffuse";
+	// Texture texture1(texFilePath, texType);
 
-	stall.addTexture(&texture1);
+	// stall.addTexture(&texture1);
 
 	float dt;
 	float currentTime;
-	float lastTime = 0.0f;
+	float lastTime = 0.0f;     
 	
 
 	while (renderContext->isRunning())
@@ -58,23 +58,23 @@ void bxProgram::run()
 		bxRender::clear();
 	
 		
-		glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 1000.0f);
-		glm::mat4 view = camera->getViewMatrix();
+		// glm::mat4 projection = glm::perspective(glm::radians(camera->getZoom()), ((float)renderContext->getWidth())/((float)renderContext->getHeight()), 0.1f, 1000.0f);
+		// glm::mat4 view = camera->getViewMatrix();
 
-		shader->setMat4("projection", projection);
-		shader->setMat4("view", view);
+		// shader->setMat4("projection", projection);
+		// shader->setMat4("view", view);
 
-		glm::mat4 model = glm::mat4(1.0f);
-		model = translate(model, glm::vec3(0.0f, -1.75f, -2.0f));
-		model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.2f));
-		shader->setMat4("model", model);
-		shader->useProgram();
+		// glm::mat4 model = glm::mat4(1.0f);
+		// model = translate(model, glm::vec3(0.0f, -1.75f, -2.0f));
+		// model = glm::scale(model, glm::vec3(1.2f, 1.2f, 1.2f));
+		// shader->setMat4("model", model);
+		// shader->useProgram();
 		
-		/* --- */
-		bxRender::render(&stall, *shader);
+		// /* --- */
+		// bxRender::render(&stall, *shader);
 
-		camera->setZoom(camera->getZoom() + dt*0.001f);
-		camera->update();
+		// camera->setZoom(camera->getZoom() + dt*0.001f);
+		// camera->update();
 		renderContext->update();
 	}
 

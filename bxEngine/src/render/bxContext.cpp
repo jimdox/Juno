@@ -100,7 +100,7 @@ void bxContext::init()
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, kbdLayout);
 
-	bxRender::init();
+	bxRender::init(window);
 
 	//BBX_WARN(glGetString(GL_RENDERER));													/* list video card */
 }
