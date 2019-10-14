@@ -118,6 +118,7 @@ namespace bxImport {
         }
         std::string directory = filepath.substr(0, filepath.find_last_of("/"));
         assimp_processNode(scene->mRootNode, scene, directory, meshList);
+        BBX_CLI_INFO(("loaded assimp model from: " + filepath).c_str());
     }
 
     /* ------------------------------------ */
