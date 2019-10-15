@@ -1,29 +1,19 @@
 #include "render/Camera.h"
+#include "core/bxMath.h"
 using namespace bbx;
 
-Camera::Camera(glm::vec3 pos) : position(pos)
-{
-	up = glm::vec3(0.0f, 1.0f, 0.0f);
-	pitch = 0.0f;
-	yaw = -90.0f;
-	roll = 0.0f;
-	this->moveSpeed = 2.5f;
-	this->mouseSpeed = 0.1f;
-	this->zoom = 45.0f;
-	update();
 
-}
 
-Camera::Camera(glm::vec3 pos, glm::vec3 upDir, float yaw, float pitch) : position(pos), up(upDir)
+Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos)
 {
-	globalUp = up;
+
 	this->pitch = pitch;
 	this->yaw = yaw;
-	this->roll = 0.0f;
+	this->roll = roll;
 	this->moveSpeed = 2.5f;
 	this->mouseSpeed = 0.1f;
-	this->zoom = 45.0f;
-	update();
+	this->zoom = 0.0f;
+	generateProjectionMatrix();
 
 }
 
@@ -32,44 +22,55 @@ Camera::~Camera()
 
 }
 
-glm::mat4 Camera::getViewMatrix()
+void Camera::move(glm::vec3& pos, glm::vec3 rot)
 {
-	return glm::lookAt(position, position + front, up);
+	 
 }
+
+
 
 void Camera::update()
 {
-	glm::vec3 front;
-	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	
-	front = glm::normalize(front);
-	right = glm::normalize(glm::cross(front, globalUp));
-	up = glm::normalize(glm::cross(right, front));
+}
+
+glm::vec3& Camera::getPosition()
+{
+	return this->position;
 }
 
 float Camera::getZoom()
 {
-	return zoom;
+	return this->zoom;
 }
 
 float Camera::getRoll()
 {
-	return roll;
+	return this->roll;
 }
 
 float Camera::getPitch()
 {
-	return pitch;
+	return this->pitch;
 }
 
 float Camera::getYaw()
 {
-	return yaw;
+	return this->yaw;
 }
 
 void Camera::setZoom(float z)
 {
 	this->zoom = z;
+}
+
+glm::mat4& Camera::getProjectionMatrix()
+{
+	return this->projectionMatrix;
+}
+
+void Camera::generateProjectionMatrix()
+{
+	float aspectRatio = 1.0f;
+	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), aspectRatio, NEAR_PLANE, FAR_PLANE);	
 }

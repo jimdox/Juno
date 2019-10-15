@@ -13,12 +13,21 @@ public:
 	void exit();
 
 	void splashShader();
+	void fpsCounter();
 	// todo: config-file manager for core engine
 
 protected:
 private:
 	bxContext* renderContext;
 	Shader* shader;
+	
+
+
+	/* time-keeping vars */
+	float dt;
+	float currentTime;
+	float lastTime;     
+	unsigned int numFrames;
 
 
 };

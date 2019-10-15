@@ -1,0 +1,3 @@
+[submodule "bxEngine/lib/jpk"]
+	path = bxEngine/lib/jpk
+	url = https://github.com/jimdox/jpk

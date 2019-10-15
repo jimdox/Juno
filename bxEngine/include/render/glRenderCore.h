@@ -9,8 +9,9 @@
 #include "entity/Entity.h"
 #include "render/Mesh.h"
 #include "render/Texture.h"
-
 #include "core/Log.h"
+#include "core/bxMath.h"
+
 
 
 #define BX_GFX_DEVICE glGetString(GL_RENDERER)
@@ -47,27 +48,40 @@ namespace bxRender {
 	/* render static mesh */
 	static void render(bbx::Mesh *m, bbx::Shader &shader)
 	{
-
 		bbx::Mesh mesh = *m;
-		glUniform1i(glGetUniformLocation(shader.getID(), "texture_diffuse1"), 0);
-		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
-
-		/* draw entity */
-		//BBX_CLI_WARN("RENDERING...");
-		glActiveTexture(GL_TEXTURE0);
 		glBindVertexArray(mesh.getVAO_ID());
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
+		/* draw entity */
+	    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+		//BBX_CLI_WARN("RENDERING...");
 		glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
 		/* --- */
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindVertexArray(0);
 		
 	}
 
+	/* render entity */
 	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)
 	{
-		for(unsigned int n = 0; n < entity.getMeshList().size(); n++)
-		{
-			render(& entity.getMeshList()[n], shader);	
-		}
+		glBindVertexArray(entity.getMesh().getVAO_ID());
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		/* load transformation */
+		glm::mat4 transformationMat = bxMath::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
+		shader.loadTransformMatrix(transformationMat);
+		/* --- */
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, entity.getMesh().getTextureZero().getID());
+		glDrawElements(GL_TRIANGLES, entity.getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+		
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindVertexArray(0);
 	}
 
 	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)

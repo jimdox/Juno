@@ -19,107 +19,64 @@
 
 /* */
 namespace bxImport {
+    static std::vector<unsigned int> VAO_refs;
+    static std::vector<unsigned int> VBO_refs;
 
-    static std::vector<bbx::Texture> assimp_loadMatTextures(aiMaterial *mat, aiTextureType type, std::string typeStr, std::string& dir)
-    {
-        std::vector<bbx::Texture> textures;
-        for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-        {
-
-            aiString str;
-            mat->GetTexture(type, i, &str);
-            std::string texPath = dir + "/" + (str).C_Str();
-            bbx::Texture tex(texPath, typeStr);
     
-            textures.push_back(tex);
-        }
-        return textures;
+    static unsigned int generateVAO()
+    {
+        unsigned int vaoID;
+        glGenVertexArrays(1, &vaoID);
+        glBindVertexArray(vaoID);
+        return vaoID;
     }
 
 
-    static bbx::Mesh assimp_processMesh(aiMesh *mesh, const aiScene *scene, std::string& directory)
+    static void storeInAttribList(unsigned int attribNum, unsigned int dimensions, std::vector<float> data)
     {
-        std::vector<bbx::Vertex> vertices;
-        std::vector<unsigned int> indices;
-        bbx::TextureList textures;
+        unsigned int VBO_ID;
+        glGenBuffers(1, &VBO_ID);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+	    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
+	    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* may need to be (float) stride */
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-        for(unsigned int i = 0; i < mesh->mNumVertices; i++)
-        {
-            bbx::Vertex vertex;
-            glm::vec3 pos;
-            glm::vec3 norm;
-            glm::vec2 tex(0.0f, 0.0f);
- 
-            pos.x = mesh->mVertices[i].x;
-            norm.x = mesh->mNormals[i].x;
-            pos.y = mesh->mVertices[i].y;
-            norm.y = mesh->mNormals[i].y;
-            pos.z = mesh->mVertices[i].z;
-            norm.z = mesh->mVertices[i].z;
-            
-            vertex.position = pos;
-            vertex.normal = norm;
+    }
 
-            if(!mesh->mTextureCoords[0])
-            {
-                BBX_CLI_WARN("Imported object does not have texture coordinates.");
-            }
 
-            tex.x = mesh->mTextureCoords[0][i].x;
-            tex.y = mesh->mTextureCoords[0][i].y;
-            vertex.textureCoord = tex;
-            vertices.push_back(vertex);
-            
-        }
+    static void bindIBO(std::vector<unsigned int> &indices)
+    {
+        unsigned int iboID;
+        glGenBuffers(1, &iboID);
+	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+    }
+
+   
+    static bbx::VAO_Data loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<unsigned int> &indices)
+    {
+        bbx::VAO_Data vaoData;
+        vaoData.VAO_ID = generateVAO();
+        bindIBO(indices);
+        vaoData.numIndices = indices.size();
         
-        for(unsigned int j = 0; j < mesh->mNumFaces; j++)
-        {
-            aiFace face = mesh->mFaces[j];
-            for(unsigned int k = 0; k < face.mNumIndices; k++)
-            {
-                indices.push_back(face.mIndices[k]);
-            }
-        }
+        storeInAttribList(0, 3, positions);
+        storeInAttribList(1, 2, texCoordinates);
 
 
-        if(mesh->mMaterialIndex >= 0)
-        {
-            aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-            textures.diffuse = assimp_loadMatTextures(material, aiTextureType_DIFFUSE, "texture_diffuse", directory);
-            textures.specular = assimp_loadMatTextures(material, aiTextureType_SPECULAR, "texture_specular", directory);
-
-        }
-        return bbx::Mesh(vertices, indices);
-    }
-
-    static void assimp_processNode(aiNode *node, const aiScene *scene, std::string& directory, std::vector<bbx::Mesh> &meshes)
-    {
-        for(unsigned int i = 0; i <node->mNumMeshes; i++)
-        {
-            aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-            meshes.push_back(assimp_processMesh(mesh, scene, directory));
-        }   
-        /* repeat for descendent meshes */
-        for(unsigned int j = 0; j < node->mNumChildren; j++)
-        {
-            assimp_processNode(node->mChildren[j], scene, directory,  meshes);
-        }
+        glBindVertexArray(0);
+        return vaoData;
     }
 
 
-    static void assimp_loadModel(std::string& filepath, std::vector<bbx::Mesh>& meshList)
-    {
-        Assimp::Importer aimport;
-        const aiScene *scene = aimport.ReadFile(filepath, aiProcess_Triangulate | aiProcess_FlipUVs);
-        if(!scene || !scene->mRootNode || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
-        {
-            BBX_CLI_ERR(("Error loading model: " + filepath).c_str());
-            return;
-        }
-        std::string directory = filepath.substr(0, filepath.find_last_of("/"));
-        assimp_processNode(scene->mRootNode, scene, directory, meshList);
-        BBX_CLI_INFO(("loaded assimp model from: " + filepath).c_str());
-    }
+
+
+
+    
+
+    
+
 
     /* ------------------------------------ */
 
@@ -177,7 +134,7 @@ namespace bxImport {
             std::string token;
             while(std::getline(ss, token, ' '))
             {
-                lineData.push_back(token);          /* split line by ' '  */
+                lineData.push_back(token);                              /* split line by ' '  */
             }
 
             if(lineData[0] == "v")
@@ -198,7 +155,7 @@ namespace bxImport {
             if(lineData[0] == "f"){ break; }
             lineData.clear();
         }
-
+        /* load face data */
         verticesData.reserve(vertices.size() * 3);
         normalsData.reserve(vertices.size() * 3);
         texturesData.reserve(vertices.size() * 2);
@@ -222,7 +179,7 @@ namespace bxImport {
             std::string token;
             while(std::getline(ss, token, ' '))
             {
-                lineData.push_back(token);          /* split line by ' '  */
+                lineData.push_back(token);                              /* split line by ' '  */
             }
 
             if(lineData[0] == "f")
@@ -237,7 +194,7 @@ namespace bxImport {
 
                     for(int j = 0; j < 3; j++)
                     {
-                        std::getline(ssVert, tokVert, '/');
+                        std::getline(ssVert, tokVert, '/');             /* split face vertex by '/'  */
                         faceVertices[i][j] = atoi(tokVert.c_str());
                     }
 
@@ -251,25 +208,13 @@ namespace bxImport {
         }
         openFile.close();
         /* done parsing obj */
-        int j, k = 0;
-        for(int i = 0; i < vertices.size(); i++)
-        {
-            bbx::Vertex vertex;
-            vertex.position = vertices[i];
 
-            vertex.textureCoord = glm::vec2(texturesData[j], texturesData[j+1]);
+       
 
-            vertex.normal = glm::vec3(normalsData[k], normalsData[k+1], normalsData[k+1]);
 
-            meshData.push_back(vertex);
 
-            j += 2;
-            k += 3;
-        }
 
-        BBX_CLI_WARN(meshData.size());
-        
-        return bbx::Mesh(meshData, indices);    
+        return bbx::Mesh(verticesData, texturesData, normalsData, indices);
     }
 
     

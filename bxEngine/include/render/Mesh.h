@@ -24,6 +24,12 @@ typedef struct Vertex
 	glm::vec2 textureCoord;
 } Vertex;
 
+typedef struct VAO_Data
+{
+	unsigned int VAO_ID;
+	unsigned int numIndices;
+} VAO_Data;
+
 /* Texture types are sequentially stored */
 typedef struct TextureList
 {
@@ -36,24 +42,25 @@ class Mesh
 {
 public:
 
-	//Mesh(std::vector<float> vertices, std::vector<float> textureCoords, std::vector<float> normals, std::vector<unsigned int> indices);
-	Mesh(std::vector<Vertex> data, std::vector<unsigned int> indices);
+	Mesh(std::vector<float> vertices, std::vector<float> textureCoords, std::vector<float> normals, std::vector<unsigned int> indices);
+
 	virtual ~Mesh();
 	
 	void addTexture(Texture* tex);
 
 	unsigned int getVAO_ID();
-	unsigned int getVBO_ID(unsigned int n);
-	unsigned int getIBO_ID();
+
 
 	std::vector<Texture>& getDiffuseTextures();
 	std::vector<Texture>& getSpecTextures();
+	Texture& getTextureZero();
 
-	// std::vector<float>& getVertices();
-	// std::vector<float>& getNormals();
-	// std::vector<float>& getTextureCoords();
+	std::vector<float>& getVertices();
+	std::vector<float>& getNormals();
+	std::vector<float>& getTextureCoords();
 	
 	std::vector<unsigned int>& getIndices();
+	unsigned int getNumIndices();
 	unsigned int getNumVertices();
 	
 	//void setTransform(glm::mat4& transf);
@@ -63,21 +70,18 @@ public:
 
 private:
 
-	// std::vector<float> &vertices;
-	// std::vector<float> &normals;
-	// std::vector<float> &textureCoords;
-	std::vector<Vertex> vertices;
+	std::vector<float> vertices;
+	std::vector<float> normals;
+	std::vector<float> textureCoords;
+	//std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	
+	VAO_Data vaoData;
 	TextureList textureList;
 
 	glm::mat4 transform;
 	unsigned int numVertices;
 	unsigned int numIndices;
-	unsigned int VAO_ID, VBO_ID, IBO_ID;
 	
-	// unsigned int VBO_IDs[3];
-	/* Vertex Array, Vertex Buffer, Index Buffer Objects */
 };
 
 }

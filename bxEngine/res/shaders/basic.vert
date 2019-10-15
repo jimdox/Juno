@@ -1,21 +1,19 @@
 #version 400 core
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 texColor;
-layout(location = 2) in vec2 texCoord;
+in vec3 position;
+in vec2 texCoordinates;
 
-out vec3 passColor;
-out vec2 passTexCoord;
+out vec3 pass_color;
+out vec2 pass_texCoordinates;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
-
+uniform mat4 transformationMatrix;
+uniform mat4 projectionMatrix;
+uniform mat4 viewMatrix;
 
 void main()
 {
-        gl_Position = projection * view * model * vec4(vertexPosition, 1.0);
-		passColor = texColor;
-        passTexCoord = texCoord;
+        gl_Position =   projectionMatrix * viewMatrix * transformationMatrix * vec4(position, 1.0);
+        pass_texCoordinates = texCoordinates;
+        pass_color = vec3(position.x+0.5, 0.0, position.y+0.5);
 
 }
 

@@ -1,16 +1,14 @@
 #version 400 core
-in vec3 passColor;
-in vec2 passTexCoord;
+in vec3 pass_color;
+in vec2 pass_texCoordinates;
 
-out vec4 outColor; 
+out vec4 output_color; 
 
 uniform sampler2D diffuse;
-uniform sampler2D normal;
 	
 void main()
 {
-        outColor = mix(texture(normal, passTexCoord), texture(normal, passTexCoord), 0.9);
-
+        output_color = texture(diffuse, pass_texCoordinates);
 
 
 }

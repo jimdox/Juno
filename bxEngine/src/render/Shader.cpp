@@ -3,6 +3,7 @@
 #include <ios>
 #include <sstream>
 #include "core/Log.h"
+#include "core/bxMath.h"
 
 using namespace bbx;
 
@@ -10,6 +11,8 @@ Shader::Shader()
 {
 	vertFilePath = "res/shaders/basic.vert";
 	fragFilePath = "res/shaders/basic.frag";
+	loc_transformationMatrix = 0;
+	loc_projectionMatrix = 0;
 }
 
 
@@ -103,6 +106,7 @@ bool Shader::loadShader()
 
 	glAttachShader(progID, vertexShader);
 	glAttachShader(progID, fragmentShader);
+	bindAllAttribs();
 	glLinkProgram(progID);
 
 
@@ -118,7 +122,7 @@ bool Shader::loadShader()
 		BBX_CRIT("Shader linking failed!");
 		BBX_CRIT(message);
 	}
-
+	getAllUniformLoc();
 
 
 
@@ -140,7 +144,47 @@ void Shader::useProgram()
 	glUseProgram(progID);
 }
 
+void Shader::unbindProgram()
+{
+	glUseProgram(0);
+}
 
+void Shader::bindAllAttribs()
+{
+	bindAttrib(0, "position");
+	bindAttrib(1, "texCoordinates");
+
+}
+
+void Shader::bindAttrib(unsigned int attrib, const std::string& var)
+{
+	glBindAttribLocation(this->progID, attrib, var.c_str());
+}
+
+/* locates all uniform variables' locations */
+void Shader::getAllUniformLoc()
+{
+	loc_transformationMatrix = glGetUniformLocation(progID, "transformationMatrix");
+	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
+	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
+}
+
+void Shader::loadTransformMatrix(glm::mat4& transform)
+{
+	glUniformMatrix4fv(loc_transformationMatrix, 1, GL_FALSE, &transform[0][0]);
+}
+
+void Shader::loadProjectionMatrix(glm::mat4& projection)
+{
+	glUniformMatrix4fv(loc_projectionMatrix, 1, GL_FALSE, &projection[0][0]);
+}
+
+void Shader::loadViewMatrix(Camera& camera)
+{
+	glm::mat4 viewMat = bxMath::generateViewMatrix(camera);
+	glUniformMatrix4fv(loc_viewMatrix, 1, GL_FALSE, &viewMat[0][0]);
+
+}
 
 void Shader::setInt(const std::string& var, int value) const
 {
@@ -175,7 +219,7 @@ void Shader::setVec4(const std::string& var, glm::vec4& vec) const
 
 void Shader::setMat2(const std::string& var, glm::mat2& mat) const
 {
-	glUniformMatrix3fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix2fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::setMat3(const std::string& var, glm::mat3& mat) const
@@ -185,5 +229,5 @@ void Shader::setMat3(const std::string& var, glm::mat3& mat) const
 
 void Shader::setMat4(const std::string& var, glm::mat4& mat) const
 {
-	glUniformMatrix2fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
 }

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <GL/glew.h>
 #include "glm/glm.hpp"
+#include "render/Camera.h"
 namespace bbx {
 class Shader
 {
@@ -13,7 +14,18 @@ public:
 	virtual ~Shader();
 	bool loadShader();
 	void useProgram();
+	void unbindProgram();
 	GLuint getID();
+
+	void bindAllAttribs();
+	void bindAttrib(unsigned int attrib, const std::string& var);
+	void getAllUniformLoc();
+
+	void loadTransformMatrix(glm::mat4& transform);
+	void loadProjectionMatrix(glm::mat4& projection);
+	void loadViewMatrix(Camera& camera);
+
+
 	void setInt(const std::string& var, int value) const;
 	void setBool(const std::string& var, bool flag) const;
 	void setFloat(const std::string& var, float value) const;
@@ -31,7 +43,10 @@ private:
 	enum Shdr { VERTEX, FRAGMENT, GEOMETRY };
 	std::string vertFilePath;
 	std::string fragFilePath;
-
+	
+	unsigned int loc_transformationMatrix;
+	unsigned int loc_projectionMatrix;
+	unsigned int loc_viewMatrix;
 
 };
 }

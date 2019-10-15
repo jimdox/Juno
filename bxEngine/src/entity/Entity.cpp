@@ -2,28 +2,67 @@
 #include "core/bxAssetLoader.h"
 using namespace bbx;
 
-Entity::Entity(std::string& filepath, std::vector<Mesh>& meshes) :  assetFilePath(filepath), meshList(meshes)
-{
 
+Entity::Entity(Mesh& mesh, std::string& name) : mesh(mesh), name(name)
+{
+	/* initializes rotation, position to 0 vector */
+	this->scale = 0.0f;
 }
 
-Entity::Entity(std::string& filepath) : assetFilePath(filepath)
+Entity::Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, std::string& name) : mesh(mesh), name(name), position(pos), rotation(rot)
 {
-	bxImport::assimp_loadModel(filepath, meshList);
-
+	this->scale = scale;
+	
 }
+
+
+
 Entity::~Entity()
 {
-
+	
 }
 
-std::vector<Mesh>& Entity::getMeshList()
+Mesh& Entity::getMesh()
 {
-	return meshList;
+	return this->mesh;
 }
 
-void Entity::loadModelData(std::string& filepath)
+glm::vec3& Entity::getPosition()
 {
-	//bxImport::loadModel(filepath, meshList);
+	return this->position;
 }
 
+glm::vec3& Entity::getRotation()
+{
+	return this->rotation;
+}
+
+float Entity::getScale()
+{
+	return this->scale;
+}
+
+void Entity::setPosition(glm::vec3& pos)
+{
+	this->position = pos;
+}
+
+void Entity::setRotation(glm::vec3& rot)
+{
+	this->rotation = rot;
+}
+
+void Entity::setScale(float s)
+{
+	this->scale = s;
+}
+
+void Entity::addPosition(glm::vec3& dpos)
+{
+	this->position += dpos;
+}
+
+void Entity::addRotation(glm::vec3& drot)
+{
+	this->rotation += drot;
+}

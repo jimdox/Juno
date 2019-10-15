@@ -24,7 +24,8 @@
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/core/KeyMap.h include/render/Texture.h lib/stb/stb_image.h \
  include/render/glRenderCore.h include/render/Shader.h \
- include/entity/Entity.h include/render/Mesh.h
+ include/render/Camera.h include/entity/Entity.h include/render/Mesh.h \
+ include/core/bxMath.h
 
 include/render/bxContext.h:
 
@@ -88,6 +89,10 @@ include/render/glRenderCore.h:
 
 include/render/Shader.h:
 
+include/render/Camera.h:
+
 include/entity/Entity.h:
 
 include/render/Mesh.h:
+
+include/core/bxMath.h:
