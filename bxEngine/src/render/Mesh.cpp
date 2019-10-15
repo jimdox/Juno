@@ -13,16 +13,6 @@ Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vecto
 {
 
 
-
-
-
-
-
-
-
-	glBindVertexArray(0);
-
-
 }
 
 
@@ -89,6 +79,12 @@ unsigned int Mesh::getNumVertices()
 glm::mat4& Mesh::getTransform()
 {
 	return this->transform;
+}
+
+void Mesh::assignVAO(VAO_Data vao_data)
+{
+	this->vaoData.VAO_ID = vao_data.VAO_ID;
+	this->vaoData.numIndices = vao_data.numIndices;
 }
 
 void Mesh::regenerateMesh()

@@ -38,7 +38,7 @@ namespace bxImport {
         glGenBuffers(1, &VBO_ID);
         glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
 	    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-	    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* may need to be (float) stride */
+	    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     }
@@ -86,6 +86,8 @@ namespace bxImport {
     {
         for(int i = 0; i < 3; i++)
         {
+            BBX_CLI_WARN(faceVertices[i][0]);
+            
             int currentVertPtr = faceVertices[i][0] - 1;
             indices.push_back(currentVertPtr);
 
@@ -155,20 +157,11 @@ namespace bxImport {
             if(lineData[0] == "f"){ break; }
             lineData.clear();
         }
-        /* load face data */
-        verticesData.reserve(vertices.size() * 3);
-        normalsData.reserve(vertices.size() * 3);
-        texturesData.reserve(vertices.size() * 2);
-
-        for(unsigned int i = 0; i < vertices.size() * 2; i++)
-        {
-            texturesData.push_back(0.0f);
-        }
-
-        for(unsigned int i = 0; i < vertices.size() * 3; i++)
-        {
-            normalsData.push_back(0.0f);
-        }
+        /* Next Phase of OBJ loading: faces */
+        
+        verticesData.resize(vertices.size() * 3);
+        normalsData.resize(vertices.size() * 3);
+        texturesData.resize(vertices.size() * 2);
 
         lineData.clear();
 
@@ -209,12 +202,11 @@ namespace bxImport {
         openFile.close();
         /* done parsing obj */
 
-       
+        bbx::Mesh mesh(verticesData, texturesData, normalsData, indices);
+        bbx::VAO_Data vao_data = loadToVAO(verticesData, texturesData, indices);
+        mesh.assignVAO(vao_data);
 
-
-
-
-        return bbx::Mesh(verticesData, texturesData, normalsData, indices);
+        return mesh;
     }
 
     

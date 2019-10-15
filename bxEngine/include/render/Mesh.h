@@ -62,6 +62,8 @@ public:
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumIndices();
 	unsigned int getNumVertices();
+
+	void assignVAO(VAO_Data vao_data);
 	
 	//void setTransform(glm::mat4& transf);
 	glm::mat4& getTransform();

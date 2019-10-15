@@ -74,7 +74,7 @@ void bxContext::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Oldest allowable version of GLSL (4.3)
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);	
 
 
 
@@ -110,10 +110,6 @@ void bxContext::update()
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
-	if(glfwWindowShouldClose(this->window))
-	{
-		destroy();
-	}
 
 
 }

@@ -55,7 +55,7 @@ namespace bxRender {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
 		/* draw entity */
-	    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+	    //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 		//BBX_CLI_WARN("RENDERING...");
 		glDrawElements(GL_TRIANGLES, mesh.getIndices().size(), GL_UNSIGNED_INT, 0);
 		/* --- */

@@ -68,14 +68,15 @@ void bxProgram::run()
 
 		shader->useProgram();
 		shader->loadViewMatrix(*camera);
-		bxRender::renderEntity(fordo, *shader);
+		//bxRender::renderEntity(fordo, *shader);
 
 
 
 
 
-		camera->setZoom(camera->getZoom() + dt);
-		camera->update();
+		//camera->setZoom(camera->getZoom() + dt);
+		//camera->update();
+
 		renderContext->update();
 	}
 
@@ -94,7 +95,7 @@ void bxProgram::fpsCounter()
 	numFrames++;
 	if(dt >= 1.0f)
 	{
-		BBX_INFO(numFrames);
+		//BBX_INFO(numFrames);
 		dt = 0.0f;
 		numFrames = 0;
 	}
