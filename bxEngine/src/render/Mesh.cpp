@@ -68,7 +68,7 @@ unsigned int Mesh::getNumIndices()
 
 unsigned int Mesh::getVAO_ID()
 {
-	return vaoData.VAO_ID;
+	return this->vaoData.VAO_ID;
 }
 
 unsigned int Mesh::getNumVertices()

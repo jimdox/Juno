@@ -30,18 +30,18 @@ void bxProgram::init()
 
 void bxProgram::run()
 {
-	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 2.5f), 0.0f, 0.0f, 0.0f);
+	Camera *camera = new Camera(glm::vec3(0.0f, 0.0f, 4.5f), 0.0f, 0.0f, 0.0f);
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera->getProjectionMatrix());				/* load the perspective matrix from Camera */
 	shader->loadViewMatrix(*camera);
 	shader->unbindProgram();
 	
 
-	std::string objPath = "./bxEngine/res/stall/stall.obj";
+	std::string objPath = "./bxEngine/res/susanne.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 
 	
-	std::string texFilePath = "./bxEngine/res/fordo.png";
+	std::string texFilePath = "./bxEngine/res/suse.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	stall.addTexture(&texture1);
@@ -62,14 +62,15 @@ void bxProgram::run()
 	{
 		fpsCounter();
 
+		glm::vec3 d_rot(0.0f, 0.5f, 0.0f);
+		fordo.addRotation(d_rot);
+
 		bxRender::clear();
-	
-		
 
 		shader->useProgram();
 		shader->loadViewMatrix(*camera);
-		//bxRender::renderEntity(fordo, *shader);
-
+		bxRender::renderEntity(fordo, *shader);
+		shader->unbindProgram();
 
 
 
@@ -95,7 +96,7 @@ void bxProgram::fpsCounter()
 	numFrames++;
 	if(dt >= 1.0f)
 	{
-		//BBX_INFO(numFrames);
+		BBX_INFO(numFrames);
 		dt = 0.0f;
 		numFrames = 0;
 	}

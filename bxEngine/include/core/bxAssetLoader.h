@@ -86,8 +86,8 @@ namespace bxImport {
     {
         for(int i = 0; i < 3; i++)
         {
-            BBX_CLI_WARN(faceVertices[i][0]);
-            
+            // BBX_CLI_WARN(faceVertices[i][0]);
+
             int currentVertPtr = faceVertices[i][0] - 1;
             indices.push_back(currentVertPtr);
 
@@ -124,7 +124,6 @@ namespace bxImport {
         std::vector<float> texturesData;
         std::vector<float> normalsData;
 
-        std::vector<bbx::Vertex> meshData;
 
 
         std::vector<std::string> lineData;
@@ -159,7 +158,7 @@ namespace bxImport {
         }
         /* Next Phase of OBJ loading: faces */
         
-        verticesData.resize(vertices.size() * 3);
+        verticesData.reserve(vertices.size() * 3);
         normalsData.resize(vertices.size() * 3);
         texturesData.resize(vertices.size() * 2);
 
@@ -201,6 +200,14 @@ namespace bxImport {
         }
         openFile.close();
         /* done parsing obj */
+
+        unsigned int vPtr = 0;
+        for(glm::vec3 vertex : vertices)
+        {
+            verticesData.push_back(vertex.x);
+            verticesData.push_back(vertex.y);
+            verticesData.push_back(vertex.z);
+        }
 
         bbx::Mesh mesh(verticesData, texturesData, normalsData, indices);
         bbx::VAO_Data vao_data = loadToVAO(verticesData, texturesData, indices);
