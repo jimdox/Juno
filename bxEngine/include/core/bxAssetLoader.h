@@ -93,7 +93,7 @@ namespace bxImport {
 
             glm::vec2 currentTexCoord = textures[faceVertices[i][1]-1];
             texturesData[currentVertPtr*2] = currentTexCoord.x;
-            texturesData[currentVertPtr*2 +1] = 1 - currentTexCoord.y;
+            texturesData[currentVertPtr*2 +1] = currentTexCoord.y;
 
 
 

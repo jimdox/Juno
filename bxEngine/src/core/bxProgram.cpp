@@ -37,11 +37,11 @@ void bxProgram::run()
 	shader->unbindProgram();
 	
 
-	std::string objPath = "./bxEngine/res/susanne.obj";
+	std::string objPath = "./bxEngine/res/stall/stall.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 
 	
-	std::string texFilePath = "./bxEngine/res/suse.png";
+	std::string texFilePath = "./bxEngine/res/stall/stallTex.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	stall.addTexture(&texture1);
