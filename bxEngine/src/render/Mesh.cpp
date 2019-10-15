@@ -76,10 +76,7 @@ unsigned int Mesh::getNumVertices()
 	return numVertices;
 }
 
-// glm::mat4& Mesh::getTransform()
-// {
-// 	return this->transform;
-// }
+
 
 void Mesh::assignVAO(VAO_Data vao_data)
 {
@@ -89,5 +86,5 @@ void Mesh::assignVAO(VAO_Data vao_data)
 
 void Mesh::regenerateMesh()
 {
-	/* TODO: if the texture uv coordinates need to be remapped, regen mesh */
+	/* TODO: if the texture uv coordinates need to be remapped, reload mesh */
 }

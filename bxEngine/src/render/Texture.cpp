@@ -28,7 +28,7 @@ Texture::Texture(std::string& filepath, std::string& texType, bool hasUVs) : fil
 
 }
 
-/* this constructor is called by bxAssetLoader */
+/* called by bxAssetLoader */
 Texture::Texture(std::string& filepath, std::string& texType) : filepath(filepath), texType(texType)
 {	
 	int width, height, channels;

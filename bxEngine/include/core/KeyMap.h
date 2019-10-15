@@ -7,6 +7,11 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
+	if(key == GLFW_KEY_W && action == GLFW_PRESS)
+	{
+		/* add move-events */
+	}
+
 
 
 }

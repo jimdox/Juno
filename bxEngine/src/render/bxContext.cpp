@@ -95,7 +95,7 @@ void bxContext::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);																/* limits fps to 60 */
+	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
 
 
 	glfwSetErrorCallback(setErrCallback);

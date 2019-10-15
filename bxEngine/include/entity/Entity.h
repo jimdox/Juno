@@ -9,7 +9,6 @@ class Entity
 public:
 	Entity(Mesh& mesh, std::string& name);
 	Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, std::string& name);	
-	//Entity(std::string& filepath);
 	~Entity();
 
 	Mesh& getMesh();
