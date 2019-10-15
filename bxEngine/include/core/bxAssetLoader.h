@@ -19,6 +19,7 @@
 
 /* */
 namespace bxImport {
+    /* references for garbage collection later */
     static std::vector<unsigned int> VAO_refs;
     static std::vector<unsigned int> VBO_refs;
 
@@ -44,21 +45,26 @@ namespace bxImport {
     }
 
 
-    static void bindIBO(std::vector<unsigned int> &indices)
-    {
-        unsigned int iboID;
-        glGenBuffers(1, &iboID);
-	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    // static void bindIBO(std::vector<unsigned int> &indices)
+    // {
+    //     unsigned int iboID;
+    //     glGenBuffers(1, &iboID);
+	//     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+    //     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-    }
+    // }
 
    
     static bbx::VAO_Data loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<unsigned int> &indices)
     {
         bbx::VAO_Data vaoData;
         vaoData.VAO_ID = generateVAO();
-        bindIBO(indices);
+
+        unsigned int iboID;
+        glGenBuffers(1, &iboID);
+	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
         vaoData.numIndices = indices.size();
         
         storeInAttribList(0, 3, positions);
@@ -70,12 +76,6 @@ namespace bxImport {
     }
 
 
-
-
-
-    
-
-    
 
 
     /* ------------------------------------ */
@@ -201,7 +201,6 @@ namespace bxImport {
         openFile.close();
         /* done parsing obj */
 
-        unsigned int vPtr = 0;
         for(glm::vec3 vertex : vertices)
         {
             verticesData.push_back(vertex.x);

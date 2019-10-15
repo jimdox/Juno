@@ -25,7 +25,7 @@
  include/core/KeyMap.h include/render/Texture.h lib/stb/stb_image.h \
  include/render/glRenderCore.h include/render/Shader.h \
  include/render/Camera.h include/entity/Entity.h include/render/Mesh.h \
- include/core/bxMath.h
+ include/core/bxMath.h include/core/EngineConfig.h
 
 include/render/bxContext.h:
 
@@ -96,3 +96,5 @@ include/entity/Entity.h:
 include/render/Mesh.h:
 
 include/core/bxMath.h:
+
+include/core/EngineConfig.h:

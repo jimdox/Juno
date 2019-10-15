@@ -76,10 +76,10 @@ unsigned int Mesh::getNumVertices()
 	return numVertices;
 }
 
-glm::mat4& Mesh::getTransform()
-{
-	return this->transform;
-}
+// glm::mat4& Mesh::getTransform()
+// {
+// 	return this->transform;
+// }
 
 void Mesh::assignVAO(VAO_Data vao_data)
 {

@@ -1,5 +1,6 @@
 #include "render/Camera.h"
 #include "core/bxMath.h"
+#include "core/EngineConfig.h"
 using namespace bbx;
 
 
@@ -71,6 +72,5 @@ glm::mat4& Camera::getProjectionMatrix()
 
 void Camera::generateProjectionMatrix()
 {
-	float aspectRatio = 1.0f;
-	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), aspectRatio, NEAR_PLANE, FAR_PLANE);	
+	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), getAspectRatio(), NEAR_PLANE, FAR_PLANE);	
 }

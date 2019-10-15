@@ -1,4 +1,4 @@
-#version 400 core
+#version 450 core
 in vec3 pass_color;
 in vec2 pass_texCoordinates;
 

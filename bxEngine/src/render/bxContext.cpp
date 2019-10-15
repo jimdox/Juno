@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "render/Texture.h"
 #include "render/glRenderCore.h"
+#include "core/EngineConfig.h"
 /*
 	(OpenGL/Vulkan) Rendering context
 */
@@ -74,7 +75,7 @@ void bxContext::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Oldest allowable version of GLSL (4.3)
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);	
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
 
 
 
@@ -103,6 +104,7 @@ void bxContext::init()
 	bxRender::init(window);
 
 	//BBX_WARN(glGetString(GL_RENDERER));													/* list video card */
+	aspectRatio = this->width / this->height;
 }
 
 void bxContext::update()

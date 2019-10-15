@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+static float aspectRatio = 1.0f;
 
 #ifdef BX_PLATFORM_WIN
 void readConfigFile()
@@ -13,9 +14,17 @@ void readConfigFile()
 #endif
 
 #ifdef BX_PLATFORM_LINUX
-void readConfigFile()
+static void readConfigFile()
 {
 
 }
 
 #endif
+
+namespace bbx {
+static float getAspectRatio()
+{
+    return aspectRatio;
+}
+
+}

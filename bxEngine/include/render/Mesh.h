@@ -5,9 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "render/Texture.h"
 #include "core/Log.h"
-/*
-	Stores geometry and texture data to be used when rendering mesh.
-*/
+
 
 namespace bbx {
 
@@ -17,12 +15,12 @@ typedef struct Material
 
 } Material;
 
-typedef struct Vertex
-{
-	glm::vec3 position; 
-	glm::vec3 normal;
-	glm::vec2 textureCoord;
-} Vertex;
+// typedef struct Vertex
+// {
+// 	glm::vec3 position; 
+// 	glm::vec3 normal;
+// 	glm::vec2 textureCoord;
+// } Vertex;
 
 typedef struct VAO_Data
 {
@@ -65,22 +63,18 @@ public:
 
 	void assignVAO(VAO_Data vao_data);
 	
-	//void setTransform(glm::mat4& transf);
-	glm::mat4& getTransform();
 	void regenerateMesh();
-	//static Mesh loadMesh();
 
 private:
 
 	std::vector<float> vertices;
 	std::vector<float> normals;
 	std::vector<float> textureCoords;
-	//std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
+
 	VAO_Data vaoData;
 	TextureList textureList;
 
-	glm::mat4 transform;
 	unsigned int numVertices;
 	unsigned int numIndices;
 	
