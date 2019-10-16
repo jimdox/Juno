@@ -11,8 +11,7 @@ Shader::Shader()
 {
 	vertFilePath = "res/shaders/basic.vert";
 	fragFilePath = "res/shaders/basic.frag";
-	loc_transformationMatrix = 0;
-	loc_projectionMatrix = 0;
+
 }
 
 
@@ -122,9 +121,7 @@ bool Shader::loadShader()
 		BX_CRIT("Shader linking failed!");
 		BX_CRIT(message);
 	}
-	getAllUniformLoc();
-
-
+	cacheUniformLocations();
 
 
 
@@ -162,72 +159,83 @@ void Shader::bindAttrib(unsigned int attrib, const std::string& var)
 }
 
 /* caches all uniform variables' locations */
-void Shader::getAllUniformLoc()
+void Shader::cacheUniformLocations()
 {
 	loc_transformationMatrix = glGetUniformLocation(progID, "transformationMatrix");
 	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
 	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
+	loc_lightPosition = glGetUniformLocation(progID, "lightPosition");
+	loc_lightColor - glGetUniformLocation(progID, "lightColor");
 }
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
 {
-	glUniformMatrix4fv(loc_transformationMatrix, 1, GL_FALSE, &transform[0][0]);
+	setMat4(loc_transformationMatrix, transform);
 }
 
 void Shader::loadProjectionMatrix(glm::mat4& projection)
 {
-	glUniformMatrix4fv(loc_projectionMatrix, 1, GL_FALSE, &projection[0][0]);
+	setMat4(loc_projectionMatrix, projection);
 }
 
 void Shader::loadViewMatrix(std::shared_ptr<Camera> & camera)
 {
 	glm::mat4 viewMat = bxMath::generateViewMatrix(camera);
-	glUniformMatrix4fv(loc_viewMatrix, 1, GL_FALSE, &viewMat[0][0]);
+	setMat4(loc_viewMatrix, viewMat);
 
 }
 
-void Shader::setInt(const std::string& var, int value) const
+/* lighting variables */
+void Shader::loadLightUniforms(Light& light)
 {
-	glUniform1i(glGetUniformLocation(progID, var.c_str()), (int)value);
+	setVec3(loc_lightPosition, light.getPosition());
+	setVec3(loc_lightColor, light.getColor());
+
+}
+
+/* GLSL uniform loaders */
+void Shader::setInt(unsigned int loc, int value) const
+{
+	glUniform1i(loc, (int)value);
 }
 
 
-void Shader::setBool(const std::string& var, bool flag) const
+void Shader::setBool(unsigned int loc, bool flag) const
 {
-	glUniform1i(glGetUniformLocation(progID, var.c_str()), flag);
+	glUniform1i(loc, flag);
 }
 
-void Shader::setFloat(const std::string& var, float value) const
+void Shader::setFloat(unsigned int loc, float value) const
 {
-	glUniform1f(glGetUniformLocation(progID, var.c_str()), value);
+	glUniform1f(loc, value);
 }
 
-void Shader::setVec2(const std::string& var, glm::vec2& vec) const
+void Shader::setVec2(unsigned int loc, glm::vec2& vec) const
 {
-	glUniform2fv(glGetUniformLocation(progID, var.c_str()), 1, &vec[0]);
+	glUniform2fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec3(const std::string& var, glm::vec3& vec) const
+void Shader::setVec3(unsigned int loc, glm::vec3& vec) const
 {
-	glUniform3fv(glGetUniformLocation(progID, var.c_str()), 1, &vec[0]);
+	glUniform3fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec4(const std::string& var, glm::vec4& vec) const
+void Shader::setVec4(unsigned int loc, glm::vec4& vec) const
 {
-	glUniform4fv(glGetUniformLocation(progID, var.c_str()), 1, &vec[0]);
+	glUniform4fv(loc, 1, &vec[0]);
 }
 
-void Shader::setMat2(const std::string& var, glm::mat2& mat) const
+void Shader::setMat2(unsigned int loc, glm::mat2& mat) const
 {
-	glUniformMatrix2fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat3(const std::string& var, glm::mat3& mat) const
+void Shader::setMat3(unsigned int loc, glm::mat3& mat) const
 {
-	glUniformMatrix3fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat4(const std::string& var, glm::mat4& mat) const
+void Shader::setMat4(unsigned int loc, glm::mat4& mat) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(progID, var.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 }

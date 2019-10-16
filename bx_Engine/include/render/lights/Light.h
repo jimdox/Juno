@@ -1,8 +1,9 @@
+#pragma once
 #include <glm/glm.hpp>
-
 namespace bbx {
 
-class Light{
+class Light
+{
 
 public:
     Light(glm::vec3 pos, glm::vec3 color);
