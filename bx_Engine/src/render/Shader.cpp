@@ -179,7 +179,7 @@ void Shader::loadProjectionMatrix(glm::mat4& projection)
 	glUniformMatrix4fv(loc_projectionMatrix, 1, GL_FALSE, &projection[0][0]);
 }
 
-void Shader::loadViewMatrix(Camera& camera)
+void Shader::loadViewMatrix(std::shared_ptr<Camera> & camera)
 {
 	glm::mat4 viewMat = bxMath::generateViewMatrix(camera);
 	glUniformMatrix4fv(loc_viewMatrix, 1, GL_FALSE, &viewMat[0][0]);

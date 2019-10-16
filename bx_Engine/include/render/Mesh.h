@@ -15,18 +15,6 @@ typedef struct Material
 
 } Material;
 
-// typedef struct Vertex
-// {
-// 	glm::vec3 position; 
-// 	glm::vec3 normal;
-// 	glm::vec2 textureCoord;
-// } Vertex;
-
-typedef struct VAO_Data
-{
-	unsigned int VAO_ID;
-	unsigned int numIndices;
-} VAO_Data;
 
 /* Texture types are sequentially stored */
 typedef struct TextureList
@@ -61,7 +49,7 @@ public:
 	unsigned int getNumIndices();
 	unsigned int getNumVertices();
 
-	void assignVAO(VAO_Data vao_data);
+	void assignVAO(unsigned int id, unsigned int numIndices);
 	
 	void regenerateMesh();
 
@@ -72,9 +60,9 @@ private:
 	std::vector<float> textureCoords;
 	std::vector<unsigned int> indices;
 
-	VAO_Data vaoData;
 	TextureList textureList;
 
+	unsigned int VAO_ID;
 	unsigned int numVertices;
 	unsigned int numIndices;
 	

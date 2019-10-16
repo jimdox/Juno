@@ -15,6 +15,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <stdlib.h>
+#include <tuple>
 
 
 /* */
@@ -55,24 +56,23 @@ namespace bxImport {
     // }
 
    
-    static bbx::VAO_Data loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<unsigned int> &indices)
+    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<unsigned int> &indices)
     {
-        bbx::VAO_Data vaoData;
-        vaoData.VAO_ID = generateVAO();
+        unsigned int vaoID = generateVAO();
 
         unsigned int iboID;
         glGenBuffers(1, &iboID);
 	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-        vaoData.numIndices = indices.size();
+        unsigned int numIndices = indices.size();
         
         storeInAttribList(0, 3, positions);
         storeInAttribList(1, 2, texCoordinates);
 
 
         glBindVertexArray(0);
-        return vaoData;
+        return {vaoID, numIndices};
     }
 
 
@@ -206,9 +206,9 @@ namespace bxImport {
         }
 
         bbx::Mesh mesh(verticesData, texturesData, normalsData, indices);
-        bbx::VAO_Data vao_data = loadToVAO(verticesData, texturesData, indices);
-        mesh.assignVAO(vao_data);
 
+        auto [id, numIndices] = loadToVAO(verticesData, texturesData, indices);
+        mesh.assignVAO(id, numIndices);
         return mesh;
     }
 

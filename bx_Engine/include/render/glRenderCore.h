@@ -62,7 +62,7 @@ namespace bxRender {
 	}
 
 	/* render entity */
-	static void renderEntity(bbx::Entity& entity, bbx::Shader& shader)
+	static void renderEntity(bbx::Entity& entity, std::shared_ptr<bbx::Shader> & shader)
 	{
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
@@ -71,7 +71,7 @@ namespace bxRender {
 		glEnableVertexAttribArray(1);
 		/* load transformation */
 		glm::mat4 transformationMat = bxMath::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
-		shader.loadTransformMatrix(transformationMat);
+		shader->loadTransformMatrix(transformationMat);
 		/* --- */
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, entity.getMesh().getTextureZero().getID());

@@ -19,32 +19,35 @@ bxProgram::~bxProgram()
 
 void bxProgram::init()
 {
-	this->renderContext = new bxContext(600, 600, "v0.0.1", false);
-	this->shader = new Shader("./bx_Engine/res/shaders/basic");
+	renderContext = std::make_unique<bxContext>(600, 600, "v0.0.1", false);
+	shader = std::make_shared<Shader>("./bx_Engine/res/shaders/basic");
 
 	GLuint shaderID = shader->getID();
 	this->renderContext->setShader(shaderID);
 	BX_WARN(BX_GFX_DEVICE);
 
+	camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 4.5f), 0.0f, 0.0f, 0.0f);
+
+
 }
 
 void bxProgram::run()
 {
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 4.5f), 0.0f, 0.0f, 0.0f);
+	
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera->getProjectionMatrix());				/* load the perspective matrix from Camera */
-	shader->loadViewMatrix(*camera);
+	shader->loadViewMatrix(camera);
 	shader->unbindProgram();
 
-	std::string objPath = "./bx_Engine/res/susanne.obj";
+	std::string objPath = "./bx_Engine/res/sphere.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 	
-	std::string texFilePath = "./bx_Engine/res/suse.png";
+	std::string texFilePath = "./bx_Engine/res/planet.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	stall.addTexture(&texture1);
 
-	glm::vec3 entPos(0.0f, 0.0f, -3.0f);
+	glm::vec3 entPos(0.0f, -1.9f, -3.0f);
 	glm::vec3 entRot(0.0f, 0.0f, 0.0f);
 	std::string entName = "fordo";
 	Entity fordo(stall, entPos, entRot, 1.0f, entName);
@@ -68,14 +71,14 @@ void bxProgram::run()
 		bxRender::clear();
 
 		shader->useProgram();
-		shader->loadViewMatrix(*camera);
-		bxRender::renderEntity(fordo, *shader);
-		bxRender::renderEntity(entB, *shader);
-		bxRender::renderEntity(entC, *shader);
+		shader->loadViewMatrix(camera);
+		bxRender::renderEntity(fordo, shader);
+		//bxRender::renderEntity(entB, *shader);
+		//bxRender::renderEntity(entC, *shader);
 		shader->unbindProgram();
 
 
-		//camera->move(glm::vec3(0.0f, 0.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f));
+		camera->move(glm::vec3(0.0f, 0.0f, 0.0005f), glm::vec3(0.0f, 0.0f, 0.0f));
 		//camera->setZoom(camera->getZoom() + dt);
 		camera->update();
 
@@ -106,7 +109,7 @@ void bxProgram::fpsCounter()
 /* ------------- */
 void bxProgram::splashShader()
 {
-	this->shader = new Shader("./bxEngine/res/shaders/gui");
+	this->shader = std::make_shared<Shader>("./bxEngine/res/shaders/gui");
 	float vertices[] = {
 		// positions          // colors           // texture coords
 		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right

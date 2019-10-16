@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include "glm/glm.hpp"
 #include "render/Camera.h"
+#include <memory>
+
 namespace bbx {
 class Shader
 {
@@ -23,7 +25,7 @@ public:
 
 	void loadTransformMatrix(glm::mat4& transform);
 	void loadProjectionMatrix(glm::mat4& projection);
-	void loadViewMatrix(Camera& camera);
+	void loadViewMatrix(std::shared_ptr<Camera> & camera);
 
 
 	void setInt(const std::string& var, int value) const;

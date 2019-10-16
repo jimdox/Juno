@@ -1,5 +1,4 @@
 #include "render/Mesh.h"
-	
 using namespace bbx;
 
 
@@ -63,12 +62,12 @@ std::vector<unsigned int>& Mesh::getIndices()
 
 unsigned int Mesh::getNumIndices()
 {
-	return this->vaoData.numIndices;
+	return this->numIndices;
 }
 
 unsigned int Mesh::getVAO_ID()
 {
-	return this->vaoData.VAO_ID;
+	return this->VAO_ID;
 }
 
 unsigned int Mesh::getNumVertices()
@@ -78,13 +77,13 @@ unsigned int Mesh::getNumVertices()
 
 
 
-void Mesh::assignVAO(VAO_Data vao_data)
+void Mesh::assignVAO(unsigned int id, unsigned int numIndices)
 {
-	this->vaoData.VAO_ID = vao_data.VAO_ID;
-	this->vaoData.numIndices = vao_data.numIndices;
+	this->VAO_ID = id;
+	this->numIndices = numIndices;
 }
 
 void Mesh::regenerateMesh()
 {
-	/* TODO: if the texture uv coordinates need to be remapped, reload mesh */
+	/* TODO: if texture uv coordinates need to be remapped, reload mesh */
 }

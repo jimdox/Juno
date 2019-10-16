@@ -1,6 +1,7 @@
 #pragma once
 #include "render/bxContext.h"
 #include "render/Shader.h"
+#include <memory>
 namespace bbx {
 class bxProgram
 {
@@ -18,10 +19,10 @@ public:
 
 protected:
 private:
-	bxContext* renderContext;
-	Shader* shader;
-	Camera* camera;
-
+	std::unique_ptr<bxContext> renderContext;
+	std::shared_ptr<Shader> shader;
+	std::shared_ptr<Camera> camera; 
+	
 
 	/* time-keeping vars. */
 	float dt;
