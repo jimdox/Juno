@@ -3,6 +3,7 @@
 #include "core/Log.h"
 #include "core/bxAssetLoader.h"
 #include "render/Camera.h"
+#include "render/lights/Light.h"
 
 using namespace bbx;
 
@@ -27,6 +28,7 @@ void bxProgram::init()
 	BX_WARN(BX_GFX_DEVICE);
 
 	camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 4.5f), 0.0f, 0.0f, 0.0f);
+	Light light(glm::vec3(0,0,0), glm::vec3(0,0,0));
 
 
 }

@@ -81,6 +81,7 @@ OBJECTS := \
 	$(OBJDIR)/Texture.o \
 	$(OBJDIR)/bxContext.o \
 	$(OBJDIR)/bxGUI.o \
+	$(OBJDIR)/Light.o \
 
 RESOURCES := \
 
@@ -173,6 +174,9 @@ $(OBJDIR)/bxContext.o: src/render/bxContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/bxGUI.o: src/render/bxGUI.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Light.o: src/render/lights/Light.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
