@@ -11,26 +11,26 @@ ifndef verbose
 endif
 
 ifeq ($(config),debug)
-  bxEngine_config = debug
+  bx_Engine_config = debug
 endif
 ifeq ($(config),release)
-  bxEngine_config = release
+  bx_Engine_config = release
 endif
 
-PROJECTS := bxEngine
+PROJECTS := bx_Engine
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-bxEngine:
-ifneq (,$(bxEngine_config))
-	@echo "==== Building bxEngine ($(bxEngine_config)) ===="
-	@${MAKE} --no-print-directory -C bxEngine -f Makefile config=$(bxEngine_config)
+bx_Engine:
+ifneq (,$(bx_Engine_config))
+	@echo "==== Building bx_Engine ($(bx_Engine_config)) ===="
+	@${MAKE} --no-print-directory -C bx_Engine -f Makefile config=$(bx_Engine_config)
 endif
 
 clean:
-	@${MAKE} --no-print-directory -C bxEngine -f Makefile clean
+	@${MAKE} --no-print-directory -C bx_Engine -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -42,6 +42,6 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   bxEngine"
+	@echo "   bx_Engine"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

@@ -1,6 +1,6 @@
 workspace "BlackBox"
 	architecture "x64"
-	startproject "bxEngine"
+	startproject "bx_Engine"
 	
 	configurations
 	{
@@ -15,10 +15,11 @@ workspace "BlackBox"
 	IncludeDir["imgui"] = "%{prj.name}/lib/imgui"
 	IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
 	IncludeDir["stb"] = "%{prj.name}/lib/stb"
+	IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
 	
 	
-	project "bxEngine"
-		location "bxEngine"
+	project "bx_Engine"
+		location "bx_Engine"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
@@ -40,6 +41,8 @@ workspace "BlackBox"
 			"%{prj.name}/src/**.cpp",
 			"%{prj.name}/lib/stb/stb_image.h",
 
+			"%{prj.name}/lib/jpl/*.hpp",
+
 			--"%{prj.name}/lib/imgui/imgui.h",
 			--"%{prj.name}/lib/imgui/imgui_internal.h",
 			--"%{prj.name}/lib/imgui/imgui_impl_glfw.h",
@@ -52,8 +55,7 @@ workspace "BlackBox"
 			--"%{prj.name}/lib/imgui/imgui_draw.cpp",
 			--"%{prj.name}/lib/imgui/imgui_ogl3.cpp",
 			--"%{prj.name}/lib/imgui/imgui_widgets.cpp"
-
-		
+			
 		}
 		
 		defines
@@ -67,14 +69,14 @@ workspace "BlackBox"
 			"%{prj.name}/include",
 			"%{prj.name}/lib/stb",
 			"%{prj.name}/lib/spdlog/include",
+			"%{prj.name}/lib/jpl",
 			"%{prj.name}/lib/imgui"
+
 		}
 		
 		links 
 		{ 
-            "GL",
-            "GLEW",
-			"glfw",
-			"assimp"
-			
+            		"GL",
+            		"GLEW",
+			"glfw"
 		}
