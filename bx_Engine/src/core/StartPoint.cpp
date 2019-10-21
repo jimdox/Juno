@@ -1,20 +1,20 @@
 #include <iostream>
-#include "core/bxProgram.h"
+#include "core/Program.h"
 #include "core/Log.h"
 
 /**/
-namespace bbx {
+namespace bx {
 const std::string BX_VERSION = "v0.0.1";
 
 void bxInit()
 {
 	Log::init();
-	BX_INFO(BX_VERSION + ": " + " Launching");
+	BX_INFO("{}: Launching", BX_VERSION);
 }
 
-bxProgram* createProgram()
+Program* createProgram()
 {	
-	bxProgram* prog = new bxProgram();
+	Program* prog = new Program();
 	return prog;
 }
 
@@ -23,8 +23,8 @@ bxProgram* createProgram()
 
 int main()
 {
-	bbx::bxInit();
-	auto program = bbx::createProgram();
+	bx::bxInit();
+	auto program = bx::createProgram();
 	program->run();
 	program->exit();
 	BX_CLI_INFO("Closing...");

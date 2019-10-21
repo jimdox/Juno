@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-namespace bbx {
+namespace bx {
 
 class Light
 {

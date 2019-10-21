@@ -2,7 +2,7 @@
 #include "core/Log.h"
 #include "stb_image.h"
 #include <iostream>
-using namespace bbx;
+using namespace bx;
 
 /* this constructor loads the texture itself */
 Texture::Texture(std::string& filepath, std::string& texType, bool hasUVs) : filepath(filepath), texType(texType)

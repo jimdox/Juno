@@ -1,6 +1,5 @@
 #pragma once
-#include "bxContext.h"
-#include <vector>
+#include "Context.h"
 // #include "imgui.h"
 // #include "imgui_impl_glfw.h"
 // #include "imgui_ogl3.h"
@@ -11,6 +10,7 @@
 #include "render/Texture.h"
 #include "core/Log.h"
 #include "core/bxMath.h"
+#include <vector>
 
 #define BX_GFX_DEVICE glGetString(GL_RENDERER)
 
@@ -33,6 +33,8 @@ namespace bxRender {
 		stbi_set_flip_vertically_on_load(true);
 
 		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 
 		// IMGUI_CHECKVERSION();
 		// ImGui::CreateContext();
@@ -53,9 +55,9 @@ namespace bxRender {
 
 
 	/* render static mesh */
-	static void render(bbx::Mesh *m, bbx::Shader &shader)
+	static void render(bx::Mesh *m, bx::Shader &shader)
 	{
-		bbx::Mesh mesh = *m;
+		bx::Mesh mesh = *m;
 		glBindVertexArray(mesh.getVAO_ID());
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -72,20 +74,23 @@ namespace bxRender {
 	}
 
 	/* render entity */
-	static void renderEntity(bbx::Entity& entity, std::shared_ptr<bbx::Shader> & shader)
+	static void renderEntity(bx::Entity& entity, std::shared_ptr<bx::Shader> & shader)
 	{
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
-		glBindVertexArray(entity.getMesh().getVAO_ID());
+		glBindVertexArray(entity.getMesh().getVAO_ID()); 
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		/* load transformation */
+		glEnableVertexAttribArray(2); 
+
 		glm::mat4 transformationMat = bxMath::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
 		shader->loadTransformMatrix(transformationMat);
+		shader->loadPBRVars(entity.getMesh().getMaterial());
 		/* --- */
+
+
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, entity.getMesh().getTextureZero().getID());
+		glBindTexture(GL_TEXTURE_2D, entity.getMesh().getDiffuseTextures()[0].getID());
 		glDrawElements(GL_TRIANGLES, entity.getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
 		
 		glDisableVertexAttribArray(0);
@@ -96,10 +101,30 @@ namespace bxRender {
 		checkGLErrors();
 	}
 
-	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)
+	static void instancedRender(std::vector<bx::Entity> entities, std::shared_ptr<bx::Shader> & shader)
 	{
+		bx::Mesh& mesh = entities[0].getMesh();
+		glBindVertexArray(mesh.getVAO_ID()); 
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2); 
+		shader->loadPBRVars(mesh.getMaterial());
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
 
+		for(int i = 0; i < entities.size(); i++)
+		{
+		glm::mat4 transformationMat = bxMath::createTransformationMat(entities[i].getPosition(), entities[i].getRotation(), entities[i].getScale());
+		shader->loadTransformMatrix(transformationMat);
+		glDrawElements(GL_TRIANGLES, mesh.getNumIndices(), GL_UNSIGNED_INT, 0);
+		}
+
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glBindVertexArray(0);
 		
+		checkGLErrors();
 	}
 
 

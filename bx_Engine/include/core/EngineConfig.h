@@ -21,7 +21,7 @@ static void readConfigFile()
 
 #endif
 
-namespace bbx {
+namespace bx {
 static float getAspectRatio()
 {
     return aspectRatio;

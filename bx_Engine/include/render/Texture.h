@@ -3,7 +3,7 @@
 #include <string>
 #include "stb_image.h"
 
-namespace bbx {
+namespace bx {
 class Texture
 {
 public:

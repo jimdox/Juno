@@ -1,11 +1,10 @@
 #include "render/Shader.h"
-
 #include <ios>
 #include <sstream>
 #include "core/Log.h"
 #include "core/bxMath.h"
 
-using namespace bbx;
+using namespace bx;
 
 Shader::Shader()
 {
@@ -168,6 +167,8 @@ void Shader::cacheUniformLocations()
 	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
 	loc_lightPosition = glGetUniformLocation(progID, "lightPosition");
 	loc_lightColor = glGetUniformLocation(progID, "lightColor");
+	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
+	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
 }
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
@@ -192,7 +193,12 @@ void Shader::loadLightUniforms(Light& light)
 {
 	setVec3(loc_lightPosition, light.getPosition());
 	setVec3(loc_lightColor, light.getColor());
+}
 
+void Shader::loadPBRVars(Material material)
+{
+	setFloat(loc_reflectivity, material.reflectivity);
+	setFloat(loc_shineDamper, material.shineDamper);
 }
 
 /* GLSL uniform loaders */

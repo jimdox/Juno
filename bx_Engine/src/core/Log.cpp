@@ -1,5 +1,5 @@
 #include "core/Log.h"
-using namespace bbx;
+using namespace bx;
 
 std::shared_ptr<spdlog::logger> Log::coreLogger;
 std::shared_ptr<spdlog::logger> Log::clientLogger;

@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 
-namespace bbx {
+namespace bx {
 class Log
 {
 public:
@@ -24,14 +24,14 @@ private:
 
 
 
-#define BX_ERR(...) ::bbx::Log::coreLog()->error(__VA_ARGS__);
-#define BX_INFO(...) ::bbx::Log::coreLog()->info(__VA_ARGS__);
-#define BX_WARN(...) ::bbx::Log::coreLog()->warn(__VA_ARGS__);
-#define BX_CRIT(...) ::bbx::Log::coreLog()->critical(__VA_ARGS__);
-#define BX_TRACE(...) ::bbx::Log::coreLog()->trace(__VA_ARGS__);
+#define BX_ERR(...) ::bx::Log::coreLog()->error(__VA_ARGS__);
+#define BX_INFO(...) ::bx::Log::coreLog()->info(__VA_ARGS__);
+#define BX_WARN(...) ::bx::Log::coreLog()->warn(__VA_ARGS__);
+#define BX_CRIT(...) ::bx::Log::coreLog()->critical(__VA_ARGS__);
+#define BX_TRACE(...) ::bx::Log::coreLog()->trace(__VA_ARGS__);
 
-#define BX_CLI_ERR(...) ::bbx::Log::clientLog()->error(__VA_ARGS__);
-#define BX_CLI_INFO(...) ::bbx::Log::clientLog()->info(__VA_ARGS__);
-#define BX_CLI_WARN(...) ::bbx::Log::clientLog()->warn(__VA_ARGS__);
-#define BX_CLI_CRIT(...) ::bbx::Log::clientLog()->critical(__VA_ARGS__);
+#define BX_CLI_ERR(...) ::bx::Log::clientLog()->error(__VA_ARGS__);
+#define BX_CLI_INFO(...) ::bx::Log::clientLog()->info(__VA_ARGS__);
+#define BX_CLI_WARN(...) ::bx::Log::clientLog()->warn(__VA_ARGS__);
+#define BX_CLI_CRIT(...) ::bx::Log::clientLog()->critical(__VA_ARGS__);
 

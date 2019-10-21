@@ -7,11 +7,12 @@
 #include "core/Log.h"
 
 
-namespace bbx {
+namespace bx {
 
 typedef struct Material 
 {
-	// PBR related things will go here (reflectivity, shine damper, etc...)
+	float reflectivity;
+	float shineDamper;
 
 } Material;
 
@@ -32,14 +33,13 @@ public:
 
 	virtual ~Mesh();
 	
-	void addTexture(Texture* tex);
-
+	void addTexture(Texture* tex, const std::string& type);
+	void setMaterial(Material& mat);
+	
 	unsigned int getVAO_ID();
-
-
 	std::vector<Texture>& getDiffuseTextures();
 	std::vector<Texture>& getSpecTextures();
-	Texture& getTextureZero();
+	Material& getMaterial();
 
 	std::vector<float>& getVertices();
 	std::vector<float>& getNormals();
@@ -61,6 +61,7 @@ private:
 	std::vector<unsigned int> indices;
 
 	TextureList textureList;
+	Material material;
 
 	unsigned int VAO_ID;
 	unsigned int numVertices;

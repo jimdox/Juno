@@ -1,7 +1,7 @@
 #include "render/Camera.h"
 #include "core/bxMath.h"
 #include "core/EngineConfig.h"
-using namespace bbx;
+using namespace bx;
 
 
 

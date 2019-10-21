@@ -1,6 +1,6 @@
 #include "entity/Entity.h"
 #include "core/bxAssetLoader.h"
-using namespace bbx;
+using namespace bx;
 
 
 Entity::Entity(Mesh& mesh, std::string& name) : mesh(mesh), name(name)

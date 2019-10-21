@@ -3,7 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
-namespace bbx { 
+namespace bx { 
 class Camera
 {
 public:

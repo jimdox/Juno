@@ -70,16 +70,16 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/Log.o \
+	$(OBJDIR)/Program.o \
 	$(OBJDIR)/StartPoint.o \
-	$(OBJDIR)/bxProgram.o \
 	$(OBJDIR)/Entity.o \
 	$(OBJDIR)/Event.o \
 	$(OBJDIR)/Camera.o \
+	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/RenderQueue.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Texture.o \
-	$(OBJDIR)/bxContext.o \
 	$(OBJDIR)/bxGUI.o \
 	$(OBJDIR)/Light.o \
 
@@ -143,10 +143,10 @@ endif
 $(OBJDIR)/Log.o: src/core/Log.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/StartPoint.o: src/core/StartPoint.cpp
+$(OBJDIR)/Program.o: src/core/Program.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/bxProgram.o: src/core/bxProgram.cpp
+$(OBJDIR)/StartPoint.o: src/core/StartPoint.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Entity.o: src/entity/Entity.cpp
@@ -156,6 +156,9 @@ $(OBJDIR)/Event.o: src/events/Event.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/render/Camera.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Context.o: src/render/Context.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
@@ -168,9 +171,6 @@ $(OBJDIR)/Shader.o: src/render/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Texture.o: src/render/Texture.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/bxContext.o: src/render/bxContext.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/bxGUI.o: src/render/bxGUI.cpp

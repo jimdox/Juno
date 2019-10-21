@@ -1,8 +1,7 @@
 ../bin/int/Debug-linux-x86_64/bx_Engine/StartPoint.o: \
- src/core/StartPoint.cpp include/core/bxProgram.h \
- include/render/bxContext.h include/core/Log.h \
- lib/spdlog/include/spdlog/spdlog.h lib/spdlog/include/spdlog/common.h \
- lib/spdlog/include/spdlog/tweakme.h \
+ src/core/StartPoint.cpp include/core/Program.h include/render/Context.h \
+ include/core/Log.h lib/spdlog/include/spdlog/spdlog.h \
+ lib/spdlog/include/spdlog/common.h lib/spdlog/include/spdlog/tweakme.h \
  lib/spdlog/include/spdlog/details/null_mutex.h \
  lib/spdlog/include/spdlog/fmt/fmt.h \
  lib/spdlog/include/spdlog/fmt/bundled/core.h \
@@ -24,11 +23,12 @@
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/render/Shader.h include/render/Camera.h \
- include/render/lights/Light.h
+ include/render/lights/Light.h include/render/Mesh.h \
+ include/render/Texture.h lib/stb/stb_image.h
 
-include/core/bxProgram.h:
+include/core/Program.h:
 
-include/render/bxContext.h:
+include/render/Context.h:
 
 include/core/Log.h:
 
@@ -85,3 +85,9 @@ include/render/Shader.h:
 include/render/Camera.h:
 
 include/render/lights/Light.h:
+
+include/render/Mesh.h:
+
+include/render/Texture.h:
+
+lib/stb/stb_image.h:

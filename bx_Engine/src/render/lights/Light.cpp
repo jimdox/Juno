@@ -1,6 +1,6 @@
 #include "render/lights/Light.h"
 
-using namespace bbx;
+using namespace bx;
 
 Light::Light(glm::vec3 pos, glm::vec3 color)
 {

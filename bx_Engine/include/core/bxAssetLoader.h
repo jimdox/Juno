@@ -105,7 +105,7 @@ namespace bxImport {
 
 
     /* custom obj importer */
-    static bbx::Mesh loadOBJ(std::string& filepath)
+    static bx::Mesh loadOBJ(std::string& filepath)
     {
         std::string line;                            /* per line .obj info */
         std::ifstream openFile(filepath.c_str());
@@ -206,7 +206,7 @@ namespace bxImport {
             verticesData.push_back(vertex.z);
         }
 
-        bbx::Mesh mesh(verticesData, texturesData, normalsData, indices);
+        bx::Mesh mesh(verticesData, texturesData, normalsData, indices);
 
         auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
         mesh.assignVAO(id, numIndices);

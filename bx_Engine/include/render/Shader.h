@@ -6,9 +6,10 @@
 #include "glm/glm.hpp"
 #include "render/Camera.h"
 #include "render/lights/Light.h"
+#include "render/Mesh.h"
 #include <memory>
 
-namespace bbx {
+namespace bx {
 class Shader
 {
 public:
@@ -29,6 +30,7 @@ public:
 	void loadViewMatrix(std::shared_ptr<Camera> & camera);
 
 	void loadLightUniforms(Light& light);
+	void loadPBRVars(Material material);
 
 	void setInt(unsigned int loc, int value) const;
 	void setBool(unsigned int loc, bool flag) const;
@@ -53,6 +55,8 @@ private:
 	unsigned int loc_viewMatrix;
 	unsigned int loc_lightPosition;
 	unsigned int loc_lightColor;
+	unsigned int loc_reflectivity;
+	unsigned int loc_shineDamper;
 
 };
 }

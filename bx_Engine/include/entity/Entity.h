@@ -3,7 +3,7 @@
 #include <glm/gtx/transform.hpp>
 #include "render/Mesh.h"
 
-namespace bbx {
+namespace bx {
 class Entity
 {
 public:

@@ -5,7 +5,8 @@ in vec2 texCoordinates;
 
 out vec2 pass_texCoordinates;
 out vec3 surfaceNormal;
-out vec3 lightDir;
+out vec3 toLightDir;
+out vec3 cameraDir;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
@@ -19,7 +20,9 @@ void main()
         pass_texCoordinates = texCoordinates;
 
         surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
-        lightDir = lightPosition - (globalPosition).xyz;
+        toLightDir = lightPosition - (globalPosition).xyz;
+        cameraDir = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - globalPosition.xyz;
+        
 }
 
 
