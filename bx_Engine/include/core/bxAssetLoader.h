@@ -56,7 +56,7 @@ namespace bxImport {
     // }
 
    
-    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<unsigned int> &indices)
+    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<float> normals, std::vector<unsigned int> &indices)
     {
         unsigned int vaoID = generateVAO();
 
@@ -68,7 +68,8 @@ namespace bxImport {
         unsigned int numIndices = indices.size();
         
         storeInAttribList(0, 3, positions);
-        storeInAttribList(1, 2, texCoordinates);
+        storeInAttribList(1, 3, normals);
+        storeInAttribList(2, 2, texCoordinates);
 
 
         glBindVertexArray(0);
@@ -207,7 +208,7 @@ namespace bxImport {
 
         bbx::Mesh mesh(verticesData, texturesData, normalsData, indices);
 
-        auto [id, numIndices] = loadToVAO(verticesData, texturesData, indices);
+        auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
         mesh.assignVAO(id, numIndices);
         return mesh;
     }

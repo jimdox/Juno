@@ -149,7 +149,9 @@ void Shader::unbindProgram()
 void Shader::bindAllAttribs()
 {
 	bindAttrib(0, "position");
-	bindAttrib(1, "texCoordinates");
+	bindAttrib(1, "normal");
+	bindAttrib(2, "texCoordinates");
+
 
 }
 
@@ -165,7 +167,7 @@ void Shader::cacheUniformLocations()
 	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
 	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
 	loc_lightPosition = glGetUniformLocation(progID, "lightPosition");
-	loc_lightColor - glGetUniformLocation(progID, "lightColor");
+	loc_lightColor = glGetUniformLocation(progID, "lightColor");
 }
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
@@ -215,7 +217,7 @@ void Shader::setVec2(unsigned int loc, glm::vec2& vec) const
 	glUniform2fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec3(unsigned int loc, glm::vec3& vec) const
+void Shader::setVec3(unsigned int loc, glm::vec3 &vec) const
 {
 	glUniform3fv(loc, 1, &vec[0]);
 }

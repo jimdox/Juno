@@ -41,25 +41,26 @@ void bxProgram::run()
 	shader->loadViewMatrix(camera);
 	shader->unbindProgram();
 
-	std::string objPath = "./bx_Engine/res/sphere.obj";
+	std::string objPath = "./bx_Engine/res/susanne.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 	
-	std::string texFilePath = "./bx_Engine/res/planet.png";
+	std::string texFilePath = "./bx_Engine/res/grey.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	stall.addTexture(&texture1);
 
-	glm::vec3 entPos(0.0f, -1.9f, -3.0f);
+	glm::vec3 entPos(0.0f, -0.1f, -4.0f);
 	glm::vec3 entRot(0.0f, 0.0f, 0.0f);
 	std::string entName = "fordo";
-	Entity fordo(stall, entPos, entRot, 1.0f, entName);
+	Entity fordo(stall, entPos, entRot, 1.3f, entName);
 
-	glm::vec3 entBPos(4.0f, 0.0f, -3.4f);
-	glm::vec3 entCPos(-4.0f, 0.0f, -3.4f);
+	glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
+	glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 	Entity entB(stall, entBPos, entRot, 1.0f, entName);
 	Entity entC(stall, entCPos, entRot, 1.0f, entName);
 
-	//splashShader();
+	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.91f, 0.41f, 0.41f));
+
 	dt = 0;
 	numFrames = 0; 
 
@@ -74,9 +75,10 @@ void bxProgram::run()
 
 		shader->useProgram();
 		shader->loadViewMatrix(camera);
+		shader->loadLightUniforms(light);
 		bxRender::renderEntity(fordo, shader);
-		//bxRender::renderEntity(entB, *shader);
-		//bxRender::renderEntity(entC, *shader);
+		//bxRender::renderEntity(entB, shader);
+		//bxRender::renderEntity(entC, shader);
 		shader->unbindProgram();
 
 

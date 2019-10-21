@@ -16,6 +16,16 @@
 
 namespace bxRender {
 
+	static void checkGLErrors()
+	{
+		while(GLenum err = glGetError())
+		{
+			BX_CRIT("OpenGL error code: {}"  , err);
+		}
+
+		while(glGetError() != GL_NO_ERROR){}
+	}
+
 	static void init(GLFWwindow* window)
 	{
 		if (glewInit() != GLEW_OK) { BX_ERR("GLEW failed to init!"); }
@@ -69,6 +79,7 @@ namespace bxRender {
 		glBindVertexArray(entity.getMesh().getVAO_ID());
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
 		/* load transformation */
 		glm::mat4 transformationMat = bxMath::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
 		shader->loadTransformMatrix(transformationMat);
@@ -79,7 +90,10 @@ namespace bxRender {
 		
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 		glBindVertexArray(0);
+		
+		checkGLErrors();
 	}
 
 	static void instancedRender(std::vector<bbx::Entity>, bbx::Shader* shader)

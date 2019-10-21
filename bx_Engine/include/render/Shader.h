@@ -51,7 +51,6 @@ private:
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
 	unsigned int loc_viewMatrix;
-	
 	unsigned int loc_lightPosition;
 	unsigned int loc_lightColor;
 
