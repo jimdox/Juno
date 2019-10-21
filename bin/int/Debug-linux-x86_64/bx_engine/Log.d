@@ -1,5 +1,4 @@
-../bin/int/Debug-linux-x86_64/bx_Engine/StartPoint.o: \
- src/core/StartPoint.cpp include/core/Program.h include/render/Context.h \
+../bin/int/Debug-linux-x86_64/bx_engine/Log.o: src/core/Log.cpp \
  include/core/Log.h lib/spdlog/include/spdlog/spdlog.h \
  lib/spdlog/include/spdlog/common.h lib/spdlog/include/spdlog/tweakme.h \
  lib/spdlog/include/spdlog/details/null_mutex.h \
@@ -21,14 +20,7 @@
  lib/spdlog/include/spdlog/sinks/ansicolor_sink.h \
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
- lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/render/Shader.h include/render/Camera.h \
- include/render/lights/Light.h include/render/Mesh.h \
- include/render/Texture.h lib/stb/stb_image.h
-
-include/core/Program.h:
-
-include/render/Context.h:
+ lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h
 
 include/core/Log.h:
 
@@ -79,15 +71,3 @@ lib/spdlog/include/spdlog/details/console_globals.h:
 lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
-
-include/render/Shader.h:
-
-include/render/Camera.h:
-
-include/render/lights/Light.h:
-
-include/render/Mesh.h:
-
-include/render/Texture.h:
-
-lib/stb/stb_image.h:

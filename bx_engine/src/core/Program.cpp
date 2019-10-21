@@ -21,7 +21,7 @@ Program::~Program()
 void Program::init()
 {
 	renderContext = std::make_unique<Context>(800, 800, "v0.0.1", false);
-	shader = std::make_shared<Shader>("./bx_Engine/res/shaders/basic");
+	shader = std::make_shared<Shader>("./bx_engine/res/shaders/basic");
 
 	GLuint shaderID = shader->getID();
 	this->renderContext->setShader(shaderID);
@@ -41,10 +41,10 @@ void Program::run()
 	shader->loadViewMatrix(camera);
 	shader->unbindProgram();
 
-	std::string objPath = "./bx_Engine/res/dragon.obj";
+	std::string objPath = "./bx_engine/res/dragon.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 	
-	std::string texFilePath = "./bx_Engine/res/grey.png";
+	std::string texFilePath = "./bx_engine/res/grey.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	stall.addTexture(&texture1, texType);

@@ -13,8 +13,8 @@ endif
 ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/bx_Engine
-  OBJDIR = ../bin/int/Debug-linux-x86_64/bx_Engine
+  TARGET = $(TARGETDIR)/bx_engine
+  OBJDIR = ../bin/int/Debug-linux-x86_64/bx_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
@@ -42,8 +42,8 @@ endif
 ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = ../bin
-  TARGET = $(TARGETDIR)/bx_Engine
-  OBJDIR = ../bin/int/Release-linux-x86_64/bx_Engine
+  TARGET = $(TARGETDIR)/bx_engine
+  OBJDIR = ../bin/int/Release-linux-x86_64/bx_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
@@ -93,7 +93,7 @@ ifeq (.exe,$(findstring .exe,$(ComSpec)))
 endif
 
 $(TARGET): $(GCH) ${CUSTOMFILES} $(OBJECTS) $(LDDEPS) $(RESOURCES) | $(TARGETDIR)
-	@echo Linking bx_Engine
+	@echo Linking bx_engine
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -116,7 +116,7 @@ else
 endif
 
 clean:
-	@echo Cleaning bx_Engine
+	@echo Cleaning bx_engine
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)

@@ -1,6 +1,6 @@
 workspace "BlackBox"
 	architecture "x64"
-	startproject "bx_Engine"
+	startproject "bx_engine"
 	
 	configurations
 	{
@@ -18,8 +18,8 @@ workspace "BlackBox"
 	IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
 	
 	
-	project "bx_Engine"
-		location "bx_Engine"
+	project "bx_engine"
+		location "bx_engine"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"

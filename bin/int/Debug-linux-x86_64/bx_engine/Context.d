@@ -1,5 +1,5 @@
-../bin/int/Debug-linux-x86_64/bx_Engine/bxContext.o: \
- src/render/bxContext.cpp include/render/bxContext.h include/core/Log.h \
+../bin/int/Debug-linux-x86_64/bx_engine/Context.o: src/render/Context.cpp \
+ include/render/Context.h include/core/Log.h \
  lib/spdlog/include/spdlog/spdlog.h lib/spdlog/include/spdlog/common.h \
  lib/spdlog/include/spdlog/tweakme.h \
  lib/spdlog/include/spdlog/details/null_mutex.h \
@@ -28,7 +28,7 @@
  include/render/Mesh.h include/entity/Entity.h include/core/bxMath.h \
  include/core/EngineConfig.h
 
-include/render/bxContext.h:
+include/render/Context.h:
 
 include/core/Log.h:
 

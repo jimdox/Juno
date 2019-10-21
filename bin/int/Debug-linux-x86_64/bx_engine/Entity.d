@@ -1,7 +1,6 @@
-../bin/int/Debug-linux-x86_64/bx_Engine/Shader.o: src/render/Shader.cpp \
- include/render/Shader.h include/render/Camera.h \
- include/render/lights/Light.h include/render/Mesh.h \
- include/render/Texture.h lib/stb/stb_image.h include/core/Log.h \
+../bin/int/Debug-linux-x86_64/bx_engine/Entity.o: src/entity/Entity.cpp \
+ include/entity/Entity.h include/render/Mesh.h include/render/Texture.h \
+ lib/stb/stb_image.h include/core/Log.h \
  lib/spdlog/include/spdlog/spdlog.h lib/spdlog/include/spdlog/common.h \
  lib/spdlog/include/spdlog/tweakme.h \
  lib/spdlog/include/spdlog/details/null_mutex.h \
@@ -24,13 +23,9 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/core/bxMath.h
+ include/core/bxAssetLoader.h
 
-include/render/Shader.h:
-
-include/render/Camera.h:
-
-include/render/lights/Light.h:
+include/entity/Entity.h:
 
 include/render/Mesh.h:
 
@@ -88,4 +83,4 @@ lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
 
-include/core/bxMath.h:
+include/core/bxAssetLoader.h:
