@@ -22,7 +22,7 @@ protected:
 private:
 	std::unique_ptr<Context> renderContext;
 	std::shared_ptr<Shader> shader;
-	std::shared_ptr<Camera> camera; 
+	Camera camera; 
 	
 
 	/* time-keeping vars. */

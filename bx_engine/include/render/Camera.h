@@ -11,7 +11,7 @@ public:
     Camera(glm::vec3 pos, float yaw, float pitch, float roll);
 	~Camera();
 
-	void move(glm::vec3 pos, glm::vec3 rot);
+	void move(glm::vec3 dv, glm::vec3 dRot);
 
 	glm::vec3& getPosition();
 	float getZoom();
@@ -20,7 +20,7 @@ public:
 	float getYaw();
 	
 	void setZoom(float z);
-	void update();
+	void update(glm::vec3 dPos, glm::vec3 dRot, float deltaZoom);
 
 	glm::mat4& getProjectionMatrix();
 	glm::mat4& getViewMatrix();
@@ -29,6 +29,7 @@ private:
 	void generateProjectionMatrix();
 
 	glm::vec3 position;
+	glm::vec3 velocity;
 	//glm::vec3 rotation;
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;

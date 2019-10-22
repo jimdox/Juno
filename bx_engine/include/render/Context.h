@@ -5,6 +5,10 @@
 #include <iostream>
 #include <time.h>
 #include "core/Log.h"
+#include "core/KeyMap.h"
+#include "render/Camera.h"
+
+
 namespace bx {
 class Context
 {
@@ -17,11 +21,10 @@ public:
 	void renderUpdate();
 	void init();
 	//void splashImage();
-	void update();
+	void update(Camera* camera, float dt);
 
 	void destroy();
 	void setVisible(bool flag);
-	void setShader(GLuint id);
 
 	bool isRunning();
 
@@ -33,12 +36,11 @@ protected:
 private:
 	//RenderContext(const RenderContext& other){}
 	//RenderContext& operator=(const RenderContext& other){}
-
+	GLFWwindow* window;
 	int height;
 	int width;
 	std::string title;
-	GLFWwindow* window;
-	GLuint shaderID;
+
 	//GLuint shaders[4];
 	bool isLoading;
 	bool isValid;

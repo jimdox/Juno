@@ -1,6 +1,5 @@
 #include "render/Context.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "core/KeyMap.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -8,7 +7,7 @@
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
 /*
-	(OpenGL/Vulkan) Rendering context
+	(OpenGL) Rendering context
 */
 using namespace bx;
 
@@ -44,7 +43,6 @@ Context::Context(int width, int height, std::string title, bool border)
 	{
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 	}
-
 	init();
 
 
@@ -64,8 +62,8 @@ void Context::destroy()
 
 static void setErrCallback(int code, const char* message)
 {
-	std::string error(message); // convert char* to string
-	BX_ERR("GLFW window error, code: " + code);
+	std::string error(message);
+	BX_ERR("GLFW window error code: " + code);
 	BX_CRIT(error);
 }
 
@@ -107,14 +105,16 @@ void Context::init()
 	aspectRatio = this->width / this->height;
 }
 
-void Context::update()
+void Context::update(Camera* camera, float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 
+	camera->update(glm::vec3(s_cam_vx, s_cam_vy, s_cam_vz), glm::vec3(s_cam_roll*dt, s_cam_pitch*dt, s_cam_yaw*dt), s_deltaZoom);
 
 }
+
 /*   ---   */
 
 
@@ -124,12 +124,6 @@ bool RenderContext::isVisible()
 	return true;
 }
 */
-
-/* sets default shader for context */
-void Context::setShader(GLuint id)
-{
-	this->shaderID = id;
-}
 
 bool Context::isRunning()
 {

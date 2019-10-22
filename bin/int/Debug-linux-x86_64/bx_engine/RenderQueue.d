@@ -26,7 +26,7 @@
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/render/Camera.h include/render/Shader.h \
  include/render/lights/Light.h include/render/glRenderCore.h \
- include/render/Context.h include/core/bxMath.h
+ include/render/Context.h include/core/KeyMap.h include/core/bxMath.h
 
 include/render/RenderQueue.h:
 
@@ -97,5 +97,7 @@ include/render/lights/Light.h:
 include/render/glRenderCore.h:
 
 include/render/Context.h:
+
+include/core/KeyMap.h:
 
 include/core/bxMath.h:

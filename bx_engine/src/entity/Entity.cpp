@@ -7,12 +7,13 @@ Entity::Entity(Mesh& mesh, std::string& name) : mesh(mesh), name(name)
 {
 	/* initializes rotation, position to 0 vector */
 	this->scale = 0.0f;
+	this->visible = true;
 }
 
 Entity::Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, std::string& name) : mesh(mesh), name(name), position(pos), rotation(rot)
 {
 	this->scale = scale;
-	
+	this->visible = true;
 }
 
 

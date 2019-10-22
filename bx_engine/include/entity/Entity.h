@@ -29,6 +29,7 @@ private:
 	glm::vec3 position;
 	glm::vec3 rotation;
 	float scale;
+	bool visible;
 	//std::string& assetFilePath;
 
 };

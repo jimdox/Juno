@@ -31,7 +31,7 @@ static glm::mat4 createTransformationMat(glm::vec3 translation, glm::vec3 rotati
 }
 
 
-static glm::mat4 generateViewMatrix(std::shared_ptr<bx::Camera> & camera)
+static glm::mat4 generateViewMatrix(bx::Camera* camera)
 {
     glm::mat4 viewMat = glm::mat4(1.0f);
     viewMat = glm::rotate(viewMat, toRadians(camera->getPitch()), glm::vec3(1.0f, 0.0f, 0.0f));

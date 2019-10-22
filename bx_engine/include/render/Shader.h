@@ -27,7 +27,7 @@ public:
 
 	void loadTransformMatrix(glm::mat4& transform);
 	void loadProjectionMatrix(glm::mat4& projection);
-	void loadViewMatrix(std::shared_ptr<Camera> & camera);
+	void loadViewMatrix(Camera* camera);
 
 	void loadLightUniforms(Light& light);
 	void loadPBRVars(Material material);

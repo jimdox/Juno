@@ -8,7 +8,7 @@
             "name": "bxDebug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/dox/dev/BlackBox/bin/bxEngine",
+            "program": "/home/dox/dev/black_box/bin/bx_engine",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -2,7 +2,7 @@
 #include "render/glRenderCore.h"
 using namespace bx;
 
-RenderQueue::RenderQueue(std::shared_ptr<Camera> camera) : camera(camera)
+RenderQueue::RenderQueue()  //std::shared_ptr<Camera> & camera) : camera(camera)
 {
 
 }
@@ -36,8 +36,10 @@ void RenderQueue::remove(Entity& entity)
     }
 }
 
-void RenderQueue::render()
+void RenderQueue::render(Camera* camera)
 {
+    //camera->update(glm::vec3(s_cam_vx, s_cam_vy, s_cam_vz), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
+
     for(int i = 0; i < entities.size(); i++)
     {   
         shaders[i]->useProgram();

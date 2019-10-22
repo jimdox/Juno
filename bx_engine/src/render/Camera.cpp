@@ -23,19 +23,23 @@ Camera::~Camera()
 
 }
 
-void Camera::move(glm::vec3 pos, glm::vec3 rot)
+void Camera::move(glm::vec3 pos, glm::vec3 dRot)
 {
-	 this->position += pos;
-	 this->pitch += rot.y;
-	 this->yaw += rot.z;
-	 this->roll += rot.x;
+	 this->position = pos;
+	 this->pitch += dRot.y;
+	 this->yaw += dRot.z;
+	 this->roll += dRot.x;
 }
 
 
 
-void Camera::update()
+void Camera::update(glm::vec3 dPos, glm::vec3 dRot, float deltaZoom)
 {
-	
+	this->position += dPos; 
+	this->roll += dRot.x;
+	this->pitch += dRot.y;
+	this->yaw += dRot.z;
+	this->zoom += deltaZoom;
 }
 
 glm::vec3& Camera::getPosition()

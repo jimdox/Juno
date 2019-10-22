@@ -74,7 +74,7 @@ namespace bxRender {
 	}
 
 	/* render entity */
-	static void renderEntity(bx::Entity* entity, std::shared_ptr<bx::Shader> shader)
+	static void renderEntity(bx::Entity* entity, std::shared_ptr<bx::Shader> & shader)
 	{
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
@@ -101,7 +101,7 @@ namespace bxRender {
 		checkGLErrors();
 	}
 
-	static void instancedRender(std::vector<bx::Entity> &entities, std::shared_ptr<bx::Shader> & shader)
+	static void batchRender(std::vector<bx::Entity> &entities, std::shared_ptr<bx::Shader> & shader)
 	{
 		bx::Mesh& mesh = entities[0].getMesh();
 		glBindVertexArray(mesh.getVAO_ID()); 
