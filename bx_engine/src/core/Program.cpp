@@ -4,6 +4,7 @@
 #include "core/bxAssetLoader.h"
 #include "render/Camera.h"
 #include "render/lights/Light.h"
+#include "render/RenderQueue.h"
 
 using namespace bx;
 
@@ -64,6 +65,11 @@ void Program::run()
 	dt = 0;
 	numFrames = 0; 
 
+	RenderQueue queue(camera);
+	queue.submit(&fordo, shader);
+	queue.addLight(light);
+
+
 	while (renderContext->isRunning())
 	{
 		fpsCounter();
@@ -73,14 +79,7 @@ void Program::run()
 
 		bxRender::clear();
 
-		shader->useProgram();
-		shader->loadViewMatrix(camera);
-		shader->loadLightUniforms(light);
-		bxRender::renderEntity(fordo, shader);
-		//bxRender::renderEntity(entB, shader);
-		//bxRender::renderEntity(entC, shader);
-		shader->unbindProgram();
-
+		queue.render();
 
 		camera->move(glm::vec3(0.0f, 0.0f, 0.0005f), glm::vec3(0.0f, 0.0f, 0.0f));
 		//camera->setZoom(camera->getZoom() + dt);

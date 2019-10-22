@@ -26,7 +26,8 @@
  include/render/lights/Light.h include/render/Mesh.h \
  include/render/Texture.h lib/stb/stb_image.h \
  include/render/glRenderCore.h include/entity/Entity.h \
- include/core/bxMath.h include/core/bxAssetLoader.h
+ include/core/bxMath.h include/core/bxAssetLoader.h \
+ include/render/RenderQueue.h
 
 include/core/Program.h:
 
@@ -101,3 +102,5 @@ include/entity/Entity.h:
 include/core/bxMath.h:
 
 include/core/bxAssetLoader.h:
+
+include/render/RenderQueue.h:

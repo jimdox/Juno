@@ -74,24 +74,24 @@ namespace bxRender {
 	}
 
 	/* render entity */
-	static void renderEntity(bx::Entity& entity, std::shared_ptr<bx::Shader> & shader)
+	static void renderEntity(bx::Entity* entity, std::shared_ptr<bx::Shader> shader)
 	{
 		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
-		glBindVertexArray(entity.getMesh().getVAO_ID()); 
-		glEnableVertexAttribArray(0);
+		glBindVertexArray(entity->getMesh().getVAO_ID()); 
+		glEnableVertexAttribArray(0); 
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2); 
 
-		glm::mat4 transformationMat = bxMath::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
+		glm::mat4 transformationMat = bxMath::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
 		shader->loadTransformMatrix(transformationMat);
-		shader->loadPBRVars(entity.getMesh().getMaterial());
+		shader->loadPBRVars(entity->getMesh().getMaterial());
 		/* --- */
 
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, entity.getMesh().getDiffuseTextures()[0].getID());
-		glDrawElements(GL_TRIANGLES, entity.getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+		glBindTexture(GL_TEXTURE_2D, entity->getMesh().getDiffuseTextures()[0].getID());
+		glDrawElements(GL_TRIANGLES, entity->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
 		
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -101,7 +101,7 @@ namespace bxRender {
 		checkGLErrors();
 	}
 
-	static void instancedRender(std::vector<bx::Entity> entities, std::shared_ptr<bx::Shader> & shader)
+	static void instancedRender(std::vector<bx::Entity> &entities, std::shared_ptr<bx::Shader> & shader)
 	{
 		bx::Mesh& mesh = entities[0].getMesh();
 		glBindVertexArray(mesh.getVAO_ID()); 
