@@ -53,6 +53,17 @@ namespace bxRender {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
+	static void setBackFaceCulling(bool flag)
+	{
+		if(flag)
+		{
+			glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
+		} else {
+			glDisable(GL_CULL_FACE);
+		}
+	}
+
 
 	/* render static mesh */
 	static void render(bx::Mesh *m, bx::Shader &shader)
@@ -87,7 +98,7 @@ namespace bxRender {
 		shader->loadTransformMatrix(transformationMat);
 		shader->loadPBRVars(entity->getMesh().getMaterial());
 		/* --- */
-
+		setBackFaceCulling(!entity->getMesh().getDiffuseTextures()[0].containsTransparency());
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, entity->getMesh().getDiffuseTextures()[0].getID());

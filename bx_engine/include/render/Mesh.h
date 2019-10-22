@@ -28,7 +28,7 @@ typedef struct TextureList
 class Mesh
 {
 public:
-
+	Mesh();
 	Mesh(std::vector<float> vertices, std::vector<float> textureCoords, std::vector<float> normals, std::vector<unsigned int> indices);
 
 	virtual ~Mesh();
@@ -44,6 +44,7 @@ public:
 	std::vector<float>& getVertices();
 	std::vector<float>& getNormals();
 	std::vector<float>& getTextureCoords();
+
 	
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumIndices();

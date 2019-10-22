@@ -5,14 +5,17 @@ using namespace bx;
 
 
 
-
+Mesh::Mesh()
+{
+	this->material.reflectivity = 0.6f;
+	this->material.shineDamper = 0.85f;
+}
 
 
 Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
 {
 	this->material.reflectivity = 0.6f;
 	this->material.shineDamper = 0.85f;
-
 }
 
 

@@ -46,9 +46,32 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 	{
 		s_cam_vy -= MOVE_SPEED;
 	}
-	
-	
-	
 
+	if(key == GLFW_KEY_UP && action == GLFW_PRESS)
+	{
+		s_cam_pitch += MOVE_SPEED*4;
+	}
+	else if(key == GLFW_KEY_DOWN && action == GLFW_PRESS)
+	{
+		s_cam_pitch -= MOVE_SPEED*4;
+	}
+
+	if(key == GLFW_KEY_LEFT && action == GLFW_PRESS)
+	{
+		s_cam_yaw -= MOVE_SPEED*4;
+	}
+	else if(key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
+	{
+		s_cam_yaw += MOVE_SPEED*4;
+	}
+
+	if(key == GLFW_KEY_Q && action == GLFW_PRESS)
+	{
+		s_cam_roll -= MOVE_SPEED*4;
+	}
+	else if(key == GLFW_KEY_E && action == GLFW_PRESS)
+	{
+		s_cam_roll += MOVE_SPEED*4;
+	}
 
 }

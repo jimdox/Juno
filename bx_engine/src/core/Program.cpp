@@ -38,9 +38,10 @@ void Program::run()
 	std::string objPath = "./bx_engine/res/dragon.obj";
 	Mesh stall = bxImport::loadOBJ(objPath);
 	
-	std::string texFilePath = "./bx_engine/res/grey.png";
+	std::string texFilePath = "./bx_engine/res/fordo.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
+	texture1.setTransparency(true);
 	stall.addTexture(&texture1, texType);
 
 	glm::vec3 entPos(0.0f, -1.5f, -5.0f);

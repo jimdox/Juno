@@ -1,16 +1,22 @@
 #pragma once
+#include "render/Mesh.h"
 
 namespace bx {
 class Terrain
 {
 public:
-    Terrain();
+    Terrain(float x_coord, float z_coord, Texture& texture);
     ~Terrain();
 
-
+    float getXCoord();
+    float getZCoord();
+    Mesh& getMesh();
 
 private:
-    const float SIZE = 8;
-
+    const float BLOCK_SIZE = 800;
+    const float NUM_VERTICES = 128;
+    float x, z;
+    Mesh mesh;
+    
 };
 }

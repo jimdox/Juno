@@ -7,6 +7,7 @@ using namespace bx;
 /* this constructor loads the texture itself */
 Texture::Texture(std::string& filepath, std::string& texType, bool hasUVs) : filepath(filepath), texType(texType)
 {
+	transparency = false;
 	int width, height, channels;
 	texType = "diffuse";
 	glGenTextures(1, &textureID);
@@ -31,6 +32,7 @@ Texture::Texture(std::string& filepath, std::string& texType, bool hasUVs) : fil
 /* called by bxAssetLoader */
 Texture::Texture(std::string& filepath, std::string& texType) : filepath(filepath), texType(texType)
 {	
+	transparency = false;
 	int width, height, channels;
 
 	glGenTextures(1, &textureID);
@@ -66,6 +68,16 @@ GLuint Texture::getID()
 	return this->textureID;
 }
 
+bool Texture::containsTransparency()
+{
+	return transparency;
+}
+
+void Texture::setTransparency(bool flag)
+{
+	this->transparency = flag;
+}
+
 std::string& Texture::getFilePath()
 {
 	return filepath;
@@ -76,25 +88,6 @@ std::string& Texture::getTexType()
 	return texType;
 }
 
-float Texture::getReflectivity()
-{
-	return this->reflectivity;
-}
-
-float Texture::getShineDamper()
-{
-	return this->shineDamper;
-}
-
-void Texture::setReflectivity(float& r)
-{
-	this->reflectivity = r;
-}
-
-void Texture::setShineDamper(float& sd)
-{
-	this->shineDamper = sd;
-}
 
 
 /*

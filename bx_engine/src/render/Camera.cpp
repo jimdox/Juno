@@ -26,9 +26,9 @@ Camera::~Camera()
 void Camera::move(glm::vec3 pos, glm::vec3 dRot)
 {
 	 this->position = pos;
-	 this->pitch += dRot.y;
-	 this->yaw += dRot.z;
-	 this->roll += dRot.x;
+	 this->pitch = dRot.y;
+	 this->yaw = dRot.z;
+	 this->roll = dRot.x;
 }
 
 

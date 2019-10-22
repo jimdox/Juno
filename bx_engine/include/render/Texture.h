@@ -14,11 +14,11 @@ public:
 	std::string& getFilePath();
 	std::string& getTexType();
 
+	bool containsTransparency();
+	void setTransparency(bool flag);
+
 	unsigned int getID();
-	float getReflectivity();
-	float getShineDamper();
-	void setReflectivity(float& r);
-	void setShineDamper(float& sd);
+
 
 	//Texture(const Texture& other);
 	Texture& operator=(const Texture& other);
@@ -26,8 +26,7 @@ public:
 
 private:
 	unsigned int textureID;
-	float shineDamper;
-	float reflectivity;
+	bool transparency;
 	std::string& filepath;
 	std::string& texType;
 
