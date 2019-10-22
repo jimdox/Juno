@@ -17,12 +17,88 @@
 #include <stdlib.h>
 #include <tuple>
 
+class Vertex
+{
+public:
+    Vertex(unsigned int index, glm::vec3 pos) : position(pos)
+    {
+        this->index = index;
+        textureIndex = -1;
+        normalIndex = -1;
+        duplicate = nullptr;
+    }
+
+    unsigned int getIndex()
+    {
+        return index;
+    }
+
+    unsigned int getLength()
+    {
+        return position.length;
+    }
+
+    bool isSet()
+    {
+        return textureIndex != -1 && normalIndex != -1;
+    }
+
+    bool containsSameVTVN(unsigned int texIndex, unsigned int normIndex)
+    {
+        return textureIndex == texIndex && normalIndex == normIndex;
+    }
+
+    void setTextureIndex(unsigned int i)
+    {
+        textureIndex = i;
+    }
+
+    void setNormalIndex(unsigned int i)
+    {
+        normalIndex = i;
+    }
+
+    glm::vec3& getPosition()
+    {
+        return position;
+    }
+
+    unsigned int getTextureIndex()
+    {
+        return textureIndex;
+    }
+
+    unsigned int getNormalIndex()
+    {
+        return normalIndex;
+    }
+
+    Vertex* getDuplicate()
+    {
+        return duplicate;
+    }
+
+    void setDuplicate(Vertex* dup)
+    {
+        duplicate = dup;
+    }
+
+private:
+    glm::vec3 position;
+    unsigned int index;
+    unsigned int textureIndex;
+    unsigned int normalIndex;
+    Vertex* duplicate;
+};
+
 
 /* */
 namespace bxImport {
     /* references for garbage collection later */
     static std::vector<unsigned int> VAO_refs;
     static std::vector<unsigned int> VBO_refs;
+
+
 
     
     static unsigned int generateVAO()
@@ -113,7 +189,7 @@ namespace bxImport {
         {
             BX_CLI_ERR(("Error loading file: " + filepath).c_str());
         }
-        std::vector<glm::vec3> vertices;
+        std::vector<Vertex> vertices;
         std::vector<glm::vec3> normals;
         std::vector<glm::vec2> textures;
         std::vector<unsigned int> indices;
@@ -139,7 +215,7 @@ namespace bxImport {
             if(lineData[0] == "v")
             {
                 glm::vec3 vert(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
-                vertices.push_back(vert);
+                vertices.push_back(Vertex(vertices.size(), vert));
             }
             else if (lineData[0] == "vt")
             {

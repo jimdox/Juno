@@ -1,4 +1,5 @@
-#include "render/Shader.h"
+#include "render/shaders/TerrainShader.h"
+
 #include <ios>
 #include <sstream>
 #include "core/Log.h"
@@ -6,15 +7,15 @@
 
 using namespace bx;
 
-Shader::Shader()
+TerrainShader::TerrainShader()
 {
-	vertFilePath = "res/shaders/basic.vert";
-	fragFilePath = "res/shaders/basic.frag";
+	vertFilePath = "res/shaders/terrain.vert";
+	fragFilePath = "res/shaders/terrain.frag";
 
 }
 
 
-Shader::Shader(const std::string& filepath)
+TerrainShader::TerrainShader(const std::string& filepath)
 {
 	vertFilePath = filepath + ".vert";
 	fragFilePath = filepath + ".frag";
@@ -23,13 +24,13 @@ Shader::Shader(const std::string& filepath)
 }
 
 
-Shader::~Shader()
+TerrainShader::~TerrainShader()
 {
 
 }
 
 
-bool Shader::loadShader()
+bool TerrainShader::loadShader()
 {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -65,7 +66,7 @@ bool Shader::loadShader()
 
 	GLint compileFlag = GL_FALSE;
 	int errorLength;
-	BX_WARN("Compiling shaders");
+	BX_WARN("Compiling Terrain shaders");
 
 	char const* vertSrcPtr = vertSource.c_str();
 	char const* fragSrcPtr = fragSource.c_str();
@@ -78,7 +79,6 @@ bool Shader::loadShader()
 
 	if (errorLength > 0)
 	{
-
 		std::vector<char> errorMsg(errorLength + 1);
 		glGetShaderInfoLog(vertexShader, errorLength, NULL, &errorMsg[0]);
 		std::string message(errorMsg.begin(), errorMsg.end());
@@ -99,7 +99,7 @@ bool Shader::loadShader()
 
 	}
 
-	BX_INFO("Linking shaders");
+	BX_INFO("Linking Terrain shaders");
 	this->progID = glCreateProgram();
 
 	glAttachShader(progID, vertexShader);
@@ -117,7 +117,7 @@ bool Shader::loadShader()
 		std::vector<char> errorMsg(errorLength + 1);
 		glGetShaderInfoLog(fragmentShader, errorLength, NULL, &errorMsg[0]);
 		std::string message(errorMsg.begin(), errorMsg.end());
-		BX_CRIT("Shader linking failed!");
+		BX_CRIT("Terrain Shader linking failed!");
 		BX_CRIT(message);
 	}
 	cacheUniformLocations();
@@ -128,24 +128,24 @@ bool Shader::loadShader()
 }
 
 
-GLuint Shader::getID()
+GLuint TerrainShader::getID()
 {
 	const GLuint p = progID;
 	return p;
 }
 
-/* binds shader */
-void Shader::useProgram()
+/* binds Terrainshader */
+void TerrainShader::useProgram()
 {
 	glUseProgram(progID);
 }
 
-void Shader::unbindProgram()
+void TerrainShader::unbindProgram()
 {
 	glUseProgram(0);
 }
 
-void Shader::bindAllAttribs()
+void TerrainShader::bindAllAttribs()
 {
 	bindAttrib(0, "position");
 	bindAttrib(1, "normal");
@@ -154,13 +154,13 @@ void Shader::bindAllAttribs()
 
 }
 
-void Shader::bindAttrib(unsigned int attrib, const std::string& var)
+void TerrainShader::bindAttrib(unsigned int attrib, const std::string& var)
 {
 	glBindAttribLocation(this->progID, attrib, var.c_str());
 }
 
 /* caches all uniform variables' locations */
-void Shader::cacheUniformLocations()
+void TerrainShader::cacheUniformLocations()
 {
 	loc_transformationMatrix = glGetUniformLocation(progID, "transformationMatrix");
 	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
@@ -171,17 +171,17 @@ void Shader::cacheUniformLocations()
 	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
 }
 
-void Shader::loadTransformMatrix(glm::mat4& transform)
+void TerrainShader::loadTransformMatrix(glm::mat4& transform)
 {
 	setMat4(loc_transformationMatrix, transform);
 }
 
-void Shader::loadProjectionMatrix(glm::mat4& projection)
+void TerrainShader::loadProjectionMatrix(glm::mat4& projection)
 {
 	setMat4(loc_projectionMatrix, projection);
 }
 
-void Shader::loadViewMatrix(Camera* camera)
+void TerrainShader::loadViewMatrix(Camera* camera)
 {
 	glm::mat4 viewMat = bxMath::generateViewMatrix(camera);
 	setMat4(loc_viewMatrix, viewMat);
@@ -189,61 +189,61 @@ void Shader::loadViewMatrix(Camera* camera)
 }
 
 /* lighting variables */
-void Shader::loadLightUniforms(Light& light)
+void TerrainShader::loadLightUniforms(Light& light)
 {
 	setVec3(loc_lightPosition, light.getPosition());
 	setVec3(loc_lightColor, light.getColor());
 }
 
-void Shader::loadPBRVars(Material material)
+void TerrainShader::loadPBRVars(Material material)
 {
 	setFloat(loc_reflectivity, material.reflectivity);
 	setFloat(loc_shineDamper, material.shineDamper);
 }
 
 /* GLSL uniform loaders */
-void Shader::setInt(unsigned int loc, int value) const
+void TerrainShader::setInt(unsigned int loc, int value) const
 {
 	glUniform1i(loc, (int)value);
 }
 
 
-void Shader::setBool(unsigned int loc, bool flag) const
+void TerrainShader::setBool(unsigned int loc, bool flag) const
 {
 	glUniform1i(loc, flag);
 }
 
-void Shader::setFloat(unsigned int loc, float value) const
+void TerrainShader::setFloat(unsigned int loc, float value) const
 {
 	glUniform1f(loc, value);
 }
 
-void Shader::setVec2(unsigned int loc, glm::vec2& vec) const
+void TerrainShader::setVec2(unsigned int loc, glm::vec2& vec) const
 {
 	glUniform2fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec3(unsigned int loc, glm::vec3 &vec) const
+void TerrainShader::setVec3(unsigned int loc, glm::vec3 &vec) const
 {
 	glUniform3fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec4(unsigned int loc, glm::vec4& vec) const
+void TerrainShader::setVec4(unsigned int loc, glm::vec4& vec) const
 {
 	glUniform4fv(loc, 1, &vec[0]);
 }
 
-void Shader::setMat2(unsigned int loc, glm::mat2& mat) const
+void TerrainShader::setMat2(unsigned int loc, glm::mat2& mat) const
 {
 	glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat3(unsigned int loc, glm::mat3& mat) const
+void TerrainShader::setMat3(unsigned int loc, glm::mat3& mat) const
 {
 	glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat4(unsigned int loc, glm::mat4& mat) const
+void TerrainShader::setMat4(unsigned int loc, glm::mat4& mat) const
 {
 	glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 }

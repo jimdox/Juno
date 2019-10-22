@@ -22,9 +22,9 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/core/KeyMap.h include/render/Camera.h include/render/Shader.h \
- include/render/lights/Light.h include/render/Mesh.h \
- include/render/Texture.h lib/stb/stb_image.h
+ include/core/KeyMap.h include/render/Camera.h \
+ include/render/shaders/Shader.h include/render/lights/Light.h \
+ include/render/Mesh.h include/render/Texture.h lib/stb/stb_image.h
 
 include/core/Program.h:
 
@@ -84,7 +84,7 @@ include/core/KeyMap.h:
 
 include/render/Camera.h:
 
-include/render/Shader.h:
+include/render/shaders/Shader.h:
 
 include/render/lights/Light.h:
 

@@ -28,6 +28,12 @@ void RenderQueue::submit(Entity* entity, std::shared_ptr<Shader> shader)
     shaders.push_back(shader);
 }
 
+void RenderQueue::submit(Terrain* terrain, std::shared_ptr<Shader> shader)
+{
+    terrainBlocks.push_back(terrain);
+    //terrainShaders.push_back(shader);
+}
+
 void RenderQueue::remove(Entity& entity)
 {
     for(int i = 0; i < entities.size(); i++)
@@ -38,7 +44,6 @@ void RenderQueue::remove(Entity& entity)
 
 void RenderQueue::render(Camera* camera)
 {
-    //camera->update(glm::vec3(s_cam_vx, s_cam_vy, s_cam_vz), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
 
     for(int i = 0; i < entities.size(); i++)
     {   
@@ -47,6 +52,14 @@ void RenderQueue::render(Camera* camera)
         shaders[i]->loadLightUniforms(lights[0]);
         bxRender::renderEntity(entities[i] , shaders[i]);
         shaders[i]->unbindProgram();
+    }
+
+    for(int j = 0; j < terrainBlocks.size(); j++)
+    {
+        shaders[j]->useProgram();
+        shaders[j]->loadViewMatrix(camera);
+        shaders[j]->loadLightUniforms(lights[0]);
+        bxRender::renderTerrain(terrainBlocks[j], shaders[j]);
     }
 }
 

@@ -4,13 +4,15 @@
 // #include "imgui_impl_glfw.h"
 // #include "imgui_ogl3.h"
 
-#include "render/Shader.h"
+#include "render/shaders/Shader.h"
 #include "entity/Entity.h"
 #include "render/Mesh.h"
 #include "render/Texture.h"
 #include "core/Log.h"
 #include "core/bxMath.h"
 #include <vector>
+#include "render/shaders/TerrainShader.h"
+#include "entity/terrain/Terrain.h"
 
 #define BX_GFX_DEVICE glGetString(GL_RENDERER)
 
@@ -159,6 +161,35 @@ namespace bxRender {
 		
 	// }
 
+
+
+
+	static void renderTerrain(bx::Terrain* terrain, std::shared_ptr<bx::Shader> shader)
+	{
+		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+
+		glBindVertexArray(terrain->getMesh().getVAO_ID()); 
+		glEnableVertexAttribArray(0); 
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2); 
+
+		glm::mat4 transformationMat = bxMath::createTransformationMat(glm::vec3(terrain->getXCoord(), 0, terrain->getZCoord()), glm::vec3(0,0,0),1.0f);
+		shader->loadTransformMatrix(transformationMat);
+		shader->loadPBRVars(terrain->getMesh().getMaterial());
+		/* --- */
+		setBackFaceCulling(!terrain->getMesh().getDiffuseTextures()[0].containsTransparency());
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, terrain->getMesh().getDiffuseTextures()[0].getID());
+		glDrawElements(GL_TRIANGLES, terrain->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+		
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		glBindVertexArray(0);
+		
+		checkGLErrors();
+	}
 
 
 

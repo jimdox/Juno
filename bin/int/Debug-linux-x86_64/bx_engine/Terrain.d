@@ -1,6 +1,5 @@
-../bin/int/Debug-linux-x86_64/bx_engine/Shader.o: \
- src/render/shaders/Shader.cpp include/render/shaders/Shader.h \
- include/render/Camera.h include/render/lights/Light.h \
+../bin/int/Debug-linux-x86_64/bx_engine/Terrain.o: \
+ src/entity/terrain/Terrain.cpp include/entity/terrain/Terrain.h \
  include/render/Mesh.h include/render/Texture.h lib/stb/stb_image.h \
  include/core/Log.h lib/spdlog/include/spdlog/spdlog.h \
  lib/spdlog/include/spdlog/common.h lib/spdlog/include/spdlog/tweakme.h \
@@ -24,13 +23,9 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/core/bxMath.h
+ include/core/bxAssetLoader.h include/entity/Entity.h
 
-include/render/shaders/Shader.h:
-
-include/render/Camera.h:
-
-include/render/lights/Light.h:
+include/entity/terrain/Terrain.h:
 
 include/render/Mesh.h:
 
@@ -88,4 +83,6 @@ lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
 
-include/core/bxMath.h:
+include/core/bxAssetLoader.h:
+
+include/entity/Entity.h:

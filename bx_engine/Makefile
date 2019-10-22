@@ -73,15 +73,17 @@ OBJECTS := \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/StartPoint.o \
 	$(OBJDIR)/Entity.o \
+	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Event.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/RenderQueue.o \
-	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Texture.o \
 	$(OBJDIR)/bxGUI.o \
 	$(OBJDIR)/Light.o \
+	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/TerrainShader.o \
 
 RESOURCES := \
 
@@ -152,6 +154,9 @@ $(OBJDIR)/StartPoint.o: src/core/StartPoint.cpp
 $(OBJDIR)/Entity.o: src/entity/Entity.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Terrain.o: src/entity/terrain/Terrain.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Event.o: src/events/Event.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -167,9 +172,6 @@ $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
 $(OBJDIR)/RenderQueue.o: src/render/RenderQueue.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Shader.o: src/render/Shader.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Texture.o: src/render/Texture.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -177,6 +179,12 @@ $(OBJDIR)/bxGUI.o: src/render/bxGUI.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: src/render/lights/Light.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Shader.o: src/render/shaders/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/TerrainShader.o: src/render/shaders/TerrainShader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

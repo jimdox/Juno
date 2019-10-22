@@ -24,8 +24,9 @@
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
  include/core/KeyMap.h include/render/Camera.h include/render/Texture.h \
  lib/stb/stb_image.h include/render/glRenderCore.h \
- include/render/Shader.h include/render/lights/Light.h \
+ include/render/shaders/Shader.h include/render/lights/Light.h \
  include/render/Mesh.h include/entity/Entity.h include/core/bxMath.h \
+ include/render/shaders/TerrainShader.h include/entity/terrain/Terrain.h \
  include/core/EngineConfig.h
 
 include/render/Context.h:
@@ -90,7 +91,7 @@ lib/stb/stb_image.h:
 
 include/render/glRenderCore.h:
 
-include/render/Shader.h:
+include/render/shaders/Shader.h:
 
 include/render/lights/Light.h:
 
@@ -99,5 +100,9 @@ include/render/Mesh.h:
 include/entity/Entity.h:
 
 include/core/bxMath.h:
+
+include/render/shaders/TerrainShader.h:
+
+include/entity/terrain/Terrain.h:
 
 include/core/EngineConfig.h:

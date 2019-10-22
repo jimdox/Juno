@@ -62,7 +62,9 @@ void Program::run()
 	RenderQueue queue;
 	queue.submit(&fordo, shader);
 	queue.addLight(light);
-
+	/* ----- */
+	
+	
 
 	while (renderContext->isRunning())
 	{
