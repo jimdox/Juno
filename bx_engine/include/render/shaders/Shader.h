@@ -29,7 +29,7 @@ public:
 	void loadProjectionMatrix(glm::mat4& projection);
 	void loadViewMatrix(Camera* camera);
 
-	void loadLightUniforms(Light& light);
+	void loadLightUniforms(std::vector<Light> &light);
 	void loadPBRVars(Material material);
 
 	void setInt(unsigned int loc, int value) const;
@@ -49,14 +49,17 @@ private:
 	enum Shdr { VERTEX, FRAGMENT, GEOMETRY };
 	std::string vertFilePath;
 	std::string fragFilePath;
+	static const unsigned int NUM_LIGHTS = 4;
 	
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
 	unsigned int loc_viewMatrix;
-	unsigned int loc_lightPosition;
-	unsigned int loc_lightColor;
 	unsigned int loc_reflectivity;
 	unsigned int loc_shineDamper;
 
+	unsigned int loc_lightPositions[NUM_LIGHTS];
+	unsigned int loc_lightColors[NUM_LIGHTS];
+
+	
 };
 }

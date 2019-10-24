@@ -165,10 +165,18 @@ void Shader::cacheUniformLocations()
 	loc_transformationMatrix = glGetUniformLocation(progID, "transformationMatrix");
 	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
 	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
-	loc_lightPosition = glGetUniformLocation(progID, "lightPosition");
-	loc_lightColor = glGetUniformLocation(progID, "lightColor");
 	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
 	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
+
+	for(int i = 0; i < NUM_LIGHTS; i++)
+	{
+		std::string location = "lightPosition[";
+		location += i + "]";
+		loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
+		location = "lightColor[" + i;
+		location += i + "]";
+		loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
+	}
 }
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
@@ -189,10 +197,23 @@ void Shader::loadViewMatrix(Camera* camera)
 }
 
 /* lighting variables */
-void Shader::loadLightUniforms(Light& light)
+void Shader::loadLightUniforms(std::vector<Light> &lights)
 {
-	setVec3(loc_lightPosition, light.getPosition());
-	setVec3(loc_lightColor, light.getColor());
+	// setVec3(loc_lightPosition, light.getPosition());
+	// setVec3(loc_lightColor, light.getColor());
+	for(unsigned int i = 0; i < NUM_LIGHTS; i++)
+	{
+		if(i >= lights.size())
+		{
+			glm::vec3 empty_light(0.0, 0.0, 0.0);
+			setVec3(loc_lightPositions[i], empty_light);
+			setVec3(loc_lightColors[i], empty_light);
+		} else {
+			setVec3(loc_lightPositions[i], lights[i].getPosition());
+			setVec3(loc_lightColors[i], lights[i].getColor());
+		}
+	}
+
 }
 
 void Shader::loadPBRVars(Material material)

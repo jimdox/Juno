@@ -39,7 +39,7 @@ void Program::run()
 	Mesh stall = bxImport::loadModel(objPath);
 
 
-	std::string texFilePath = "./bx_engine/res/fordo.png";
+	std::string texFilePath = "./bx_engine/res/grey.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
 	texture1.setTransparency(true);
@@ -55,8 +55,8 @@ void Program::run()
 	Entity entB(stall, entBPos, entRot, 1.0f, entName);
 	Entity entC(stall, entCPos, entRot, 1.0f, entName);
 
-	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.91f, 0.41f, 0.41f));
-
+	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.51f, 0.41f, 0.41f));
+	Light light_b(glm::vec3(-111.5f, -0.01f, 1.0f), glm::vec3(0.41f, 1.41f, 2.91f));
 	float frame_time = 0;
 	dt = 0;
 	num_frames = 0; 
@@ -64,6 +64,7 @@ void Program::run()
 	RenderQueue queue;
 	queue.submit(&fordo, shader);
 	queue.addLight(light);
+	queue.addLight(light_b);
 	/* ----- */
 	
 	
@@ -76,7 +77,6 @@ void Program::run()
 		fordo.addRotation(d_rot);
 
 		bxRender::clear();
-
 
 		queue.render(&camera);
 

@@ -45,11 +45,12 @@ void RenderQueue::remove(Entity& entity)
 void RenderQueue::render(Camera* camera)
 {
 
+
     for(int i = 0; i < entities.size(); i++)
     {   
         shaders[i]->useProgram();
         shaders[i]->loadViewMatrix(camera);
-        shaders[i]->loadLightUniforms(lights[0]);
+        shaders[i]->loadLightUniforms(lights);
         bxRender::renderEntity(entities[i] , shaders[i]);
         shaders[i]->unbindProgram();
     }
