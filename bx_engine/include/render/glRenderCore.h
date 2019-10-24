@@ -38,6 +38,9 @@ namespace bxRender {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		// IMGUI_CHECKVERSION();
 		// ImGui::CreateContext();
 		// ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -164,32 +167,32 @@ namespace bxRender {
 
 
 
-	static void renderTerrain(bx::Terrain* terrain, std::shared_ptr<bx::Shader> shader)
-	{
-		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+	// static void renderTerrain(bx::Terrain* terrain, std::shared_ptr<bx::Shader> shader)
+	// {
+	// 	//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
-		glBindVertexArray(terrain->getMesh().getVAO_ID()); 
-		glEnableVertexAttribArray(0); 
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2); 
+	// 	glBindVertexArray(terrain->getMesh().getVAO_ID()); 
+	// 	glEnableVertexAttribArray(0); 
+	// 	glEnableVertexAttribArray(1);
+	// 	glEnableVertexAttribArray(2); 
 
-		glm::mat4 transformationMat = bxMath::createTransformationMat(glm::vec3(terrain->getXCoord(), 0, terrain->getZCoord()), glm::vec3(0,0,0),1.0f);
-		shader->loadTransformMatrix(transformationMat);
-		shader->loadPBRVars(terrain->getMesh().getMaterial());
-		/* --- */
-		setBackFaceCulling(!terrain->getMesh().getDiffuseTextures()[0].containsTransparency());
+	// 	glm::mat4 transformationMat = bxMath::createTransformationMat(glm::vec3(terrain->getXCoord(), 0, terrain->getZCoord()), glm::vec3(0,0,0),1.0f);
+	// 	shader->loadTransformMatrix(transformationMat);
+	// 	shader->loadPBRVars(terrain->getMesh().getMaterial());
+	// 	/* --- */
+	// 	setBackFaceCulling(!terrain->getMesh().getDiffuseTextures()[0].containsTransparency());
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, terrain->getMesh().getDiffuseTextures()[0].getID());
-		glDrawElements(GL_TRIANGLES, terrain->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+	// 	glActiveTexture(GL_TEXTURE0);
+	// 	glBindTexture(GL_TEXTURE_2D, terrain->getMesh().getDiffuseTextures()[0].getID());
+	// 	glDrawElements(GL_TRIANGLES, terrain->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
 		
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(2);
-		glBindVertexArray(0);
+	// 	glDisableVertexAttribArray(0);
+	// 	glDisableVertexAttribArray(1);
+	// 	glDisableVertexAttribArray(2);
+	// 	glBindVertexArray(0);
 		
-		checkGLErrors();
-	}
+	// 	checkGLErrors();
+	// }
 
 
 

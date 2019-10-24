@@ -27,7 +27,7 @@
  include/render/Mesh.h include/render/Texture.h lib/stb/stb_image.h \
  include/render/glRenderCore.h include/entity/Entity.h \
  include/core/bxMath.h include/render/shaders/TerrainShader.h \
- include/entity/terrain/Terrain.h include/core/bxAssetLoader.h \
+ include/entity/terrain/Terrain.h include/core/AssetLoader.h \
  include/render/RenderQueue.h
 
 include/core/Program.h:
@@ -108,6 +108,6 @@ include/render/shaders/TerrainShader.h:
 
 include/entity/terrain/Terrain.h:
 
-include/core/bxAssetLoader.h:
+include/core/AssetLoader.h:
 
 include/render/RenderQueue.h:

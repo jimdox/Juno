@@ -28,11 +28,11 @@ void RenderQueue::submit(Entity* entity, std::shared_ptr<Shader> shader)
     shaders.push_back(shader);
 }
 
-void RenderQueue::submit(Terrain* terrain, std::shared_ptr<Shader> shader)
-{
-    terrainBlocks.push_back(terrain);
-    //terrainShaders.push_back(shader);
-}
+// void RenderQueue::submit(Terrain* terrain, std::shared_ptr<Shader> shader)
+// {
+//     terrainBlocks.push_back(terrain);
+//     terrainShaders.push_back(shader);
+// }
 
 void RenderQueue::remove(Entity& entity)
 {
@@ -54,13 +54,13 @@ void RenderQueue::render(Camera* camera)
         shaders[i]->unbindProgram();
     }
 
-    for(int j = 0; j < terrainBlocks.size(); j++)
-    {
-        shaders[j]->useProgram();
-        shaders[j]->loadViewMatrix(camera);
-        shaders[j]->loadLightUniforms(lights[0]);
-        bxRender::renderTerrain(terrainBlocks[j], shaders[j]);
-    }
+    // for(int j = 0; j < terrainBlocks.size(); j++)
+    // {
+    //     shaders[j]->useProgram();
+    //     shaders[j]->loadViewMatrix(camera);
+    //     shaders[j]->loadLightUniforms(lights[0]);
+    //     bxRender::renderTerrain(terrainBlocks[j], shaders[j]);
+    // }
 }
 
 void RenderQueue::clear()

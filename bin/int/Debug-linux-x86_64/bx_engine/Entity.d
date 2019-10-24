@@ -23,7 +23,7 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/core/bxAssetLoader.h
+ include/core/AssetLoader.h
 
 include/entity/Entity.h:
 
@@ -83,4 +83,4 @@ lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
 
-include/core/bxAssetLoader.h:
+include/core/AssetLoader.h:

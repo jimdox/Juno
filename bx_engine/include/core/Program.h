@@ -29,7 +29,8 @@ private:
 	float dt;
 	float currentTime;
 	float lastTime;     
-	unsigned int numFrames;
+	float frame_time;
+	unsigned int num_frames;
 
 
 };

@@ -49,6 +49,7 @@ public:
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumIndices();
 	unsigned int getNumVertices();
+	//float getFurthest();
 
 	void assignVAO(unsigned int id, unsigned int numIndices);
 	
@@ -67,7 +68,7 @@ private:
 	unsigned int VAO_ID;
 	unsigned int numVertices;
 	unsigned int numIndices;
-	
+	//float ptr_furthest;
 };
 
 }

@@ -1,5 +1,5 @@
 #include "entity/Entity.h"
-#include "core/bxAssetLoader.h"
+#include "core/AssetLoader.h"
 using namespace bx;
 
 

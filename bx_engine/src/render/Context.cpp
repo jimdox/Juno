@@ -111,7 +111,33 @@ void Context::update(Camera* camera, float dt)
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 
-	camera->update(glm::vec3(s_cam_vx, s_cam_vy, s_cam_vz), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
+	float vx = 0;
+	float vy = 0;
+	float vz = 0;
+
+	if(key_pressed_W)
+	{
+		vz = -MOVE_SPEED * dt;
+	}
+	else if(key_pressed_S)
+	{
+		vz = MOVE_SPEED * dt;
+	}
+
+	// s_cam_vx = 0;
+	// s_cam_vy = 0;
+	// s_cam_vz = 0;
+
+
+	camera->update(glm::vec3(s_cam_vx*dt, s_cam_vy*dt, vz*dt), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
+
+	if(!key_pressed_W && !key_pressed_S)
+	{
+		s_cam_vz = 0;
+	} 
+	
+	key_pressed_W = false;
+	key_pressed_S = false;
 
 }
 

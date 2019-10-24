@@ -35,7 +35,8 @@ void Camera::move(glm::vec3 pos, glm::vec3 dRot)
 
 void Camera::update(glm::vec3 dPos, glm::vec3 dRot, float deltaZoom)
 {
-	this->position += dPos; 
+	this->velocity = dPos;
+	this->position += velocity; 
 	this->roll += dRot.x;
 	this->pitch += dRot.y;
 	this->yaw += dRot.z;

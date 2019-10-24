@@ -1,7 +1,7 @@
 #include "core/Program.h"
 #include "render/glRenderCore.h"
 #include "core/Log.h"
-#include "core/bxAssetLoader.h"
+#include "core/AssetLoader.h"
 #include "render/lights/Light.h"
 #include "render/RenderQueue.h"
 
@@ -36,8 +36,9 @@ void Program::run()
 	shader->unbindProgram();
 
 	std::string objPath = "./bx_engine/res/dragon.obj";
-	Mesh stall = bxImport::loadOBJ(objPath);
-	
+	Mesh stall = bxImport::loadModel(objPath);
+
+
 	std::string texFilePath = "./bx_engine/res/fordo.png";
 	std::string texType = "diffuse";
 	Texture texture1(texFilePath, texType);
@@ -56,8 +57,9 @@ void Program::run()
 
 	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.91f, 0.41f, 0.41f));
 
+	float frame_time = 0;
 	dt = 0;
-	numFrames = 0; 
+	num_frames = 0; 
 
 	RenderQueue queue;
 	queue.submit(&fordo, shader);
@@ -70,7 +72,7 @@ void Program::run()
 	{
 		fpsCounter();
 
-		glm::vec3 d_rot(0.0f, 0.2f, 0.0f);
+		glm::vec3 d_rot(0.0f, 0.1f, 0.0f);
 		fordo.addRotation(d_rot);
 
 		bxRender::clear();
@@ -78,8 +80,10 @@ void Program::run()
 
 		queue.render(&camera);
 
-		renderContext->update(&camera, dt);
+		renderContext->update(&camera, frame_time);
+		frame_time = (glfwGetTime() - frame_time);
 	}
+	
 }
 
 void Program::exit()
@@ -90,14 +94,14 @@ void Program::exit()
 void Program::fpsCounter()
 {
 	currentTime = glfwGetTime();
-	dt += (currentTime - lastTime);
+	dt += frame_time;
 	lastTime = currentTime;
-	numFrames++;
+	num_frames++;
 	if(dt >= 1.0f)
 	{
-		BX_INFO(numFrames);
+		BX_INFO(num_frames);
 		dt = 0.0f;
-		numFrames = 0;
+		num_frames = 0;
 	}
 }
 

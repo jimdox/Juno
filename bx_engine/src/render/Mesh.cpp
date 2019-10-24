@@ -63,17 +63,17 @@ std::vector<float>& Mesh::getVertices()
 
 std::vector<float>& Mesh::getNormals()
 {
-	return normals;
+	return this->normals;
 }
 
 std::vector<float>& Mesh::getTextureCoords()
 {
-	return textureCoords;
+	return this->textureCoords;
 }
 
 std::vector<unsigned int>& Mesh::getIndices()
 {
-	return indices;
+	return this->indices;
 }
 
 unsigned int Mesh::getNumIndices()
@@ -88,10 +88,8 @@ unsigned int Mesh::getVAO_ID()
 
 unsigned int Mesh::getNumVertices()
 {
-	return numVertices;
+	return this->numVertices;
 }
-
-
 
 void Mesh::assignVAO(unsigned int id, unsigned int numIndices)
 {
