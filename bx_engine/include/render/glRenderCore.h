@@ -92,7 +92,7 @@ namespace bxRender {
 	/* render entity */
 	static void renderEntity(bx::Entity* entity, std::shared_ptr<bx::Shader> & shader)
 	{
-		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
 
 		glBindVertexArray(entity->getMesh().getVAO_ID()); 
 		glEnableVertexAttribArray(0); 
