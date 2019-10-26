@@ -1,13 +1,9 @@
 #pragma once
-#include <string>
-#include <iostream>
-#include <fstream>
+#include "pch.h"
 #include <GL/glew.h>
-#include "glm/glm.hpp"
 #include "render/Camera.h"
 #include "render/lights/Light.h"
 #include "render/Mesh.h"
-#include <memory>
 
 namespace bx {
 class Shader

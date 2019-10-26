@@ -1,6 +1,5 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
+#include "pch.h"
 #include "render/Mesh.h"
 
 namespace bx {

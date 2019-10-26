@@ -1,10 +1,10 @@
 #pragma once
+#include "pch.h"
 #include "entity/Entity.h"
 #include "Camera.h"
 #include "render/shaders/Shader.h"
 #include "render/shaders/TerrainShader.h"
 #include "entity/terrain/Terrain.h"
-#include <tuple>
 
 
 namespace bx {

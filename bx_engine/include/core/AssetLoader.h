@@ -1,21 +1,12 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "pch.h"
 #include <stb_image.h>
-#include <string>
-#include <map>
-#include <vector>
-#include <istream>
-#include <fstream>
-#include <sstream>
-#include <iostream>
+
 #include "entity/Entity.h"
 #include "core/Log.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include <stdlib.h>
-#include <tuple>
 
 
 

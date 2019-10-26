@@ -92,11 +92,10 @@ void Program::fpsCounter(float frame_time)
 	dt += frame_time;
 	if(dt >= 1.0)
 	{
-		BX_CLI_INFO("Frame Time: {}", (num_frames));
+		BX_CLI_INFO("FPS: {}", (num_frames));
 		dt = 0;
 		num_frames = 0;
 	}
-
 }
 
 

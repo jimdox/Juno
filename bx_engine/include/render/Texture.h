@@ -1,6 +1,6 @@
 #pragma once
+#include "pch.h"
 #include <GL/glew.h>
-#include <string>
 #include "stb_image.h"
 
 namespace bx {

@@ -1,7 +1,7 @@
 #pragma once
+#include "pch.h"
 #include "render/Context.h"
 #include "render/shaders/Shader.h"
-#include <memory>
 
 namespace bx {
 class Program

@@ -1,7 +1,6 @@
 #include "render/Texture.h"
 #include "core/Log.h"
 #include "stb_image.h"
-#include <iostream>
 #include "core/AssetLoader.h"
 using namespace bx;
 
