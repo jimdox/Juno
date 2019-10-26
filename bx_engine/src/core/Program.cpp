@@ -20,89 +20,83 @@ Program::~Program()
 
 void Program::init()
 {
-	renderContext = std::make_unique<Context>(800, 800, "v0.0.1", false);
+	render_context = std::make_unique<Context>(800, 800, "v0.0.1", false);
 	shader = std::make_shared<Shader>("./bx_engine/res/shaders/basic");
 
 	BX_WARN(BX_GFX_DEVICE);
 
-}
-
-void Program::run()
-{
-	
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective matrix from Camera */
 	shader->loadViewMatrix(&camera);
 	shader->unbindProgram();
 
-	std::string objPath = "./bx_engine/res/dragon.obj";
-	Mesh stall = bxImport::loadModel(objPath);
+}
 
+void Program::run()
+{
+	Mesh stall = bxImport::loadModel("./bx_engine/res/stall.obj");
+	Texture texture1("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
+	stall.addTexture(&texture1, texture1.getTexType());
 
-	std::string texFilePath = "./bx_engine/res/grey.png";
-	std::string texType = "diffuse";
-	Texture texture1(texFilePath, texType);
-	texture1.setTransparency(true);
-	stall.addTexture(&texture1, texType);
+	glm::vec3 ent_pos(0.0f, -1.5f, -5.0f);
+	glm::vec3 ent_rot(0.0f, 0.0f, 0.00f);
 
-	glm::vec3 entPos(0.0f, -1.5f, -5.0f);
-	glm::vec3 entRot(0.0f, 0.0f, 0.00f);
-	std::string entName = "fordo";
-	Entity fordo(stall, entPos, entRot, 0.6f, entName);
+	Entity entity_one(stall, ent_pos, ent_rot, 0.6f, "Entity One");
 
-	glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
-	glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
-	Entity entB(stall, entBPos, entRot, 1.0f, entName);
-	Entity entC(stall, entCPos, entRot, 1.0f, entName);
+	// glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
+	// glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 
-	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.51f, 0.41f, 0.41f));
+	// Entity entB(stall, entBPos, ent_rot, 1.0f, entName);
+	// Entity entC(stall, entCPos, ent_rot, 1.0f, entName);
+
+	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.41f, 0.41f, 0.41f));
 	Light light_b(glm::vec3(-111.5f, -0.01f, 1.0f), glm::vec3(0.41f, 1.41f, 2.91f));
-	float frame_time = 0;
-	dt = 0;
-	num_frames = 0; 
-
+	
 	RenderQueue queue;
-	queue.submit(&fordo, shader);
+	queue.submit(&entity_one, shader);
 	queue.addLight(light);
 	queue.addLight(light_b);
 	/* ----- */
-	
-	
+	frame_time = 0;
+	num_frames = 0;
+	dt = 0;
+	last_time = glfwGetTime();
 
-	while (renderContext->isRunning())
+	while (render_context->isRunning())
 	{
-		fpsCounter();
-
 		glm::vec3 d_rot(0.0f, 0.1f, 0.0f);
-		fordo.addRotation(d_rot);
+		entity_one.addRotation(d_rot);
 
 		bxRender::clear();
 
 		queue.render(&camera);
 
-		renderContext->update(&camera, frame_time);
-		frame_time = (glfwGetTime() - frame_time);
+		render_context->update(&camera, frame_time);
+		fpsCounter(frame_time);
+
 	}
 	
 }
 
 void Program::exit()
 {
-	renderContext->destroy();
+	render_context->destroy();
 }
 
-void Program::fpsCounter()
+void Program::fpsCounter(float frame_time)
 {
-	currentTime = glfwGetTime();
-	dt += frame_time;
-	lastTime = currentTime;
+	frame_time = (glfwGetTime() - last_time);
+	last_time = glfwGetTime();
+
 	num_frames++;
-	if(dt >= 1.0f)
+	dt += frame_time;
+	if(dt >= 1.0)
 	{
-		BX_INFO(num_frames);
-		dt = 0.0f;
+		BX_CLI_INFO("Frame Time: {}", (num_frames));
+		dt = 0;
 		num_frames = 0;
 	}
+
 }
 
 
@@ -147,9 +141,9 @@ void Program::fpsCounter()
 // 	glEnableVertexAttribArray(2);
 
 
-// 	std::string texFilePath = "./bxEngine/res/bx_logo-400.png";
-// 	std::string texType = "diffuse";
-// 	Texture texture1(texFilePath, texType);
+// 	std::string tex_filepath = "./bxEngine/res/bx_logo-400.png";
+// 	std::string tex_type = "diffuse";
+// 	Texture texture1(tex_filepath, tex_type);
 
 // 	while(true)
 // 	{
@@ -163,6 +157,6 @@ void Program::fpsCounter()
 // 		glBindVertexArray(VAO);
 // 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		
-// 		renderContext->update();
+// 		render_context->update();
 // 	}
 // }

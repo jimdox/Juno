@@ -3,6 +3,7 @@
 #include <sstream>
 #include "core/Log.h"
 #include "core/bxMath.h"
+#include "core/AssetLoader.h"
 
 using namespace bx;
 
@@ -16,9 +17,7 @@ Shader::Shader()
 
 Shader::Shader(const std::string& filepath)
 {
-	vertFilePath = filepath + ".vert";
-	fragFilePath = filepath + ".frag";
-	loadShader();
+	loadShader(filepath);
 
 }
 
@@ -29,75 +28,12 @@ Shader::~Shader()
 }
 
 
-bool Shader::loadShader()
+bool Shader::loadShader(const std::string& filepath)
 {
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	std::string vertSource;
-	std::string fragSource;
-
-	std::ifstream sourceStream(vertFilePath, std::ios::in);
-	if (sourceStream.is_open())
-	{
-		std::stringstream src;
-		src << sourceStream.rdbuf();
-		vertSource = src.str();
-		sourceStream.close();
-	}
-	else {
-		BX_ERR("Error: cannot access file: " + vertFilePath);
-	}
-
-	std::ifstream sourceStream2(fragFilePath, std::ios::in);
-	if (sourceStream2.is_open())
-	{
-
-		std::stringstream src;
-		src << sourceStream2.rdbuf();
-		fragSource = src.str();
-		sourceStream2.close();
-	}
-	else {
-		BX_ERR("Error: cannot access file: " + fragFilePath);
-		return false;
-	}
-
-	GLint compileFlag = GL_FALSE;
-	int errorLength;
-	BX_WARN("Compiling shaders");
-
-	char const* vertSrcPtr = vertSource.c_str();
-	char const* fragSrcPtr = fragSource.c_str();
-
-	glShaderSource(vertexShader, 1, &vertSrcPtr, NULL);
-	glCompileShader(vertexShader);
-
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileFlag);
-	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &errorLength);
-
-	if (errorLength > 0)
-	{
-
-		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(vertexShader, errorLength, NULL, &errorMsg[0]);
-		std::string message(errorMsg.begin(), errorMsg.end());
-		BX_CRIT(message);
-	}
-
-	glShaderSource(fragmentShader, 1, &fragSrcPtr, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileFlag);
-	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &errorLength);
-
-	if (errorLength > 0)
-	{
-		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(fragmentShader, errorLength, NULL, &errorMsg[0]);
-		std::string message(errorMsg.begin(), errorMsg.end());
-		BX_CRIT(message);
-
-	}
+	bxImport::loadShader(filepath, vertexShader, fragmentShader);
 
 	BX_INFO("Linking shaders");
 	this->progID = glCreateProgram();
@@ -107,7 +43,7 @@ bool Shader::loadShader()
 	bindAllAttribs();
 	glLinkProgram(progID);
 
-
+	int errorLength;
 	GLint linkStatus;
 	glGetProgramiv(progID, GL_LINK_STATUS, &linkStatus);
 	glGetProgramiv(progID, GL_INFO_LOG_LENGTH, &errorLength);
@@ -121,8 +57,6 @@ bool Shader::loadShader()
 		BX_CRIT(message);
 	}
 	cacheUniformLocations();
-
-
 
 	return true;
 }
@@ -150,8 +84,7 @@ void Shader::bindAllAttribs()
 	bindAttrib(0, "position");
 	bindAttrib(1, "normal");
 	bindAttrib(2, "texCoordinates");
-
-
+	
 }
 
 void Shader::bindAttrib(unsigned int attrib, const std::string& var)

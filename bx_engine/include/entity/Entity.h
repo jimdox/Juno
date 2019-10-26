@@ -7,8 +7,8 @@ namespace bx {
 class Entity
 {
 public:
-	Entity(Mesh& mesh, std::string& name);
-	Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, std::string& name);	
+	Entity(Mesh& mesh, const std::string& name);
+	Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, const std::string& name);	
 	~Entity();
 
 	Mesh& getMesh();
@@ -24,7 +24,7 @@ public:
 	void addRotation(glm::vec3& drot);
 
 private:
-	std::string& name;
+	std::string name;
 	Mesh mesh;
 	glm::vec3 position;
 	glm::vec3 rotation;

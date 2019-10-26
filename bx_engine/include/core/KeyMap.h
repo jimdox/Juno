@@ -1,6 +1,6 @@
 #pragma once
 #include "core/Log.h"
-static const float MOVE_SPEED = 0.4f;
+static const float MOVE_SPEED = 0.2f;
 static float s_cam_vx = 0.0f;
 static float s_cam_vy = 0.0f;
 static float s_cam_vz = 0.0f;
@@ -13,8 +13,8 @@ static bool key_pressed_W = false;
 static bool key_pressed_S = false;
 static bool key_pressed_A = false;
 static bool key_pressed_D = false;
-
-
+static bool key_pressed_X = false;
+static bool cam_mode_xray = false;
 
 static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -41,7 +41,7 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 	}
 	else if(key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_vx = MOVE_SPEED;
+		key_pressed_D;
 		BX_WARN("key pressed!");
 	}
 
@@ -56,32 +56,36 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 
 	if(key == GLFW_KEY_UP && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_pitch = MOVE_SPEED*4;
+		s_cam_pitch = -MOVE_SPEED;
 	}
 	else if(key == GLFW_KEY_DOWN && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_pitch = -MOVE_SPEED*4;
+		s_cam_pitch = MOVE_SPEED;
 	}
 
 	if(key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_yaw = -MOVE_SPEED*4;
+		s_cam_yaw = -MOVE_SPEED;
 	}
 	else if(key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_yaw = MOVE_SPEED*4;
+		s_cam_yaw = MOVE_SPEED;
 
 	}
 
 	if(key == GLFW_KEY_Q && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_roll = -MOVE_SPEED*4;
+		s_cam_roll = -MOVE_SPEED;
 
 	}
 	else if(key == GLFW_KEY_E && (action == GLFW_PRESS || action == GLFW_REPEAT))
 	{
-		s_cam_roll = MOVE_SPEED*4;
+		s_cam_roll = MOVE_SPEED;
 	}
 
+	if(key == GLFW_KEY_X && action == GLFW_PRESS)
+	{
+		key_pressed_X = true;
+	}
 
 }

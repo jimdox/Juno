@@ -16,7 +16,7 @@ public:
 	Shader();
 	Shader(const std::string& filepath);
 	virtual ~Shader();
-	bool loadShader();
+	bool loadShader(const std::string& filepath);
 	void useProgram();
 	void unbindProgram();
 	GLuint getID();

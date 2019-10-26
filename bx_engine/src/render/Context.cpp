@@ -123,19 +123,27 @@ void Context::update(Camera* camera, float dt)
 	{
 		vz = MOVE_SPEED * dt;
 	}
-
+	if(key_pressed_X && cam_mode_xray)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		cam_mode_xray = false;
+	} else if(key_pressed_X)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		cam_mode_xray = true;
+	}
+	key_pressed_X = false;
+	key_pressed_W = false;
+	key_pressed_S = false;
 	// s_cam_vx = 0;
 	// s_cam_vy = 0;
 	// s_cam_vz = 0;
-
-
-	camera->update(glm::vec3(s_cam_vx*dt, s_cam_vy*dt, vz*dt), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
-
-	if(!key_pressed_W && !key_pressed_S)
-	{
-		s_cam_vz = 0;
-	} 
 	
+
+
+	camera->update(glm::vec3(s_cam_vx*dt, s_cam_vy*dt, vz), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
+
+
 	key_pressed_W = false;
 	key_pressed_S = false;
 

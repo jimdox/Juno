@@ -4,15 +4,21 @@
 #include "stb_image.h"
 
 namespace bx {
+
+enum TextureType : unsigned char
+{
+	TX_DIFFUSE, TX_SPECULAR, TX_NORMAL, TX_HEIGHT_MAP
+};
+
 class Texture
 {
 public:
-	Texture(std::string& filepath, std::string& t, bool hasUVs);
-	Texture(std::string& dir, std::string& type);
+	Texture(const std::string& filepath, TextureType tx_type);
+	Texture(const std::string& dir, TextureType tx_type, bool transp);
 	virtual ~Texture();
 
-	std::string& getFilePath();
-	std::string& getTexType();
+	const std::string& getFilePath();
+	TextureType getTexType();
 
 	bool containsTransparency();
 	void setTransparency(bool flag);
@@ -27,8 +33,8 @@ public:
 private:
 	unsigned int textureID;
 	bool transparency;
-	std::string& filepath;
-	std::string& texType;
+	const std::string& filepath;
+	TextureType tex_type;
 
 
 

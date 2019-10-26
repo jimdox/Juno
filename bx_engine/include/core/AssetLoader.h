@@ -105,7 +105,7 @@ namespace bxImport {
 
 
     /* custom obj importer */
-    static bx::Mesh loadOBJFile(std::string& filepath)
+    static bx::Mesh loadOBJFile(const std::string& filepath)
     {
         std::string line;                            /* per line .obj info */
         std::ifstream openFile(filepath.c_str());
@@ -213,13 +213,111 @@ namespace bxImport {
         return mesh;
     }
 
-static bx::Mesh loadModel(std::string& filepath)
+static bx::Mesh loadModel(const std::string& filepath)
 {
     if(filepath.find(".obj") != std::string::npos)
     {
     return loadOBJFile(filepath);
     }
     return loadOBJFile(filepath);
+}
+
+static unsigned int loadTexture(const std::string& filepath)
+{
+    int width, height, channels;
+    unsigned int id;
+	glGenTextures(1, &id);
+	glBindTexture(GL_TEXTURE_2D, id);
+
+	unsigned char* imageData = stbi_load((filepath.c_str()), &width, &height, &channels, 0);
+
+	if (imageData)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+		BX_CLI_INFO(("Loaded Texture from location: " + filepath).c_str());
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
+	}
+	else
+	{
+		BX_CLI_INFO("Failed to load image: " + filepath);
+	}
+	stbi_image_free(imageData);
+    return id;
+}
+
+
+static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint &fragmentShader)
+{
+	std::string vertFilePath = filepath + ".vert";
+	std::string fragFilePath = filepath + ".frag";
+    std::string vertSource;
+	std::string fragSource;
+
+	std::ifstream sourceStream(vertFilePath, std::ios::in);
+	if (sourceStream.is_open())
+	{
+		std::stringstream src;
+		src << sourceStream.rdbuf();
+		vertSource = src.str();
+		sourceStream.close();
+	}
+	else {
+		BX_ERR("Error: cannot access file: " + vertFilePath);
+	}
+
+	std::ifstream sourceStream2(fragFilePath, std::ios::in);
+	if (sourceStream2.is_open())
+	{
+
+		std::stringstream src;
+		src << sourceStream2.rdbuf();
+		fragSource = src.str();
+		sourceStream2.close();
+	}
+	else {
+		BX_ERR("Error: cannot access file: " + fragFilePath);
+		return;
+	}
+
+	GLint compileFlag = GL_FALSE;
+	int errorLength;
+	BX_WARN("Compiling shaders");
+
+	char const* vertSrcPtr = vertSource.c_str();
+	char const* fragSrcPtr = fragSource.c_str();
+
+	glShaderSource(vertexShader, 1, &vertSrcPtr, NULL);
+	glCompileShader(vertexShader);
+
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &compileFlag);
+	glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &errorLength);
+
+	if (errorLength > 0)
+	{
+
+		std::vector<char> errorMsg(errorLength + 1);
+		glGetShaderInfoLog(vertexShader, errorLength, NULL, &errorMsg[0]);
+		std::string message(errorMsg.begin(), errorMsg.end());
+		BX_CRIT(message);
+	}
+
+	glShaderSource(fragmentShader, 1, &fragSrcPtr, NULL);
+	glCompileShader(fragmentShader);
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &compileFlag);
+	glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &errorLength);
+
+	if (errorLength > 0)
+	{
+		std::vector<char> errorMsg(errorLength + 1);
+		glGetShaderInfoLog(fragmentShader, errorLength, NULL, &errorMsg[0]);
+		std::string message(errorMsg.begin(), errorMsg.end());
+		BX_CRIT(message);
+	}
 }
 
 }

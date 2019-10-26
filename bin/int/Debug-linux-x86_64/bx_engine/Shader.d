@@ -24,7 +24,7 @@
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
  lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
- include/core/bxMath.h
+ include/core/bxMath.h include/core/AssetLoader.h include/entity/Entity.h
 
 include/render/shaders/Shader.h:
 
@@ -89,3 +89,7 @@ lib/spdlog/include/spdlog/version.h:
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
 
 include/core/bxMath.h:
+
+include/core/AssetLoader.h:
+
+include/entity/Entity.h:

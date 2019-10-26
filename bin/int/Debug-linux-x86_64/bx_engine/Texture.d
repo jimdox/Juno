@@ -21,7 +21,8 @@
  lib/spdlog/include/spdlog/sinks/ansicolor_sink.h \
  lib/spdlog/include/spdlog/details/console_globals.h \
  lib/spdlog/include/spdlog/version.h \
- lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h
+ lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h \
+ include/core/AssetLoader.h include/entity/Entity.h include/render/Mesh.h
 
 include/render/Texture.h:
 
@@ -76,3 +77,9 @@ lib/spdlog/include/spdlog/details/console_globals.h:
 lib/spdlog/include/spdlog/version.h:
 
 lib/spdlog/include/spdlog/sinks/stdout_color_sinks.h:
+
+include/core/AssetLoader.h:
+
+include/entity/Entity.h:
+
+include/render/Mesh.h:

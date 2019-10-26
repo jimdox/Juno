@@ -24,14 +24,14 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::addTexture(Texture* tex, const std::string& type)
+void Mesh::addTexture(Texture* tex, TextureType tx_type)
 {
 	Texture tx = *tex;
-	if(type == "diffuse")
+	if(tx_type == TX_DIFFUSE)
 	{
 		this->textureList.diffuse.push_back(tx);
 	}
-	else if(type == "specular")
+	else if(tx_type == TX_SPECULAR)
 	{
 		this->textureList.specular.push_back(tx);
 	}
