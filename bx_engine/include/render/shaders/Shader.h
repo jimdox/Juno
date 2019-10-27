@@ -39,7 +39,7 @@ public:
 	void setMat4(unsigned int loc, glm::mat4& mat) const;
 
 
-private:
+protected:
 	GLuint progID;
 	std::string shaderPath;
 	enum Shdr { VERTEX, FRAGMENT, GEOMETRY };

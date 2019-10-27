@@ -105,11 +105,8 @@ void Context::init()
 
 void Context::update(Camera* camera, float dt)
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glfwSwapBuffers(window);
-	glfwPollEvents();
 
-	float vx = 0;
+float vx = 0;
 	float vy = 0;
 	float vz = 0;
 
@@ -144,6 +141,12 @@ void Context::update(Camera* camera, float dt)
 
 	key_pressed_W = false;
 	key_pressed_S = false;
+	
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glfwSwapBuffers(window);
+	glfwPollEvents();
+
+	
 
 }
 

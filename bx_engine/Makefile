@@ -12,21 +12,21 @@ endif
 
 ifeq ($(config),debug)
   RESCOMP = windres
-  TARGETDIR = ../bin
+  TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/bx_engine
   OBJDIR = ../bin/int/Debug-linux-x86_64/bx_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DBX_MODE_DEBUG
   INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/jpl -Ilib/imgui -I.
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lGL -lGLEW -lglfw
   LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
   endef
@@ -41,7 +41,7 @@ endif
 
 ifeq ($(config),release)
   RESCOMP = windres
-  TARGETDIR = ../bin
+  TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/bx_engine
   OBJDIR = ../bin/int/Release-linux-x86_64/bx_engine
   PCH = pch.h
@@ -50,8 +50,8 @@ ifeq ($(config),release)
   INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/jpl -Ilib/imgui -I.
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS += -lGL -lGLEW -lglfw
   LDDEPS +=

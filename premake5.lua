@@ -25,7 +25,7 @@ workspace "BlackBox"
 		cppdialect "C++17"
 		staticruntime "on"
 		
-		targetdir ("./bin/")
+		targetdir ("./bin/%{cfg.buildcfg}/")
 		objdir ("./bin/int/" .. outputdir .. "/%{prj.name}")
 		
 		pchheader "%{prj.name}/pch.h"
@@ -70,7 +70,8 @@ workspace "BlackBox"
 			"%{prj.name}/lib/stb",
 			"%{prj.name}/lib/spdlog/include",
 			"%{prj.name}/lib/jpl",
-			"%{prj.name}/lib/imgui"
+			"%{prj.name}/lib/imgui",
+			"%{prj.name}/"
 
 		}
 		
@@ -80,3 +81,11 @@ workspace "BlackBox"
             		"GLEW",
 			"glfw"
 		}
+
+		filter "configurations:Debug"
+			defines { "BX_MODE_DEBUG" }
+			symbols "on"
+
+		filter "configurations:Release"
+			optimize "on"	
+		

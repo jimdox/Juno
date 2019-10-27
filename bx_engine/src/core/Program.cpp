@@ -34,7 +34,7 @@ void Program::init()
 
 void Program::run()
 {
-	Mesh stall = bxImport::loadModel("./bx_engine/res/stall.obj");
+	Mesh stall = bxImport::loadModel("./bx_engine/res/dragon.obj");
 	Texture texture1("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
 	stall.addTexture(&texture1, texture1.getTexType());
 
@@ -47,20 +47,25 @@ void Program::run()
 	// glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 
 	// Entity entB(stall, entBPos, ent_rot, 1.0f, entName);
-	// Entity entC(stall, entCPos, ent_rot, 1.0f, entName);
+
+	std::shared_ptr terrain_shader = std::make_shared<TerrainShader>("./bx_engine/res/shaders/basic");
+	Terrain terrain(0, 0, texture1);
+
 
 	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.41f, 0.41f, 0.41f));
-	Light light_b(glm::vec3(-111.5f, -0.01f, 1.0f), glm::vec3(0.41f, 1.41f, 2.91f));
+	Light light_b(glm::vec3(-111.5f, -0.01f, 1.0f), glm::vec3(0.41f, 0.6f, 0.9f));
 	
 	RenderQueue queue;
 	queue.submit(&entity_one, shader);
-	queue.addLight(light);
+	//queue.addLight(light);
 	queue.addLight(light_b);
 	/* ----- */
 	frame_time = 0;
 	num_frames = 0;
 	dt = 0;
 	last_time = glfwGetTime();
+
+	queue.submit(&terrain, terrain_shader);
 
 	while (render_context->isRunning())
 	{
@@ -75,7 +80,6 @@ void Program::run()
 		fpsCounter(frame_time);
 
 	}
-	
 }
 
 void Program::exit()

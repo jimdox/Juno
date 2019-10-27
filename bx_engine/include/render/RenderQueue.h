@@ -18,7 +18,7 @@ public:
     void addLight(Light &light);
 
     void submit(Entity* entity, std::shared_ptr<Shader> shader);
-    // void submit(Terrain* terrain, std::shared_ptr<Shader> shader);
+    void submit(Terrain* terrain, std::shared_ptr<TerrainShader> shader);
 
     void remove(Entity& entity);
     void render(Camera* camera);
@@ -26,11 +26,12 @@ public:
 
 private:
     std::vector<Entity *> entities;
-    std::vector<std::shared_ptr<Shader>> shaders;
+    std::vector<std::shared_ptr<Shader>> entity_shaders;
     std::vector<Entity *> instanced_entities;
     std::vector<Light> lights;
 
-    // std::vector<Terrain *> terrainBlocks;
-    std::vector<std::shared_ptr<TerrainShader>> terrainShaders;
+    std::vector<Terrain *> terrainBlocks;
+    std::vector<std::shared_ptr<TerrainShader>> terrain_shaders;
+
 };
 }

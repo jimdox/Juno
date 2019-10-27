@@ -25,14 +25,14 @@ void RenderQueue::addLight(Light &light)
 void RenderQueue::submit(Entity* entity, std::shared_ptr<Shader> shader)
 {
     entities.push_back(entity);
-    shaders.push_back(shader);
+    entity_shaders.push_back(shader);
 }
 
-// void RenderQueue::submit(Terrain* terrain, std::shared_ptr<Shader> shader)
-// {
-//     terrainBlocks.push_back(terrain);
-//     terrainShaders.push_back(shader);
-// }
+void RenderQueue::submit(Terrain* terrain, std::shared_ptr<TerrainShader> ter_shader)
+{
+    terrainBlocks.push_back(terrain);
+    terrain_shaders.push_back(ter_shader);
+}
 
 void RenderQueue::remove(Entity& entity)
 {
@@ -49,20 +49,22 @@ void RenderQueue::render(Camera* camera)
     for(int i = 0; i < entities.size(); i++)
     {   
         lights[1].setPosition(lights[1].getPosition() + glm::vec3(0.1, 0, 0));
-        shaders[i]->useProgram();
-        shaders[i]->loadViewMatrix(camera);
-        shaders[i]->loadLightUniforms(lights);
-        bxRender::renderEntity(entities[i] , shaders[i]);
-        shaders[i]->unbindProgram();
+        entity_shaders[i]->useProgram();
+        entity_shaders[i]->loadViewMatrix(camera);
+        entity_shaders[i]->loadLightUniforms(lights);
+        bxRender::renderEntity(entities[i] , entity_shaders[i]);
+        entity_shaders[i]->unbindProgram();
     }
 
-    // for(int j = 0; j < terrainBlocks.size(); j++)
-    // {
-    //     shaders[j]->useProgram();
-    //     shaders[j]->loadViewMatrix(camera);
-    //     shaders[j]->loadLightUniforms(lights[0]);
-    //     bxRender::renderTerrain(terrainBlocks[j], shaders[j]);
-    // }
+    for(int j = 0; j < terrainBlocks.size(); j++)
+    {
+        lights[1].setPosition(lights[1].getPosition() + glm::vec3(0.1, 0, 0));
+        terrain_shaders[j]->useProgram();
+        terrain_shaders[j]->loadViewMatrix(camera);
+        terrain_shaders[j]->loadLightUniforms(lights);
+        bxRender::renderTerrain(terrainBlocks[j] , terrain_shaders[j]);
+        terrain_shaders[j]->unbindProgram();
+    }
 }
 
 void RenderQueue::clear()

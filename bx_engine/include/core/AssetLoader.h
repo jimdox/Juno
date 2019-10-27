@@ -213,7 +213,7 @@ static bx::Mesh loadModel(const std::string& filepath)
     return loadOBJFile(filepath);
 }
 
-static unsigned int loadTexture(const std::string& filepath)
+static unsigned int loadTexture(const std::string& filepath, bx::TextureType tx_type)
 {
     int width, height, channels;
     unsigned int id;
@@ -230,9 +230,13 @@ static unsigned int loadTexture(const std::string& filepath)
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);		
-	}
+		if(tx_type == bx::TX_DIFFUSE || tx_type == bx::TX_SPECULAR)
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1);
+        }
+    }
 	else
 	{
 		BX_CLI_INFO("Failed to load image: " + filepath);

@@ -11,7 +11,7 @@ uniform vec3 lightColor;
 uniform float reflectivity;
 uniform float shineDamper;
 
-
+ 
 void main()
 {
         vec3 unit_normal = normalize(surfaceNormal);
