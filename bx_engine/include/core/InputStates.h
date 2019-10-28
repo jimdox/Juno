@@ -1,15 +1,15 @@
 #pragma once
 
-static bool MOUSE_INPUT_RECIEVED = false;
+extern bool MOUSE_INPUT_RECIEVED;
 
-static double CURSOR_X = 0.0;
-static double CURSOR_Y = 0.0;
-static double CURSOR_DX = 0.0;
-static double CURSOR_DY = 0.0;
+extern double CURSOR_X;
+extern double CURSOR_Y;
+extern double CURSOR_DX;
+extern double CURSOR_DY;
 
-static bool LMB_PRESSED = false;
-static bool RMB_PRESSED = false;
+extern bool LMB_PRESSED;
+extern bool RMB_PRESSED;
 
-static double SCROLL_Y = 0.0;
-static double SCROLL_DX = 0.0;
-static double SCROLL_DY = 0.0;  /* normal mouse wheel */
+extern double SCROLL_Y;
+extern double SCROLL_DX;
+extern double SCROLL_DY;

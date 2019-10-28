@@ -53,13 +53,12 @@ void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom)
 	this->yaw += dRot.z;
 
 	/* update camera pivot elements */
-	distanceToPivot += SCROLL_DY * 1;
 	float mouse_dx = CURSOR_DX;
-	float mouse_dy = CURSOR_DY;
 	setZoom(SCROLL_Y);
-	pitch += mouse_dy * 0.3; 
-	//calculateCameraPos(pitch);
-	//MOUSE_INPUT_RECIEVED = true;
+	distanceToPivot += SCROLL_DY * 1;
+	pitch += CURSOR_DY * 0.3; 
+	MOUSE_INPUT_RECIEVED = true;
+	calculateCameraPos();
 
 
 	if(LMB_PRESSED || true)
