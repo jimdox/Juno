@@ -1,6 +1,7 @@
 #include "render/Camera.h"
 #include "core/bxMath.h"
 #include "core/EngineConfig.h"
+#include "core/Log.h"
 using namespace bx;
 
 
@@ -15,6 +16,7 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos
 	this->mouseSpeed = 0.1f;
 	this->zoom = 0.0f;
 	generateProjectionMatrix();
+	velocity = glm::vec3(0,0,0);
 
 }
 
@@ -35,8 +37,11 @@ void Camera::move(glm::vec3 pos, glm::vec3 dRot)
 
 void Camera::update(glm::vec3 dPos, glm::vec3 dRot, float deltaZoom)
 {
+	//BX_CLI_CRIT("x: {}, y: {}, z: {}", velocity.x, velocity.y, velocity.z);
 	this->velocity = dPos;
-	this->position += velocity; 
+
+	this->position.x += velocity.x;
+	this->position.z += velocity.z; 
 	this->roll += dRot.x;
 	this->pitch += dRot.y;
 	this->yaw += dRot.z;

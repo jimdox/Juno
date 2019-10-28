@@ -21,8 +21,8 @@ public:
 	void renderUpdate();
 	void init();
 	//void splashImage();
-	void update(Camera* camera, float dt);
-
+	void update();
+	void updateCamera(Camera* camera, float dt);
 	void destroy();
 	void setVisible(bool flag);
 

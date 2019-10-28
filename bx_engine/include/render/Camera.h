@@ -23,6 +23,8 @@ public:
 	glm::mat4& getProjectionMatrix();
 	glm::mat4& getViewMatrix();
 
+	const float DEFAULT_MOVE_SPEED = 4.4;
+
 private:
 	void generateProjectionMatrix();
 
@@ -34,13 +36,14 @@ private:
 	float yaw;
 	float pitch;
 	float roll;
-	float moveSpeed;
 	float mouseSpeed;
 	float zoom;
+	float moveSpeed;
 
 	const float FOV = 80.0f;
 	const float NEAR_PLANE = 0.1f;
 	const float FAR_PLANE = 1000.0f;
+
 
 };
 }

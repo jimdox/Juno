@@ -93,6 +93,7 @@ void Context::init()
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
 
+	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);		// todo: use EngineConfig.h value.
 
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, kbdLayout);
@@ -103,50 +104,46 @@ void Context::init()
 	aspectRatio = this->width / this->height;
 }
 
-void Context::update(Camera* camera, float dt)
+void Context::update()
 {
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glfwSwapBuffers(window);
+	glfwPollEvents();
+}
 
-float vx = 0;
-	float vy = 0;
-	float vz = 0;
-
+void Context::updateCamera(Camera* camera, float dt)
+{
+	glm::vec3 vel(0,0,0);
+	
 	if(key_pressed_W)
 	{
-		vz = -MOVE_SPEED * dt;
+		vel.z = -camera->DEFAULT_MOVE_SPEED*dt;
+	} else if(key_pressed_S) {
+		vel.z = camera->DEFAULT_MOVE_SPEED*dt;
 	}
-	else if(key_pressed_S)
+	if(key_pressed_A)
 	{
-		vz = MOVE_SPEED * dt;
+		vel.x = -camera->DEFAULT_MOVE_SPEED*dt;
+	} else if(key_pressed_D) {
+		vel.x = camera->DEFAULT_MOVE_SPEED*dt;
 	}
-	if(key_pressed_X && cam_mode_xray)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		cam_mode_xray = false;
-	} else if(key_pressed_X)
+
+	if(key_pressed_X)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		cam_mode_xray = true;
+	} else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	key_pressed_X = false;
-	key_pressed_W = false;
-	key_pressed_S = false;
 	// s_cam_vx = 0;
 	// s_cam_vy = 0;
 	// s_cam_vz = 0;
 	
+	//BX_INFO("dt: {}", dt);
 
 
-	camera->update(glm::vec3(s_cam_vx*dt, s_cam_vy*dt, vz), glm::vec3(s_cam_roll, s_cam_pitch, s_cam_yaw), s_deltaZoom);
+	camera->update(vel, glm::vec3(0, 0, 0), 0);
 
-
-	key_pressed_W = false;
-	key_pressed_S = false;
-	
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glfwSwapBuffers(window);
-	glfwPollEvents();
-
-	
 
 }
 

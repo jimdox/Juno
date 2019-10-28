@@ -15,7 +15,7 @@ public:
 	void exit();
 
 	void splashShader();
-	void fpsCounter(float ft);
+	void fpsCounter();
 	// todo: config-file manager for core engine
 
 protected:

@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include <functional>
 namespace bx {
 enum EventType : short
 {
@@ -20,11 +20,6 @@ enum EventCategory: short
     EVENT_CAT_MOUSE_BUTTON = 1 << 4
 };
 
-#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::type; }\
-                                                                virtual EventType getEventType() const override { return getStaticType(); }\
-                                                                virtual const char* getName() const override { return #type; }
-
-#define EVENT_CLASS_CAT(category) virtual int getCatFlags() const override { return category; }
 
 class Event 
 {
@@ -44,20 +39,7 @@ public:
 
 class EventDispatcher 
 {
-public: 
-    EventDispatcher(Event& e) : event(e){}
-
-    template<typename t, typename f>
-
-    bool dispatch(const f& func)    
-    {
-        if(event.getType() == t::getStaticType())
-        {
-            event.handled = func(static_cast<t&>(event));
-            return true;
-        }
-        return false;
-    }
+  
 
 private: 
     Event& event;

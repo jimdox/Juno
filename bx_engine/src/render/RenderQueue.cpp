@@ -48,7 +48,6 @@ void RenderQueue::render(Camera* camera)
 
     for(int i = 0; i < entities.size(); i++)
     {   
-        lights[1].setPosition(lights[1].getPosition() + glm::vec3(0.1, 0, 0));
         entity_shaders[i]->useProgram();
         entity_shaders[i]->loadViewMatrix(camera);
         entity_shaders[i]->loadLightUniforms(lights);
@@ -58,7 +57,6 @@ void RenderQueue::render(Camera* camera)
 
     for(int j = 0; j < terrainBlocks.size(); j++)
     {
-        lights[1].setPosition(lights[1].getPosition() + glm::vec3(0.1, 0, 0));
         terrain_shaders[j]->useProgram();
         terrain_shaders[j]->loadViewMatrix(camera);
         terrain_shaders[j]->loadLightUniforms(lights);

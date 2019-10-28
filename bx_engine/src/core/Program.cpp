@@ -34,22 +34,30 @@ void Program::init()
 
 void Program::run()
 {
-	Mesh stall = bxImport::loadModel("./bx_engine/res/dragon.obj");
+	Mesh stall = bxImport::loadModel("./bx_engine/res/hammer.obj");
 	Texture texture1("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
 	stall.addTexture(&texture1, texture1.getTexType());
 
-	glm::vec3 ent_pos(0.0f, -1.5f, -5.0f);
+	Mesh ground = bxImport::loadModel("./bx_engine/res/transporter-mk-5.obj");
+	Texture texture_two("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
+	ground.addTexture(&texture_two, texture_two.getTexType());
+
+	glm::vec3 ent_pos(0.0f, 0, -5.0f);
 	glm::vec3 ent_rot(0.0f, 0.0f, 0.00f);
 
-	Entity entity_one(stall, ent_pos, ent_rot, 0.6f, "Entity One");
+	glm::vec3 ground_pos(-4, 2, -7);
+	glm::vec3 ground_rot(-90.0, 0, 30);
 
+	Entity entity_one(stall, ent_pos, ent_rot, 0.6f, "Entity One");
+	Entity entity_two(ground, ground_pos, ground_rot, 0.3, "Entity Two");
+	
 	// glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
 	// glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 
 	// Entity entB(stall, entBPos, ent_rot, 1.0f, entName);
 
-	std::shared_ptr terrain_shader = std::make_shared<TerrainShader>("./bx_engine/res/shaders/basic");
-	Terrain terrain(0, 0, texture1);
+	// std::shared_ptr terrain_shader = std::make_shared<TerrainShader>("./bx_engine/res/shaders/basic");
+	// Terrain terrain(0, 0, texture1);
 
 
 	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.41f, 0.41f, 0.41f));
@@ -57,6 +65,7 @@ void Program::run()
 	
 	RenderQueue queue;
 	queue.submit(&entity_one, shader);
+	queue.submit(&entity_two, shader);
 	//queue.addLight(light);
 	queue.addLight(light_b);
 	/* ----- */
@@ -65,29 +74,29 @@ void Program::run()
 	dt = 0;
 	last_time = glfwGetTime();
 
-	queue.submit(&terrain, terrain_shader);
-
 	while (render_context->isRunning())
 	{
+		render_context->updateCamera(&camera, frame_time);
+		
 		glm::vec3 d_rot(0.0f, 0.1f, 0.0f);
-		entity_one.addRotation(d_rot);
+		//entity_one.addRotation(d_rot);
 
 		bxRender::clear();
 
 		queue.render(&camera);
-
-		render_context->update(&camera, frame_time);
-		fpsCounter(frame_time);
+		
+		render_context->update();
+		fpsCounter();
 
 	}
 }
 
 void Program::exit()
 {
-	render_context->destroy();
+
 }
 
-void Program::fpsCounter(float frame_time)
+void Program::fpsCounter()
 {
 	frame_time = (glfwGetTime() - last_time);
 	last_time = glfwGetTime();

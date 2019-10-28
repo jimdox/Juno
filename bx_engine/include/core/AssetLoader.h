@@ -234,7 +234,13 @@ static unsigned int loadTexture(const std::string& filepath, bx::TextureType tx_
         {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1);
+            if(glewIsSupported("GL_EXT_texture_filter_anisotropic") || GLEW_EXT_texture_filter_anisotropic)
+            {
+                
+            } else {
+                BX_WARN("anisotropic filtering is not available!");
+                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1);
+            }
         }
     }
 	else
