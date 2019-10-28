@@ -9,18 +9,15 @@ static bool key_pressed_X = false;
 static bool key_pressed_Q = false;
 static bool key_pressed_E = false;
 
+static bool key_pressed_RIGHT = false;
+static bool key_pressed_LEFT = false;
+static bool key_pressed_UP = false;
+static bool key_pressed_DOWN = false;
 
 
-static bool cam_mode_xray = false;
 
-static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-	{
-		glfwSetWindowShouldClose(window, GLFW_TRUE);
-	}
-
-	
+static inline void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int mods)
+{	
 	switch(key)
 	{
 		case GLFW_KEY_ESCAPE:
@@ -68,13 +65,15 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 			} else {
 				key_pressed_Q = false;
 			}
+			break;
 		case GLFW_KEY_E:
 			if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			{
 				key_pressed_E = true;
 			} else {
-				key_pressed_Q = false;
+				key_pressed_E = false;
 			}
+			break;
 		case GLFW_KEY_X:
 			if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			{
@@ -82,6 +81,39 @@ static void kbdLayout(GLFWwindow* window, int key, int scancode, int action, int
 			} else {
 				key_pressed_X = false;
 			}
+			break;
+		case GLFW_KEY_RIGHT:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_RIGHT = true;
+			} else {	
+				key_pressed_RIGHT = false;
+			}
+			break;
+		case GLFW_KEY_LEFT:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_LEFT = true;
+			} else {	
+				key_pressed_LEFT = false;
+			}
+			break;
+		case GLFW_KEY_UP:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_UP = true;
+			} else {	
+				key_pressed_UP = false;
+			}
+			break;
+		case GLFW_KEY_DOWN:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_DOWN = true;
+			} else {	
+				key_pressed_DOWN = false;
+			}
+			break;
 			
 	
 	}

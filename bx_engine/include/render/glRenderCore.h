@@ -165,8 +165,6 @@ namespace bxRender {
 
 	static void renderTerrain(bx::Terrain* terrain, std::shared_ptr<bx::TerrainShader> terrain_shader)
 	{
-		//glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
-
 		glBindVertexArray(terrain->getMesh().getVAO_ID()); 
 		glEnableVertexAttribArray(0); 
 		glEnableVertexAttribArray(1);

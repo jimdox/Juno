@@ -6,6 +6,7 @@
 #include <time.h>
 #include "core/Log.h"
 #include "core/KeyMap.h"
+#include "core/MouseMap.h"
 #include "render/Camera.h"
 
 

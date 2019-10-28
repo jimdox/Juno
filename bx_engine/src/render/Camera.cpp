@@ -1,7 +1,9 @@
 #include "render/Camera.h"
-#include "core/bxMath.h"
 #include "core/EngineConfig.h"
 #include "core/Log.h"
+#include "core/bxMath.h"
+#include "core/InputStates.h"
+
 using namespace bx;
 
 
@@ -25,27 +27,79 @@ Camera::~Camera()
 
 }
 
-void Camera::move(glm::vec3 pos, glm::vec3 dRot)
+void Camera::setPivot(glm::vec3* Pivot)
 {
-	 this->position = pos;
+	this->pivot = *Pivot;
+}
+
+void Camera::move(glm::vec3& pos, glm::vec3& dRot)
+{
+	 this->position.x = pos.x * sinf(bxMath::toRadians(dRot.y));
+	 this->position.z = pos.z * cosf(bxMath::toRadians(dRot.y));
 	 this->pitch = dRot.y;
 	 this->yaw = dRot.z;
 	 this->roll = dRot.x;
 }
 
 
-
-void Camera::update(glm::vec3 dPos, glm::vec3 dRot, float deltaZoom)
+void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom)
 {
-	//BX_CLI_CRIT("x: {}, y: {}, z: {}", velocity.x, velocity.y, velocity.z);
 	this->velocity = dPos;
 
-	this->position.x += velocity.x;
-	this->position.z += velocity.z; 
+	this->pivot.x += velocity.x * cosf(bxMath::toRadians(dRot.y));
+	this->pivot.z += velocity.z * cosf(bxMath::toRadians(dRot.y)); 
 	this->roll += dRot.x;
-	this->pitch += dRot.y;
+	//this->pitch += dRot.y;
 	this->yaw += dRot.z;
-	this->zoom += deltaZoom;
+
+	/* update camera pivot elements */
+	distanceToPivot += SCROLL_DY * 1;
+	float mouse_dx = CURSOR_DX;
+	float mouse_dy = CURSOR_DY;
+	setZoom(SCROLL_Y);
+	pitch += mouse_dy * 0.3; 
+	//calculateCameraPos(pitch);
+	//MOUSE_INPUT_RECIEVED = true;
+
+
+	if(LMB_PRESSED || true)
+	{
+		angle_around_pivot -= mouse_dx * 0.3f;
+	}
+
+}
+
+void Camera::updateZoom()
+{
+	//distanceToPivot += SCROLL_DY;
+}
+
+void Camera::updatePitch()
+{
+
+}
+
+void Camera::updateYaw()
+{
+
+}
+
+
+/* angle must be in radians */
+void Camera::calculateCameraPos()
+{
+	float rad_theta = bxMath::toRadians(pitch);
+	float dist_x = ((float) distanceToPivot * cos(rad_theta));
+	float dist_y = ((float) distanceToPivot * sin(rad_theta));
+	
+	float cam_angle = pivot.y + angle_around_pivot;
+	float cam_x_offset = dist_x * sin(bxMath::toRadians(cam_angle));
+	float cam_z_offset = dist_x * cos(bxMath::toRadians(cam_angle));
+
+	position.x = pivot.x - cam_x_offset;
+	position.y = pivot.y + dist_y;
+	position.z = pivot.z - cam_z_offset;
+	
 }
 
 glm::vec3& Camera::getPosition()
@@ -75,6 +129,7 @@ float Camera::getYaw()
 
 void Camera::setZoom(float z)
 {
+	BX_ERR("zoom {}", z);
 	this->zoom = z;
 }
 

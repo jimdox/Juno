@@ -34,19 +34,19 @@ void Program::init()
 
 void Program::run()
 {
-	Mesh stall = bxImport::loadModel("./bx_engine/res/hammer.obj");
+	Mesh stall = bxImport::loadModel("./bx_engine/res/dragon.obj");
 	Texture texture1("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
 	stall.addTexture(&texture1, texture1.getTexType());
 
-	Mesh ground = bxImport::loadModel("./bx_engine/res/transporter-mk-5.obj");
+	Mesh ground = bxImport::loadModel("./bx_engine/res/susanne.obj");
 	Texture texture_two("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
 	ground.addTexture(&texture_two, texture_two.getTexType());
 
-	glm::vec3 ent_pos(0.0f, 0, -5.0f);
+	glm::vec3 ent_pos(0.0f, -2, -5.0f);
 	glm::vec3 ent_rot(0.0f, 0.0f, 0.00f);
 
-	glm::vec3 ground_pos(-4, 2, -7);
-	glm::vec3 ground_rot(-90.0, 0, 30);
+	glm::vec3 ground_pos(-7, 5, -7);
+	glm::vec3 ground_rot(0.0, 10, 45);
 
 	Entity entity_one(stall, ent_pos, ent_rot, 0.6f, "Entity One");
 	Entity entity_two(ground, ground_pos, ground_rot, 0.3, "Entity Two");

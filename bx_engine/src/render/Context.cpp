@@ -4,6 +4,7 @@
 #include "render/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
+#include "core/bxMath.h"
 /*
 	(OpenGL) Rendering context
 */
@@ -91,15 +92,20 @@ void Context::init()
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
 
-	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);		// todo: use EngineConfig.h value.
+	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
+	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);								
 
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, kbdLayout);
+	glfwSetCursorPosCallback(window, mousePositionHandler);
+	glfwSetMouseButtonCallback(window, mouseButtonMap);
+	glfwSetScrollCallback(window, mouseScrollHandler);
 
+	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+	glfwSetCursor(window, cursor);
+	
 	bxRender::init(window);
-
 	//BX_WARN(glGetString(GL_RENDERER));													/* list video card */
 	aspectRatio = this->width / this->height;
 }
@@ -114,25 +120,40 @@ void Context::update()
 void Context::updateCamera(Camera* camera, float dt)
 {
 	glm::vec3 vel(0,0,0);
-	
+	glm::vec3 rot(0,0,0);
+	float move_speed = camera->DEFAULT_MOVE_SPEED;
+	float rot_speed = camera->DEFAULT_ROT_SPEED;
 	if(key_pressed_W)
 	{
-		vel.z = -camera->DEFAULT_MOVE_SPEED*dt;
+		vel.z = -move_speed*dt;
 	} else if(key_pressed_S) {
-		vel.z = camera->DEFAULT_MOVE_SPEED*dt;
+		vel.z = move_speed*dt;
 	}
 	if(key_pressed_A)
 	{
-		vel.x = -camera->DEFAULT_MOVE_SPEED*dt;
+		vel.x = -move_speed*dt;
 	} else if(key_pressed_D) {
-		vel.x = camera->DEFAULT_MOVE_SPEED*dt;
+		vel.x = move_speed*dt;
+	}
+	if(key_pressed_LEFT)
+	{
+		rot.z = -rot_speed*dt;
+	} else if(key_pressed_RIGHT)
+	{
+		rot.z = rot_speed*dt;
+	}
+	if(key_pressed_UP)
+	{
+		rot.y = -rot_speed*dt;
+	} else if(key_pressed_DOWN)
+	{
+		rot.y = rot_speed*dt;
 	}
 
 	if(key_pressed_X)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	} else
-	{
+	} else {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	// s_cam_vx = 0;
@@ -142,7 +163,7 @@ void Context::updateCamera(Camera* camera, float dt)
 	//BX_INFO("dt: {}", dt);
 
 
-	camera->update(vel, glm::vec3(0, 0, 0), 0);
+	camera->update(vel, rot, 0);
 
 
 }
