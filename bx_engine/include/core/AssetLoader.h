@@ -213,12 +213,12 @@ static bx::Mesh loadModel(const std::string& filepath)
     return loadOBJFile(filepath);
 }
 
-static unsigned int loadTexture(const std::string& filepath, bx::TextureType tx_type)
+static unsigned int loadTexture(const std::string& filepath, GLenum format, bx::TextureType tx_type)
 {
     int width, height, channels;
     unsigned int id;
 	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_2D, id);
+	glBindTexture(format, id);
 
 	unsigned char* imageData = stbi_load((filepath.c_str()), &width, &height, &channels, 0);
 
@@ -246,11 +246,42 @@ static unsigned int loadTexture(const std::string& filepath, bx::TextureType tx_
 	else
 	{
 		BX_CLI_INFO("Failed to load image: " + filepath);
+    	stbi_image_free(imageData);
 	}
 	stbi_image_free(imageData);
     return id;
 }
 
+static unsigned int loadCubeMap(const std::vector<std::string>& filepaths, GLenum format, bx::TextureType tx_type)
+{
+    int width, height, channels;
+    unsigned int id;
+	glGenTextures(1, &id);
+	glBindTexture(format, id);
+    unsigned char* imageData;
+    for(unsigned int i = 0; i < filepaths.size(); i++)
+    {
+        imageData = stbi_load((filepaths[i].c_str()), &width, &height, &channels, 0);
+
+        if (imageData)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+           
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);   
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);   
+            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);   
+        }
+        else
+        {
+            BX_CLI_INFO("Failed to load image: " + filepaths[i]);
+            stbi_image_free(imageData);
+        }
+    }
+    stbi_image_free(imageData);
+    return id;
+}
 
 static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint &fragmentShader)
 {

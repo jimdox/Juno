@@ -8,13 +8,13 @@ using namespace bx;
 Texture::Texture(const std::string& filepath, TextureType tx_type) : filepath(filepath), tex_type(tex_type)
 {
 	transparency = false;
-	textureID = bxImport::loadTexture(filepath, tex_type);
+	textureID = bxImport::loadTexture(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 /* called by bxAssetLoader */
 Texture::Texture(const std::string& filepath, TextureType tx_type, bool transp) : filepath(filepath), tex_type(tx_type), transparency(transp)
 {	
-	textureID = bxImport::loadTexture(filepath, tex_type);
+	textureID = bxImport::loadTexture(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 Texture::~Texture()

@@ -21,13 +21,17 @@ void main()
         vec3 net_diffuse = vec3(0.0, 0.0, 0.0);
         vec3 net_specular = vec3(0.0, 0.0, 0.0);
 
-        vec3 test_att = vec3(1.0, 0.0009, 0.0001);
+        vec3 test_att = vec3(1.0, 0.004, 0.001);
 
         for(int i=0; i<2; i++)
         {
                 float distToSrc = length(toLightDir[i]);
-                //float att_factor = attenuations[i].x + (attenuations[i].y * distToSrc) + (attenuations[i].z * distToSrc * distToSrc);
                 float att_factor = test_att.x + (test_att.y * distToSrc) + (test_att.z * distToSrc * distToSrc);
+                
+                // if(attenuations[i].y < 1)
+                // {
+                //         att_factor = attenuations[i].x + (attenuations[i].y * distToSrc) + (attenuations[i].z * distToSrc * distToSrc);
+                // }
                 vec3 unit_toLightDir = normalize(toLightDir[i]);
                 float relativeDir = dot(unit_normal, unit_toLightDir);
                 float brightness = max(relativeDir, 0.0);
@@ -40,7 +44,7 @@ void main()
                 specular_factor = max(specular_factor, 0.0);
                 float damper_factor = pow(specular_factor, shineDamper);
                 
-                net_diffuse = net_diffuse + (brightness * lightColor[i]);
+                net_diffuse = net_diffuse + (brightness * lightColor[i])/att_factor;
                 net_specular = net_specular + (damper_factor * reflectivity * lightColor[i])/att_factor;
         }
 

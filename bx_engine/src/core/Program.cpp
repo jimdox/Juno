@@ -60,8 +60,8 @@ void Program::run()
 	// Terrain terrain(0, 0, texture1);
 
 
-	Light light(glm::vec3(113.5f, 0.01f, 30.0f), glm::vec3(0.0f, 0.41f, 0.41f), glm::vec3(1.0, 0.0001, 0.0));
-	Light light_b(glm::vec3(-111.5f, -0.01f, 1.0f), glm::vec3(0.41f, 0.6f, 0.9f), glm::vec3(1.0, 0.0001, 0.0));
+	Light light(glm::vec3(11.5f, 0.01f, 30.0f), glm::vec3(0.8f, 0.41f, 0.41f), glm::vec3(1.0, 0.00001, 0.0005));
+	Light light_b(glm::vec3(-11.5f, -0.01f, 1.0f), glm::vec3(0.01f, 0.0f, 0.9f), glm::vec3(1.0, 0.0001, 0.0005));
 	
 	RenderQueue queue;
 	queue.submit(&entity_one, shader);
