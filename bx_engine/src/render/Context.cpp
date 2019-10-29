@@ -18,8 +18,8 @@ void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
         CURSOR_DX += x_pos - CENTER_X;
         CURSOR_DY += y_pos - CENTER_Y;
     } else {
-        CURSOR_DX = x_pos - CENTER_X;
-        CURSOR_DY = y_pos - CENTER_Y;
+        CURSOR_DX = x_pos - (CENTER_X);
+        CURSOR_DY = y_pos - (CENTER_Y);
         MOUSE_DATA_RECIEVED = false;
     }
     CURSOR_X += CURSOR_DX;

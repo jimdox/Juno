@@ -106,9 +106,12 @@ void Shader::cacheUniformLocations()
 		std::string location = "lightPosition[";
 		location += i + "]";
 		loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
-		location = "lightColor[" + i;
+		location = "lightColor[";
 		location += i + "]";
 		loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
+		location = "attenuations[";
+		location +=  i + "]";
+		loc_attenuations[i] = glGetUniformLocation(progID, location.c_str());
 	}
 }
 
@@ -138,12 +141,16 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 	{
 		if(i >= lights.size())
 		{
-			glm::vec3 empty_light(0.0, 0.0, 0.0);
-			setVec3(loc_lightPositions[i], empty_light);
+			glm::vec3 empty_light(1.0, 0.0, 0.0);
+			glm::vec3 empty_pos(-100, 5, 0);
+			glm::vec3 empty_atten(1.0, 0.0, 0.0);
+			setVec3(loc_lightPositions[i], empty_pos);
 			setVec3(loc_lightColors[i], empty_light);
+			setVec3(loc_attenuations[i], empty_atten);
 		} else {
 			setVec3(loc_lightPositions[i], lights[i].getPosition());
 			setVec3(loc_lightColors[i], lights[i].getColor());
+			setVec3(loc_attenuations[i], lights[i].getAttenuation());
 		}
 	}
 

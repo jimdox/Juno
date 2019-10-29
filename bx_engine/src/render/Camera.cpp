@@ -129,7 +129,7 @@ float Camera::getYaw()
 
 void Camera::setZoom(float z)
 {
-	BX_ERR("zoom {}", z);
+	//BX_ERR("zoom {}", z);
 	if(z < MAX_ZOOM)
 	{
 		this->zoom = MAX_ZOOM;

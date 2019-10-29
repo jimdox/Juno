@@ -55,6 +55,7 @@ protected:
 
 	unsigned int loc_lightPositions[NUM_LIGHTS];
 	unsigned int loc_lightColors[NUM_LIGHTS];
+	unsigned int loc_attenuations[NUM_LIGHTS];
 
 	
 };

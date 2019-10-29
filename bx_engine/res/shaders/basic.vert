@@ -23,7 +23,7 @@ void main()
         
         for(int i=0; i<4; i++)
         {
-                toLightDir[i] = lightPosition[i] - (globalPosition).xyz;
+                toLightDir[i] = lightPosition[i] - globalPosition.xyz;
         }
         cameraDir = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - globalPosition.xyz;
         
