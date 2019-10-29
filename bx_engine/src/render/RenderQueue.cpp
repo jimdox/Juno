@@ -49,7 +49,7 @@ void RenderQueue::render(Camera* camera)
     for(int i = 0; i < entities.size(); i++)
     {   
         entity_shaders[i]->useProgram();
-	    entity_shaders[i]->loadProjectionMatrix(camera->getProjectionMatrix());				/* load the perspective matrix from Camera */
+	    entity_shaders[i]->loadProjectionMatrix(camera->regenProjectionMatrix());				/* load the perspective matrix from Camera */
         entity_shaders[i]->loadViewMatrix(camera);
         entity_shaders[i]->loadLightUniforms(lights);
         bxRender::renderEntity(entities[i] , entity_shaders[i]);

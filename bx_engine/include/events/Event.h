@@ -23,30 +23,25 @@ enum EventCategory: short
 
 class Event 
 {
+friend class EventDispatcher;
 public:
+    virtual ~Event();
     bool handled = false;
 
-    virtual EventType getType() const = 0;
-    virtual const char* getName() const = 0;
-    virtual unsigned int getCatFlags() = 0;
-    virtual std::string toString() const { return getName(); }
-
-    inline bool inCategory(EventCategory cat)
-    {
-        return getCatFlags() & cat;
-    }
+    
 };
 
 class EventDispatcher 
 {
-  
-
+public:
+    using SlotType = std::function<void( const Event&)>;
+    // void addEventCategory( const Event)
 private: 
-    Event& event;
+
 };  
 
-inline std::ostream& operator<<(std::ostream& os, const Event& e)
-{
-    return os << e.toString();
-}
+// inline std::ostream& operator<<(std::ostream& os, const Event& e)
+// {
+//     return os << e.toString();
+// }
 }

@@ -1,15 +1,25 @@
+// #ifndef INPUT_STATES
+// #define INPUT_STATES
 #pragma once
+namespace bx {
+    
+typedef struct MouseInputData {
 
-extern bool MOUSE_INPUT_RECIEVED;
+bool MOUSE_DATA_RECIEVED;
+bool LM_BUTTON_PRESS;
+bool LM_BUTTON_REPEAT;
+bool RM_BUTTON_PRESS;
+bool RM_BUTTON_REPEAT;
+double CURSOR_X; 
+double CURSOR_Y; 
+double CURSOR_DX;
+double CURSOR_DY;
+double SCROLL_X; 
+double SCROLL_Y; 
+double SCROLL_DX;
+double SCROLL_DY;
 
-extern double CURSOR_X;
-extern double CURSOR_Y;
-extern double CURSOR_DX;
-extern double CURSOR_DY;
+} MouseInputData;
 
-extern bool LMB_PRESSED;
-extern bool RMB_PRESSED;
-
-extern double SCROLL_Y;
-extern double SCROLL_DX;
-extern double SCROLL_DY;
+}
+//#endif

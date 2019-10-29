@@ -1,9 +1,11 @@
 #pragma once
 #include "pch.h"
 #include "Context.h"
+
+//#define IMGUI_IMPL_OPENGL_LOADER_GLEW
 // #include "imgui.h"
 // #include "imgui_impl_glfw.h"
-// #include "imgui_ogl3.h"
+// #include "imgui_impl_opengl3.h"
 
 #include "render/shaders/Shader.h"
 #include "entity/Entity.h"
@@ -38,6 +40,7 @@ namespace bxRender {
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glEnable(GL_MULTISAMPLE);
+
 
 		// IMGUI_CHECKVERSION();
 		// ImGui::CreateContext();
@@ -140,19 +143,19 @@ namespace bxRender {
 	}
 
 
-	// static void guiUpdate()
-	// {
-	// 	ImGui_ImplOpenGL3_NewFrame();
-	// 	ImGui_ImplGlfw_NewFrame();
-	// 	ImGui::NewFrame();
-	// 	ImGui::Begin("testing");
-	// 	ImGui::Text("testing?"); 
+	static void guiUpdate()
+	{
+		// ImGui_ImplOpenGL3_NewFrame();
+		// ImGui_ImplGlfw_NewFrame();
+		// ImGui::NewFrame();
+		// ImGui::Begin("testing");
+		// ImGui::Text("testing?"); 
 		
-	// 	ImGui::End();
+		// ImGui::End();
 
-	// 	ImGui::Render();
-	// 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	// }
+		// ImGui::Render();
+		// ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
 
 	// inline static void guiRender()
 	// {

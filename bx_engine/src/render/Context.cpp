@@ -1,14 +1,70 @@
 #include "render/Context.h"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "render/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
 #include "core/bxMath.h"
+
 /*
 	(OpenGL) Rendering context
 */
+
 using namespace bx;
+
+void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
+{
+    if(!MOUSE_DATA_RECIEVED)
+    {
+        CURSOR_DX += x_pos - CENTER_X;
+        CURSOR_DY += y_pos - CENTER_Y;
+    } else {
+        CURSOR_DX = x_pos - CENTER_X;
+        CURSOR_DY = y_pos - CENTER_Y;
+        MOUSE_DATA_RECIEVED = false;
+    }
+    CURSOR_X += CURSOR_DX;
+    CURSOR_Y += CURSOR_DY;
+}
+
+void mouseButtonMap(GLFWwindow* window, int button, int action, int mods)
+{
+	if(button == GLFW_MOUSE_BUTTON_LEFT)
+	{
+		if(action == GLFW_PRESS || action == GLFW_REPEAT)
+		{
+			LM_BUTTON_PRESS = true;
+			LM_BUTTON_REPEAT = true;
+		} else {
+			LM_BUTTON_PRESS = false;
+			LM_BUTTON_REPEAT = false;
+		}
+	}
+	else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+	{
+		if(action == GLFW_PRESS || action == GLFW_REPEAT)
+		{
+			RM_BUTTON_PRESS = true;
+		} else {
+			RM_BUTTON_PRESS = false;
+		}
+	}
+}
+
+void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
+{
+    if(!MOUSE_DATA_RECIEVED)
+    {
+        SCROLL_DX += SCROLL_X - x_offset;
+        SCROLL_DY += SCROLL_Y - y_offset;
+    } else {
+        SCROLL_DX = SCROLL_X - x_offset;
+        SCROLL_DY = SCROLL_Y - y_offset;
+        MOUSE_DATA_RECIEVED = false;
+    }
+    SCROLL_X += x_offset;
+    SCROLL_Y += y_offset;
+}
+
 
 Context::Context()
 {
@@ -59,6 +115,10 @@ void Context::destroy()
 
 }
 
+/* /// GLFW Callbacks /// */
+
+
+
 static void setErrCallback(int code, const char* message)
 {
 	std::string error(message);
@@ -66,7 +126,7 @@ static void setErrCallback(int code, const char* message)
 	BX_CRIT(error);
 }
 
-
+/* /// class methods /// */
 
 void Context::init()
 {
@@ -104,10 +164,13 @@ void Context::init()
 
 	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
-	
 	bxRender::init(window);
-	//BX_WARN(glGetString(GL_RENDERER));													/* list video card */
+
 	aspectRatio = this->width / this->height;
+
+	CENTER_X = width/2.0;
+	CENTER_Y = height/2.0;
+
 }
 
 void Context::update()
@@ -156,14 +219,19 @@ void Context::updateCamera(Camera* camera, float dt)
 	} else {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	// s_cam_vx = 0;
-	// s_cam_vy = 0;
-	// s_cam_vz = 0;
-	
-	//BX_INFO("dt: {}", dt);
+		mouse_data.LM_BUTTON_PRESS = LM_BUTTON_PRESS;
+		mouse_data.RM_BUTTON_PRESS = RM_BUTTON_PRESS;
+		mouse_data.CURSOR_X = CURSOR_X;
+		mouse_data.CURSOR_Y = CURSOR_Y;
+		mouse_data.CURSOR_DX = CURSOR_DX;
+		mouse_data.CURSOR_DY = CURSOR_DY;
+		mouse_data.SCROLL_X = SCROLL_X;
+		mouse_data.SCROLL_Y = SCROLL_Y;
+		mouse_data.SCROLL_DX = SCROLL_DX;
+		mouse_data.SCROLL_DY = SCROLL_DY;
+		MOUSE_DATA_RECIEVED = true;
 
-
-	camera->update(vel, rot, 0);
+		camera->update(vel, rot, 0, mouse_data);
 
 
 }

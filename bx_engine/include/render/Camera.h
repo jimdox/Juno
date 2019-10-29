@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-
+#include "core/InputStates.h"
 namespace bx { 
 class Camera
 {
@@ -19,16 +19,19 @@ public:
 	float getYaw();
 	
 	void setZoom(float z);
-	void update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom);
-	void updateZoom();
+	void update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInputData &mouse_data);
+	void updateZoom(float scroll_y);
 	void updatePitch();
 	void updateYaw();
 	inline void calculateCameraPos();
 	glm::mat4& getProjectionMatrix();
+	glm::mat4& regenProjectionMatrix();
 	glm::mat4& getViewMatrix();
 
 	const float DEFAULT_MOVE_SPEED = 4.5;
 	const float DEFAULT_ROT_SPEED = 80;
+	const double MIN_ZOOM = 32;
+	const double MAX_ZOOM = -40;
 
 private:
 	void generateProjectionMatrix();
@@ -46,6 +49,8 @@ private:
 	float angle_around_pivot;
 	float moveSpeed;
 	float mouseSpeed;
+	double mouse_delta_x;
+	double mouse_delta_y;
 
 	const float FOV = 60.0f;
 	const float NEAR_PLANE = 0.1f;

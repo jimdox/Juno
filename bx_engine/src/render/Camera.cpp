@@ -2,8 +2,8 @@
 #include "core/EngineConfig.h"
 #include "core/Log.h"
 #include "core/bxMath.h"
-#include "core/InputStates.h"
-
+//#include "core/InputStates.h"
+//#include "render/Context.h"
 using namespace bx;
 
 
@@ -17,6 +17,8 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos
 	this->moveSpeed = 2.5f;
 	this->mouseSpeed = 0.1f;
 	this->zoom = 0.0f;
+	mouse_delta_x = 0;
+	mouse_delta_y = 0;
 	generateProjectionMatrix();
 	velocity = glm::vec3(0,0,0);
 
@@ -42,35 +44,34 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 }
 
 
-void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom)
+void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInputData &mouse_data)
 {
 	this->velocity = dPos;
 
-	this->pivot.x += velocity.x * cosf(bxMath::toRadians(dRot.y));
-	this->pivot.z += velocity.z * cosf(bxMath::toRadians(dRot.y)); 
+	this->position.x += velocity.x * cosf(bxMath::toRadians(dRot.y));
+	this->position.z += velocity.z * cosf(bxMath::toRadians(dRot.y)); 
 	this->roll += dRot.x;
 	//this->pitch += dRot.y;
 	this->yaw += dRot.z;
 
 	/* update camera pivot elements */
-	float mouse_dx = CURSOR_DX;
-	setZoom(SCROLL_Y);
-	distanceToPivot += SCROLL_DY * 1;
-	pitch += CURSOR_DY * 0.3; 
-	MOUSE_INPUT_RECIEVED = true;
+	setZoom(mouse_data.SCROLL_Y * 5);
+	distanceToPivot += mouse_data.SCROLL_Y * 1;
 	calculateCameraPos();
 
 
-	if(LMB_PRESSED || true)
+	if(mouse_data.LM_BUTTON_PRESS)
 	{
-		angle_around_pivot -= mouse_dx * 0.3f;
+		angle_around_pivot -= mouse_data.CURSOR_DX * 0.3f;
+		pitch += mouse_data.CURSOR_DY * 0.001;
+		yaw += mouse_data.CURSOR_DX * 0.001;
 	}
 
 }
 
-void Camera::updateZoom()
+void Camera::updateZoom(float scroll_y)
 {
-	//distanceToPivot += SCROLL_DY;
+	distanceToPivot += scroll_y;
 }
 
 void Camera::updatePitch()
@@ -95,9 +96,9 @@ void Camera::calculateCameraPos()
 	float cam_x_offset = dist_x * sin(bxMath::toRadians(cam_angle));
 	float cam_z_offset = dist_x * cos(bxMath::toRadians(cam_angle));
 
-	position.x = pivot.x - cam_x_offset;
-	position.y = pivot.y + dist_y;
-	position.z = pivot.z - cam_z_offset;
+	// position.x = pivot.x - cam_x_offset;
+	// position.y = pivot.y + dist_y;
+	// position.z = pivot.z - cam_z_offset;
 	
 }
 
@@ -129,7 +130,14 @@ float Camera::getYaw()
 void Camera::setZoom(float z)
 {
 	BX_ERR("zoom {}", z);
+	if(z < MAX_ZOOM)
+	{
+		this->zoom = MAX_ZOOM;
+	} else if(z > MIN_ZOOM) {
+		this->zoom = MIN_ZOOM;
+	} else {
 	this->zoom = z;
+	}
 }
 
 glm::mat4& Camera::getProjectionMatrix()
@@ -140,4 +148,10 @@ glm::mat4& Camera::getProjectionMatrix()
 void Camera::generateProjectionMatrix()
 {
 	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), getAspectRatio(), NEAR_PLANE, FAR_PLANE);	
+}
+
+glm::mat4& Camera::regenProjectionMatrix()
+{
+	generateProjectionMatrix();
+	return this->projectionMatrix;
 }
