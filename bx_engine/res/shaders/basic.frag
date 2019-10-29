@@ -23,7 +23,7 @@ void main()
 
         vec3 test_att = vec3(1.0, 0.0009, 0.0001);
 
-        for(int i=0; i<4; i++)
+        for(int i=0; i<2; i++)
         {
                 float distToSrc = length(toLightDir[i]);
                 //float att_factor = attenuations[i].x + (attenuations[i].y * distToSrc) + (attenuations[i].z * distToSrc * distToSrc);

@@ -101,18 +101,30 @@ void Shader::cacheUniformLocations()
 	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
 	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
 
-	for(int i = 0; i < NUM_LIGHTS; i++)
-	{
-		std::string location = "lightPosition[";
-		location += i + "]";
-		loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
-		location = "lightColor[";
-		location += i + "]";
-		loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
+	// for(int i = 0; i < NUM_LIGHTS; i++)
+	// {
+	// 	std::string location = "lightPosition[";
+	// 	location += i + "]";
+	// 	loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
+	// 	location = "lightColor[";
+	// 	location += i + "]";
+	// 	loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
+	// 	location = "attenuations[";
+	// 	location +=  i + "]";
+	// 	loc_attenuations[i] = glGetUniformLocation(progID, location.c_str());
+	// }
+		std::string location = "lightPosition[0]";
+		loc_lightPositions[0] = glGetUniformLocation(progID, location.c_str());
+		location = "lightColor[0]";
+		loc_lightColors[0] = glGetUniformLocation(progID, location.c_str());
 		location = "attenuations[";
-		location +=  i + "]";
-		loc_attenuations[i] = glGetUniformLocation(progID, location.c_str());
-	}
+		loc_attenuations[0] = glGetUniformLocation(progID, location.c_str());
+		location = "lightPosition[1]";
+		loc_lightPositions[1] = glGetUniformLocation(progID, location.c_str());
+		location = "lightColor[1]";
+		loc_lightColors[1] = glGetUniformLocation(progID, location.c_str());
+		location = "attenuations[1]";
+		loc_attenuations[1] = glGetUniformLocation(progID, location.c_str());
 }
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
@@ -135,25 +147,27 @@ void Shader::loadViewMatrix(Camera* camera)
 /* lighting variables */
 void Shader::loadLightUniforms(std::vector<Light> &lights)
 {
-	// setVec3(loc_lightPosition, light.getPosition());
-	// setVec3(loc_lightColor, light.getColor());
-	for(unsigned int i = 0; i < NUM_LIGHTS; i++)
-	{
-		if(i >= lights.size())
-		{
-			glm::vec3 empty_light(1.0, 0.0, 0.0);
-			glm::vec3 empty_pos(-100, 5, 0);
-			glm::vec3 empty_atten(1.0, 0.0, 0.0);
-			setVec3(loc_lightPositions[i], empty_pos);
-			setVec3(loc_lightColors[i], empty_light);
-			setVec3(loc_attenuations[i], empty_atten);
-		} else {
-			setVec3(loc_lightPositions[i], lights[i].getPosition());
-			setVec3(loc_lightColors[i], lights[i].getColor());
-			setVec3(loc_attenuations[i], lights[i].getAttenuation());
-		}
-	}
 
+	// for(unsigned int i = 0; i < NUM_LIGHTS; i++)
+	// {
+	// 	if(i >= lights.size())
+	// 	{
+	// 		glm::vec3 empty_light(1.0, 0.0, 0.0);
+	// 		setVec3(loc_lightPositions[i], empty_light);
+	// 		setVec3(loc_lightColors[i], empty_light);
+	// 		setVec3(loc_attenuations[i], empty_light);
+	// 	} else {
+	// 		setVec3(loc_lightPositions[i], lights[1].getPosition());
+	// 		setVec3(loc_lightColors[i], lights[1].getColor());
+	// 		setVec3(loc_attenuations[i], lights[1].getAttenuation());
+	// 	}
+	// }
+			setVec3(loc_lightPositions[0], lights[0].getPosition());
+			setVec3(loc_lightColors[0], lights[0].getColor());
+			setVec3(loc_attenuations[0], lights[0].getAttenuation());
+			setVec3(loc_lightPositions[1], lights[1].getPosition());
+			setVec3(loc_lightColors[1], lights[1].getColor());
+			setVec3(loc_attenuations[1], lights[1].getAttenuation());
 }
 
 void Shader::loadPBRVars(Material material)
