@@ -30,6 +30,7 @@ static inline void kbdLayout(GLFWwindow* window, int key, int scancode, int acti
 			if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			{
 				key_pressed_W = true;
+				BX_WARN("W key pressed! ");
 			} else {
 				key_pressed_W = false;
 			}
