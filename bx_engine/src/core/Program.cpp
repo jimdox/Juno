@@ -83,11 +83,10 @@ void Program::run()
 
 		bxRender::clear();
 
-		queue.render(&camera);
+		//queue.render(&camera);
 		
 		render_context->update();
 		fpsCounter();
-
 	}
 }
 
