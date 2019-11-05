@@ -20,7 +20,7 @@ Program::~Program()
 
 void Program::init()
 {
-	render_context = std::make_unique<Context>(800, 800, "v0.0.1", false);
+	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1.1", false);
 	shader = std::make_shared<Shader>("./bx_engine/res/shaders/basic");
 
 	BX_WARN(BX_GFX_DEVICE);
@@ -35,22 +35,25 @@ void Program::init()
 void Program::run()
 {
 	Mesh stall = bxImport::loadModel("./bx_engine/res/dragon.obj");
-	Texture texture1("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
+	Texture texture1("./bx_engine/res/grey.png", TX_DIFFUSE, true);
 	stall.addTexture(&texture1, texture1.getTexType());
 
-	Mesh ground = bxImport::loadModel("./bx_engine/res/susanne.obj");
-	Texture texture_two("./bx_engine/res/stall_tex.png", TX_DIFFUSE, true);
-	ground.addTexture(&texture_two, texture_two.getTexType());
+	Mesh plane = bxImport::loadModel("./bx_engine/res/plane.obj");
+	Texture texture_two("./bx_engine/res/suse.png", TX_DIFFUSE, true);
+	plane.addTexture(&texture_two, texture_two.getTexType());
 
-	glm::vec3 ent_pos(0.0f, -2, -5.0f);
-	glm::vec3 ent_rot(0.0f, 0.0f, 0.00f);
+	glm::vec3 ent_pos(0.0f, -1.5f, -8.0f);
+	glm::vec3 ent_rot(0.0f, 180.0f, 0.00f);
 
-	glm::vec3 ground_pos(-7, 5, -7);
-	glm::vec3 ground_rot(0.0, 10, 45);
+	glm::vec3 ground_pos(0.0f, -2.0f, -1.0f);
+	glm::vec3 ground_rot(0.0f, 0.0f, 0.0f);
 
-	Entity entity_one(stall, ent_pos, ent_rot, 0.6f, "Entity One");
-	Entity entity_two(ground, ground_pos, ground_rot, 0.3, "Entity Two");
-	
+	Entity entity_one(stall, ent_pos, ent_rot, 0.45f, "Entity One");
+	Entity entity_two(plane, ground_pos, ground_rot, 70, "Entity Two");
+	Material gr_mat;
+	gr_mat.reflectivity = 0.0f;
+	gr_mat.shineDamper = 1.0f;
+	entity_two.getMesh().setMaterial(gr_mat);
 	// glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
 	// glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 
@@ -60,8 +63,8 @@ void Program::run()
 	// Terrain terrain(0, 0, texture1);
 
 
-	Light light(glm::vec3(11.5f, 0.01f, 30.0f), glm::vec3(0.8f, 0.41f, 0.41f), glm::vec3(1.0, 0.00001, 0.0005));
-	Light light_b(glm::vec3(-11.5f, -0.01f, 1.0f), glm::vec3(0.01f, 0.0f, 0.9f), glm::vec3(1.0, 0.0001, 0.0005));
+	Light light(glm::vec3(110.5f, 100.01f, 100.0f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(1.0, 0.00001, 0.0005));
+	Light light_b(glm::vec3(-30.5f, 10.0f, 1.0f), glm::vec3(0.8f, 0.8f, 0.9f), glm::vec3(1.0, 0.0001, 0.0005));
 	
 	RenderQueue queue;
 	queue.submit(&entity_one, shader);
@@ -83,9 +86,9 @@ void Program::run()
 
 		bxRender::clear();
 
-		//queue.render(&camera);
+		queue.render(&camera);
 		
-		render_context->update();
+		render_context->update(frame_time);
 		fpsCounter();
 	}
 }

@@ -1,6 +1,6 @@
 #include "render/Context.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "render/Texture.h"
+#include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
 #include "core/bxMath.h"
@@ -111,6 +111,9 @@ Context::~Context()
 /* closes current glfw window */
 void Context::destroy()
 {
+	ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 	glfwDestroyWindow(window);
 
 }
@@ -165,6 +168,7 @@ void Context::init()
 	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
 	bxRender::init(window);
+	guiDock.init();
 
 	aspectRatio = this->width / this->height;
 
@@ -173,30 +177,31 @@ void Context::init()
 
 }
 
-void Context::update()
+void Context::update(float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+	guiDock.update(dt);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
 
 void Context::updateCamera(Camera* camera, float dt)
 {
-	glm::vec3 vel(0,0,0);
+	glm::vec3 dPos(0,0,0);
 	glm::vec3 rot(0,0,0);
 	float move_speed = camera->DEFAULT_MOVE_SPEED;
 	float rot_speed = camera->DEFAULT_ROT_SPEED;
 	if(key_pressed_W)
 	{
-		vel.z = -move_speed*dt;
+		dPos.z = -move_speed*dt;
 	} else if(key_pressed_S) {
-		vel.z = move_speed*dt;
+		dPos.z = move_speed*dt;
 	}
 	if(key_pressed_A)
 	{
-		vel.x = -move_speed*dt;
+		dPos.x = -move_speed*dt;
 	} else if(key_pressed_D) {
-		vel.x = move_speed*dt;
+		dPos.x = move_speed*dt;
 	}
 	if(key_pressed_LEFT)
 	{
@@ -211,6 +216,13 @@ void Context::updateCamera(Camera* camera, float dt)
 	} else if(key_pressed_DOWN)
 	{
 		rot.y = rot_speed*dt;
+	}
+	if(key_pressed_R)
+	{
+		dPos.y = move_speed * dt;
+	} else if(key_pressed_F)
+	{
+		dPos.y = -move_speed * dt;
 	}
 
 	if(key_pressed_X)
@@ -231,7 +243,7 @@ void Context::updateCamera(Camera* camera, float dt)
 		mouse_data.SCROLL_DY = SCROLL_DY;
 		MOUSE_DATA_RECIEVED = true;
 
-		camera->update(vel, rot, 0, mouse_data);
+		camera->update(dPos, rot, 0, mouse_data);
 
 
 }

@@ -38,23 +38,15 @@ workspace "BlackBox"
 			"%{prj.name}/include/render/**.h",
 			"%{prj.name}/include/entity/**.h",
 			"%{prj.name}/include/events/**.h",
+			"%{prj.name}/include/gui/**.h",
 			"%{prj.name}/src/**.cpp",
 			"%{prj.name}/lib/stb/stb_image.h",
 
 			"%{prj.name}/lib/jpl/*.hpp",
 
-			--"%{prj.name}/lib/imgui/imgui.h",
-			--"%{prj.name}/lib/imgui/imgui_internal.h",
-			--"%{prj.name}/lib/imgui/imgui_impl_glfw.h",
-			--"%{prj.name}/lib/imgui/imstb_rectpack.h",
-			--"%{prj.name}/lib/imgui/imstb_textedit.h",
-			--"%{prj.name}/lib/imgui/imstb_truetype.h",
-			--"%{prj.name}/lib/imgui/imgui_ogl3.h",
-			--"%{prj.name}/lib/imgui/imconfig.h",
-			--"%{prj.name}/lib/imgui/imgui_demo.cpp",
-			--"%{prj.name}/lib/imgui/imgui_draw.cpp",
-			--"%{prj.name}/lib/imgui/imgui_ogl3.cpp",
-			--"%{prj.name}/lib/imgui/imgui_widgets.cpp"
+			"%{prj.name}/lib/imgui/*.h",
+			"%{prj.name}/lib/imgui/*.cpp",
+
 			
 		}
 		
@@ -77,9 +69,10 @@ workspace "BlackBox"
 		
 		links 
 		{ 
-            		"GL",
-            		"GLEW",
+            "GL",
+            "GLEW",
 			"glfw"
+			--"Imgui"
 		}
 
 		filter "configurations:Debug"

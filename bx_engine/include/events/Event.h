@@ -1,6 +1,5 @@
 #pragma once
 #include "pch.h"
-#include <functional>
 namespace bx {
 enum EventType : short
 {
@@ -23,20 +22,24 @@ enum EventCategory: short
 
 class Event 
 {
-friend class EventDispatcher;
+friend class EventObserver;
 public:
     virtual ~Event();
+    virtual EventType type() const = 0;
+    
     bool handled = false;
 
-    
 };
 
-class EventDispatcher 
+class EventObserver 
 {
+// public:
+//     using SlotType = std::function<void( const Event&)>;
+//     void addEventCategory(const Event);
+// private: 
 public:
-    using SlotType = std::function<void( const Event&)>;
-    // void addEventCategory( const Event)
-private: 
+    virtual ~EventObserver();
+    virtual void onNotify() = 0;
 
 };  
 

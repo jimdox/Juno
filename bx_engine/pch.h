@@ -11,7 +11,7 @@
 #include <vector>
 #include <map>
 #include <tuple>
-
+#include <functional>
 
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>

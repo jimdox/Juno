@@ -69,22 +69,29 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/imgui.o \
+	$(OBJDIR)/imgui_demo.o \
+	$(OBJDIR)/imgui_draw.o \
+	$(OBJDIR)/imgui_impl_glfw.o \
+	$(OBJDIR)/imgui_impl_opengl3.o \
+	$(OBJDIR)/imgui_widgets.o \
 	$(OBJDIR)/InputManager.o \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/StartPoint.o \
 	$(OBJDIR)/Entity.o \
 	$(OBJDIR)/Terrain.o \
-	$(OBJDIR)/Event.o \
+	$(OBJDIR)/Dock.o \
+	$(OBJDIR)/GuiImage.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/RenderQueue.o \
-	$(OBJDIR)/Texture.o \
-	$(OBJDIR)/bxGUI.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/TerrainShader.o \
+	$(OBJDIR)/CubeMap.o \
+	$(OBJDIR)/Texture.o \
 
 RESOURCES := \
 
@@ -143,6 +150,24 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
+$(OBJDIR)/imgui.o: lib/imgui/imgui.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_demo.o: lib/imgui/imgui_demo.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_draw.o: lib/imgui/imgui_draw.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_glfw.o: lib/imgui/imgui_impl_glfw.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_opengl3.o: lib/imgui/imgui_impl_opengl3.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_widgets.o: lib/imgui/imgui_widgets.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/InputManager.o: src/core/InputManager.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -161,7 +186,10 @@ $(OBJDIR)/Entity.o: src/entity/Entity.cpp
 $(OBJDIR)/Terrain.o: src/entity/terrain/Terrain.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Event.o: src/events/Event.cpp
+$(OBJDIR)/Dock.o: src/gui/Dock.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GuiImage.o: src/gui/GuiImage.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/render/Camera.cpp
@@ -176,12 +204,6 @@ $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
 $(OBJDIR)/RenderQueue.o: src/render/RenderQueue.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Texture.o: src/render/Texture.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/bxGUI.o: src/render/bxGUI.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: src/render/lights/Light.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -189,6 +211,12 @@ $(OBJDIR)/Shader.o: src/render/shaders/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/TerrainShader.o: src/render/shaders/TerrainShader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/CubeMap.o: src/render/textures/CubeMap.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Texture.o: src/render/textures/Texture.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

@@ -20,7 +20,6 @@ void RenderQueue::setLights(std::vector<Light> &lights)
 void RenderQueue::addLight(Light &light)
 {
     lights.push_back(light);
-    BX_TRACE(lights.size());
 }
 
 void RenderQueue::submit(Entity* entity, std::shared_ptr<Shader> shader)

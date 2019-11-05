@@ -129,18 +129,18 @@ void Shader::cacheUniformLocations()
 
 void Shader::loadTransformMatrix(glm::mat4& transform)
 {
-	setMat4(loc_transformationMatrix, transform);
+	loadMat4(loc_transformationMatrix, transform);
 }
 
 void Shader::loadProjectionMatrix(glm::mat4& projection)
 {
-	setMat4(loc_projectionMatrix, projection);
+	loadMat4(loc_projectionMatrix, projection);
 }
 
 void Shader::loadViewMatrix(Camera* camera)
 {
 	glm::mat4 viewMat = bxMath::generateViewMatrix(camera);
-	setMat4(loc_viewMatrix, viewMat);
+	loadMat4(loc_viewMatrix, viewMat);
 
 }
 
@@ -153,72 +153,72 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 	// 	if(i >= lights.size())
 	// 	{
 	// 		glm::vec3 empty_light(1.0, 0.0, 0.0);
-	// 		setVec3(loc_lightPositions[i], empty_light);
-	// 		setVec3(loc_lightColors[i], empty_light);
-	// 		setVec3(loc_attenuations[i], empty_light);
+	// 		loadVec3(loc_lightPositions[i], empty_light);
+	// 		loadVec3(loc_lightColors[i], empty_light);
+	// 		loadVec3(loc_attenuations[i], empty_light);
 	// 	} else {
-	// 		setVec3(loc_lightPositions[i], lights[1].getPosition());
-	// 		setVec3(loc_lightColors[i], lights[1].getColor());
-	// 		setVec3(loc_attenuations[i], lights[1].getAttenuation());
+	// 		loadVec3(loc_lightPositions[i], lights[1].getPosition());
+	// 		loadVec3(loc_lightColors[i], lights[1].getColor());
+	// 		loadVec3(loc_attenuations[i], lights[1].getAttenuation());
 	// 	}
 	// }
-			setVec3(loc_lightPositions[0], lights[0].getPosition());
-			setVec3(loc_lightColors[0], lights[0].getColor());
-			setVec3(loc_attenuations[0], lights[0].getAttenuation());
-			setVec3(loc_lightPositions[1], lights[1].getPosition());
-			setVec3(loc_lightColors[1], lights[1].getColor());
-			setVec3(loc_attenuations[1], lights[1].getAttenuation());
+			loadVec3(loc_lightPositions[0], lights[0].getPosition());
+			loadVec3(loc_lightColors[0], lights[0].getColor());
+			loadVec3(loc_attenuations[0], lights[0].getAttenuation());
+			loadVec3(loc_lightPositions[1], lights[1].getPosition());
+			loadVec3(loc_lightColors[1], lights[1].getColor());
+			loadVec3(loc_attenuations[1], lights[1].getAttenuation());
 }
 
 void Shader::loadPBRVars(Material material)
 {
-	setFloat(loc_reflectivity, material.reflectivity);
-	setFloat(loc_shineDamper, material.shineDamper);
+	loadFloat(loc_reflectivity, material.reflectivity);
+	loadFloat(loc_shineDamper, material.shineDamper);
 }
 
 /* GLSL uniform loaders */
-void Shader::setInt(unsigned int loc, int value) const
+void Shader::loadInt(unsigned int loc, int value) const
 {
 	glUniform1i(loc, (int)value);
 }
 
 
-void Shader::setBool(unsigned int loc, bool flag) const
+void Shader::loadBool(unsigned int loc, bool flag) const
 {
 	glUniform1i(loc, flag);
 }
 
-void Shader::setFloat(unsigned int loc, float value) const
+void Shader::loadFloat(unsigned int loc, float value) const
 {
 	glUniform1f(loc, value);
 }
 
-void Shader::setVec2(unsigned int loc, glm::vec2& vec) const
+void Shader::loadVec2(unsigned int loc, glm::vec2& vec) const
 {
 	glUniform2fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec3(unsigned int loc, glm::vec3 &vec) const
+void Shader::loadVec3(unsigned int loc, glm::vec3 &vec) const
 {
 	glUniform3fv(loc, 1, &vec[0]);
 }
 
-void Shader::setVec4(unsigned int loc, glm::vec4& vec) const
+void Shader::loadVec4(unsigned int loc, glm::vec4& vec) const
 {
 	glUniform4fv(loc, 1, &vec[0]);
 }
 
-void Shader::setMat2(unsigned int loc, glm::mat2& mat) const
+void Shader::loadMat2(unsigned int loc, glm::mat2& mat) const
 {
 	glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat3(unsigned int loc, glm::mat3& mat) const
+void Shader::loadMat3(unsigned int loc, glm::mat3& mat) const
 {
 	glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
-void Shader::setMat4(unsigned int loc, glm::mat4& mat) const
+void Shader::loadMat4(unsigned int loc, glm::mat4& mat) const
 {
 	glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 }

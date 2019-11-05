@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "render/Texture.h"
+#include "render/textures/Texture.h"
 #include "core/Log.h"
 
 

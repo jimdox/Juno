@@ -6,7 +6,7 @@ Light::Light(const glm::vec3& pos, const glm::vec3& color)
 {
     this->position = pos;
     this->color = color;
-    this->attenuation_factors = glm::vec3(1,0,0);
+    this->attenuation_factors = glm::vec3(1.0f,0.0f,0.0f);
 }
 
 Light::Light(const glm::vec3& pos, const glm::vec3& color, const glm::vec3& a)

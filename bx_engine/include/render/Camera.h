@@ -28,7 +28,7 @@ public:
 	glm::mat4& regenProjectionMatrix();
 	glm::mat4& getViewMatrix();
 
-	const float DEFAULT_MOVE_SPEED = 4.5;
+	const float DEFAULT_MOVE_SPEED = 6.5;
 	const float DEFAULT_ROT_SPEED = 80;
 	const double MIN_ZOOM = 32;
 	const double MAX_ZOOM = -40;

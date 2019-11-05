@@ -10,7 +10,7 @@
 #include "core/KeyMap.h"
 #include "core/InputStates.h"
 #include "render/Camera.h"
-
+#include "gui/Dock.h"
 
 namespace bx {
 
@@ -40,7 +40,7 @@ public:
 	GLFWwindow* getWindow();
 	void renderUpdate();
 	void init();
-	void update();
+	void update(float dt);
 	void updateCamera(Camera* camera, float dt);
 	void destroy();
 	void setVisible(bool flag);
@@ -59,6 +59,7 @@ private:
 	int height;
 	int width;
 	std::string title;
+	Dock guiDock;
 
 	//GLuint shaders[4];
 	bool isLoading;

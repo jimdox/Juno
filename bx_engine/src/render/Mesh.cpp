@@ -7,8 +7,8 @@ using namespace bx;
 
 Mesh::Mesh()
 {
-	this->material.reflectivity = 0.6f;
-	this->material.shineDamper = 0.85f;
+	this->material.reflectivity = 0.05f;
+	this->material.shineDamper = 1.0f;
 }
 
 

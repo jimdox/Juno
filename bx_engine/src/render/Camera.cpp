@@ -46,26 +46,27 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInputData &mouse_data)
 {
-	this->velocity = dPos;
-
-	this->position.x += velocity.x * cosf(bxMath::toRadians(dRot.y));
-	this->position.z += velocity.z * cosf(bxMath::toRadians(dRot.y)); 
+	//this->velocity = dPos;
 	this->roll += dRot.x;
-	//this->pitch += dRot.y;
+	this->pitch += dRot.y;
 	this->yaw += dRot.z;
-
+	this->position.x += dPos.x; // * sinf(bxMath::toRadians(yaw)); // * cosf(bxMath::toRadians(yaw)) + velocity.z * sinf(bxMath::toRadians(yaw));
+	this->position.y += dPos.y;
+	this->position.z += dPos.z;
+	this->pivot = position;
 	/* update camera pivot elements */
 	setZoom(mouse_data.SCROLL_Y * 5);
-	distanceToPivot += mouse_data.SCROLL_Y * 1;
-	calculateCameraPos();
+	//distanceToPivot = mouse_data.SCROLL_Y * 1;
 
 
 	if(mouse_data.LM_BUTTON_PRESS)
 	{
-		angle_around_pivot -= mouse_data.CURSOR_DX * 0.3f;
-		pitch += mouse_data.CURSOR_DY * 0.001;
-		yaw += mouse_data.CURSOR_DX * 0.001;
+		// angle_around_pivot -= mouse_data.CURSOR_DX * 0.002f;
+		// pitch += mouse_data.CURSOR_DY * 0.002;
+		// yaw += mouse_data.CURSOR_DX * 0.001;
 	}
+	calculateCameraPos();
+
 
 }
 
@@ -88,7 +89,7 @@ void Camera::updateYaw()
 /* angle must be in radians */
 void Camera::calculateCameraPos()
 {
-	float rad_theta = bxMath::toRadians(pitch);
+	float rad_theta = bxMath::toRadians(pitch);// bxMath::toRadians(pitch);
 	float dist_x = ((float) distanceToPivot * cos(rad_theta));
 	float dist_y = ((float) distanceToPivot * sin(rad_theta));
 	
@@ -96,9 +97,9 @@ void Camera::calculateCameraPos()
 	float cam_x_offset = dist_x * sin(bxMath::toRadians(cam_angle));
 	float cam_z_offset = dist_x * cos(bxMath::toRadians(cam_angle));
 
-	// position.x = pivot.x - cam_x_offset;
-	// position.y = pivot.y + dist_y;
-	// position.z = pivot.z - cam_z_offset;
+	position.x = pivot.x - cam_x_offset;
+	position.y = pivot.y + dist_y;
+	position.z = pivot.z - cam_z_offset;
 	
 }
 

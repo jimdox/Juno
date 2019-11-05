@@ -21,7 +21,7 @@ void main()
         vec3 net_diffuse = vec3(0.0, 0.0, 0.0);
         vec3 net_specular = vec3(0.0, 0.0, 0.0);
 
-        vec3 test_att = vec3(1.0, 0.004, 0.001);
+        vec3 test_att = vec3(1.0, 0.00, 0.000);
 
         for(int i=0; i<2; i++)
         {

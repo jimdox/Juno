@@ -1,6 +1,6 @@
 #pragma once
 #include "render/Mesh.h"
-#include "render/Texture.h"
+#include "render/textures/Texture.h"
 namespace bx {
 class Terrain
 {

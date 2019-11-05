@@ -8,6 +8,8 @@ static bool key_pressed_D = false;
 static bool key_pressed_X = false;
 static bool key_pressed_Q = false;
 static bool key_pressed_E = false;
+static bool key_pressed_R = false;
+static bool key_pressed_F = false;
 
 static bool key_pressed_RIGHT = false;
 static bool key_pressed_LEFT = false;
@@ -30,7 +32,7 @@ static inline void kbdLayout(GLFWwindow* window, int key, int scancode, int acti
 			if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			{
 				key_pressed_W = true;
-				BX_WARN("W key pressed! ");
+				//BX_WARN("W key pressed! ");
 			} else {
 				key_pressed_W = false;
 			}
@@ -73,6 +75,22 @@ static inline void kbdLayout(GLFWwindow* window, int key, int scancode, int acti
 				key_pressed_E = true;
 			} else {
 				key_pressed_E = false;
+			}
+			break;
+		case GLFW_KEY_R:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_R = true;
+			} else {
+				key_pressed_R = false;
+			}
+			break;
+		case GLFW_KEY_F:
+			if(action == GLFW_PRESS || action == GLFW_REPEAT)
+			{
+				key_pressed_F = true;
+			} else {
+				key_pressed_F = false;
 			}
 			break;
 		case GLFW_KEY_X:

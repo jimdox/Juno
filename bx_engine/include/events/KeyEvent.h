@@ -13,6 +13,7 @@ protected:
     int key_code;
 };
 
+
 class KeyPressedEvent : public KeyEvent  
 {
 public: 
@@ -20,7 +21,12 @@ public:
 
     inline int getRepeats() const { return repeats; }
 
-    std::string toString() const override
+    EventType type() const 
+    {
+        return KEY_PRESS;
+    }
+
+    std::string toString() const
     {
         std::stringstream ss;
         ss << "KeyPressedEvent: " << key_code << " [" << repeats << " repeats]";
@@ -30,4 +36,6 @@ public:
 protected:
     int repeats;
 };
+
+
 }
