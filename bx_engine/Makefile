@@ -80,6 +80,7 @@ OBJECTS := \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/StartPoint.o \
 	$(OBJDIR)/Entity.o \
+	$(OBJDIR)/SkyBox.o \
 	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Dock.o \
 	$(OBJDIR)/GuiImage.o \
@@ -89,6 +90,7 @@ OBJECTS := \
 	$(OBJDIR)/RenderQueue.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Shader.o \
+	$(OBJDIR)/SkyBoxShader.o \
 	$(OBJDIR)/TerrainShader.o \
 	$(OBJDIR)/CubeMap.o \
 	$(OBJDIR)/Texture.o \
@@ -183,6 +185,9 @@ $(OBJDIR)/StartPoint.o: src/core/StartPoint.cpp
 $(OBJDIR)/Entity.o: src/entity/Entity.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/SkyBox.o: src/entity/SkyBox.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Terrain.o: src/entity/terrain/Terrain.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -208,6 +213,9 @@ $(OBJDIR)/Light.o: src/render/lights/Light.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/render/shaders/Shader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/SkyBoxShader.o: src/render/shaders/SkyBoxShader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/TerrainShader.o: src/render/shaders/TerrainShader.cpp

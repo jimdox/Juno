@@ -260,7 +260,7 @@ static unsigned int loadTexture(const std::string& filepath, GLenum format, bx::
     return id;
 }
 
-static unsigned int loadCubeMap(const std::array<std::string, 6>& filepaths, GLenum format, bx::TextureType tx_type)
+static unsigned int loadCubeMap(std::array<const std::string, 6>& filepaths, GLenum format, bx::TextureType tx_type)
 {
     int width, height, channels;
     unsigned int id;

@@ -16,7 +16,7 @@ public:
 
 
 protected:
-    const std::string DEFAULT_PATH = "res/shaders/skybox.vert";
+    const std::string DEFAULT_PATH = "./bx_engine/res/shaders/skybox";
 
 };
 }

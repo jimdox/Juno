@@ -58,7 +58,7 @@ static void init(GLFWwindow* window)
 /* clear screen */
 static void clear()
 {
-	glClearColor(0.22f, 0.22f, 0.22f, 1.0f);
+	glClearColor(0.02f, 0.02f, 0.02f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
@@ -147,6 +147,25 @@ static void batchRender(std::vector<bx::Entity> &entities, std::shared_ptr<bx::S
 
 static void renderSkyBox(bx::SkyBox* skybox, std::shared_ptr<bx::SkyBoxShader> & shader)
 {
+	glBindVertexArray(skybox->getMesh().getVAO_ID()); 
+	glEnableVertexAttribArray(0); 
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2); 
+
+	glm::mat4 transformationMat = bxMath::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
+	shader->loadTransformMatrix(transformationMat);
+	shader->loadPBRVars(entity->getMesh().getMaterial());
+	/* --- */
+	setBackFaceCulling(!entity->getMesh().getDiffuseTextures()[0].containsTransparency());
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, entity->getMesh().getDiffuseTextures()[0].getID());
+	glDrawElements(GL_TRIANGLES, entity->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+	
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
+	glBindVertexArray(0);
 	
 }
 

@@ -12,6 +12,7 @@ public:
     CubeMap& getCubeMap();
     std::vector<float>& getVertices();
     unsigned int getNumVertices();
+    unsigned int getVAO_ID();
 
 
 private:

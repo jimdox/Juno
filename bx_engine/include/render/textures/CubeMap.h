@@ -7,14 +7,14 @@ namespace bx {
 class CubeMap : Texture
 {
 public:
-    CubeMap(std::array<std::string, 6> texturePaths, TextureType txType);
+    CubeMap(std::array<const std::string, 6> texturePaths, TextureType txType);
     ~CubeMap();
 
-    std::array<std::string, 6>& getFilepaths();
+    std::array<const std::string, 6>& getFilepaths();
     
 
 private:
-    std::array<std::string, 6> filepaths;
+    std::array<const std::string, 6> filepaths;
 
 };
 

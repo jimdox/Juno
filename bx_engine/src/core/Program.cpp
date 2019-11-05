@@ -4,6 +4,8 @@
 #include "core/AssetLoader.h"
 #include "render/lights/Light.h"
 #include "render/RenderQueue.h"
+#include "entity/SkyBox.h"
+#include "render/shaders/SkyBoxShader.h"
 
 using namespace bx;
 
@@ -76,6 +78,20 @@ void Program::run()
 	num_frames = 0;
 	dt = 0;
 	last_time = glfwGetTime();
+
+	std::array<const std::string, 6> cubemapTextures = {
+		"./bx_engine/res/grey.png",
+		"./bx_engine/res/grey.png",
+		"./bx_engine/res/grey.png",
+		"./bx_engine/res/grey.png",
+		"./bx_engine/res/grey.png",
+		"./bx_engine/res/grey.png"
+	};
+
+	CubeMap cubemap(cubemapTextures, TX_DIFFUSE);
+	std::shared_ptr skyboxShader = std::make_shared<SkyBoxShader>();
+	SkyBox skybox(cubemap);
+	queue.submit(&skybox, skyboxShader);
 
 	while (render_context->isRunning())
 	{
