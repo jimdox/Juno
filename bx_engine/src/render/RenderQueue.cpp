@@ -72,9 +72,9 @@ void RenderQueue::render(Camera* camera)
     }
     if(skybox != nullptr)
     {
-        skyboxShader->loadProjectionMatrix(camera->getProjectionMatrix());
-        skyboxShader->loadViewMatrix(camera);
-        bxRender::renderSkyBox(skybox, skyboxShader);
+        // skyboxShader->loadProjectionMatrix(camera->getProjectionMatrix());
+        // skyboxShader->loadViewMatrix(camera);
+        // bxRender::renderSkyBox(skybox, skyboxShader);
     }
 }
 

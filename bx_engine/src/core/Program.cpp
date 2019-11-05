@@ -89,9 +89,9 @@ void Program::run()
 	};
 
 	CubeMap cubemap(cubemapTextures, TX_DIFFUSE);
-	std::shared_ptr skyboxShader = std::make_shared<SkyBoxShader>();
-	SkyBox skybox(cubemap);
-	queue.submit(&skybox, skyboxShader);
+	// std::shared_ptr skyboxShader = std::make_shared<SkyBoxShader>();
+	// SkyBox skybox(cubemap);
+	//queue.submit(&skybox, skyboxShader);
 
 	while (render_context->isRunning())
 	{
