@@ -67,6 +67,15 @@ namespace bxImport {
         return {vaoID, numIndices};
     }
 
+    /* loads a primitive object to VAO */
+    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, unsigned int dim)
+    {
+        unsigned int vaoID = generateVAO();
+        storeInAttribList(0, dim, positions);
+        glBindVertexArray(0);
+        return {vaoID, positions.size()/dim};
+    }
+
 
     /* ------------------------------------ */
 
@@ -246,20 +255,19 @@ static unsigned int loadTexture(const std::string& filepath, GLenum format, bx::
 	else
 	{
 		BX_CLI_INFO("Failed to load image: " + filepath);
-    	stbi_image_free(imageData);
 	}
 	stbi_image_free(imageData);
     return id;
 }
 
-static unsigned int loadCubeMap(const std::vector<std::string>& filepaths, GLenum format, bx::TextureType tx_type)
+static unsigned int loadCubeMap(const std::array<std::string, 6>& filepaths, GLenum format, bx::TextureType tx_type)
 {
     int width, height, channels;
     unsigned int id;
 	glGenTextures(1, &id);
 	glBindTexture(format, id);
     unsigned char* imageData;
-    for(unsigned int i = 0; i < filepaths.size(); i++)
+    for(unsigned int i = 0; i < 6; i++)
     {
         imageData = stbi_load((filepaths[i].c_str()), &width, &height, &channels, 0);
 

@@ -15,6 +15,8 @@
 #include "core/bxMath.h"
 #include "render/shaders/TerrainShader.h"
 #include "entity/terrain/Terrain.h"
+#include "render/shaders/SkyBoxShader.h"
+#include "entity/SkyBox.h"
 
 #define BX_GFX_DEVICE glGetString(GL_RENDERER)
 
@@ -141,6 +143,11 @@ static void batchRender(std::vector<bx::Entity> &entities, std::shared_ptr<bx::S
 	glBindVertexArray(0);
 	
 	checkGLErrors();
+}
+
+static void renderSkyBox(bx::SkyBox* skybox, std::shared_ptr<bx::SkyBoxShader> & shader)
+{
+	
 }
 
 

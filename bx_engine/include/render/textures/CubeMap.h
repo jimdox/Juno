@@ -11,7 +11,7 @@ public:
     ~CubeMap();
 
     std::array<std::string, 6>& getFilepaths();
-
+    
 
 private:
     std::array<std::string, 6> filepaths;

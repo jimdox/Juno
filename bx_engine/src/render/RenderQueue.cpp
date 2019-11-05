@@ -34,6 +34,12 @@ void RenderQueue::submit(Terrain* terrain, std::shared_ptr<TerrainShader> ter_sh
     terrain_shaders.push_back(ter_shader);
 }
 
+void RenderQueue::submit(SkyBox* skybox, std::shared_ptr<SkyBoxShader> skyboxShader)
+{
+    this->skybox = skybox;
+    this-> skyboxShader = skyboxShader;
+}
+
 void RenderQueue::remove(Entity& entity)
 {
     for(int i = 0; i < entities.size(); i++)
@@ -63,6 +69,12 @@ void RenderQueue::render(Camera* camera)
         terrain_shaders[j]->loadLightUniforms(lights);
         bxRender::renderTerrain(terrainBlocks[j] , terrain_shaders[j]);
         terrain_shaders[j]->unbindProgram();
+    }
+    if(skybox != nullptr)
+    {
+        skyboxShader->loadProjectionMatrix(camera->getProjectionMatrix());
+        skyboxShader->loadViewMatrix(camera);
+        bxRender::renderSkyBox(skybox, skyboxShader);
     }
 }
 

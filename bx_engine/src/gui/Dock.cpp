@@ -37,7 +37,7 @@ void Dock::update(float dt)
     ImGui::Text((const char*)glGetString(GL_VERSION));
     ImGui::Text("frame time: %.3f", dt); 
     //ImGui::Button("button");
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
     ImGui::End();
 
     ImGui::Render();

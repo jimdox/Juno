@@ -20,10 +20,10 @@ Program::~Program()
 
 void Program::init()
 {
-	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1.1", false);
+	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1", false);
 	shader = std::make_shared<Shader>("./bx_engine/res/shaders/basic");
 
-	BX_WARN(BX_GFX_DEVICE);
+	//BX_WARN(BX_GFX_DEVICE);
 
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective matrix from Camera */

@@ -95,9 +95,9 @@ void Shader::bindAttrib(unsigned int attrib, const std::string& var)
 /* caches all uniform variables' locations */
 void Shader::cacheUniformLocations()
 {
-	loc_transformationMatrix = glGetUniformLocation(progID, "transformationMatrix");
-	loc_projectionMatrix = glGetUniformLocation(progID, "projectionMatrix");
-	loc_viewMatrix = glGetUniformLocation(progID, "viewMatrix");
+	loc_transformationMatrix = glGetUniformLocation(progID, "model");
+	loc_projectionMatrix = glGetUniformLocation(progID, "projection");
+	loc_viewMatrix = glGetUniformLocation(progID, "view");
 	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
 	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
 

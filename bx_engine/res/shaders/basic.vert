@@ -8,24 +8,24 @@ out vec3 surfaceNormal;
 out vec3 toLightDir[4];
 out vec3 cameraDir;
 
-uniform mat4 transformationMatrix;
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
 uniform vec3 lightPosition[4];
 
 void main()
 {
-        vec4 globalPosition = transformationMatrix * vec4(position, 1.0);
-        gl_Position = projectionMatrix * viewMatrix * globalPosition;
+        vec4 globalPosition = model * vec4(position, 1.0);
+        gl_Position = projection * view * globalPosition;
         pass_texCoordinates = texCoordinates;
 
-        surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
+        surfaceNormal = (model * vec4(normal, 0.0)).xyz;
         
         for(int i=0; i<4; i++)
         {
                 toLightDir[i] = lightPosition[i] - globalPosition.xyz;
         }
-        cameraDir = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - globalPosition.xyz;
+        cameraDir = (inverse(view) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - globalPosition.xyz;
         
 }
 

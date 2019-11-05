@@ -5,6 +5,8 @@
 #include "render/shaders/Shader.h"
 #include "render/shaders/TerrainShader.h"
 #include "entity/terrain/Terrain.h"
+#include "render/shaders/SkyBoxShader.h"
+#include "entity/SkyBox.h"
 
 
 namespace bx {
@@ -19,6 +21,7 @@ public:
 
     void submit(Entity* entity, std::shared_ptr<Shader> shader);
     void submit(Terrain* terrain, std::shared_ptr<TerrainShader> shader);
+    void submit(SkyBox* skybox, std::shared_ptr<SkyBoxShader> shader);
 
     void remove(Entity& entity);
     void render(Camera* camera);
@@ -32,6 +35,9 @@ private:
 
     std::vector<Terrain *> terrainBlocks;
     std::vector<std::shared_ptr<TerrainShader>> terrain_shaders;
+
+    SkyBox* skybox;
+    std::shared_ptr<SkyBoxShader> skyboxShader;
 
 };
 }

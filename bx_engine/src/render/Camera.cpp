@@ -55,7 +55,7 @@ void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInpu
 	this->position.z += dPos.z;
 	this->pivot = position;
 	/* update camera pivot elements */
-	setZoom(mouse_data.SCROLL_Y * 5);
+	setZoom(mouse_data.SCROLL_Y * -5);
 	//distanceToPivot = mouse_data.SCROLL_Y * 1;
 
 
