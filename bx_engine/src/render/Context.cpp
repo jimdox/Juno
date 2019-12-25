@@ -137,8 +137,6 @@ void Context::init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Oldest allowable version of GLSL (4.3)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
 
-
-
 	glfwInit();
 
 	if (!glfwInit())	

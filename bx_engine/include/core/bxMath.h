@@ -50,4 +50,6 @@ static float baryCentricInterpolation(glm::vec3& p1, glm::vec3& p2, glm::vec3& p
     return (L_1 * p1.y) + (L_2 * p2.y) + (L_3 * p3.y);
 }
 
+// needs: fast fourier transform impl. \ 
+
 }

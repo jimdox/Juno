@@ -25,7 +25,7 @@ void Program::init()
 	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1", false);
 	shader = std::make_shared<Shader>("./bx_engine/res/shaders/basic");
 
-	//BX_WARN(BX_GFX_DEVICE);
+	// BX_WARN(BX_GFX_DEVICE); for use in debugging w/ hybrid graphics
 
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective matrix from Camera */
@@ -41,7 +41,7 @@ void Program::run()
 	stall.addTexture(&texture1, texture1.getTexType());
 
 	Mesh plane = bxImport::loadModel("./bx_engine/res/plane.obj");
-	Texture texture_two("./bx_engine/res/suse.png", TX_DIFFUSE, true);
+	Texture texture_two("./bx_engine/res/green.png", TX_DIFFUSE, true);
 	plane.addTexture(&texture_two, texture_two.getTexType());
 
 	glm::vec3 ent_pos(0.0f, -1.5f, -8.0f);
@@ -79,6 +79,7 @@ void Program::run()
 	dt = 0;
 	last_time = glfwGetTime();
 
+	/* cubemap testing */
 	std::array<const std::string, 6> cubemapTextures = {
 		"./bx_engine/res/grey.png",
 		"./bx_engine/res/grey.png",
@@ -128,65 +129,3 @@ void Program::fpsCounter()
 		num_frames = 0;
 	}
 }
-
-
-// /* ------------- */
-// void Program::splashShader()
-// {
-// 	this->shader = std::make_shared<Shader>("./bxEngine/res/shaders/gui");
-// 	float vertices[] = {
-// 		// positions          // colors           // texture coords
-// 		0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
-// 		0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
-// 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
-// 		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
-// 	};
-
-// 	unsigned int indices[] = {
-// 		0, 1, 3, // first triangle
-// 		1, 2, 3  // second triangle
-// 	};
-
-// 	unsigned int VBO, VAO, EBO;
-// 	glGenVertexArrays(1, &VAO);
-// 	glGenBuffers(1, &VBO);
-// 	glGenBuffers(1, &EBO);
-
-// 	glBindVertexArray(VAO);
-
-// 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-// 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-// 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-// 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-// 	// position attribute
-// 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-// 	glEnableVertexAttribArray(0);
-// 	// color attribute
-// 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-// 	glEnableVertexAttribArray(1);
-// 	// texture coord attribute
-// 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-// 	glEnableVertexAttribArray(2);
-
-
-// 	std::string tex_filepath = "./bxEngine/res/bx_logo-400.png";
-// 	std::string tex_type = "diffuse";
-// 	Texture texture1(tex_filepath, tex_type);
-
-// 	while(true)
-// 	{
-// 		glClearColor(0.055f, 0.055f, 0.055f, 1.0f);
-// 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-// 		/* -------- */
-// 		glActiveTexture(GL_TEXTURE0);
-// 		glBindTexture(GL_TEXTURE_2D, texture1.getID());
-		
-// 		shader->useProgram();
-// 		glBindVertexArray(VAO);
-// 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		
-// 		render_context->update();
-// 	}
-// }
