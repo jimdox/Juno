@@ -11,7 +11,7 @@
 
 
 namespace bxImport {
-    /* references for garbage collection later */
+    /* references for garbage collection upon program closing */
     static std::vector<unsigned int> VAO_refs;
     static std::vector<unsigned int> VBO_refs;
 
@@ -104,7 +104,9 @@ namespace bxImport {
 
 
 
-    /* custom obj importer */
+    /* .obj wavefront importer : treats each face as having one normal (in blender: smooth surface), 
+        where the mesh indexing requires double vertices along a given texture coordinate seam 
+    */
     static bx::Mesh loadOBJFile(const std::string& filepath)
     {
         std::string line;                            /* per line .obj info */
