@@ -1,6 +1,6 @@
-workspace "BlackBox"
+workspace "Juno"
 	architecture "x64"
-	startproject "bx_engine"
+	startproject "juno_engine"
 	
 	configurations
 	{
@@ -18,8 +18,8 @@ workspace "BlackBox"
 	IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
 	
 	
-	project "bx_engine"
-		location "bx_engine"
+	project "juno_engine"
+		location "juno_engine"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
@@ -76,7 +76,7 @@ workspace "BlackBox"
 		}
 
 		filter "configurations:Debug"
-			defines { "BX_MODE_DEBUG" }
+			defines { "JN_MODE_DEBUG" }
 			symbols "on"
 
 		filter "configurations:Release"
