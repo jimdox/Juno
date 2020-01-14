@@ -25,7 +25,7 @@ void Program::init()
 	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1", false);
 	shader = std::make_shared<Shader>("./juno_engine/res/shaders/basic");
 
-	// JN_WARN(JN_GFX_DEVICE); for use in debugging w/ hybrid graphics
+	// JN_WARN(JN_GFX_DEVICE); // for use in debugging w/ hybrid graphics
 
 	shader->useProgram();
 	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective matrix from Camera */

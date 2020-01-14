@@ -72,7 +72,6 @@ workspace "Juno"
             "GL",
             "GLEW",
 			"glfw"
-			--"Imgui"
 		}
 
 		filter "configurations:Debug"
