@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 
-namespace jnMath
+namespace jMath
 {
 
 static inline float toRadians(float degrees)
@@ -10,11 +10,12 @@ static inline float toRadians(float degrees)
 }
 
 
+
 /* rotation needs to be in degrees */
 static glm::mat4 createTransformationMat(glm::vec3 translation, glm::vec3 rotation, float scale)
 {
     glm::mat4 transform = glm::mat4(1.0f);                              /* identity matrix */
-    transform = glm::translate(transform, translation);
+    transform = glm::translate(transform, translation);                 /* apply translation */
     
     transform = glm::rotate(transform, toRadians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
     transform = glm::rotate(transform, toRadians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));

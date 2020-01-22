@@ -1,7 +1,7 @@
 #include "render/Camera.h"
 #include "core/EngineConfig.h"
 #include "core/Log.h"
-#include "core/jnMath.h"
+#include "core/jMath.h"
 //#include "core/InputStates.h"
 //#include "render/Context.h"
 using namespace juno;
@@ -36,8 +36,8 @@ void Camera::setPivot(glm::vec3* Pivot)
 
 void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 {
-	 this->position.x = pos.x * sinf(jnMath::toRadians(dRot.y));
-	 this->position.z = pos.z * cosf(jnMath::toRadians(dRot.y));
+	 this->position.x = pos.x * sinf(jMath::toRadians(dRot.y));
+	 this->position.z = pos.z * cosf(jMath::toRadians(dRot.y));
 	 this->pitch = dRot.y;
 	 this->yaw = dRot.z;
 	 this->roll = dRot.x;
@@ -50,7 +50,7 @@ void Camera::update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInpu
 	this->roll += dRot.x;
 	this->pitch += dRot.y;
 	this->yaw += dRot.z;
-	this->position.x += dPos.x; // * sinf(jnMath::toRadians(yaw)); // * cosf(jnMath::toRadians(yaw)) + velocity.z * sinf(jnMath::toRadians(yaw));
+	this->position.x += dPos.x; // * sinf(jMath::toRadians(yaw)); // * cosf(jMath::toRadians(yaw)) + velocity.z * sinf(jMath::toRadians(yaw));
 	this->position.y += dPos.y;
 	this->position.z += dPos.z;
 	this->pivot = position;
@@ -89,13 +89,13 @@ void Camera::updateYaw()
 /* angle must be in radians */
 void Camera::calculateCameraPos()
 {
-	float rad_theta = jnMath::toRadians(pitch);// jnMath::toRadians(pitch);
+	float rad_theta = jMath::toRadians(pitch);// jMath::toRadians(pitch);
 	float dist_x = ((float) distanceToPivot * cos(rad_theta));
 	float dist_y = ((float) distanceToPivot * sin(rad_theta));
 	
 	float cam_angle = pivot.y + angle_around_pivot;
-	float cam_x_offset = dist_x * sin(jnMath::toRadians(cam_angle));
-	float cam_z_offset = dist_x * cos(jnMath::toRadians(cam_angle));
+	float cam_x_offset = dist_x * sin(jMath::toRadians(cam_angle));
+	float cam_z_offset = dist_x * cos(jMath::toRadians(cam_angle));
 
 	position.x = pivot.x - cam_x_offset;
 	position.y = pivot.y + dist_y;

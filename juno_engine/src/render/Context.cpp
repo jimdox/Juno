@@ -3,7 +3,7 @@
 #include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
-#include "core/jnMath.h"
+#include "core/jMath.h"
 
 /*
 	(OpenGL) Rendering context

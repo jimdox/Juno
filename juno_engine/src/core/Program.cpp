@@ -80,16 +80,16 @@ void Program::run()
 	last_time = glfwGetTime();
 
 	/* cubemap testing */
-	std::array<const std::string, 6> cubemapTextures = {
-		"./juno_engine/res/grey.png",
-		"./juno_engine/res/grey.png",
-		"./juno_engine/res/grey.png",
-		"./juno_engine/res/grey.png",
-		"./juno_engine/res/grey.png",
-		"./juno_engine/res/grey.png"
-	};
+	// std::array<const std::string, 6> cubemapTextures = {
+	// 	"./juno_engine/res/grey.png",
+	// 	"./juno_engine/res/grey.png",
+	// 	"./juno_engine/res/grey.png",
+	// 	"./juno_engine/res/grey.png",
+	// 	"./juno_engine/res/grey.png",
+	// 	"./juno_engine/res/grey.png"
+	// };
 
-	CubeMap cubemap(cubemapTextures, TX_DIFFUSE);
+	//CubeMap cubemap(cubemapTextures, TX_DIFFUSE);
 	// std::shared_ptr skyboxShader = std::make_shared<SkyBoxShader>();
 	// SkyBox skybox(cubemap);
 	//queue.submit(&skybox, skyboxShader);
@@ -120,12 +120,12 @@ void Program::fpsCounter()
 	frame_time = (glfwGetTime() - last_time);
 	last_time = glfwGetTime();
 
-	num_frames++;
-	dt += frame_time;
-	if(dt >= 1.0)
-	{
-		JN_CLI_INFO("FPS: {}", (num_frames));
-		dt = 0;
-		num_frames = 0;
-	}
+	// num_frames++;
+	// dt += frame_time;
+	// if(dt >= 1.0)
+	// {
+	// 	JN_CLI_INFO("FPS: {}", (num_frames));
+	// 	dt = 0;
+	// 	num_frames = 0;
+	// }
 }
