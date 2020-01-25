@@ -1,4 +1,4 @@
 # some files too large for github: 
 bin/int/Debug-linux-x86_64/juno_engine/*.gch
 bin/int/Debug-linux-x86_64/juno_engine/*.d
-
+./vscode/*
