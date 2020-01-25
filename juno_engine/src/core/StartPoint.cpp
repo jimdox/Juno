@@ -2,7 +2,7 @@
 #include "core/Program.h"
 #include "core/Log.h"
 
-/**/
+\
 namespace juno {
 const std::string JN_VERSION = "v0.0.1.1";
 
