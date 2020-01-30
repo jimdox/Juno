@@ -1,9 +1,10 @@
 #pragma once
 #include "pch.h"
+/**/
 namespace juno {
 enum EventType : short
 {
-    NONE, WINDOW_CLOSE, WINDOW_RESIZE, WINDOW_FOCUS, WINDOW_NON_FOCUS, WINDOW_MOVE,
+    NONE, WINDOW_CLOSE, WINDOW_RESIZE, WINDOW_FOCUS, WINDOW_NOT_FOCUS, WINDOW_MOVE,
     PROG_UPDATE, PROG_RENDER, 
     KEY_PRESS, KEY_RELEASE, 
     MOUSE_BUTTON_PRESS, MOUSE_BUTTON_RELEASE, MOUSE_MOVE, MOUSE_SCROLL
@@ -20,26 +21,39 @@ enum EventCategory: short
 };
 
 
-class Event 
+class Event
 {
-friend class EventObserver;
-public:
-    virtual ~Event();
-    virtual EventType type() const = 0;
-    
-    bool handled = false;
 
 };
 
-class EventObserver 
+class EventDispatcher
 {
-// public:
-//     using SlotType = std::function<void( const Event&)>;
-//     void addEventCategory(const Event);
-// private: 
+friend class EventListener;
 public:
-    virtual ~EventObserver();
-    virtual void onNotify() = 0;
+    virtual ~EventDispatcher();
+    void addListener(EventListener* listener);
+    void rmListener(EventListener* listener);
+
+protected:
+    void notify(Event& e)
+    {
+        for(unsigned int i = 0; i < numListeners; i++)
+        {
+            listeners[i]->onNotify(e);
+        }
+    }
+
+private:
+    EventListener* listeners[5];
+    unsigned int numListeners;
+};
+
+class EventListener 
+{
+public:
+    virtual ~EventListener();
+    virtual void onNotify(Event& e) = 0;
+
 
 };  
 

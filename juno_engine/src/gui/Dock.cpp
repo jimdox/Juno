@@ -35,7 +35,7 @@ colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.42f, 0.42f, 0.42f, 1.00f);
 colors[ImGuiCol_Button]                 = ImVec4(0.60f, 0.60f, 0.60f, 0.40f);
 colors[ImGuiCol_ButtonHovered]          = ImVec4(0.49f, 0.48f, 0.50f, 1.00f);
 colors[ImGuiCol_ButtonActive]           = ImVec4(0.49f, 0.48f, 0.50f, 1.00f);
-colors[ImGuiCol_Header]                 = ImVec4(0.79f, 0.82f, 0.89f, 0.31f);
+colors[ImGuiCol_Header]                 = ImVec4(0.83f, 0.85f, 0.90f, 0.31f);
 colors[ImGuiCol_HeaderHovered]          = ImVec4(0.33f, 0.29f, 0.63f, 0.80f);
 colors[ImGuiCol_HeaderActive]           = ImVec4(0.33f, 0.29f, 0.63f, 0.80f);
 colors[ImGuiCol_Separator]              = ImVec4(0.31f, 0.31f, 0.54f, 0.50f);
@@ -91,7 +91,6 @@ void Dock::update(float dt)
     glRender::renderGui();
 }
 
-
 void Dock::show_menubar(bool flag)
 {
     if(flag)
@@ -101,7 +100,8 @@ void Dock::show_menubar(bool flag)
         if (ImGui::BeginMenu("File"))
         {
             //ImGui::ShowExampleMenuFile();
-            ImGui::EndMenu();
+            menu_file_dropdown();
+            ImGui::EndMenu();   
         }
         if (ImGui::BeginMenu("Edit"))
         {
@@ -109,6 +109,11 @@ void Dock::show_menubar(bool flag)
             if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
             ImGui::Separator();
             if (ImGui::MenuItem("Duplicate", "CTRL+D")) {}
+            ImGui::EndMenu();
+        }
+        if(ImGui::BeginMenu("Options"))
+        {
+
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -122,23 +127,15 @@ void Dock::menu_file_dropdown()
     if(ImGui::MenuItem("Open", "Ctrl+O")){}
     if(ImGui::BeginMenu("Open Recent"))
     {
-        ImGui::MenuItem("n-body.cpp");
-        ImGui::MenuItem("string-sim.cpp");
-        
-        ImGui::EndMenu();
-    }
-    if(ImGui::MenuItem("Save", "Ctrl+S")){}
-    if(ImGui::MenuItem("Save as")) {}
-    ImGui::Separator();
-    if(ImGui::BeginMenu("Options"))
-    {
-        bool f_enabled = true;
-        ImGui::MenuItem("Enabled", "", &f_enabled);
-        ImGui::BeginChild("child", ImVec2(0, 60), true);
-        ImGui::EndChild();
+        // ImGui::MenuItem("n-body.cpp");
+        // ImGui::MenuItem("string-sim.cpp");
 
         ImGui::EndMenu();
-    }    
+    }
+    ImGui::Separator();
+    if(ImGui::MenuItem("Save", "Ctrl+S")){}
+    if(ImGui::MenuItem("Save as")) {}
+    
 
 }
 
