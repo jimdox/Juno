@@ -13,8 +13,8 @@ endif
 ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = ../bin/Debug
-  TARGET = $(TARGETDIR)/juno_engine
-  OBJDIR = ../bin/int/Debug-linux-x86_64/juno_engine
+  TARGET = $(TARGETDIR)/libjuno_engine.a
+  OBJDIR = ../bin/int/Debug/juno_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_MODE_DEBUG
@@ -27,7 +27,7 @@ ifeq ($(config),debug)
   LIBS += -lGL -lGLEW -lglfw
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
-  LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -42,8 +42,8 @@ endif
 ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = ../bin/Release
-  TARGET = $(TARGETDIR)/juno_engine
-  OBJDIR = ../bin/int/Release-linux-x86_64/juno_engine
+  TARGET = $(TARGETDIR)/libjuno_engine.a
+  OBJDIR = ../bin/int/Release/juno_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
@@ -56,7 +56,7 @@ ifeq ($(config),release)
   LIBS += -lGL -lGLEW -lglfw
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
-  LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
+  LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
   define PRELINKCMDS
@@ -78,7 +78,6 @@ OBJECTS := \
 	$(OBJDIR)/InputManager.o \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
-	$(OBJDIR)/StartPoint.o \
 	$(OBJDIR)/Entity.o \
 	$(OBJDIR)/SkyBox.o \
 	$(OBJDIR)/Terrain.o \
@@ -177,9 +176,6 @@ $(OBJDIR)/Log.o: src/core/Log.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Program.o: src/core/Program.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/StartPoint.o: src/core/StartPoint.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Entity.o: src/entity/Entity.cpp

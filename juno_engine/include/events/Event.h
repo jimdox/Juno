@@ -23,8 +23,20 @@ enum EventCategory: short
 
 class Event
 {
+public:
+    virtual ~Event();
+    virtual EventType getType() const = 0;
+    virtual EventCategory getCategory() const = 0;
 
+    inline bool inCategory(EventCategory cat)
+    {
+        return cat == getCategory();
+    }
+    
+    EventCategory category;
+    bool handled = false;
 };
+
 
 class EventDispatcher
 {
@@ -39,14 +51,15 @@ protected:
     {
         for(unsigned int i = 0; i < numListeners; i++)
         {
-            listeners[i]->onNotify(e);
+            eListeners[i]->onNotify(e);
         }
     }
 
 private:
-    EventListener* listeners[5];
+    EventListener* eListeners[5];
     unsigned int numListeners;
 };
+
 
 class EventListener 
 {
@@ -56,9 +69,4 @@ public:
 
 
 };  
-
-// inline std::ostream& operator<<(std::ostream& os, const Event& e)
-// {
-//     return os << e.toString();
-// }
 }

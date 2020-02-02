@@ -3,7 +3,25 @@
 // #include "core/KeyMap.h"
 // #include "core/MouseMap.h"
 
-// namespace juno{
+namespace juno {
+
+enum MouseCode : short
+{
+    BUTTON_0 = 0,
+    BUTTON_1 = 1,
+    BUTTON_2 = 2, 
+    BUTTON_3 = 3,
+    BUTTON_4 = 4,
+
+    BUTTON_LEFT = BUTTON_0,
+    BUTTON_MID = BUTTON_2,
+    BUTTON_RIGHT = BUTTON_1
+};
+
+
+
+
+
 // class InputManager
 // {
 // public:
@@ -33,4 +51,4 @@
 
 
 // }
-// }
+}

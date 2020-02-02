@@ -12,12 +12,14 @@ endif
 
 ifeq ($(config),debug)
   juno_engine_config = debug
+  sandbox_config = debug
 endif
 ifeq ($(config),release)
   juno_engine_config = release
+  sandbox_config = release
 endif
 
-PROJECTS := juno_engine
+PROJECTS := juno_engine sandbox
 
 .PHONY: all clean help $(PROJECTS) 
 
@@ -29,8 +31,15 @@ ifneq (,$(juno_engine_config))
 	@${MAKE} --no-print-directory -C juno_engine -f Makefile config=$(juno_engine_config)
 endif
 
+sandbox: juno_engine
+ifneq (,$(sandbox_config))
+	@echo "==== Building sandbox ($(sandbox_config)) ===="
+	@${MAKE} --no-print-directory -C sandbox -f Makefile config=$(sandbox_config)
+endif
+
 clean:
 	@${MAKE} --no-print-directory -C juno_engine -f Makefile clean
+	@${MAKE} --no-print-directory -C sandbox -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -43,5 +52,6 @@ help:
 	@echo "   all (default)"
 	@echo "   clean"
 	@echo "   juno_engine"
+	@echo "   sandbox"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "core/Program.h"
 #include "render/glRenderCore.h"
 #include "core/Log.h"
@@ -22,13 +23,13 @@ Program::~Program()
 
 void Program::init()
 {
-	render_context = std::make_unique<Context>(1400, 1000, "v0.0.1", false);
+	render_context = std::make_unique<Context>(1400, 1000, " ", false);
 	shader = std::make_shared<Shader>("./juno_engine/res/shaders/basic");
 
 	// JN_WARN(JN_GFX_DEVICE); // for use in debugging w/ hybrid graphics
 
 	shader->useProgram();
-	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective matrix from Camera */
+	shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective, view matrix from Camera */
 	shader->loadViewMatrix(&camera);
 	shader->unbindProgram();
 
@@ -36,9 +37,10 @@ void Program::init()
 
 void Program::run()
 {
-	Mesh stall = loadModel("./juno_engine/res/dragon.obj");
+
+	Mesh susy = loadModel("./juno_engine/res/susanne.obj");
 	Texture texture1("./juno_engine/res/grey.png", TX_DIFFUSE, true);
-	stall.addTexture(&texture1, texture1.getTexType());
+	susy.addTexture(&texture1, texture1.getTexType());
 
 	Mesh plane = loadModel("./juno_engine/res/plane.obj");
 	Texture texture_two("./juno_engine/res/green.png", TX_DIFFUSE, true);
@@ -50,7 +52,7 @@ void Program::run()
 	glm::vec3 ground_pos(0.0f, -2.0f, -1.0f);
 	glm::vec3 ground_rot(0.0f, 0.0f, 0.0f);
 
-	Entity entity_one(stall, ent_pos, ent_rot, 0.45f, "Entity One");
+	Entity entity_one(susy, ent_pos, ent_rot, 0.45f, "Entity One");
 	Entity entity_two(plane, ground_pos, ground_rot, 70, "Entity Two");
 	Material gr_mat;
 	gr_mat.reflectivity = 0.0f;
@@ -59,7 +61,7 @@ void Program::run()
 	// glm::vec3 entBPos(6.0f, 0.0f, -4.4f);
 	// glm::vec3 entCPos(-6.0f, 0.0f, -5.4f);
 
-	// Entity entB(stall, entBPos, ent_rot, 1.0f, entName);
+	// Entity entB(susy, entBPos, ent_rot, 1.0f, entName);
 
 	// std::shared_ptr terrain_shader = std::make_shared<TerrainShader>("./juno_engine/res/shaders/basic");
 	// Terrain terrain(0, 0, texture1);
@@ -70,6 +72,7 @@ void Program::run()
 	
 	RenderQueue queue;
 	queue.submit(&entity_one, shader);
+	
 	queue.submit(&entity_two, shader);
 	queue.addLight(light);
 	queue.addLight(light_b);

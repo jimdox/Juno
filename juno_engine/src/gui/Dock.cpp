@@ -81,7 +81,7 @@ void Dock::update(float dt)
     ImGui::NewFrame();
     ImGui::Begin("debug mode");
     ImGui::Text((const char*)glGetString(GL_VERSION));
-    ImGui::Text("frame time: %.3f", dt); 
+    ImGui::Text("fps: %.1f", 1/dt); 
     ImGui::Button("button");
     ImGui::ShowDemoWindow();
     show_menubar(true);
