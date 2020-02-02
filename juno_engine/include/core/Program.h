@@ -1,7 +1,9 @@
 #pragma once
-#include "pch.h"
 #include "render/Context.h"
 #include "render/shaders/Shader.h"
+
+
+//int main(int argc, char** argv);
 
 namespace juno {
 class Program

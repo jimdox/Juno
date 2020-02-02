@@ -12,7 +12,7 @@
 #include "render/Mesh.h"
 #include "render/textures/Texture.h"
 #include "core/Log.h"
-#include "core/jMath.h"
+#include "core/MathUtils.h"
 #include "render/shaders/TerrainShader.h"
 #include "entity/terrain/Terrain.h"
 #include "render/shaders/SkyBoxShader.h"
@@ -101,7 +101,7 @@ static void renderEntity(juno::Entity* entity, std::shared_ptr<juno::Shader> & s
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2); 
 
-	glm::mat4 transformationMat = jMath::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
+	glm::mat4 transformationMat = juno::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
 	shader->loadTransformMatrix(transformationMat);
 	shader->loadPBRVars(entity->getMesh().getMaterial());
 	/* --- */
@@ -132,7 +132,7 @@ static void batchRender(std::vector<juno::Entity> &entities, std::shared_ptr<jun
 
 	for(int i = 0; i < entities.size(); i++)
 	{
-	glm::mat4 transformationMat = jMath::createTransformationMat(entities[i].getPosition(), entities[i].getRotation(), entities[i].getScale());
+	glm::mat4 transformationMat = juno::createTransformationMat(entities[i].getPosition(), entities[i].getRotation(), entities[i].getScale());
 	shader->loadTransformMatrix(transformationMat);
 	glDrawElements(GL_TRIANGLES, mesh.getNumIndices(), GL_UNSIGNED_INT, 0);
 	}
@@ -151,7 +151,7 @@ static void renderSkyBox(juno::SkyBox* skybox, std::shared_ptr<juno::SkyBoxShade
 	glEnableVertexAttribArray(0); 
 
 
-	//glm::mat4 transformationMat = jMath::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
+	//glm::mat4 transformationMat = juno::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
 
 	/* --- */
 
@@ -187,7 +187,7 @@ static void renderTerrain(juno::Terrain* terrain, std::shared_ptr<juno::TerrainS
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2); 
 
-	glm::mat4 transformationMat = jMath::createTransformationMat(glm::vec3(terrain->getXCoord(), 0, terrain->getZCoord()), glm::vec3(0,0,0),1.0f);
+	glm::mat4 transformationMat = juno::createTransformationMat(glm::vec3(terrain->getXCoord(), 0, terrain->getZCoord()), glm::vec3(0,0,0),1.0f);
 	terrain_shader->loadTransformMatrix(transformationMat);
 	terrain_shader->loadPBRVars(terrain->getMesh().getMaterial());
 	/* --- */

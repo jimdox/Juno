@@ -1,6 +1,6 @@
 workspace "Juno"
 	architecture "x64"
-	startproject "juno_engine"
+	startproject "sandbox"
 	
 	configurations
 	{
@@ -8,19 +8,24 @@ workspace "Juno"
 		"Release"
 	
 	}
+
+	flags
+	{
+		"MultiProcessorCompile"
+	}
 	
-	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	outputdir = "%{cfg.buildcfg}"
 	
-	IncludeDir = {}
-	IncludeDir["imgui"] = "%{prj.name}/lib/imgui"
-	IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
-	IncludeDir["stb"] = "%{prj.name}/lib/stb"
-	IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
+IncludeDir = {}
+IncludeDir["imgui"] = "%{prj.name}/lib/imgui"
+IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
+IncludeDir["stb"] = "%{prj.name}/lib/stb"
+IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
 	
 	
 	project "juno_engine"
 		location "juno_engine"
-		kind "ConsoleApp"
+		kind "StaticLib"
 		language "C++"
 		cppdialect "C++17"
 		staticruntime "on"
@@ -79,5 +84,44 @@ workspace "Juno"
 			symbols "on"
 
 		filter "configurations:Release"
-			optimize "on"	
-		
+		optimize "on"	
+
+project "sandbox"
+	location "sandbox"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+	targetdir ("bin/%{cfg.buildcfg}/")
+	objdir ("bin/int/%{cfg.buildcfg}/")
+
+	pchheader "juno_engine/pch.h"
+	pchsource "juno_engine/pch.cpp"
+
+	files
+	{
+		"sandbox/**.h",
+		"sandbox/**.cpp",
+		"juno_engine/pch.h",
+		"juno_engine/pch.cpp"
+	}
+
+	includedirs
+	{
+		"juno_engine/include",
+		"juno_engine/lib/stb",
+		"juno_engine/lib/jpl",
+		"juno_engine/lib/imgui",
+		"juno_engine/lib/spdlog/include",
+		"juno_engine"
+	}
+
+	links
+	{
+		"juno_engine",
+		"GL",
+		"GLEW",
+		"glfw"
+	}
+
+

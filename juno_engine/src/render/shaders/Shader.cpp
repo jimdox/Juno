@@ -2,7 +2,7 @@
 #include <ios>
 #include <sstream>
 #include "core/Log.h"
-#include "core/jMath.h"
+#include "core/MathUtils.h"
 #include "core/AssetLoader.h"
 
 using namespace juno;
@@ -139,7 +139,7 @@ void Shader::loadProjectionMatrix(glm::mat4& projection)
 
 void Shader::loadViewMatrix(Camera* camera)
 {
-	glm::mat4 viewMat = jMath::generateViewMatrix(camera);
+	glm::mat4 viewMat = juno::generateViewMatrix(camera);
 	loadMat4(loc_viewMatrix, viewMat);
 
 }

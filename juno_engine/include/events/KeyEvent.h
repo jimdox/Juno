@@ -5,36 +5,33 @@ namespace juno {
 class KeyEvent : public Event
 {
 public:
-    inline int getKeyCode() const { return key_code; }
-
+    KeyEvent(int code) : keyCode(code) {}
+    inline int getKeyCode() const { return keyCode; }
+    inline EventCategory getCategory() const { return EVENT_CAT_INPUT; }
 
 protected:
-    KeyEvent(int key_code) : key_code(key_code){}
-    int key_code;
+    KeyEvent(int key_code) : keyCode(key_code){}
+    int keyCode;
 };
 
 
-class KeyPressedEvent : public KeyEvent  
+class KeyPressEvent : public KeyEvent  
 {
 public: 
-    KeyPressedEvent(int key_code, int repeats) : KeyEvent(key_code), repeats(repeats){}
+    KeyPressEvent(int key_code, int repeats) : KeyEvent(key_code), repeats(repeats){}
 
     inline int getRepeats() const { return repeats; }
 
-    EventType type() const 
-    {
-        return KEY_PRESS;
-    }
-
-    std::string toString() const
-    {
-        std::stringstream ss;
-        ss << "KeyPressedEvent: " << key_code << " [" << repeats << " repeats]";
-        return ss.str();
-    }
-       
 protected:
     int repeats;
+};
+
+
+class KeyReleaseEvent : public KeyEvent
+{
+public:
+    KeyReleaseEvent(int keyCode) : KeyEvent(keyCode){}
+
 };
 
 
