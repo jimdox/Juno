@@ -25,7 +25,9 @@ void Program::init()
 {
 	render_context = std::make_unique<Context>(1400, 1000, " ", false);
 	shader = std::make_shared<Shader>("./juno_engine/res/shaders/basic");
-
+	
+	//render_context->attachListener(camera->getEventListener());
+	
 	// JN_WARN(JN_GFX_DEVICE); // for use in debugging w/ hybrid graphics
 
 	shader->useProgram();

@@ -12,12 +12,11 @@ enum EventType : short
 
 enum EventCategory: short
 {
-    NONE = 0,
-    EVENT_CAT_PROGRAM      = 1 << 0,
-    EVENT_CAT_INPUT        = 1 << 1, 
-    EVENT_CAT_KEYBOARD     = 1 << 2,
-    EVENT_CAT_MOUSE        = 1 << 3,
-    EVENT_CAT_MOUSE_BUTTON = 1 << 4
+    NONE,
+    EVENT_CAT_PROGRAM,
+    EVENT_CAT_KEYBOARD,
+    EVENT_CAT_MOUSE,
+    EVENT_CAT_MOUSE_BUTTON
 };
 
 
@@ -25,7 +24,7 @@ class Event
 {
 public:
     virtual ~Event();
-    virtual EventType getType() const = 0;
+    inline virtual EventType getType() const = 0;
     virtual EventCategory getCategory() const = 0;
 
     inline bool inCategory(EventCategory cat)
@@ -47,7 +46,7 @@ public:
     void rmListener(EventListener* listener);
 
 protected:
-    void notify(Event& e)
+    void notify(const Event& e)
     {
         for(unsigned int i = 0; i < numListeners; i++)
         {
@@ -65,7 +64,7 @@ class EventListener
 {
 public:
     virtual ~EventListener();
-    virtual void onNotify(Event& e) = 0;
+    virtual void onNotify(const Event& e) = 0;
 
 
 };  

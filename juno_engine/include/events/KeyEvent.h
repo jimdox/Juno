@@ -7,7 +7,7 @@ class KeyEvent : public Event
 public:
     KeyEvent(int code) : keyCode(code) {}
     inline int getKeyCode() const { return keyCode; }
-    inline EventCategory getCategory() const { return EVENT_CAT_INPUT; }
+    inline EventCategory getCategory() const { return EVENT_CAT_KEYBOARD; }
 
 protected:
     KeyEvent(int key_code) : keyCode(key_code){}

@@ -11,59 +11,32 @@
 
 using namespace juno;
 
-void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
-{
-    if(!MOUSE_DATA_RECIEVED)
-    {
-        CURSOR_DX += x_pos - CENTER_X;
-        CURSOR_DY += y_pos - CENTER_Y;
-    } else {
-        CURSOR_DX = x_pos - (CENTER_X);
-        CURSOR_DY = y_pos - (CENTER_Y);
-        MOUSE_DATA_RECIEVED = false;
-    }
-    CURSOR_X += CURSOR_DX;
-    CURSOR_Y += CURSOR_DY;
-}
+static Context* s_context;
 
-void mouseButtonMap(GLFWwindow* window, int button, int action, int mods)
-{
-	if(button == GLFW_MOUSE_BUTTON_LEFT)
+/* /// GLFW Callbacks /// */
+
+	static void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
 	{
-		if(action == GLFW_PRESS || action == GLFW_REPEAT)
+		s_context->dispatchEvent(MouseMoveEvent(x_pos, y_pos));
+	}
+
+	static void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
+	{
+		switch(action)
 		{
-			LM_BUTTON_PRESS = true;
-			LM_BUTTON_REPEAT = true;
-		} else {
-			LM_BUTTON_PRESS = false;
-			LM_BUTTON_REPEAT = false;
+		case GLFW_PRESS:
+			s_context->dispatchEvent(MousePressEvent(static_cast<MouseCode>(((short) button))));
+			break;
+		case GLFW_RELEASE:
+			s_context->dispatchEvent(MouseReleaseEvent(static_cast<MouseCode>(((short) button))));
+			break;
 		}
 	}
-	else if(button == GLFW_MOUSE_BUTTON_RIGHT)
+	
+	void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
 	{
-		if(action == GLFW_PRESS || action == GLFW_REPEAT)
-		{
-			RM_BUTTON_PRESS = true;
-		} else {
-			RM_BUTTON_PRESS = false;
-		}
+		s_context->dispatchEvent(MouseScrollEvent(x_offset, y_offset));
 	}
-}
-
-void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
-{
-    if(!MOUSE_DATA_RECIEVED)
-    {
-        SCROLL_DX += SCROLL_X - x_offset;
-        SCROLL_DY += SCROLL_Y - y_offset;
-    } else {
-        SCROLL_DX = SCROLL_X - x_offset;
-        SCROLL_DY = SCROLL_Y - y_offset;
-        MOUSE_DATA_RECIEVED = false;
-    }
-    SCROLL_X += x_offset;
-    SCROLL_Y += y_offset;
-}
 
 
 Context::Context()
@@ -73,6 +46,7 @@ Context::Context()
 	this->title = " ";
 	this->isLoading = true;
 	this->isValid = true;
+	s_context = this;
 
 }
 
@@ -118,9 +92,6 @@ void Context::destroy()
 
 }
 
-/* /// GLFW Callbacks /// */
-
-
 
 static void setErrCallback(int code, const char* message)
 {
@@ -129,7 +100,6 @@ static void setErrCallback(int code, const char* message)
 	JN_CRIT(error);
 }
 
-/* /// class methods /// */
 
 void Context::init()
 {
@@ -158,10 +128,10 @@ void Context::init()
 	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);								
 
 	glfwSetErrorCallback(setErrCallback);
-	glfwSetKeyCallback(window, kbdLayout);
-	glfwSetCursorPosCallback(window, mousePositionHandler);
-	glfwSetMouseButtonCallback(window, mouseButtonMap);
-	glfwSetScrollCallback(window, mouseScrollHandler);
+	// glfwSetKeyCallback(window, kbdLayout);
+	// glfwSetCursorPosCallback(window, mousePositionHandler);
+	// glfwSetScrollCallback(window, mouseScrollHandler);
+	glfwSetMouseButtonCallback(window, mouseButtonHandler);
 
 	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
@@ -169,9 +139,6 @@ void Context::init()
 	guiDock.init();
 
 	aspectRatio = this->width / this->height;
-
-	CENTER_X = width/2.0;
-	CENTER_Y = height/2.0;
 
 }
 
@@ -229,19 +196,8 @@ void Context::updateCamera(Camera* camera, float dt)
 	} else {
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-		mouse_data.LM_BUTTON_PRESS = LM_BUTTON_PRESS;
-		mouse_data.RM_BUTTON_PRESS = RM_BUTTON_PRESS;
-		mouse_data.CURSOR_X = CURSOR_X;
-		mouse_data.CURSOR_Y = CURSOR_Y;
-		mouse_data.CURSOR_DX = CURSOR_DX;
-		mouse_data.CURSOR_DY = CURSOR_DY;
-		mouse_data.SCROLL_X = SCROLL_X;
-		mouse_data.SCROLL_Y = SCROLL_Y;
-		mouse_data.SCROLL_DX = SCROLL_DX;
-		mouse_data.SCROLL_DY = SCROLL_DY;
-		MOUSE_DATA_RECIEVED = true;
-
-		camera->update(dPos, rot, 0, mouse_data);
+	
+		//camera->update(dPos, rot, 0, mouse_data);
 
 
 }
@@ -255,6 +211,21 @@ bool RenderContext::isVisible()
 	return true;
 }
 */
+
+void Context::attachListener(EventListener* listener)
+{
+	addListener(listener);
+}
+
+void Context::detatchListener(EventListener* listener)
+{
+	rmListener(listener);
+}
+
+void Context::dispatchEvent(const Event& e)
+{
+	notify(e);
+}
 
 bool Context::isRunning()
 {
