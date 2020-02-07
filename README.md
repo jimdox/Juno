@@ -1,6 +1,6 @@
 
 
-![alt text](https://github.com/jimdox/black_box/blob/master/juno_engine/res/juno-s.png)
+![alt text](https://github.com/jimdox/black_box/blob/master/juno_engine/res/juno-s.jpg)
 
 
 
