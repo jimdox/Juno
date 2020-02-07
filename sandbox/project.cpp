@@ -3,8 +3,13 @@
 
 class ExampleProgram : public juno::Program
 {
+	void onCreate(){}
 
+	void onUpdate(){}
+	
+	void onDestroy(){}
 };
+
 
 
 

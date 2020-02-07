@@ -17,7 +17,7 @@
 namespace juno {
 
 
-class Context : EventDispatcher
+class Context
 {
 public:
 	Context();
@@ -32,9 +32,7 @@ public:
 	void destroy();
 	void setVisible(bool flag);
 
-	void attachListener(EventListener* listener);
-	void detatchListener(EventListener* listener);
-	void dispatchEvent(const Event& e);
+	KeyEventDispatcher& getEventDispatcher();
 
 	bool isRunning();
 	int getHeight();
@@ -51,7 +49,7 @@ private:
 	std::string title;
 	Dock guiDock;
 
-	//GLuint shaders[4];
+	KeyEventDispatcher eventDispatcher;
 	bool isLoading;
 	bool isValid;
 };

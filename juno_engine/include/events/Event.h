@@ -12,7 +12,7 @@ enum EventType : short
 
 enum EventCategory: short
 {
-    NONE,
+    OTHER,
     EVENT_CAT_PROGRAM,
     EVENT_CAT_KEYBOARD,
     EVENT_CAT_MOUSE,
@@ -37,6 +37,16 @@ public:
 };
 
 
+class EventListener 
+{
+public:
+    virtual ~EventListener();
+    virtual void onNotify(const Event& e) = 0;
+
+
+};  
+
+
 class EventDispatcher
 {
 friend class EventListener;
@@ -45,7 +55,6 @@ public:
     void addListener(EventListener* listener);
     void rmListener(EventListener* listener);
 
-protected:
     void notify(const Event& e)
     {
         for(unsigned int i = 0; i < numListeners; i++)
@@ -60,12 +69,4 @@ private:
 };
 
 
-class EventListener 
-{
-public:
-    virtual ~EventListener();
-    virtual void onNotify(const Event& e) = 0;
-
-
-};  
 }

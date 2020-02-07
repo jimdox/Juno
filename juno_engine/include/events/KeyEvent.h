@@ -5,7 +5,6 @@ namespace juno {
 class KeyEvent : public Event
 {
 public:
-    KeyEvent(int code) : keyCode(code) {}
     inline int getKeyCode() const { return keyCode; }
     inline EventCategory getCategory() const { return EVENT_CAT_KEYBOARD; }
 
@@ -34,5 +33,25 @@ public:
 
 };
 
+
+class KeyEventListener
+{
+public:
+    ~KeyEventListener(){}
+    void onNotify(const KeyEvent& e)
+    {
+
+    }
+};
+
+class KeyEventDispatcher
+{
+public:
+    KeyEventDispatcher()
+    {
+
+    }
+
+};
 
 }

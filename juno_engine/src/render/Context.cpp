@@ -17,7 +17,7 @@ static Context* s_context;
 
 	static void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
 	{
-		s_context->dispatchEvent(MouseMoveEvent(x_pos, y_pos));
+		//s_context->getEventDispatcher().notify( (MouseMoveEvent(x_pos, y_pos));
 	}
 
 	static void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
@@ -25,17 +25,17 @@ static Context* s_context;
 		switch(action)
 		{
 		case GLFW_PRESS:
-			s_context->dispatchEvent(MousePressEvent(static_cast<MouseCode>(((short) button))));
+			//s_context->dispatchEvent(MousePressEvent(static_cast<MouseCode>(((short) button))));
 			break;
 		case GLFW_RELEASE:
-			s_context->dispatchEvent(MouseReleaseEvent(static_cast<MouseCode>(((short) button))));
+			//s_context->dispatchEvent(MouseReleaseEvent(static_cast<MouseCode>(((short) button))));
 			break;
 		}
 	}
 	
 	void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
 	{
-		s_context->dispatchEvent(MouseScrollEvent(x_offset, y_offset));
+		//s_context->dispatchEvent(MouseScrollEvent(x_offset, y_offset));
 	}
 
 
@@ -212,19 +212,9 @@ bool RenderContext::isVisible()
 }
 */
 
-void Context::attachListener(EventListener* listener)
+KeyEventDispatcher& Context::getEventDispatcher()
 {
-	addListener(listener);
-}
-
-void Context::detatchListener(EventListener* listener)
-{
-	rmListener(listener);
-}
-
-void Context::dispatchEvent(const Event& e)
-{
-	notify(e);
+	return this->eventDispatcher;
 }
 
 bool Context::isRunning()
