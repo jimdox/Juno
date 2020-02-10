@@ -10,11 +10,10 @@
 
 using namespace juno;
 
-
-Program::Program(): camera(glm::vec3(0,0,3.0f), 0, 0, 0)
+Program::Program(): camera(glm::vec3(0.0f,0.0f,3.0f), 0, 0, 0)
 {
 	init();
-}
+}	
 
 Program::~Program()
 {
@@ -117,7 +116,7 @@ void Program::run()
 
 void Program::exit()
 {
-
+	
 }
 
 void Program::fpsCounter()

@@ -567,7 +567,7 @@ retry_open:
 
         DSBUFFERDESC DSBDescription{};
         DSBDescription.dwSize = sizeof(DSBDescription);
-        DSBDescription.dwFlags = DSBCAPS_CTRLPOSITIONNOTIFY | DSBCAPS_GETCURRENTPOSITION2 |
+        DSBDescription.dwFlags = DSBCAPS_CTRLPOSITIonEvent | DSBCAPS_GETCURRENTPOSITION2 |
                                  DSBCAPS_GLOBALFOCUS;
         DSBDescription.dwBufferBytes = device->UpdateSize * device->NumUpdates *
                                        OutputType.Format.nBlockAlign;
@@ -592,7 +592,7 @@ retry_open:
 
             device->NumUpdates = minu(device->NumUpdates, MAX_UPDATES);
 
-            std::array<DSBPOSITIONNOTIFY,MAX_UPDATES> nots;
+            std::array<DSBPOSITIonEvent,MAX_UPDATES> nots;
             for(ALuint i{0};i < device->NumUpdates;++i)
             {
                 nots[i].dwOffset = i * device->UpdateSize * OutputType.Format.nBlockAlign;

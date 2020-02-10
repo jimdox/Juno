@@ -7,7 +7,6 @@
 #include <iostream>
 #include <time.h>
 #include "core/Log.h"
-#include "core/KeyMap.h"
 #include "core/InputStates.h"
 #include "render/Camera.h"
 #include "gui/Dock.h"
@@ -37,8 +36,6 @@ public:
 	bool isRunning();
 	int getHeight();
 	int getWidth();
-
-protected:
 
 private:
 	//RenderContext(const RenderContext& other){}

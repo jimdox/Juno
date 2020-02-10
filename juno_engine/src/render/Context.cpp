@@ -11,32 +11,67 @@
 
 using namespace juno;
 
-static Context* s_context;
+static KeyEventDispatcher* s_keyDispatcher;
+static MouseEventDispatcher* s_mouseDispatcher;
 
 /* /// GLFW Callbacks /// */
 
-	static void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
+static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
+{	
+	if(action == GLFW_PRESS || action == GLFW_REPEAT)
 	{
-		//s_context->getEventDispatcher().notify( (MouseMoveEvent(x_pos, y_pos));
+		s_keyDispatcher->notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
+	} else {
+		s_keyDispatcher->notify(KeyReleaseEvent(key));
 	}
+}
 
-	static void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
+static inline void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
+{
+	//s_mouseDispatcher->notify(MouseMoveEvent(x_pos, y_pos));
+}
+
+static inline void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
+{
+	if(action == GLFW_PRESS)
 	{
-		switch(action)
+		switch(button)
 		{
-		case GLFW_PRESS:
-			//s_context->dispatchEvent(MousePressEvent(static_cast<MouseCode>(((short) button))));
+		case GLFW_MOUSE_BUTTON_LEFT:
+			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_LEFT));
 			break;
-		case GLFW_RELEASE:
-			//s_context->dispatchEvent(MouseReleaseEvent(static_cast<MouseCode>(((short) button))));
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_MID));
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_RIGHT));
+			break;
+		default:					/* discard all other mouse codes */
+			break;
+		}
+	} else {					
+		switch(button)
+		{
+		case GLFW_MOUSE_BUTTON_LEFT:
+				s_mouseDispatcher->notify(MouseReleaseEvent(MouseCode::M_BUTTON_LEFT));
+				break;
+		case GLFW_MOUSE_BUTTON_MIDDLE:
+			s_mouseDispatcher->notify(MouseReleaseEvent(MouseCode::M_BUTTON_MID));
+			break;
+		case GLFW_MOUSE_BUTTON_RIGHT:
+			s_mouseDispatcher->notify(MouseReleaseEvent(MouseCode::M_BUTTON_RIGHT));
+			break;
+		default:					/* discard all other mouse codes */
 			break;
 		}
 	}
-	
-	void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
-	{
-		//s_context->dispatchEvent(MouseScrollEvent(x_offset, y_offset));
-	}
+}
+
+void inline mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
+{
+	s_mouseDispatcher->notify(MouseScrollEvent(x_offset, y_offset));
+}
+/* /// End Callbacks /// */
 
 
 Context::Context()
@@ -46,7 +81,7 @@ Context::Context()
 	this->title = " ";
 	this->isLoading = true;
 	this->isValid = true;
-	s_context = this;
+
 
 }
 
@@ -64,7 +99,7 @@ Context::Context(int width, int height, const std::string name)
 Context::Context(int width, int height, std::string title, bool border)
 {
 	this->width = width;
-	this->height = height;
+	this->height = height;	
 	this->title = title;
 	this->isLoading = true;
 	this->isValid = true;
@@ -114,7 +149,6 @@ void Context::init()
 		JN_ERR("GLFW failed to initialize!");
 	}
 
-
 	this->window = glfwCreateWindow(width, height, this->title.c_str(), NULL, NULL);	// third argument makes window full screen if:
 
 	if (!window)
@@ -128,10 +162,10 @@ void Context::init()
 	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);								
 
 	glfwSetErrorCallback(setErrCallback);
-	// glfwSetKeyCallback(window, kbdLayout);
-	// glfwSetCursorPosCallback(window, mousePositionHandler);
-	// glfwSetScrollCallback(window, mouseScrollHandler);
+	glfwSetKeyCallback(window, keyboardHandler);
 	glfwSetMouseButtonCallback(window, mouseButtonHandler);
+	glfwSetCursorPosCallback(window, mousePositionHandler);
+	glfwSetScrollCallback(window, mouseScrollHandler);
 
 	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
@@ -152,52 +186,9 @@ void Context::update(float dt)
 
 void Context::updateCamera(Camera* camera, float dt)
 {
-	glm::vec3 dPos(0,0,0);
-	glm::vec3 rot(0,0,0);
-	float move_speed = camera->DEFAULT_MOVE_SPEED;
-	float rot_speed = camera->DEFAULT_ROT_SPEED;
-	if(key_pressed_W)
-	{
-		dPos.z = -move_speed*dt;
-	} else if(key_pressed_S) {
-		dPos.z = move_speed*dt;
-	}
-	if(key_pressed_A)
-	{
-		dPos.x = -move_speed*dt;
-	} else if(key_pressed_D) {
-		dPos.x = move_speed*dt;
-	}
-	if(key_pressed_LEFT)
-	{
-		rot.z = -rot_speed*dt;
-	} else if(key_pressed_RIGHT)
-	{
-		rot.z = rot_speed*dt;
-	}
-	if(key_pressed_UP)
-	{
-		rot.y = -rot_speed*dt;
-	} else if(key_pressed_DOWN)
-	{
-		rot.y = rot_speed*dt;
-	}
-	if(key_pressed_R)
-	{
-		dPos.y = move_speed * dt;
-	} else if(key_pressed_F)
-	{
-		dPos.y = -move_speed * dt;
-	}
 
-	if(key_pressed_X)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	} else {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-	
-		//camera->update(dPos, rot, 0, mouse_data);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 
 }

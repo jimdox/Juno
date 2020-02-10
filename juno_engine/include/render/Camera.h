@@ -1,31 +1,39 @@
 #pragma once
 #include "pch.h"
-#include "core/InputStates.h"
+#include "events/KeyEvent.h"
+#include "events/MouseEvent.h"
+
 namespace juno { 
-class Camera
+class Camera : EventListener
 {
 public:
 	//Camera(glm::vec3& pos);
     Camera(glm::vec3 pos, float yaw, float pitch, float roll);
-	~Camera();
+	~Camera() override;
 
-	void setPivot(glm::vec3* pivot);
+	/* Event stuff */
+	void onAttach();
+	void onEvent(const KeyEvent &e);
+	void onEvent(const MouseEvent &e);
+	void onEvent(const Event &e);
+
 	void move(glm::vec3& dv, glm::vec3& dRot);
-
-	glm::vec3& getPosition();
-	float getZoom();
-	float getRoll();
-	float getPitch();
-	float getYaw();
+	void update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom);
 	
+	glm::vec3& getPosition();
+	inline float getZoom()  { return zoom;  }
+	inline float getRoll()  { return roll;  }
+	inline float getPitch() { return pitch; }
+	inline float getYaw()   { return yaw;   }
+
+	void setPivot(glm::vec3& pivot);
 	void setZoom(float z);
-	void update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom, MouseInputData &mouse_data);
-	void updateZoom(float scroll_y);
-	void updatePitch();
-	void updateYaw();
-	inline void calculateCameraPos();
+	void setPitch(float p);
+	void setYaw(float y);
+	
+	void calculateCameraPos();
 	glm::mat4& getProjectionMatrix();
-	glm::mat4& regenProjectionMatrix();
+	glm::mat4& resetProjectionMatrix();
 	glm::mat4& getViewMatrix();
 
 	const float DEFAULT_MOVE_SPEED = 6.5;
@@ -48,14 +56,10 @@ private:
 	float distanceToPivot;
 	float angle_around_pivot;
 	float moveSpeed;
-	float mouseSpeed;
-	double mouse_delta_x;
-	double mouse_delta_y;
-
-	const float FOV = 60.0f;
-	const float NEAR_PLANE = 0.1f;
-	const float FAR_PLANE = 1000.0f;
-
+	
+	const float FOV = 60.0f;				/* 60 -> ~80 is recommended */
+	const float NEAR_PLANE = 0.1f;			/* min clipping dist. */
+	const float FAR_PLANE = 1000.0f;		/* max clipping dist. */
 
 };
 }

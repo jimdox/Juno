@@ -63,7 +63,7 @@ namespace juno {
 
         glBindVertexArray(0);
         return {vaoID, numIndices};
-    }
+    }   
 
     /* loads a primitive object to VAO */
     static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, unsigned int dim)
@@ -86,7 +86,7 @@ namespace juno {
 
             int currentVertPtr = faceVertices[i][0] - 1;
             indices.push_back(currentVertPtr);
-
+            
             glm::vec2 currentTexCoord = textures[faceVertices[i][1]-1];
             texturesData[currentVertPtr*2] = currentTexCoord.x;
             texturesData[currentVertPtr*2 +1] = currentTexCoord.y;
