@@ -11,4 +11,4 @@ In order to correctly load a wavefront file, apply 'split edges' along any UV te
 
 
 ### Note
-This project is in fairly early development. Cross-platform support is planned, however I can currently only support Linux systems.
+This project is in fairly early development. Cross-platform support is planned, but only working on Linux Platforms at the moment.
