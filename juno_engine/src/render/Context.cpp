@@ -28,7 +28,8 @@ static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, in
 
 static inline void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
 {
-	//s_mouseDispatcher->notify(MouseMoveEvent(x_pos, y_pos));
+	s_mouseDispatcher->notify(MouseMoveEvent(x_pos, y_pos));
+	//JN_CRIT("Mouse is moving!");
 }
 
 static inline void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
@@ -81,6 +82,7 @@ Context::Context()
 	this->title = " ";
 	this->isLoading = true;
 	this->isValid = true;
+	
 
 
 }
@@ -159,7 +161,10 @@ void Context::init()
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
-	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);								
+	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);				
+
+	s_keyDispatcher = &this->keyDispatcher;
+	s_mouseDispatcher = &this->mouseDispatcher;				
 
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, keyboardHandler);
@@ -203,10 +208,6 @@ bool RenderContext::isVisible()
 }
 */
 
-KeyEventDispatcher& Context::getEventDispatcher()
-{
-	return this->eventDispatcher;
-}
 
 bool Context::isRunning()
 {

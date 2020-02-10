@@ -31,7 +31,7 @@ public:
 	void destroy();
 	void setVisible(bool flag);
 
-	KeyEventDispatcher& getEventDispatcher();
+	//KeyEventDispatcher& getEventDispatcher();
 
 	bool isRunning();
 	int getHeight();
@@ -46,7 +46,8 @@ private:
 	std::string title;
 	Dock guiDock;
 
-	KeyEventDispatcher eventDispatcher;
+	KeyEventDispatcher keyDispatcher;
+	MouseEventDispatcher mouseDispatcher;
 	bool isLoading;
 	bool isValid;
 };

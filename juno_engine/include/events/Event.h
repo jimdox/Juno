@@ -75,7 +75,7 @@ public:
 
     void notify(const Event& e)
     {
-        for(short i = 0; i < MAX_EVENT_LISTENERS; i++)
+        for(short i = 0; i < numListeners; i++)
         {
             listeners[i]->onEvent(e);
         }
