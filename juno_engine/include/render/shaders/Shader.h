@@ -31,9 +31,9 @@ public:
 	void loadInt(unsigned int loc, int value) const;
 	void loadBool(unsigned int loc, bool flag) const;
 	void loadFloat(unsigned int loc, float value) const;
-	void loadVec2(unsigned int loc, glm::vec2& vec) const;
-	void loadVec3(unsigned int loc, glm::vec3& vec) const;
-	void loadVec4(unsigned int loc, glm::vec4& vec) const;
+	void loadFloat2(unsigned int loc, glm::vec2& vec) const;
+	void loadFloat3(unsigned int loc, glm::vec3& vec) const;
+	void loadFloat4(unsigned int loc, glm::vec4& vec) const;
 	void loadMat2(unsigned int loc, glm::mat2& mat) const;
 	void loadMat3(unsigned int loc, glm::mat3& mat) const;
 	void loadMat4(unsigned int loc, glm::mat4& mat) const;
