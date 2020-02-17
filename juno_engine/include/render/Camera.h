@@ -4,7 +4,7 @@
 #include "events/MouseEvent.h"
 
 namespace juno { 
-class Camera : EventListener
+class Camera : public EventListener
 {
 public:
 	//Camera(glm::vec3& pos);

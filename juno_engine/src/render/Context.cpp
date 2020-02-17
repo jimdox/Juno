@@ -129,14 +129,12 @@ void Context::destroy()
 
 }
 
-
 static void setErrCallback(int code, const char* message)
 {
 	std::string error(message);
 	JN_ERR("GLFW window error code: " + code);
 	JN_CRIT(error);
 }
-
 
 void Context::init()
 {
@@ -160,7 +158,7 @@ void Context::init()
 
 	glfwMakeContextCurrent(window);
 
-	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
+	//glfwSwapInterval(1);																	/* limits fps to native refresh rate */
 	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);				
 
 	s_keyDispatcher = &this->keyDispatcher;
@@ -195,7 +193,6 @@ void Context::updateCamera(Camera* camera, float dt)
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-
 }
 
 /*   ---   */
@@ -208,6 +205,15 @@ bool RenderContext::isVisible()
 }
 */
 
+KeyEventDispatcher& Context::getKeyDispatcher()
+{
+	return *s_keyDispatcher;
+}
+
+MouseEventDispatcher& Context::getMouseDispatcher()
+{
+	return *s_mouseDispatcher;
+}
 
 bool Context::isRunning()
 {

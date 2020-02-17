@@ -254,7 +254,9 @@ static unsigned int loadTexture(const std::string& filepath, GLenum format, juno
     }
 	else
 	{
-		JN_CLI_INFO("Failed to load image: " + filepath);
+		JN_CLI_ERR("Failed to load image: " + filepath);
+	    return loadTexture("./juno_engine/res/green.png", format, tx_type);
+
 	}
 	stbi_image_free(imageData);
     return id;
@@ -307,7 +309,7 @@ static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint
 		sourceStream.close();
 	}
 	else {
-		JN_ERR("Error: cannot access file: " + vertFilePath);
+		JN_CLI_ERR("Error: cannot access file: " + vertFilePath);
 	}
 
 	std::ifstream sourceStream2(fragFilePath, std::ios::in);
@@ -320,7 +322,7 @@ static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint
 		sourceStream2.close();
 	}
 	else {
-		JN_ERR("Error: cannot access file: " + fragFilePath);
+		JN_CLI_ERR("Error: cannot access file: " + fragFilePath);
 		return;
 	}
 

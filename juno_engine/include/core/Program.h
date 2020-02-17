@@ -16,23 +16,20 @@ public:
 	void run();
 	void exit();
 
-	void splashShader();
-	void fpsCounter();
-	// todo: config-file manager for core engine
-
 protected:
-private:
 	std::unique_ptr<Context> render_context;
-	std::shared_ptr<Shader> shader;
 	Camera camera; 
 	
 
 	/* time-keeping vars. */
-	float dt;
 	float last_time;     
 	float frame_time;
+	float delta_time;
 	u_int16_t num_frames;
+	
 
+private:
+	std::shared_ptr<Shader> shader;
 
 };
 }

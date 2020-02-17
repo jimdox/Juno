@@ -2,8 +2,7 @@
 #include "core/EngineConfig.h"
 #include "core/Log.h"
 #include "core/MathUtils.h"
-//#include "core/InputStates.h"
-//#include "render/Context.h"
+
 using namespace juno;
 
 
@@ -28,17 +27,17 @@ Camera::~Camera()
 
 void Camera::onAttach()
 {
-	
+
 }
 
 void Camera::onEvent(const KeyEvent &e)
 {
+	JN_CRIT("key event recieved!!");
 	if(e.getType() == EventType::KEY_PRESS)
 	{
 		switch (e.getKeyCode())
 		{
 		case GLFW_KEY_W:
-			
 			break;
 		case GLFW_KEY_S:
 
@@ -61,6 +60,7 @@ void Camera::onEvent(const MouseEvent &e)
 
 void Camera::onEvent(const Event &e)
 {
+	JN_INFO("Generic Event Recieved!");
 	switch (e.getType())
 	{
 	case EventType::KEY_PRESS:

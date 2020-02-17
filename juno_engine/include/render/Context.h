@@ -1,6 +1,4 @@
-#ifndef JNCONTEXT_HEADER
-#define JNCONTEXT_HEADER
-
+#pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -14,7 +12,6 @@
 #include "events/KeyEvent.h"
 
 namespace juno {
-
 
 class Context
 {
@@ -31,15 +28,16 @@ public:
 	void destroy();
 	void setVisible(bool flag);
 
-	//KeyEventDispatcher& getEventDispatcher();
+	static KeyEventDispatcher& getKeyDispatcher();
+	static MouseEventDispatcher& getMouseDispatcher();
 
 	bool isRunning();
 	int getHeight();
 	int getWidth();
 
 private:
-	//RenderContext(const RenderContext& other){}
-	//RenderContext& operator=(const RenderContext& other){}
+	Context(const Context& other) {}
+
 	GLFWwindow* window;
 	int height;
 	int width;
@@ -51,7 +49,4 @@ private:
 	bool isLoading;
 	bool isValid;
 };
-
 }
-
-#endif

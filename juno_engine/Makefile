@@ -17,7 +17,7 @@ ifeq ($(config),debug)
   OBJDIR = ../bin/int/Debug/juno_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_MODE_DEBUG
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_DEBUG_BUILD
   INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/jpl -Ilib/imgui -I.
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)

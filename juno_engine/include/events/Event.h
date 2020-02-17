@@ -62,7 +62,10 @@ public:
     void addListener(EventListener* listener)
     {
         if(numListeners < MAX_EVENT_LISTENERS)
-            listeners[numListeners] = listener;
+        {
+            listeners[numListeners++] = listener;
+            listener->onAttach();
+        }
     }
     void rmListener(EventListener* listener)
     {
@@ -75,7 +78,7 @@ public:
 
     void notify(const Event& e)
     {
-        for(short i = 0; i < numListeners; i++)
+        for(int i = 0; i < numListeners; i++)
         {
             listeners[i]->onEvent(e);
         }

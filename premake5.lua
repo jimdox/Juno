@@ -11,7 +11,8 @@ workspace "Juno"
 
 	flags
 	{
-		"MultiProcessorCompile"
+		--"MultiProcessorCompile"
+
 	}
 	
 	outputdir = "%{cfg.buildcfg}"
@@ -50,8 +51,6 @@ project "juno_engine"
 
 		"%{prj.name}/lib/imgui/*.h",
 		"%{prj.name}/lib/imgui/*.cpp",
-
-		
 	}
 	
 	defines
@@ -68,7 +67,6 @@ project "juno_engine"
 		"%{prj.name}/lib/jpl",
 		"%{prj.name}/lib/imgui",
 		"%{prj.name}/"
-
 	}
 	
 	links 
@@ -79,7 +77,7 @@ project "juno_engine"
 	}
 
 	filter "configurations:Debug"
-		defines { "JN_MODE_DEBUG" }
+		defines { "JN_DEBUG_BUILD" }
 		symbols "on"
 
 	filter "configurations:Release"
