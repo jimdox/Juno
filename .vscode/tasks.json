@@ -6,7 +6,7 @@
         {
             "label": "build makefile + run Juno",
             "type": "shell",
-            "command": "make all && ~/dev/Juno/bin/Debug/sandbox",
+            "command": "make all -j 6 && ~/dev/Juno/bin/Debug/sandbox",
             "group": {
                 "kind": "build",
                 "isDefault": true

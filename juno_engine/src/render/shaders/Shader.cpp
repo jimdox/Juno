@@ -153,21 +153,21 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 	// 	if(i >= lights.size())
 	// 	{
 	// 		glm::vec3 empty_light(1.0, 0.0, 0.0);
-	// 		loadVec3(loc_lightPositions[i], empty_light);
-	// 		loadVec3(loc_lightColors[i], empty_light);
-	// 		loadVec3(loc_attenuations[i], empty_light);
+	// 		loadFloat3(loc_lightPositions[i], empty_light);
+	// 		loadFloat3(loc_lightColors[i], empty_light);
+	// 		loadFloat3(loc_attenuations[i], empty_light);
 	// 	} else {
-	// 		loadVec3(loc_lightPositions[i], lights[1].getPosition());
-	// 		loadVec3(loc_lightColors[i], lights[1].getColor());
-	// 		loadVec3(loc_attenuations[i], lights[1].getAttenuation());
+	// 		loadFloat3(loc_lightPositions[i], lights[1].getPosition());
+	// 		loadFloat3(loc_lightColors[i], lights[1].getColor());
+	// 		loadFloat3(loc_attenuations[i], lights[1].getAttenuation());
 	// 	}
 	// }
-			loadVec3(loc_lightPositions[0], lights[0].getPosition());
-			loadVec3(loc_lightColors[0], lights[0].getColor());
-			loadVec3(loc_attenuations[0], lights[0].getAttenuation());
-			loadVec3(loc_lightPositions[1], lights[1].getPosition());
-			loadVec3(loc_lightColors[1], lights[1].getColor());
-			loadVec3(loc_attenuations[1], lights[1].getAttenuation());
+			loadFloat3(loc_lightPositions[0], lights[0].getPosition());
+			loadFloat3(loc_lightColors[0], lights[0].getColor());
+			loadFloat3(loc_attenuations[0], lights[0].getAttenuation());
+			loadFloat3(loc_lightPositions[1], lights[1].getPosition());
+			loadFloat3(loc_lightColors[1], lights[1].getColor());
+			loadFloat3(loc_attenuations[1], lights[1].getAttenuation());
 }
 
 void Shader::loadPBRVars(Material material)
@@ -193,17 +193,17 @@ void Shader::loadFloat(unsigned int loc, float value) const
 	glUniform1f(loc, value);
 }
 
-void Shader::loadVec2(unsigned int loc, glm::vec2& vec) const
+void Shader::loadFloat2(unsigned int loc, glm::vec2& vec) const
 {
 	glUniform2fv(loc, 1, &vec[0]);
 }
 
-void Shader::loadVec3(unsigned int loc, glm::vec3 &vec) const
+void Shader::loadFloat3(unsigned int loc, glm::vec3 &vec) const
 {
 	glUniform3fv(loc, 1, &vec[0]);
 }
 
-void Shader::loadVec4(unsigned int loc, glm::vec4& vec) const
+void Shader::loadFloat4(unsigned int loc, glm::vec4& vec) const
 {
 	glUniform4fv(loc, 1, &vec[0]);
 }
