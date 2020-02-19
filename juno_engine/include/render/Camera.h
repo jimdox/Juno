@@ -13,8 +13,6 @@ public:
 
 	/* Event stuff */
 	void onAttach();
-	void onEvent(const KeyEvent &e);
-	void onEvent(const MouseEvent &e);
 	void onEvent(const Event &e);
 
 	void move(glm::vec3& dv, glm::vec3& dRot);

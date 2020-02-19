@@ -30,44 +30,30 @@ void Camera::onAttach()
 
 }
 
-void Camera::onEvent(const KeyEvent &e)
-{
-	JN_CRIT("key event recieved!!");
-	if(e.getType() == EventType::KEY_PRESS)
-	{
-		switch (e.getKeyCode())
-		{
-		case GLFW_KEY_W:
-			break;
-		case GLFW_KEY_S:
-
-			break;
-		
-		
-		default:
-			break;
-		}
-	} else /* then KeyReleaseEvent */
-	{
-
-	}
-}
-
-void Camera::onEvent(const MouseEvent &e)
-{
-
-}
-
 void Camera::onEvent(const Event &e)
 {
-	JN_INFO("Generic Event Recieved!");
 	switch (e.getType())
 	{
 	case EventType::KEY_PRESS:
-		JN_WARN("Something went terribly wrong...");
+		
 		break;
-	
+	case EventType::KEY_RELEASE:
+
+		break;
+	case EventType::MOUSE_BUTTON_PRESS:
+
+		break;
+	case EventType::MOUSE_BUTTON_RELEASE:
+
+		break;
+	case EventType::MOUSE_MOVE:
+
+		break;
+	case EventType::MOUSE_SCROLL:
+
+		break;
 	default:
+		JN_WARN("Camera recieved an unknown event type.");
 		break;
 	}
 }
