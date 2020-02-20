@@ -10,29 +10,29 @@
 
 namespace juno {
     /* references for garbage collection upon program closing */
-    static std::vector<unsigned int> VAO_refs;
-    static std::vector<unsigned int> VBO_refs;
-
-    
-    static unsigned int generateVAO()
-    {
-        unsigned int vaoID;
-        glGenVertexArrays(1, &vaoID);
-        glBindVertexArray(vaoID);
-        return vaoID;
-    }
+static std::vector<unsigned int> VAO_refs;
+static std::vector<unsigned int> VBO_refs;
 
 
-    static void storeInAttribList(unsigned int attribNum, unsigned int dimensions, std::vector<float> data)
-    {
-        unsigned int VBO_ID;
-        glGenBuffers(1, &VBO_ID);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
-	    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-	    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+static unsigned int generateVAO()
+{
+    unsigned int vaoID;
+    glGenVertexArrays(1, &vaoID);
+    glBindVertexArray(vaoID);
+    return vaoID;
+}
 
-    }
+
+static void storeInAttribList(unsigned int attribNum, unsigned int dimensions, std::vector<float> data)
+{
+    unsigned int VBO_ID;
+    glGenBuffers(1, &VBO_ID);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
 
 
     // static void bindIBO(std::vector<unsigned int> &indices)
@@ -45,180 +45,180 @@ namespace juno {
     // }
 
    
-    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<float> normals, std::vector<unsigned int> &indices)
-    {
-        unsigned int vaoID = generateVAO();
+static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<float> normals, std::vector<unsigned int> &indices)
+{
+    unsigned int vaoID = generateVAO();
 
-        unsigned int iboID;
-        glGenBuffers(1, &iboID);
-	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    unsigned int iboID;
+    glGenBuffers(1, &iboID);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
-        unsigned int numIndices = indices.size();
-        
-        storeInAttribList(0, 3, positions);
-        storeInAttribList(1, 3, normals);
-        storeInAttribList(2, 2, texCoordinates);
+    unsigned int numIndices = indices.size();
+    
+    storeInAttribList(0, 3, positions);
+    storeInAttribList(1, 3, normals);
+    storeInAttribList(2, 2, texCoordinates);
 
 
-        glBindVertexArray(0);
-        return {vaoID, numIndices};
-    }   
+    glBindVertexArray(0);
+    return {vaoID, numIndices};
+}   
 
-    /* loads a primitive object to VAO */
-    static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, unsigned int dim)
-    {
-        unsigned int vaoID = generateVAO();
-        storeInAttribList(0, dim, positions);
-        glBindVertexArray(0);
-        return {vaoID, positions.size()/dim};
-    }
+/* loads a primitive object to VAO */
+static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, unsigned int dim)
+{
+    unsigned int vaoID = generateVAO();
+    storeInAttribList(0, dim, positions);
+    glBindVertexArray(0);
+    return {vaoID, positions.size()/dim};
+}
 
 
     /* ------------------------------------ */
 
-    static void processFace(int faceVertices[3][3], std::vector<unsigned int> &indices, std::vector<glm::vec2> &textures, 
-                                std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float> &normalsData )
+static void processFace(int faceVertices[3][3], std::vector<unsigned int> &indices, std::vector<glm::vec2> &textures, 
+                            std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float> &normalsData )
+{
+    for(int i = 0; i < 3; i++)
     {
-        for(int i = 0; i < 3; i++)
-        {
-            // JN_CLI_WARN(faceVertices[i][0]);
+        // JN_CLI_WARN(faceVertices[i][0]);
 
-            int currentVertPtr = faceVertices[i][0] - 1;
-            indices.push_back(currentVertPtr);
-            
-            glm::vec2 currentTexCoord = textures[faceVertices[i][1]-1];
-            texturesData[currentVertPtr*2] = currentTexCoord.x;
-            texturesData[currentVertPtr*2 +1] = currentTexCoord.y;
+        int currentVertPtr = faceVertices[i][0] - 1;
+        indices.push_back(currentVertPtr);
+        
+        glm::vec2 currentTexCoord = textures[faceVertices[i][1]-1];
+        texturesData[currentVertPtr*2] = currentTexCoord.x;
+        texturesData[currentVertPtr*2 +1] = currentTexCoord.y;
 
 
 
-            glm::vec3 currentNormal = normals[faceVertices[i][2]-1];
-            normalsData[currentVertPtr * 3] = currentNormal.x;
-            normalsData[currentVertPtr * 3 +1] = currentNormal.y;
-            normalsData[currentVertPtr * 3 +2] = currentNormal.z;
-        }
+        glm::vec3 currentNormal = normals[faceVertices[i][2]-1];
+        normalsData[currentVertPtr * 3] = currentNormal.x;
+        normalsData[currentVertPtr * 3 +1] = currentNormal.y;
+        normalsData[currentVertPtr * 3 +2] = currentNormal.z;
     }
+}
 
 
 
-    /* .obj wavefront importer : treats each face as having one normal (in blender: smooth surface), 
-        where the mesh indexing requires double vertices along a given texture coordinate seam 
-    */
-    static juno::Mesh loadOBJFile(const std::string& filepath)
+/* .obj wavefront importer : treats each face as having one normal (in blender: smooth surface), 
+    where the mesh indexing requires double vertices along a given texture coordinate seam 
+*/
+static juno::Mesh loadOBJFile(const std::string& filepath)
+{
+    std::string line;                            /* per line .obj info */
+    std::ifstream openFile(filepath.c_str());
+    if(!openFile.is_open())
     {
-        std::string line;                            /* per line .obj info */
-        std::ifstream openFile(filepath.c_str());
-        if(!openFile.is_open())
+        JN_CLI_ERR(("Error loading file: " + filepath).c_str());
+    }
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec3> normals;
+    std::vector<glm::vec2> textures;
+    std::vector<unsigned int> indices;
+    
+    std::vector<float> verticesData;
+    std::vector<float> texturesData;
+    std::vector<float> normalsData;
+
+
+
+    std::vector<std::string> lineData;
+    
+    while(!openFile.eof())
+    {
+        std::getline(openFile, line);
+        std::stringstream ss(line);
+        std::string token;
+        while(std::getline(ss, token, ' '))
         {
-            JN_CLI_ERR(("Error loading file: " + filepath).c_str());
+            lineData.push_back(token);                              /* split line by ' '  */
         }
-        std::vector<glm::vec3> vertices;
-        std::vector<glm::vec3> normals;
-        std::vector<glm::vec2> textures;
-        std::vector<unsigned int> indices;
-        
-        std::vector<float> verticesData;
-        std::vector<float> texturesData;
-        std::vector<float> normalsData;
 
-
-
-        std::vector<std::string> lineData;
-        
-        while(!openFile.eof())
+        if(lineData[0] == "v")
         {
-            std::getline(openFile, line);
-            std::stringstream ss(line);
-            std::string token;
-            while(std::getline(ss, token, ' '))
-            {
-                lineData.push_back(token);                              /* split line by ' '  */
-            }
-
-            if(lineData[0] == "v")
-            {
-                glm::vec3 vert(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
-                vertices.push_back(vert);
-            }
-            else if (lineData[0] == "vt")
-            {
-                glm::vec2 texCoord(atof(lineData[1].c_str()), atof(lineData[2].c_str()));
-                textures.push_back(texCoord);
-            }
-            else if(lineData[0] == "vn")
-            {
-                glm::vec3 norm(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
-                normals.push_back(norm);
-            }
-            if(lineData[0] == "f"){ break; }
-            lineData.clear();
+            glm::vec3 vert(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
+            vertices.push_back(vert);
         }
-        /* Next Phase of OBJ loading: faces */
-        
-        verticesData.reserve(vertices.size() * 3);
-        normalsData.resize(vertices.size() * 3);
-        texturesData.resize(vertices.size() * 2);
-
+        else if (lineData[0] == "vt")
+        {
+            glm::vec2 texCoord(atof(lineData[1].c_str()), atof(lineData[2].c_str()));
+            textures.push_back(texCoord);
+        }
+        else if(lineData[0] == "vn")
+        {
+            glm::vec3 norm(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
+            normals.push_back(norm);
+        }
+        if(lineData[0] == "f")
+        {
+            /* this face still needs to be read in the next while loop */
+            break;
+        }
         lineData.clear();
-
-        while(!openFile.eof())    
-        {
-            std::getline(openFile, line);
-            std::stringstream ss(line);
-            std::string token;
-            while(std::getline(ss, token, ' '))
-            {
-                lineData.push_back(token);                              /* split line by ' '  */
-            }
-
-            if(lineData[0] == "f")
-            {
-            
-                int faceVertices[3][3];
-
-                for(unsigned int i = 0; i < 3; i++)
-                {
-                    std::stringstream ssVert(lineData[i+1]);
-                    std::string tokVert;
-
-                    for(int j = 0; j < 3; j++)
-                    {
-                        std::getline(ssVert, tokVert, '/');             /* split face vertex by '/'  */
-                        faceVertices[i][j] = atoi(tokVert.c_str());
-                    }
-
-                                    
-
-                }
-                processFace(faceVertices, indices, textures, normals, texturesData, normalsData);
-
-            }
-            lineData.clear();
-        }
-        openFile.close();
-        /* done parsing obj */
-
-        for(glm::vec3 vertex : vertices)
-        {
-            verticesData.push_back(vertex.x);
-            verticesData.push_back(vertex.y);
-            verticesData.push_back(vertex.z);
-        }
-
-        juno::Mesh mesh(verticesData, texturesData, normalsData, indices);
-
-        auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
-        mesh.assignVAO(id, numIndices);
-        return mesh;
     }
+    /* Next Phase of OBJ loading: faces */
+    
+    verticesData.reserve(vertices.size() * 3);
+    normalsData.resize(vertices.size() * 3);
+    texturesData.resize(vertices.size() * 2);
+
+    lineData.clear();
+
+    while(!openFile.eof())    
+    {
+        std::stringstream ss(line);
+        std::string token;
+        while(std::getline(ss, token, ' '))
+        {
+            lineData.push_back(token);                              /* split line by ' '  */
+        }
+
+        if(lineData[0] == "f")
+        {
+        
+            int faceVertices[3][3];
+
+            for(unsigned int i = 0; i < 3; i++)
+            {
+                std::stringstream ssVert(lineData[i+1]);
+                std::string tokVert;
+
+                for(int j = 0; j < 3; j++)
+                {
+                    std::getline(ssVert, tokVert, '/');             /* split face vertices by '/'  */
+                    faceVertices[i][j] = atoi(tokVert.c_str());
+                }
+
+                                
+
+            }
+            processFace(faceVertices, indices, textures, normals, texturesData, normalsData);
+
+        }
+        lineData.clear();
+        std::getline(openFile, line);
+    }
+    openFile.close();
+    /* done parsing .obj */
+
+    for(glm::vec3 vertex : vertices)
+    {
+        verticesData.push_back(vertex.x);
+        verticesData.push_back(vertex.y);
+        verticesData.push_back(vertex.z);
+    }
+
+    juno::Mesh mesh(verticesData, texturesData, normalsData, indices);
+
+    auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
+    mesh.assignVAO(id, numIndices);
+    return mesh;
+}
 
 static juno::Mesh loadModel(const std::string& filepath)
 {
-    if(filepath.find(".obj") != std::string::npos)
-    {
-    return loadOBJFile(filepath);
-    }
     return loadOBJFile(filepath);
 }
 

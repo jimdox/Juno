@@ -31,7 +31,7 @@ void Camera::onAttach()
 }
 
 void Camera::onEvent(const Event &e)
-{
+{	
 	switch (e.getType())
 	{
 	case EventType::KEY_PRESS:
@@ -50,7 +50,7 @@ void Camera::onEvent(const Event &e)
 		mouseMoveRecieved((const MouseMoveEvent&)e);
 		break;
 	case EventType::MOUSE_SCROLL:
-		setZoom(this->zoom + ((const MouseScrollEvent&)e).getYOffset() * 5);
+		setZoom(this->zoom - ((const MouseScrollEvent&)e).getYOffset() * 5);
 		break;
 	default:
 		JN_WARN("Camera recieved an unknown event type.");
@@ -110,7 +110,7 @@ void Camera::mouseMoveRecieved(const MouseMoveEvent& e)
 	if(lmb_pressed)
 	{
 		pitch -= (e.getY() - prev_mouse_y) * 0.14f;
-
+		yaw -= (e.getX() - prev_mouse_x) * 0.1f;
 		/* calculate angle around pivot */
 		
 		/* calculate horizontal dist. */
