@@ -27,6 +27,7 @@ public:
 	void updateCamera(Camera* camera, float dt);
 	void destroy();
 	void setVisible(bool flag);
+	Dock& getGuiDock();
 
 	static KeyEventDispatcher& getKeyDispatcher();
 	static MouseEventDispatcher& getMouseDispatcher();
@@ -34,6 +35,7 @@ public:
 	bool isRunning();
 	int getHeight();
 	int getWidth();
+
 
 private:
 	Context(const Context& other) {}
@@ -46,7 +48,5 @@ private:
 
 	KeyEventDispatcher keyDispatcher;
 	MouseEventDispatcher mouseDispatcher;
-	bool isLoading;
-	bool isValid;
 };
 }

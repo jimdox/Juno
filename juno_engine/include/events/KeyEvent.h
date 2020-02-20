@@ -41,10 +41,8 @@ class KeyEventListener : public EventListener
 {
 public:
     ~KeyEventListener(){}
-    void onEvent(const KeyEvent& e)
-    {
+    virtual void onEvent(const KeyEvent& e) = 0;
 
-    }
 };
 
 class KeyEventDispatcher : public EventDispatcher
@@ -52,6 +50,7 @@ class KeyEventDispatcher : public EventDispatcher
 public:
     KeyEventDispatcher(){}
     ~KeyEventDispatcher(){}
+    
 };
 
 }

@@ -84,7 +84,7 @@ public:
         }
     }
 
-private:
+protected:
     short numListeners = 0;
     EventListener* listeners[MAX_EVENT_LISTENERS];
 };

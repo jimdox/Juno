@@ -13,11 +13,12 @@ using namespace juno;
 
 static KeyEventDispatcher* s_keyDispatcher;
 static MouseEventDispatcher* s_mouseDispatcher;
-
+#define DEFAULT_SCREEN_WIDTH = 1080
+#define DEFAULT_SCREEN_HEIGHT = 1920
 /* /// GLFW Callbacks /// */
 
 static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
-{	
+{	 
 	if(action == GLFW_PRESS || action == GLFW_REPEAT)
 	{
 		s_keyDispatcher->notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
@@ -28,7 +29,11 @@ static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, in
 
 static inline void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
 {
-	s_mouseDispatcher->notify(MouseMoveEvent(x_pos, y_pos));
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+	JN_INFO(x_pos - width/2);
+	JN_INFO(y_pos - height/2);
+	s_mouseDispatcher->notify(MouseMoveEvent(x_pos - width/2, y_pos - height/2));
 	//JN_CRIT("Mouse is moving!");
 }
 
@@ -80,9 +85,6 @@ Context::Context()
 	this->width = 400;
 	this->height = 400;
 	this->title = " ";
-	this->isLoading = true;
-	this->isValid = true;
-	
 
 
 }
@@ -92,8 +94,6 @@ Context::Context(int width, int height, const std::string name)
 	this->width = width;
 	this->height = height;
 	this->title = name;
-	this->isLoading = true;
-	this->isValid = true;
 	init();
 }
 
@@ -103,8 +103,7 @@ Context::Context(int width, int height, std::string title, bool border)
 	this->width = width;
 	this->height = height;	
 	this->title = title;
-	this->isLoading = true;
-	this->isValid = true;
+
 	if (!border)
 	{
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
@@ -234,3 +233,4 @@ GLFWwindow* Context::getWindow()
 {
 	return this->window;
 }
+

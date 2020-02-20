@@ -6,7 +6,7 @@
 //int main(int argc, char** argv);
 
 namespace juno {
-class Program
+class Program : public EventListener
 {
 public:
 	Program();
@@ -15,6 +15,9 @@ public:
 	void init();
 	void run();
 	void exit();
+
+	void onAttach();
+	void onEvent(const Event& e);
 
 protected:
 	std::unique_ptr<Context> render_context;
@@ -30,6 +33,6 @@ protected:
 
 private:
 	std::shared_ptr<Shader> shader;
-
+	bool f_program_should_close;
 };
 }

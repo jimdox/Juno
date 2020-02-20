@@ -2,9 +2,10 @@
 #include "pch.h"
 #include "events/KeyEvent.h"
 #include "events/MouseEvent.h"
+#include "events/WindowEvent.h"
 
 namespace juno { 
-class Camera : public EventListener
+class Camera : public EventListener, public EventDispatcher
 {
 public:
 	//Camera(glm::vec3& pos);
@@ -15,8 +16,13 @@ public:
 	void onAttach();
 	void onEvent(const Event &e);
 
+	void keyPressRecieved(int key_code);
+	void mouseBPressRecieved(const MousePressEvent& e);
+	void mouseBReleaseRecieved(const MouseReleaseEvent& e);
+	void mouseMoveRecieved(const MouseMoveEvent& e);
+
 	void move(glm::vec3& dv, glm::vec3& dRot);
-	void update(glm::vec3& dPos, glm::vec3& dRot, float deltaZoom);
+	void update();
 	
 	glm::vec3& getPosition();
 	inline float getZoom()  { return zoom;  }
@@ -36,14 +42,26 @@ public:
 
 	const float DEFAULT_MOVE_SPEED = 6.5;
 	const float DEFAULT_ROT_SPEED = 80;
-	const double MIN_ZOOM = 32;
-	const double MAX_ZOOM = -40;
+	const double MIN_ZOOM = 52;
+	const double MAX_ZOOM = -52;
 
 private:
 	void generateProjectionMatrix();
 
 	glm::vec3 position;
 	glm::vec3 velocity;
+
+	/* --- */
+	glm::vec3 delta_pos;
+	glm::vec3 delta_rot;
+	bool key_w_pressed;
+	bool key_s_pressed;
+	bool lmb_pressed = false;
+	bool rmb_pressed = false;
+	float prev_mouse_x = 0;
+	float prev_mouse_y = 0;
+	/* --- */
+
 	glm::vec3 pivot;
 	glm::mat4 projectionMatrix;
 	glm::mat4 viewMatrix;

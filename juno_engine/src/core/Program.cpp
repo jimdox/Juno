@@ -7,11 +7,17 @@
 #include "render/RenderQueue.h"
 #include "entity/SkyBox.h"
 #include "render/shaders/SkyBoxShader.h"
-#define DISPLAY_MAX_FPS 240
+
+#define DISPLAY_MAX_FPS 120
 using namespace juno;
 
 Program::Program() : camera(glm::vec3(0.0f,0.0f,3.0f), 0, 0, 0)
 {
+	camera.addListener(this);
+	this->f_program_should_close = false;
+	frame_time = 0;
+	num_frames = 0;
+	delta_time = 0;
 	init();
 }	
 
@@ -35,6 +41,22 @@ void Program::init()
 	shader->loadViewMatrix(&camera);
 	shader->unbindProgram();
 
+}
+
+void Program::onAttach()
+{}
+
+void Program::onEvent(const Event& e)
+{
+	switch(e.getType())
+	{
+	case EventType::WINDOW_CLOSE:
+		this->f_program_should_close = true;
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Program::run()
@@ -93,25 +115,23 @@ void Program::run()
 	//queue.submit(&skybox, skyboxShader);
 
 	/* ----- */
-	frame_time = 0;
-	num_frames = 0;
-	delta_time = 0;
 	last_time = glfwGetTime();
 
-	while (render_context->isRunning())
+	while (!f_program_should_close && render_context->isRunning())
 	{
 		render_context->updateCamera(&camera, frame_time);
 		
 		glm::vec3 d_rot(0.0f, 0.1f, 0.0f);
 		entity_one.addRotation(d_rot);
+		camera.update();
 
-		// if(delta_time > 1/(DISPLAY_MAX_FPS) )
-		// {
+		if(delta_time > 1/(DISPLAY_MAX_FPS) )
+		{
 			glRender::clear();
 			queue.render(&camera);
 			render_context->update(delta_time);
 			delta_time = 0;
-		//}
+		}
 
 		frame_time = (glfwGetTime() - last_time);
 		last_time = glfwGetTime();
@@ -121,5 +141,5 @@ void Program::run()
 
 void Program::exit()
 {
-	
+	//render_context->~Context();
 }
