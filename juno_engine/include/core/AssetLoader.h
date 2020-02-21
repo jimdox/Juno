@@ -732,5 +732,3 @@ static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint
 
 //     }
 // }
-
-
