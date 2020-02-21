@@ -12,7 +12,7 @@
 #define DISPLAY_MAX_FPS 120
 using namespace juno;
 
-Program::Program() : camera(glm::vec3(0.0f,0.0f,3.0f), 0, 0, 0)
+Program::Program() : camera(glm::vec3(0.0f,1.0f,3.0f), 0, 0, 0)
 {
 	camera.addListener(this);
 	this->f_program_should_close = false;
@@ -70,7 +70,7 @@ void Program::onEvent(const Event& e)
 
 void Program::run()
 {
-	Mesh susy = loadModel("./juno_engine/res/susanne.obj");
+	Mesh susy = loadModel("./juno_engine/res/dragon.obj");
 	Texture texture1("./juno_engine/res/grey.png", TX_DIFFUSE, true);
 	susy.addTexture(&texture1, texture1.getTexType());
 
@@ -78,7 +78,7 @@ void Program::run()
 	Texture texture_two("./juno_engine/res/green.png", TX_DIFFUSE, true);
 	plane.addTexture(&texture_two, texture_two.getTexType());
 
-	glm::vec3 ent_pos(0.0f, 0.8f, -8.0f);
+	glm::vec3 ent_pos(0.0f, -2.0f, -8.0f);
 	glm::vec3 ent_rot(0.0f, 12.0f, 0.00f);
 
 	glm::vec3 ground_pos(0.0f, -2.0f, -1.0f);
@@ -130,7 +130,7 @@ void Program::run()
 	{
 		render_context->updateCamera(&camera, frame_time);
 		
-		glm::vec3 d_rot(0.0f, 0.1f, 0.0f);
+		glm::vec3 d_rot(0.0f, 0.01f, 0.0f);
 		entity_one.addRotation(d_rot);
 		camera.update();
 

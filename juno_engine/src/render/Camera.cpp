@@ -6,10 +6,8 @@
 using namespace juno;
 
 
-
 Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos)
 {
-
 	this->pitch = pitch;
 	this->yaw = yaw;
 	this->roll = roll;
@@ -63,21 +61,17 @@ void Camera::onEvent(const Event &e)
 
 void Camera::keyEventRecieved(int key_code, bool flag)
 {
-	JN_CRIT("key recieved");
+	//JN_CRIT("key recieved");
 	switch(key_code)
 	{
 	case GLFW_KEY_W:
-		io_states.setKeyStatus(GLFW_KEY_W, flag);
-		break;
 	case GLFW_KEY_S:
-		io_states.setKeyStatus(GLFW_KEY_S, flag);
-		break;
 	case GLFW_KEY_A:
-		io_states.setKeyStatus(GLFW_KEY_A, flag);
-		break;
 	case GLFW_KEY_D:
-		io_states.setKeyStatus(GLFW_KEY_D, flag);
-		break;
+	case GLFW_KEY_R:
+	case GLFW_KEY_F:
+			io_states.setKeyStatus(key_code, flag);
+			break;
 	case GLFW_KEY_X:
 		io_states.setKeyStatus(GLFW_KEY_X, flag);
 		notify(RenderWireframeEvent(flag));
@@ -90,8 +84,6 @@ void Camera::keyEventRecieved(int key_code, bool flag)
 	}
 	
 }
-
-
 
 
 // void Camera::mouseMoveRecieved(const MouseMoveEvent& e)
@@ -118,7 +110,6 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 
 
-
 void Camera::update()
 {
 	if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
@@ -129,13 +120,29 @@ void Camera::update()
 
 	if(io_states.isKeyDown(GLFW_KEY_W))
 	{
-		this->position.z -= 0.001f;
+		position.z -= 0.01f;  
+	} else if(io_states.isKeyDown(GLFW_KEY_S))
+	{
+		position.z += 0.01f;
+	}
+
+	if(io_states.isKeyDown(GLFW_KEY_R))
+	{
+		position.y += 0.01f;
+	} else if(io_states.isKeyDown(GLFW_KEY_F)) {
+		position.y -= 0.01f;
+	}
+
+	if(io_states.isKeyDown(GLFW_KEY_D))
+	{
+		position.x += 0.01f;
+	} else if(io_states.isKeyDown(GLFW_KEY_A)) {
+		position.x -= 0.01f;
 	}
 
 
 
 	resetProjectionMatrix();
-
 }
 
 
