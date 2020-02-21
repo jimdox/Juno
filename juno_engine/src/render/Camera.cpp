@@ -2,6 +2,7 @@
 #include "core/EngineConfig.h"
 #include "core/Log.h"
 #include "core/MathUtils.h"
+#include "events/RenderEvent.h"
 using namespace juno;
 
 
@@ -16,8 +17,6 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos
 	this->zoom = 0.0f;
 	generateProjectionMatrix();
 	velocity = glm::vec3(0,0,0);
-	lmb_pressed = false;
-
 }
 
 Camera::~Camera()
@@ -31,95 +30,87 @@ void Camera::onAttach()
 }
 
 void Camera::onEvent(const Event &e)
-{
+{	
 	switch (e.getType())
 	{
 	case EventType::KEY_PRESS:
-		keyPressRecieved(((const KeyPressEvent&) e).getKeyCode());
+		keyEventRecieved(((const KeyPressEvent&) e).getKeyCode(), true);
 		break;
 	case EventType::KEY_RELEASE:
-		//((const KeyReleaseEvent&) e).getKeyCode()
+		keyEventRecieved(((const KeyReleaseEvent&)e).getKeyCode(), false);
 		break;
 	case EventType::MOUSE_BUTTON_PRESS:
-		mouseBPressRecieved((const MousePressEvent&) e);
+		io_states.setMouseButtonStatus(((const MousePressEvent&) e).getMouseCode(), true);
 		break;
 	case EventType::MOUSE_BUTTON_RELEASE:
-		mouseBReleaseRecieved((const MouseReleaseEvent&)e);
+		io_states.setMouseButtonStatus(((const MouseReleaseEvent&)e).getMouseCode(), false);
 		break;
 	case EventType::MOUSE_MOVE:
-		mouseMoveRecieved((const MouseMoveEvent&)e);
+		//const MouseMoveEvent& mouse_event = ((const MouseMoveEvent&)e);
+		io_states.mouseMoved(((const MouseMoveEvent&)e).getX(), ((const MouseMoveEvent&)e).getY());
 		break;
 	case EventType::MOUSE_SCROLL:
-		setZoom(this->zoom + ((const MouseScrollEvent&)e).getYOffset() * 5);
+		setZoom(this->zoom - ((const MouseScrollEvent&)e).getYOffset() * 5);
+		break;
+	case EventType::WINDOW_RESIZE:
+		this->cam_aspect_ratio = ((const WindowResizeEvent&)e).getScreenWidth() / ((const WindowResizeEvent&)e).getScreenHeight();
 		break;
 	default:
-		JN_WARN("Camera recieved an unknown event type.");
+		JN_WARN("Camera recieved an event of unknown type.");
 		break;
 	}
 }
 
-void Camera::keyPressRecieved(int key_code)
+void Camera::keyEventRecieved(int key_code, bool flag)
 {
 	JN_CRIT("key recieved");
 	switch(key_code)
 	{
 	case GLFW_KEY_W:
-		setZoom(this->zoom - 0.01);
+		io_states.setKeyStatus(GLFW_KEY_W, flag);
 		break;
 	case GLFW_KEY_S:
-
+		io_states.setKeyStatus(GLFW_KEY_S, flag);
 		break;
 	case GLFW_KEY_A:
-
+		io_states.setKeyStatus(GLFW_KEY_A, flag);
 		break;
 	case GLFW_KEY_D:
+		io_states.setKeyStatus(GLFW_KEY_D, flag);
 		break;
-
-
+	case GLFW_KEY_X:
+		io_states.setKeyStatus(GLFW_KEY_X, flag);
+		notify(RenderWireframeEvent(flag));
+		break;
 	case GLFW_KEY_ESCAPE:
 		this->notify(WindowCloseEvent());
 		break;
 	default:
-
 		break;
 	}
 	
 }
 
-void Camera::mouseBPressRecieved(const MousePressEvent& e)
-{
-	auto a = e.getMouseCode();
-	if(e.getMouseCode() == MouseCode::M_BUTTON_LEFT)
-	{
-		lmb_pressed = true;
-	}
-}
-
-void Camera::mouseBReleaseRecieved(const MouseReleaseEvent& e)
-{
-	if(e.getMouseCode() == MouseCode::M_BUTTON_LEFT)
-	{
-		lmb_pressed = false;
-	}
-}
-
-void Camera::mouseMoveRecieved(const MouseMoveEvent& e)
-{
 
 
-	if(lmb_pressed)
-	{
-		pitch -= (e.getY() - prev_mouse_y) * 0.14f;
 
-		/* calculate angle around pivot */
+// void Camera::mouseMoveRecieved(const MouseMoveEvent& e)
+// {
+
+
+// 	if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
+// 	{
+// 		pitch -= io_states.getMouseDY() * 0.14f;
+// 		yaw += io_states.getMouseDX() * 0.1f;
+// 		/* calculate angle around pivot */
 		
-		/* calculate horizontal dist. */
-		float h_dist = ((position - pivot).length() - zoom) * cosf(pitch);
-		float v_dist = ((position - pivot).length() - zoom) * sinf(pitch);
-	}
-	prev_mouse_y = e.getY();
-	prev_mouse_x = e.getX();
-}
+// 		/* calculate horizontal dist. */
+// 		float h_dist = ((position - pivot).length() - zoom) * cosf(pitch);
+// 		float v_dist = ((position - pivot).length() - zoom) * sinf(pitch);
+// 	}
+
+// }
+
 void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 {
 
@@ -130,6 +121,18 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 void Camera::update()
 {
+	if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
+	{
+		pitch -= io_states.getMouseDY() * 0.1f;
+		yaw -= io_states.getMouseDX() * 0.1f;
+	}
+
+	if(io_states.isKeyDown(GLFW_KEY_W))
+	{
+		this->position.z -= 0.001f;
+	}
+
+
 
 	resetProjectionMatrix();
 
@@ -150,7 +153,7 @@ glm::mat4& Camera::getProjectionMatrix()
 
 void Camera::generateProjectionMatrix()
 {
-	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), getAspectRatio(), NEAR_PLANE, FAR_PLANE);	
+	projectionMatrix = glm::perspective(glm::radians(FOV+zoom), cam_aspect_ratio, NEAR_PLANE, FAR_PLANE);	
 }
 
 glm::mat4& Camera::resetProjectionMatrix()
@@ -171,7 +174,6 @@ glm::vec3& Camera::getPosition()
 
 void Camera::setZoom(float z)
 {
-	//JN_ERR("zoom {}", z);
 	if(z < MAX_ZOOM)
 	{
 		this->zoom = MAX_ZOOM;

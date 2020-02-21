@@ -62,6 +62,21 @@ static void clear()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+static void resizeFrameBuffer(float width, float height)
+{
+	glViewport(0, 0, width, height);
+}
+
+static void setModeWireframe(bool flag)
+{
+	if(flag)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	} else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
+
 static void setBackFaceCulling(bool flag)
 {
 	if(flag)

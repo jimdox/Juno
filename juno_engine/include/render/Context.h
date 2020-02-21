@@ -13,13 +13,17 @@
 
 namespace juno {
 
-class Context
+class Context : public EventListener
 {
 public:
 	Context();
 	Context(int width, int height, std::string title);
 	Context(int width, int height, std::string title, bool border);
 	virtual ~Context();
+
+	void onAttach();
+	void onEvent(const Event& e);
+
 	GLFWwindow* getWindow();
 	void renderUpdate();
 	void init();
@@ -31,6 +35,7 @@ public:
 
 	static KeyEventDispatcher& getKeyDispatcher();
 	static MouseEventDispatcher& getMouseDispatcher();
+	static WindowEventDispatcher& getWinEventDispatcher();
 
 	bool isRunning();
 	int getHeight();
@@ -48,5 +53,6 @@ private:
 
 	KeyEventDispatcher keyDispatcher;
 	MouseEventDispatcher mouseDispatcher;
+	WindowEventDispatcher windowDispatcher;
 };
 }

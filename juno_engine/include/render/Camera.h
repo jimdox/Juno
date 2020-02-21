@@ -3,8 +3,67 @@
 #include "events/KeyEvent.h"
 #include "events/MouseEvent.h"
 #include "events/WindowEvent.h"
-
+#include "core/Log.h"
 namespace juno { 
+
+struct camera_io_states
+{
+	bool keys[91] = {false};
+	bool mouse_buttons[3] = {false};
+
+	float delta_mouse_x;
+	float delta_mouse_y;
+	float prev_mouse_x;
+	float prev_mouse_y;
+
+	bool isKeyDown(int keycode)
+	{
+		return keys[keycode];
+	}
+
+	bool isMButtonDown(MouseCode mc)
+	{
+	 	return mouse_buttons[((int) mc)];
+	}	
+
+	void setKeyStatus(int keycode, bool flag)
+	{
+		keys[keycode] = flag;
+	}
+
+	void setMouseButtonStatus(MouseCode mc, bool flag)
+	{
+		mouse_buttons[((int)mc)] = flag;
+	}
+
+	void mouseMoved(float x, float y)
+	{
+		if(mouse_buttons[0])
+		{
+			delta_mouse_x += (x - prev_mouse_x);
+			delta_mouse_y += (y - prev_mouse_y);
+
+		}
+			prev_mouse_y = y;
+			prev_mouse_x = x;
+	}
+
+	float getMouseDX()
+	{
+		float dx = delta_mouse_x;
+		delta_mouse_x = 0;
+		return dx;
+	}
+
+	float getMouseDY()
+	{
+		float dy = delta_mouse_y;
+		delta_mouse_y = 0;
+		return dy;
+	}
+
+};
+
 class Camera : public EventListener, public EventDispatcher
 {
 public:
@@ -16,10 +75,7 @@ public:
 	void onAttach();
 	void onEvent(const Event &e);
 
-	void keyPressRecieved(int key_code);
-	void mouseBPressRecieved(const MousePressEvent& e);
-	void mouseBReleaseRecieved(const MouseReleaseEvent& e);
-	void mouseMoveRecieved(const MouseMoveEvent& e);
+	void keyEventRecieved(int keycode, bool flag);
 
 	void move(glm::vec3& dv, glm::vec3& dRot);
 	void update();
@@ -54,12 +110,7 @@ private:
 	/* --- */
 	glm::vec3 delta_pos;
 	glm::vec3 delta_rot;
-	bool key_w_pressed;
-	bool key_s_pressed;
-	bool lmb_pressed = false;
-	bool rmb_pressed = false;
-	float prev_mouse_x = 0;
-	float prev_mouse_y = 0;
+	camera_io_states io_states;
 	/* --- */
 
 	glm::vec3 pivot;
@@ -72,7 +123,9 @@ private:
 	float distanceToPivot;
 	float angle_around_pivot;
 	float moveSpeed;
-	
+	float cam_aspect_ratio = 1920.0f/1080.0f;
+
+
 	const float FOV = 60.0f;				/* 60 -> ~80 is recommended */
 	const float NEAR_PLANE = 0.1f;			/* min clipping dist. */
 	const float FAR_PLANE = 1000.0f;		/* max clipping dist. */

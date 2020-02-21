@@ -11,13 +11,16 @@
 
 using namespace juno;
 
+/* pass these to glfw callbacks to link to Event system */
 static KeyEventDispatcher* s_keyDispatcher;
 static MouseEventDispatcher* s_mouseDispatcher;
-#define DEFAULT_SCREEN_WIDTH = 1080
-#define DEFAULT_SCREEN_HEIGHT = 1920
+static WindowEventDispatcher* s_winDispatcher;
+/* ---- */
+
+
 /* /// GLFW Callbacks /// */
 
-static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void keyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
 {	 
 	if(action == GLFW_PRESS || action == GLFW_REPEAT)
 	{
@@ -27,17 +30,16 @@ static inline void keyboardHandler(GLFWwindow* window, int key, int scancode, in
 	}
 }
 
-static inline void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
+static void mousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
 {
 	int width, height;
 	glfwGetWindowSize(window, &width, &height);
-	JN_INFO(x_pos - width/2);
-	JN_INFO(y_pos - height/2);
+
 	s_mouseDispatcher->notify(MouseMoveEvent(x_pos - width/2, y_pos - height/2));
 	//JN_CRIT("Mouse is moving!");
 }
 
-static inline void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
+static void mouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
 {
 	if(action == GLFW_PRESS)
 	{
@@ -73,10 +75,15 @@ static inline void mouseButtonHandler(GLFWwindow* window, int button, int action
 	}
 }
 
-void inline mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
+static void mouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
 {
 	s_mouseDispatcher->notify(MouseScrollEvent(x_offset, y_offset));
 }
+
+void windowResizeHandler(GLFWwindow* window, int width, int height)
+{
+	s_winDispatcher->notify(WindowResizeEvent(width, height));
+}	
 /* /// End Callbacks /// */
 
 
@@ -162,12 +169,14 @@ void Context::init()
 
 	s_keyDispatcher = &this->keyDispatcher;
 	s_mouseDispatcher = &this->mouseDispatcher;				
+	s_winDispatcher = &this->windowDispatcher;
 
 	glfwSetErrorCallback(setErrCallback);
 	glfwSetKeyCallback(window, keyboardHandler);
 	glfwSetMouseButtonCallback(window, mouseButtonHandler);
 	glfwSetCursorPosCallback(window, mousePositionHandler);
 	glfwSetScrollCallback(window, mouseScrollHandler);
+	glfwSetFramebufferSizeCallback(window, windowResizeHandler);
 
 	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	glfwSetCursor(window, cursor);
@@ -178,6 +187,22 @@ void Context::init()
 
 }
 
+void Context::onAttach()
+{
+	
+}
+
+void Context::onEvent(const Event& e)
+{
+	if(e.getType() == EventType::WINDOW_RESIZE)
+	{
+		const WindowEvent& win_event = ((const WindowEvent&)e);
+		
+	}
+}
+
+
+
 void Context::update(float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -186,11 +211,9 @@ void Context::update(float dt)
 	glfwPollEvents();
 }
 
+
 void Context::updateCamera(Camera* camera, float dt)
 {
-
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 }
 
@@ -212,6 +235,11 @@ KeyEventDispatcher& Context::getKeyDispatcher()
 MouseEventDispatcher& Context::getMouseDispatcher()
 {
 	return *s_mouseDispatcher;
+}
+
+WindowEventDispatcher& Context::getWinEventDispatcher()
+{
+	return *s_winDispatcher;
 }
 
 bool Context::isRunning()

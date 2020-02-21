@@ -7,6 +7,7 @@
 #include "render/RenderQueue.h"
 #include "entity/SkyBox.h"
 #include "render/shaders/SkyBoxShader.h"
+#include "events/RenderEvent.h"
 
 #define DISPLAY_MAX_FPS 120
 using namespace juno;
@@ -28,11 +29,13 @@ Program::~Program()
 
 void Program::init()
 {
-	render_context = std::make_unique<Context>(1400, 1000, " ", false);
+	render_context = std::make_unique<Context>(1920, 1080, " ", false);
 	shader = std::make_shared<Shader>("./juno_engine/res/shaders/basic");
+
 	render_context->getKeyDispatcher().addListener(&camera);
 	render_context->getMouseDispatcher().addListener(&camera);
-	//render_context->attachListener(camera->getEventListener());
+	render_context->getWinEventDispatcher().addListener(&camera);
+	render_context->getWinEventDispatcher().addListener(this);
 	
 	// JN_WARN(JN_GFX_DEVICE); 												/* for use in debugging w/ hybrid graphics */
 
@@ -54,6 +57,12 @@ void Program::onEvent(const Event& e)
 		this->f_program_should_close = true;
 		break;
 
+	case EventType::WINDOW_RESIZE:
+		glRender::resizeFrameBuffer(((const WindowResizeEvent&)e).getScreenWidth(), ((const WindowResizeEvent&)e).getScreenHeight());
+		break;
+	case EventType::RENDER_POLYGON_WIREFRAME:
+		glRender::setModeWireframe(((const RenderWireframeEvent&)e).modeSetWireframe());
+		break;
 	default:
 		break;
 	}
