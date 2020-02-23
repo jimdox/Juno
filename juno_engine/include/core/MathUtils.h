@@ -1,15 +1,13 @@
-#pragma once
 #include "pch.h"
+#pragma once
 
 namespace juno
 {
 
-static inline float toRadians(float degrees)
+inline float toRadians(float degrees)
 {
     return degrees * (M_PI/180.0f);
 }
-
-
 
 /* rotation needs to be in degrees */
 static glm::mat4 createTransformationMat(glm::vec3 translation, glm::vec3 rotation, float scale)
@@ -42,7 +40,7 @@ static glm::mat4 generateViewMatrix(juno::Camera* camera)
     return viewMat;
 }
 
-static float baryCentricInterpolation(glm::vec3& p1, glm::vec3& p2, glm::vec3& p3, glm::vec3& pos)
+inline float baryCentricInterpolation(glm::vec3& p1, glm::vec3& p2, glm::vec3& p3, glm::vec3& pos)
 {
     float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
     float L_1 = ((p2.z-p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;

@@ -38,14 +38,12 @@ public:
 	void loadMat3(unsigned int loc, glm::mat3& mat) const;
 	void loadMat4(unsigned int loc, glm::mat4& mat) const;
 
-
 protected:
 	GLuint progID;
 	std::string shaderPath;
 	enum Shdr { VERTEX, FRAGMENT, GEOMETRY };
 	std::string vertFilePath;
 	std::string fragFilePath;
-	static const unsigned int NUM_LIGHTS = 4;
 	
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
@@ -53,10 +51,9 @@ protected:
 	unsigned int loc_reflectivity;
 	unsigned int loc_shineDamper;
 
+	static const unsigned int NUM_LIGHTS = 4;
 	unsigned int loc_lightPositions[NUM_LIGHTS];
 	unsigned int loc_lightColors[NUM_LIGHTS];
 	unsigned int loc_attenuations[NUM_LIGHTS];
-
-	
 };
 }

@@ -87,6 +87,7 @@ OBJECTS := \
 	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/RenderQueue.o \
+	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/SkyBoxShader.o \
@@ -203,6 +204,9 @@ $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/RenderQueue.o: src/render/RenderQueue.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Renderer.o: src/render/Renderer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: src/render/lights/Light.cpp

@@ -1,7 +1,6 @@
 #pragma once
 #include "render/Context.h"
-#include "render/shaders/Shader.h"
-
+#include "render/Renderer.h"
 
 //int main(int argc, char** argv);
 
@@ -20,10 +19,7 @@ public:
 	void onEvent(const Event& e);
 
 protected:
-	std::unique_ptr<Context> render_context;
-	Camera camera; 
-	
-
+	Renderer *renderer;
 	/* time-keeping vars. */
 	float last_time;     
 	float frame_time;

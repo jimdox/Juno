@@ -6,17 +6,17 @@
 using namespace juno;
 
 
-Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos)
+Camera::Camera(glm::vec3 pos, glm::vec3 rot) : pivot(pos)
 {
-	this->pitch = pitch;
-	this->yaw = yaw;
-	this->roll = roll;
+	this->roll = rot.x;
+	this->pitch = rot.y;
+	this->yaw = rot.z;
 	this->moveSpeed = 2.5f;
 	this->zoom = 0.0f;
 	velocity = glm::vec3(0,0,0);
-	pivot = glm::vec3(0.0f, 0.25f, 0.0f);
-	angle_around_pivot = 0.0f;
-	distance_to_pivot = 0.0f;
+	angle_around_pivot = 180.0f;
+	distance_to_pivot = 50.0f;
+	calculatePosition();
 	generateProjectionMatrix();
 }
 
@@ -62,9 +62,9 @@ void Camera::onEvent(const Event &e)
 	}
 }
 
+/* camera only processes certain mouse keys, other key events are discarded for now. */
 void Camera::keyEventRecieved(int key_code, bool flag)
 {
-	//JN_CRIT("key recieved");
 	switch(key_code)
 	{
 	case GLFW_KEY_W:
@@ -88,24 +88,6 @@ void Camera::keyEventRecieved(int key_code, bool flag)
 	
 }
 
-
-// void Camera::mouseMoveRecieved(const MouseMoveEvent& e)
-// {
-
-
-// 	if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
-// 	{
-// 		pitch -= io_states.getMouseDY() * 0.14f;
-// 		yaw += io_states.getMouseDX() * 0.1f;
-// 		/* calculate angle around pivot */
-		
-// 		/* calculate horizontal dist. */
-// 		float h_dist = ((position - pivot).length() - zoom) * cosf(pitch);
-// 		float v_dist = ((position - pivot).length() - zoom) * sinf(pitch);
-// 	}
-
-// }
-
 void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 {
 
@@ -115,12 +97,6 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 void Camera::update()
 {
-	// if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
-	// {
-	// 	pitch -= io_states.getMouseDY() * 0.1f;
-	// 	yaw -= io_states.getMouseDX() * 0.1f;
-	// }
-
 	if(keyboard.isKeyDown(GLFW_KEY_W))
 	{
 		pivot.z -= 0.2f;  
@@ -143,19 +119,19 @@ void Camera::update()
 		pivot.x -= 0.2f;
 	}
 
-	calculateCameraPos();
+	calculatePosition();
 	resetProjectionMatrix();
 }
 
 
-/* angle must be in radians */
-void Camera::calculateCameraPos()
+/* 3rd person camera */
+void Camera::calculatePosition()
 {
-	distance_to_pivot -= mouse.getDScroll()*1.5f;
+	distance_to_pivot += mouse.getDScroll()*1.5f;
 
 	if(mouse.isButtonDown(MouseCode::M_BUTTON_MID))
 	{
-		float delta_pitch = mouse.getDY() * 0.12f;
+		float delta_pitch = mouse.getDY() * 0.22f;
 		pitch -= delta_pitch;
 		float angle_delta = mouse.getDX() * 0.2f;
 		angle_around_pivot += angle_delta;

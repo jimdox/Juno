@@ -3,7 +3,7 @@
 
 using namespace juno;
 
-RenderQueue::RenderQueue()  //std::shared_ptr<Camera> & camera) : camera(camera)
+RenderQueue::RenderQueue()
 {
 
 }
@@ -13,9 +13,27 @@ RenderQueue::~RenderQueue()
     clear();
 }
 
-void RenderQueue::setLights(std::vector<Light> &lights)
+std::vector<Light>& RenderQueue::getLights()
 {
-    this->lights = lights;
+    return lights;
+}
+
+std::vector<Entity *>& RenderQueue::getEntities()
+{
+    return entities;
+}
+
+std::vector<std::shared_ptr<Shader>>& RenderQueue::getEntityShaders()
+{
+    return entity_shaders;
+}
+
+void RenderQueue::addLights(std::vector<Light>& new_lights)
+{
+    for(Light light : new_lights)
+    {
+        this->lights.push_back(light);
+    }
 }
 
 void RenderQueue::addLight(Light &light)
@@ -35,53 +53,27 @@ void RenderQueue::submit(Terrain* terrain, std::shared_ptr<TerrainShader> ter_sh
     terrain_shaders.push_back(ter_shader);
 }
 
-void RenderQueue::submit(SkyBox* skybox, std::shared_ptr<SkyBoxShader> skyboxShader)
-{
-    this->skybox = skybox;
-    this-> skyboxShader = skyboxShader;
-}
+// void RenderQueue::submit(SkyBox* skybox, std::shared_ptr<SkyBoxShader> skyboxShader)
+// {
+//     this->skybox = skybox;
+//     this-> skyboxShader = skyboxShader;
+// }
 
 void RenderQueue::remove(Entity& entity)
 {
     for(int i = 0; i < entities.size(); i++)
     {
-        
-    }
-}
-
-void RenderQueue::render(Camera* camera)
-{
-
-
-    for(int i = 0; i < entities.size(); i++)
-    {   
-        entity_shaders[i]->useProgram();
-	    entity_shaders[i]->loadProjectionMatrix(camera->getProjectionMatrix());				/* load the perspective matrix from Camera */
-        entity_shaders[i]->loadViewMatrix(camera);
-        entity_shaders[i]->loadLightUniforms(lights);
-        glRender::renderEntity(entities[i] , entity_shaders[i]);
-        entity_shaders[i]->unbindProgram();
-    }
-
-    for(int j = 0; j < terrainBlocks.size(); j++)
-    {
-        terrain_shaders[j]->useProgram();
-        terrain_shaders[j]->loadViewMatrix(camera);
-        terrain_shaders[j]->loadLightUniforms(lights);
-        glRender::renderTerrain(terrainBlocks[j] , terrain_shaders[j]);
-        terrain_shaders[j]->unbindProgram();
-    }
-    if(skybox != nullptr)
-    {
-        // skyboxShader->loadProjectionMatrix(camera->getProjectionMatrix());
-        // skyboxShader->loadViewMatrix(camera);
-        // glRender::renderSkyBox(skybox, skyboxShader);
+        // if(*entities[i].getID() == entity.getID())
+        // {
+        //     entities.erase(entities.begin() + i, entities.begin() + (i+1));
+        // }
     }
 }
 
 void RenderQueue::clear()
 {
     entities.clear();
+    lights.clear();
 }
 
 

@@ -201,8 +201,6 @@ void Context::onEvent(const Event& e)
 	}
 }
 
-
-
 void Context::update(float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -210,15 +208,6 @@ void Context::update(float dt)
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
-
-
-void Context::updateCamera(Camera* camera, float dt)
-{
-
-}
-
-/*   ---   */
-
 
 /*
 bool RenderContext::isVisible()

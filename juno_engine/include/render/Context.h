@@ -5,11 +5,10 @@
 #include <iostream>
 #include <time.h>
 #include "core/Log.h"
-#include "core/InputStates.h"
-#include "render/Camera.h"
 #include "gui/Dock.h"
 #include "events/MouseEvent.h"
 #include "events/KeyEvent.h"
+#include "events/WindowEvent.h"
 
 namespace juno {
 
@@ -28,7 +27,6 @@ public:
 	void renderUpdate();
 	void init();
 	void update(float dt);
-	void updateCamera(Camera* camera, float dt);
 	void destroy();
 	void setVisible(bool flag);
 	Dock& getGuiDock();

@@ -84,7 +84,7 @@ class Camera : public EventListener, public EventDispatcher
 {
 public:
 	//Camera(glm::vec3& pos);
-    Camera(glm::vec3 pos, float yaw, float pitch, float roll);
+    Camera(glm::vec3 pos, glm::vec3 rot);
 	~Camera() override;
 
 	/* Event stuff */
@@ -107,7 +107,7 @@ public:
 	void setPitch(float p);
 	void setYaw(float y);
 	
-	void calculateCameraPos();
+	void calculatePosition();
 	glm::mat4& getProjectionMatrix();
 	glm::mat4& resetProjectionMatrix();
 	glm::mat4& getViewMatrix();
