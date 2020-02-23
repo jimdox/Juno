@@ -45,13 +45,13 @@ static void mouseButtonHandler(GLFWwindow* window, int button, int action, int m
 	{
 		switch(button)
 		{
-		case GLFW_MOUSE_BUTTON_LEFT:
+		case GLFW_MOUSE_BUTTON_1:
 			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_LEFT));
 			break;
-		case GLFW_MOUSE_BUTTON_MIDDLE:
+		case GLFW_MOUSE_BUTTON_3:
 			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_MID));
 			break;
-		case GLFW_MOUSE_BUTTON_RIGHT:
+		case GLFW_MOUSE_BUTTON_2:
 			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_RIGHT));
 			break;
 		default:					/* discard all other mouse codes */

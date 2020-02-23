@@ -13,8 +13,11 @@ Camera::Camera(glm::vec3 pos, float yaw, float pitch, float roll) : position(pos
 	this->roll = roll;
 	this->moveSpeed = 2.5f;
 	this->zoom = 0.0f;
-	generateProjectionMatrix();
 	velocity = glm::vec3(0,0,0);
+	pivot = glm::vec3(0.0f, 0.25f, 0.0f);
+	angle_around_pivot = 0.0f;
+	distance_to_pivot = 0.0f;
+	generateProjectionMatrix();
 }
 
 Camera::~Camera()
@@ -38,17 +41,17 @@ void Camera::onEvent(const Event &e)
 		keyEventRecieved(((const KeyReleaseEvent&)e).getKeyCode(), false);
 		break;
 	case EventType::MOUSE_BUTTON_PRESS:
-		io_states.setMouseButtonStatus(((const MousePressEvent&) e).getMouseCode(), true);
+		mouse.setButton(((const MousePressEvent&) e).getMouseCode(), true);
 		break;
 	case EventType::MOUSE_BUTTON_RELEASE:
-		io_states.setMouseButtonStatus(((const MouseReleaseEvent&)e).getMouseCode(), false);
+		mouse.setButton(((const MouseReleaseEvent&)e).getMouseCode(), false);
 		break;
 	case EventType::MOUSE_MOVE:
 		//const MouseMoveEvent& mouse_event = ((const MouseMoveEvent&)e);
-		io_states.mouseMoved(((const MouseMoveEvent&)e).getX(), ((const MouseMoveEvent&)e).getY());
+		mouse.setPosition(((const MouseMoveEvent&)e).getX(), ((const MouseMoveEvent&)e).getY());
 		break;
 	case EventType::MOUSE_SCROLL:
-		setZoom(this->zoom - ((const MouseScrollEvent&)e).getYOffset() * 5);
+		mouse.setDScroll(this->zoom - ((const MouseScrollEvent&)e).getYOffset() * 3);
 		break;
 	case EventType::WINDOW_RESIZE:
 		this->cam_aspect_ratio = ((const WindowResizeEvent&)e).getScreenWidth() / ((const WindowResizeEvent&)e).getScreenHeight();
@@ -70,10 +73,10 @@ void Camera::keyEventRecieved(int key_code, bool flag)
 	case GLFW_KEY_D:
 	case GLFW_KEY_R:
 	case GLFW_KEY_F:
-			io_states.setKeyStatus(key_code, flag);
+			keyboard.setKeyStatus(key_code, flag);
 			break;
 	case GLFW_KEY_X:
-		io_states.setKeyStatus(GLFW_KEY_X, flag);
+		keyboard.setKeyStatus(GLFW_KEY_X, flag);
 		notify(RenderWireframeEvent(flag));
 		break;
 	case GLFW_KEY_ESCAPE:
@@ -112,36 +115,35 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 void Camera::update()
 {
-	if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
+	// if(io_states.isMButtonDown(MouseCode::M_BUTTON_LEFT))
+	// {
+	// 	pitch -= io_states.getMouseDY() * 0.1f;
+	// 	yaw -= io_states.getMouseDX() * 0.1f;
+	// }
+
+	if(keyboard.isKeyDown(GLFW_KEY_W))
 	{
-		pitch -= io_states.getMouseDY() * 0.1f;
-		yaw -= io_states.getMouseDX() * 0.1f;
+		pivot.z -= 0.2f;  
+	} else if(keyboard.isKeyDown(GLFW_KEY_S))
+	{
+		pivot.z += 0.2f;
 	}
 
-	if(io_states.isKeyDown(GLFW_KEY_W))
+	if(keyboard.isKeyDown(GLFW_KEY_R))
 	{
-		position.z -= 0.01f;  
-	} else if(io_states.isKeyDown(GLFW_KEY_S))
-	{
-		position.z += 0.01f;
+		pivot.y += 0.2f;
+	} else if(keyboard.isKeyDown(GLFW_KEY_F)) {
+		pivot.y -= 0.2f;
 	}
 
-	if(io_states.isKeyDown(GLFW_KEY_R))
+	if(keyboard.isKeyDown(GLFW_KEY_D))
 	{
-		position.y += 0.01f;
-	} else if(io_states.isKeyDown(GLFW_KEY_F)) {
-		position.y -= 0.01f;
+		pivot.x += 0.2f;
+	} else if(keyboard.isKeyDown(GLFW_KEY_A)) {
+		pivot.x -= 0.2f;
 	}
 
-	if(io_states.isKeyDown(GLFW_KEY_D))
-	{
-		position.x += 0.01f;
-	} else if(io_states.isKeyDown(GLFW_KEY_A)) {
-		position.x -= 0.01f;
-	}
-
-
-
+	calculateCameraPos();
 	resetProjectionMatrix();
 }
 
@@ -149,8 +151,28 @@ void Camera::update()
 /* angle must be in radians */
 void Camera::calculateCameraPos()
 {
+	distance_to_pivot -= mouse.getDScroll()*1.5f;
+
+	if(mouse.isButtonDown(MouseCode::M_BUTTON_MID))
+	{
+		float delta_pitch = mouse.getDY() * 0.12f;
+		pitch -= delta_pitch;
+		float angle_delta = mouse.getDX() * 0.2f;
+		angle_around_pivot += angle_delta;
+	}
+
+	float h_distance = distance_to_pivot * cosf(toRadians(pitch));
+	float v_distance = distance_to_pivot * sinf(toRadians(pitch)); 
+
+	float theta = angle_around_pivot;
+
+	float x_offset = h_distance * sinf(toRadians(theta));
+	float z_offset = h_distance * cosf(toRadians(theta));
 	
-	
+	yaw = 180.0f - angle_around_pivot;
+	position.x = pivot.x - x_offset; 
+	position.z = pivot.z - z_offset;
+	position.y = pivot.y + v_distance;
 }
 
 glm::mat4& Camera::getProjectionMatrix()

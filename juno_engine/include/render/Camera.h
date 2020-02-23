@@ -6,39 +6,29 @@
 #include "core/Log.h"
 namespace juno { 
 
-struct camera_io_states
+struct mouse_states
 {
-	bool keys[91] = {false};
-	bool mouse_buttons[3] = {false};
+	bool mouse_buttons[3] = {false, false, false};
+	bool middle = false;
+	float delta_mouse_x = 0.0f;
+	float delta_mouse_y = 0.0f;
+	float prev_mouse_x = 0.0f;
+	float prev_mouse_y = 0.0f;
+	float delta_scroll = 0.0f;
 
-	float delta_mouse_x;
-	float delta_mouse_y;
-	float prev_mouse_x;
-	float prev_mouse_y;
-
-	bool isKeyDown(int keycode)
+	bool isButtonDown(MouseCode mc)
 	{
-		return keys[keycode];
-	}
-
-	bool isMButtonDown(MouseCode mc)
-	{
-	 	return mouse_buttons[((int) mc)];
+	 	return mouse_buttons[mc];
 	}	
-
-	void setKeyStatus(int keycode, bool flag)
+	
+	void setButton(MouseCode mc, bool flag)
 	{
-		keys[keycode] = flag;
+		mouse_buttons[mc] = flag;
 	}
 
-	void setMouseButtonStatus(MouseCode mc, bool flag)
+	void setPosition(float x, float y)
 	{
-		mouse_buttons[((int)mc)] = flag;
-	}
-
-	void mouseMoved(float x, float y)
-	{
-		if(mouse_buttons[0])
+		if(mouse_buttons[0] || mouse_buttons[1] || mouse_buttons[2])
 		{
 			delta_mouse_x += (x - prev_mouse_x);
 			delta_mouse_y += (y - prev_mouse_y);
@@ -47,22 +37,48 @@ struct camera_io_states
 			prev_mouse_y = y;
 			prev_mouse_x = x;
 	}
-
-	float getMouseDX()
+	
+	float getDX()
 	{
 		float dx = delta_mouse_x;
 		delta_mouse_x = 0;
 		return dx;
 	}
 
-	float getMouseDY()
+	float getDY()
 	{
 		float dy = delta_mouse_y;
 		delta_mouse_y = 0;
 		return dy;
 	}
 
+	void setDScroll(float scroll_y)
+	{
+		delta_scroll += scroll_y;
+	}
+
+	float getDScroll()
+	{
+		float dy = delta_scroll;
+		delta_scroll = 0;
+		return dy;
+	}
 };
+
+struct keyboard_states {
+	bool keys[91] = {false};
+
+	bool isKeyDown(int keycode)
+	{
+		return keys[keycode];
+	}
+
+	void setKeyStatus(int keycode, bool flag)
+	{
+		keys[keycode] = flag;
+	}
+};
+
 
 class Camera : public EventListener, public EventDispatcher
 {
@@ -104,13 +120,17 @@ public:
 private:
 	void generateProjectionMatrix();
 
+	mouse_states mouse;
+	keyboard_states keyboard;
+
+	float theta_around_pivot;
+	float distance_to_pivot;
 	glm::vec3 position;
 	glm::vec3 velocity;
 
 	/* --- */
 	glm::vec3 delta_pos;
 	glm::vec3 delta_rot;
-	camera_io_states io_states;
 	/* --- */
 
 	glm::vec3 pivot;

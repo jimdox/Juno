@@ -3,10 +3,10 @@
 
 namespace juno {
 
-enum class MouseCode {
-    M_BUTTON_LEFT = GLFW_MOUSE_BUTTON_LEFT,
-    M_BUTTON_MID = GLFW_MOUSE_BUTTON_MIDDLE,
-    M_BUTTON_RIGHT = GLFW_MOUSE_BUTTON_RIGHT
+enum MouseCode {
+    M_BUTTON_LEFT = 0,
+    M_BUTTON_RIGHT = 1,
+    M_BUTTON_MID = 2
 };
 
 class MouseEvent : public Event
