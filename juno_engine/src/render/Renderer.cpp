@@ -30,6 +30,19 @@ Camera& Renderer::getCamera()
     return camera;
 }
 
+void Renderer::submit(Scene& scene)
+{
+    for(int i = 0; i < scene.getEntities().size(); i++)
+    {
+        submit(scene.getEntities()[i]);
+    }
+
+    for(int i = 0; i < scene.getLights().size(); i++)
+    {
+        submit(scene.getLights()[i]);
+    }
+}
+
 void Renderer::submit(Entity& entity)
 {
     queue.submit(&entity, default_shader);

@@ -79,6 +79,7 @@ OBJECTS := \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/Entity.o \
+	$(OBJDIR)/Scene.o \
 	$(OBJDIR)/SkyBox.o \
 	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Dock.o \
@@ -180,6 +181,9 @@ $(OBJDIR)/Program.o: src/core/Program.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Entity.o: src/entity/Entity.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Scene.o: src/entity/Scene.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/SkyBox.o: src/entity/SkyBox.cpp

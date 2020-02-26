@@ -26,7 +26,9 @@ int main()
 {
 	juno::junoInit();
 	auto program = createProgram();
-	program->run();
+	program->init();
+	program->run(); 
 	program->exit();
 	JN_CLI_INFO("Closing...");
+	return 0;
 }

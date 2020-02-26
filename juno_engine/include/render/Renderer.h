@@ -2,6 +2,7 @@
 #include "render/Context.h"
 #include "render/RenderQueue.h"
 #include "render/Camera.h"
+#include "entity/Scene.h"
 #include "render/glRenderCore.h"
 namespace juno {
 
@@ -20,9 +21,11 @@ public:
     RenderQueue& getQueue();
     Camera& getCamera();
 
+    void submit(Scene& scene);
     void submit(Entity& entity);
     void submit(Entity& entity, std::shared_ptr<Shader> shader);
     void submit(Light& light);
+
     void update(float delta_time);
 
 

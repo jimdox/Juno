@@ -10,7 +10,7 @@ Entity::Entity(Mesh& mesh, const std::string& name) : mesh(mesh), name(name)
 	this->visible = true;
 }
 
-Entity::Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, const std::string& name) : mesh(mesh), name(name), position(pos), rotation(rot)
+Entity::Entity(Mesh& mesh, const glm::vec3& pos, const glm::vec3& rot, float scale, const std::string& name) : mesh(mesh), name(name), position(pos), rotation(rot)
 {
 	this->scale = scale;
 	this->visible = true;

@@ -30,7 +30,7 @@ public:
 
 	virtual ~Mesh();
 	
-	void addTexture(Texture* tex, TextureType tx_type);
+	void addTexture(Texture& tex);
 	void setMaterial(Material& mat);
 	
 	unsigned int getVAO_ID();

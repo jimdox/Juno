@@ -7,15 +7,15 @@ using namespace juno;
 
 Mesh::Mesh()
 {
-	this->material.reflectivity = 0.05f;
-	this->material.shineDamper = 1.0f;
+	this->material.reflectivity = 0.01f;
+	this->material.shineDamper = 0.95f;
 }
 
 
 Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
 {
-	this->material.reflectivity = 0.6f;
-	this->material.shineDamper = 0.85f;
+	this->material.reflectivity = 0.01f;
+	this->material.shineDamper = 0.95f;
 }
 
 
@@ -24,16 +24,15 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::addTexture(Texture* tex, TextureType tx_type)
+void Mesh::addTexture(Texture& tex)
 {
-	Texture tx = *tex;
-	if(tx_type == TX_DIFFUSE)
+	if(tex.getTexType() == TX_DIFFUSE)
 	{
-		this->textureList.diffuse.push_back(tx);
+		this->textureList.diffuse.push_back(tex);
 	}
-	else if(tx_type == TX_SPECULAR)
+	else if(tex.getTexType() == TX_SPECULAR)
 	{
-		this->textureList.specular.push_back(tx);
+		this->textureList.specular.push_back(tex);
 	}
 }
 

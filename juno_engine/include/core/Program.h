@@ -1,7 +1,10 @@
 #pragma once
 #include "render/Context.h"
 #include "render/Renderer.h"
-
+#include "core/AssetLoader.h"
+#include "entity/SkyBox.h"
+#include "render/shaders/SkyBoxShader.h"
+#include "events/RenderEvent.h"
 //int main(int argc, char** argv);
 
 namespace juno {
@@ -15,11 +18,18 @@ public:
 	void run();
 	void exit();
 
+	virtual void onCreate() = 0;
+	virtual void onDestroy() = 0;
+	virtual void onUpdate() = 0;
+	virtual void onFrameBufferUpdate() = 0;
+
 	void onAttach();
 	void onEvent(const Event& e);
 
 protected:
+	bool programShouldClose();
 	Renderer *renderer;
+	Scene scene;
 	/* time-keeping vars. */
 	float last_time;     
 	float frame_time;

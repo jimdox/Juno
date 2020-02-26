@@ -7,7 +7,7 @@ class Entity
 {
 public:
 	Entity(Mesh& mesh, const std::string& name);
-	Entity(Mesh& mesh, glm::vec3& pos, glm::vec3& rot, float scale, const std::string& name);	
+	Entity(Mesh& mesh, const glm::vec3& pos, const glm::vec3& rot, float scale, const std::string& name);	
 	~Entity();
 
 	Mesh& getMesh();
