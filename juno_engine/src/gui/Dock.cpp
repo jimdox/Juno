@@ -35,7 +35,7 @@ colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.42f, 0.42f, 0.42f, 1.00f);
 colors[ImGuiCol_Button]                 = ImVec4(0.60f, 0.60f, 0.60f, 0.40f);
 colors[ImGuiCol_ButtonHovered]          = ImVec4(0.49f, 0.48f, 0.50f, 1.00f);
 colors[ImGuiCol_ButtonActive]           = ImVec4(0.49f, 0.48f, 0.50f, 1.00f);
-colors[ImGuiCol_Header]                 = ImVec4(0.83f, 0.85f, 0.90f, 0.31f);
+colors[ImGuiCol_Header]                 = ImVec4(0.58f, 0.56f, 1.00f, 0.29f);
 colors[ImGuiCol_HeaderHovered]          = ImVec4(0.33f, 0.29f, 0.63f, 0.80f);
 colors[ImGuiCol_HeaderActive]           = ImVec4(0.33f, 0.29f, 0.63f, 0.80f);
 colors[ImGuiCol_Separator]              = ImVec4(0.31f, 0.31f, 0.54f, 0.50f);
@@ -60,12 +60,13 @@ colors[ImGuiCol_NavWindowingHighlight]  = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+
+
 /* --- style elements --- */
-ImGui::GetStyle().WindowRounding = 1.0f;
+ImGui::GetStyle().WindowRounding = 0.0f;
 ImGui::GetStyle().WindowBorderSize = 0.0f;
-//ImGui::GetStyle().
-
-
+ImGui::GetStyle().ScrollbarSize = 0.6f;
+ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
 }
 
 Dock::~Dock()
@@ -79,46 +80,111 @@ void Dock::update(float dt)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::Begin("debug mode");
-    ImGui::Text((const char*)glGetString(GL_VERSION));
-    ImGui::Text("frame time: %.2f", dt); 
-    ImGui::Button("button");
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
+    show_side_panel(true, dt);
     show_menubar(true);
-    ImGui::End();
 
     ImGui::Render();
     glRender::renderGui();
 }
 
+void Dock::show_side_panel(bool flag, float dt)
+{
+    bool p_open = false;
+    ImGuiWindowFlags imgui_win_flags = 0;
+    imgui_win_flags |= ImGuiWindowFlags_NoTitleBar;
+    imgui_win_flags |= ImGuiWindowFlags_NoResize;
+    imgui_win_flags |= ImGuiWindowFlags_NoMove;
+    ImGui::Begin(" ", &p_open, imgui_win_flags);
+
+
+    ImGui::Text((const char*)glGetString(GL_VERSION));
+    ImGui::Text("Frame Time: %.3f", dt); 
+
+    if(flag)
+    {
+        if(flag)
+        {
+            if(ImGui::CollapsingHeader("Scene"))
+            {
+                
+            }
+            if(ImGui::CollapsingHeader("Physics"))
+            {
+
+            }
+            if(ImGui::CollapsingHeader("Renderer"))
+            {
+                ImGui::Text("Select Rendering SDK");
+                if(ImGui::Combo(" ", &renderer_selector, "OpenGL\0Vulkan(Hybrid)\0Raytracer\0"))
+                {
+                //     switch(renderer_selector)
+                //     {
+                    // case 0: Renderer::SwitchSDK(SDK_OGL); break;
+                    // case 1: Renderer::SwitchSDK(SDK_VULKAN); break;
+                    // case 2: Renderer::SwitchSDK(SDK_VULKAN_RAYTRACER); break;
+                    
+                    // }
+                }
+                ImGui::Text("\nShadows");
+                if(ImGui::SliderInt(" ", &render_effect_shadow, 0, 4))
+                {
+
+                }
+                if(ImGui::Checkbox("HDR Effects", &render_effect_bloom))
+                {
+
+                }
+
+            }
+            if(ImGui::CollapsingHeader("Shaders"))
+            {
+
+            }
+            if(ImGui::CollapsingHeader("Meshes"))
+            {
+
+            }
+            if(ImGui::CollapsingHeader("Textures"))
+            {
+                
+            }
+
+        }
+    }
+    ImGui::End();
+
+}
+
+
 void Dock::show_menubar(bool flag)
 {
     if(flag)
     {
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
+        if (ImGui::BeginMainMenuBar())
         {
-            //ImGui::ShowExampleMenuFile();
-            menu_file_dropdown();
-            ImGui::EndMenu();   
-        }
-        if (ImGui::BeginMenu("Edit"))
-        {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-            if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-            ImGui::Separator();
-            if (ImGui::MenuItem("Duplicate", "CTRL+D")) {}
-            ImGui::EndMenu();
-        }
-        if(ImGui::BeginMenu("Options"))
-        {
+            if (ImGui::BeginMenu("File"))
+            {
+                //ImGui::ShowExampleMenuFile();
+                menu_file_dropdown();
+                ImGui::EndMenu();   
+            }
+            if (ImGui::BeginMenu("Edit"))
+            {
+                if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+                if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+                ImGui::Separator();
+                if (ImGui::MenuItem("Duplicate", "CTRL+D")) {}
+                ImGui::EndMenu();
+            }
+            if(ImGui::BeginMenu("Options"))
+            {
 
-            ImGui::EndMenu();
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
+            }
         }
-        ImGui::EndMainMenuBar();
-        }
-    }
 }
 
 void Dock::menu_file_dropdown()
