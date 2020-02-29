@@ -7,6 +7,7 @@ class SandboxProgram : public juno::Program
 	void onCreate()
 	{
 		renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,0,0));
+		
 
 		Mesh susy = loadModel("./juno_engine/res/asteroid1.obj");
 		Texture texture_one("./juno_engine/res/grey.png", TX_DIFFUSE, true);
@@ -18,10 +19,6 @@ class SandboxProgram : public juno::Program
 		plane.addTexture(texture_two);
 		Entity entity_two(plane, glm::vec3(0,0,0), glm::vec3(0,0,0), 75.0f, "Default Plane");
 
-		// Material gr_mat;
-		// gr_mat.reflectivity = 0.001f;
-		// gr_mat.shineDamper = 0.95f;
-		// entity_two.getMesh().setMaterial(gr_mat);
 
 		Light light(glm::vec3(110.5f, 100.01f, 100.0f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(1.0, 0.00001, 0.0005));
 		Light light_b(glm::vec3(-30.5f, 10.0f, 1.0f), glm::vec3(0.8f, 0.8f, 0.9f), glm::vec3(1.0, 0.0001, 0.0005));

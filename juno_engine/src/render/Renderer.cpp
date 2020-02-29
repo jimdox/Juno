@@ -2,6 +2,8 @@
 
 using namespace juno;
 
+
+
 Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : context(sc_width, sc_height, w_title), camera(cam_pos, cam_rot)
 {
 	// JN_WARN(JN_GFX_DEVICE);

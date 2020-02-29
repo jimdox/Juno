@@ -1,8 +1,10 @@
 #include "render/textures/Texture.h"
-#include "core/Log.h"
-#include "stb_image.h"
 #include "core/AssetLoader.h"
+// #include <GL/glew.h>
+//#include "stb_image.h"
 using namespace juno;
+
+
 
 /* this constructor loads the texture itself */
 Texture::Texture(const std::string& filepath, TextureType tx_type) : filepath(filepath), tex_type(tex_type)

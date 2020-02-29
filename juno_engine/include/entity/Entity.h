@@ -14,6 +14,7 @@ public:
 	glm::vec3& getPosition();
 	glm::vec3& getRotation();
 	float getScale();
+	std::string& getName();
 
 	void setPosition(glm::vec3& pos);
 	void setRotation(glm::vec3& rot);

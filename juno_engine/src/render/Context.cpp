@@ -145,7 +145,7 @@ static void setErrCallback(int code, const char* message)
 void Context::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Oldest allowable version of GLSL (4.3)
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Version of GLSL (4.5)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
 
 	glfwInit();
@@ -178,8 +178,8 @@ void Context::init()
 	glfwSetScrollCallback(window, mouseScrollHandler);
 	glfwSetFramebufferSizeCallback(window, windowResizeHandler);
 
-	GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
-	glfwSetCursor(window, cursor);
+	// GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
+	// glfwSetCursor(window, cursor);
 	glRender::init(window);
 	guiDock.init();
 
@@ -194,11 +194,12 @@ void Context::onAttach()
 
 void Context::onEvent(const Event& e)
 {
-	if(e.getType() == EventType::WINDOW_RESIZE)
-	{
-		const WindowEvent& win_event = ((const WindowEvent&)e);
-		
-	}
+	// if(e.getType() == EventType::WINDOW_RESIZE)
+	// {
+	// 	const WindowEvent& win_event = ((const WindowEvent&)e);
+	// 	this->displ	
+	// }
+
 }
 
 void Context::update(float dt)

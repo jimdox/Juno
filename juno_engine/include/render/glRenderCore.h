@@ -1,7 +1,6 @@
 #pragma once
 #include "pch.h"
 #include "render/Context.h"
-
 #define IMGUI_IMPL_OPENGL_LOADER_GLEW
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -36,7 +35,6 @@ static void init(GLFWwindow* window)
 {
 	if (glewInit() != GLEW_OK) { JN_ERR("GLEW failed to init!"); }
 
-	stbi_set_flip_vertically_on_load(true);
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);

@@ -5,11 +5,12 @@
 #define DISPLAY_MAX_FPS 120
 using namespace juno;
 
+Program* s_prog_instance;
+
 Program::Program()
 {
 	this->f_program_should_close = false;
 	frame_time = 0;
-	num_frames = 0;
 	delta_time = 0;
 }	
 
@@ -23,6 +24,8 @@ void Program::init()
 	onCreate();
 	renderer->getContext().getWinEventDispatcher().addListener(this);
 	renderer->getCamera().addListener(this);
+	s_prog_instance = this;
+
 }
 
 void Program::onAttach()
@@ -56,17 +59,22 @@ void Program::run()
 	{
 		onUpdate();
 
-		if(delta_time > 1/(DISPLAY_MAX_FPS))
+		if(frame_time > 1/(DISPLAY_MAX_FPS))
 		{
 			onFrameBufferUpdate();
-			renderer->update(delta_time);
-			delta_time = 0;
+			renderer->update(frame_time);
+			frame_time = 0;
 		}
 
-		frame_time = (glfwGetTime() - last_time);
+		delta_time = (glfwGetTime() - last_time);
 		last_time = glfwGetTime();
-		delta_time += frame_time;
+		frame_time += delta_time;
 	}
+}
+
+Scene& Program::getScene()
+{
+	return scene;
 }
 
 bool Program::programShouldClose()

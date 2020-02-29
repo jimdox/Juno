@@ -1,11 +1,7 @@
 #pragma once
-#include "render/Context.h"
 #include "render/Renderer.h"
 #include "core/AssetLoader.h"
-#include "entity/SkyBox.h"
-#include "render/shaders/SkyBoxShader.h"
 #include "events/RenderEvent.h"
-//int main(int argc, char** argv);
 
 namespace juno {
 class Program : public EventListener
@@ -23,11 +19,18 @@ public:
 	virtual void onUpdate() = 0;
 	virtual void onFrameBufferUpdate() = 0;
 
+	
+
 	void onAttach();
 	void onEvent(const Event& e);
 
+	Scene& getScene();
+
+
+
 protected:
 	bool programShouldClose();
+
 	Renderer *renderer;
 	Scene scene;
 	/* time-keeping vars. */

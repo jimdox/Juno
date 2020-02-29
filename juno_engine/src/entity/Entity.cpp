@@ -43,6 +43,11 @@ float Entity::getScale()
 	return this->scale;
 }
 
+std::string& Entity::getName()
+{
+	return this->name;
+}
+
 void Entity::setPosition(glm::vec3& pos)
 {
 	this->position = pos;
