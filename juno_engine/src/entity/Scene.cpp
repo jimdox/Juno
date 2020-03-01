@@ -24,8 +24,8 @@ void Scene::addLight(Light& light)
 
 void Scene::clear()
 {
-    // entities.clear();
-    // lights.clear();
+    entities.clear();
+    lights.clear();
 }
 
 std::vector<Entity>& Scene::getEntities()

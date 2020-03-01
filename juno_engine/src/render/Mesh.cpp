@@ -14,7 +14,7 @@ Mesh::Mesh()
 
 Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
 {
-	this->material.reflectivity = 0.01f;
+	this->material.reflectivity = 0.2f;
 	this->material.shineDamper = 0.95f;
 }
 

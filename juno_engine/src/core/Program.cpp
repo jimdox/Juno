@@ -2,7 +2,7 @@
 #include "core/Program.h"
 #include "core/Log.h"
 
-#define DISPLAY_MAX_FPS 120
+#define MIN_FRAME_TIME 1.0f/120.0f
 using namespace juno;
 
 Program* s_prog_instance;
@@ -52,14 +52,15 @@ void Program::onEvent(const Event& e)
 
 void Program::run()
 {
-	/* ----- */
+	delta_time = 0;
+	frame_time = 0;
 	last_time = glfwGetTime();
 
 	while (!programShouldClose())
 	{
 		onUpdate();
 
-		if(frame_time > 1/(DISPLAY_MAX_FPS))
+		if(frame_time > MIN_FRAME_TIME)
 		{
 			onFrameBufferUpdate();
 			renderer->update(frame_time);
