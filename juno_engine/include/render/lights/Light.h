@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 namespace juno {
-
+#define MAX_NUM_LIGHTS 4
 class Light
 {
 
@@ -13,7 +13,7 @@ public:
     glm::vec3& getPosition();
     glm::vec3& getColor();
     glm::vec3& getAttenuation();
-    void setPosition(glm::vec3 pos);
+    void setPosition(const glm::vec3& pos);
     void setColor(glm::vec3 color);
     void setAttenuation(const glm::vec3& a);
 

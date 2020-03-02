@@ -84,6 +84,8 @@ OBJECTS := \
 	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Dock.o \
 	$(OBJDIR)/GuiImage.o \
+	$(OBJDIR)/MainPanel.o \
+	$(OBJDIR)/Panel.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Mesh.o \
@@ -196,6 +198,12 @@ $(OBJDIR)/Dock.o: src/gui/Dock.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/GuiImage.o: src/gui/GuiImage.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/MainPanel.o: src/gui/MainPanel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Panel.o: src/gui/Panel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/render/Camera.cpp

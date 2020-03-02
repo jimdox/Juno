@@ -2,7 +2,7 @@
 #include "events/Event.h"
 
 namespace juno {
-class Dock : EventDispatcher
+class Dock : public EventDispatcher
 {
 public:
     Dock();
@@ -18,12 +18,13 @@ public:
     void showRenderPanel();
     void showPhysicsPanel();
     void showShaderPanel();
-    void showMeshPanel();
+    void showObjectPanel();
     void showTexturePanel();
 
 private:
     bool f_show_menubar;
     bool f_show_sidepanel;
+    bool render_effect_wireframe;
     int render_effect_shadow;
     int renderer_selector;
     // Program* prog;

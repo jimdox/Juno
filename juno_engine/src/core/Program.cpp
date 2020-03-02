@@ -5,7 +5,7 @@
 #define MIN_FRAME_TIME 1.0f/120.0f
 using namespace juno;
 
-Program* s_prog_instance;
+juno::Program* s_prog_instance;	
 
 Program::Program()
 {
@@ -23,6 +23,7 @@ void Program::init()
 {
 	onCreate();
 	renderer->getContext().getWinEventDispatcher().addListener(this);
+	renderer->getContext().getGuiDock().addListener(this);
 	renderer->getCamera().addListener(this);
 	s_prog_instance = this;
 

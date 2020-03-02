@@ -73,12 +73,9 @@ void Camera::keyEventRecieved(int key_code, bool flag)
 	case GLFW_KEY_D:
 	case GLFW_KEY_R:
 	case GLFW_KEY_F:
+	case GLFW_KEY_X:
 			keyboard.setKeyStatus(key_code, flag);
 			break;
-	case GLFW_KEY_X:
-		keyboard.setKeyStatus(GLFW_KEY_X, flag);
-		notify(RenderWireframeEvent(flag));
-		break;
 	case GLFW_KEY_ESCAPE:
 		this->notify(WindowCloseEvent());
 		break;

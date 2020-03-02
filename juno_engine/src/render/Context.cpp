@@ -6,7 +6,7 @@
 #include "core/MathUtils.h"
 
 /*
-	(OpenGL) Rendering context
+	Rendering context: manages the window, initialization of rendering environment. 
 */
 
 using namespace juno;
@@ -54,7 +54,7 @@ static void mouseButtonHandler(GLFWwindow* window, int button, int action, int m
 		case GLFW_MOUSE_BUTTON_2:
 			s_mouseDispatcher->notify(MousePressEvent(MouseCode::M_BUTTON_RIGHT));
 			break;
-		default:					/* discard all other mouse codes */
+		default:								/* discard all other mouse codes */
 			break;
 		}
 	} else {					
@@ -69,7 +69,7 @@ static void mouseButtonHandler(GLFWwindow* window, int button, int action, int m
 		case GLFW_MOUSE_BUTTON_RIGHT:
 			s_mouseDispatcher->notify(MouseReleaseEvent(MouseCode::M_BUTTON_RIGHT));
 			break;
-		default:					/* discard all other mouse codes */
+		default:								
 			break;
 		}
 	}
@@ -116,10 +116,7 @@ Context::Context(int width, int height, std::string title, bool border)
 		glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 	}
 	init();
-
-
 }
-
 
 Context::~Context()
 {
@@ -132,7 +129,6 @@ void Context::destroy()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 	glfwDestroyWindow(window);
-
 }
 
 static void setErrCallback(int code, const char* message)
@@ -184,7 +180,6 @@ void Context::init()
 	guiDock.init();
 
 	aspectRatio = this->width / this->height;
-
 }
 
 void Context::onAttach()
@@ -197,9 +192,7 @@ void Context::onEvent(const Event& e)
 	// if(e.getType() == EventType::WINDOW_RESIZE)
 	// {
 	// 	const WindowEvent& win_event = ((const WindowEvent&)e);
-	// 	this->displ	
 	// }
-
 }
 
 void Context::update(float dt)
@@ -210,12 +203,10 @@ void Context::update(float dt)
 	glfwPollEvents();
 }
 
-/*
-bool RenderContext::isVisible()
+Dock& Context::getGuiDock()
 {
-	return true;
+	return guiDock;
 }
-*/
 
 KeyEventDispatcher& Context::getKeyDispatcher()
 {

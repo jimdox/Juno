@@ -4,7 +4,6 @@
 #include "core/Program.h"
 
 extern juno::Program* s_prog_instance;
-// static Scene* scene_data = &s_prog_instance->getScene();
 
 using namespace juno;
 
@@ -70,7 +69,7 @@ void Dock::init()
     /* --- style elements --- */
     ImGui::GetStyle().WindowRounding = 0.0f;
     ImGui::GetStyle().WindowBorderSize = 0.0f;
-    ImGui::GetStyle().ItemSpacing = ImVec2(8,8);
+    ImGui::GetStyle().ItemSpacing = ImVec2(7,8);
 
 
 /* --- style elements --- */
@@ -98,85 +97,6 @@ void Dock::update(float dt)
     ImGui::Render();
     glRender::renderGui();
 }
-
-// void Dock::show_side_panel(bool flag, float dt)
-// {
-//     bool p_open = false;
-//     ImGuiWindowFlags imgui_win_flags = 0;
-//     imgui_win_flags |= ImGuiWindowFlags_NoTitleBar;
-//     imgui_win_flags |= ImGuiWindowFlags_NoResize;
-//     imgui_win_flags |= ImGuiWindowFlags_NoMove;
-//     ImGui::Begin(" ", &p_open, imgui_win_flags);
-
-
-//     ImGui::Text((const char*)glGetString(GL_VERSION));
-//     ImGui::Text("Frame Time: %.3f", dt); 
-
-//     if(flag)
-//     {
-//     if (ImGui::BeginMainMenuBar())
-//     {
-//         if (ImGui::BeginMenu("File"))
-//         {
-//             menu_file_dropdown();
-//             ImGui::EndMenu();   
-//         }
-//         if (ImGui::BeginMenu("Edit"))
-//         {
-//             if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-//             if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  
-//             ImGui::Separator();
-//             if (ImGui::MenuItem("Duplicate", "CTRL+D")) {}
-//             ImGui::EndMenu();
-//         }
-//         if(ImGui::BeginMenu("Options"))
-//         {
-//             if(ImGui::CollapsingHeader("Scene"))
-//             {
-                
-//             }
-//             if(ImGui::CollapsingHeader("Physics"))
-//             {
-
-//             }
-//             if(ImGui::CollapsingHeader("Renderer"))
-//             {
-//                 ImGui::Text("Select Rendering SDK");
-//                 if(ImGui::Combo(" ", &renderer_selector, "OpenGL\0Vulkan(Hybrid)\0Raytracer\0"))
-//                 {
-//                 //     switch(renderer_selector)
-//                 //     {
-//                     // case 0: Renderer::SwitchSDK(SDK_OGL); break;
-//                     // case 1: Renderer::SwitchSDK(SDK_VULKAN); break;
-//                     // case 2: Renderer::SwitchSDK(SDK_VULKAN_RAYTRACER); break;
-                    
-//                     // }
-//                 }
-//                 ImGui::Text("\nShadows");
-//                 if(ImGui::SliderInt(" ", &render_effect_shadow, 0, 4))
-//                 {
-
-//                 }
-
-//             }
-//             if(ImGui::CollapsingHeader("Shaders"))
-//             {
-
-//             }
-//             if(ImGui::CollapsingHeader("Meshes"))
-//             {
-
-//             }
-//             if(ImGui::CollapsingHeader("Textures"))
-//             {
-                
-//             }
-
-//         }
-//     }
-//     ImGui::End();
-//     }
-// }
 
 
 void Dock::show_menubar(bool flag)
@@ -222,7 +142,6 @@ void Dock::menu_file_dropdown()
     ImGui::Separator();
     if(ImGui::MenuItem("Save", "Ctrl+S")){}
     if(ImGui::MenuItem("Save as")) {}
-
 }
 
 void Dock::show_side_panel(float dt)
@@ -233,7 +152,7 @@ void Dock::show_side_panel(float dt)
     panel_flags |= ImGuiWindowFlags_NoMove;
     ImGui::Begin(" ", &f_open, panel_flags);    
 
-    ImGui::Text("frame time: %.2f", dt); 
+    ImGui::Text("Frame Time: %.2f", dt); 
     ImGui::Text((const char*)glGetString(GL_VERSION));
     ImGui::Text(" ");
     if(ImGui::CollapsingHeader("Scene"))
@@ -251,18 +170,17 @@ void Dock::show_side_panel(float dt)
         showPhysicsPanel();
     }
 
-    if(ImGui::CollapsingHeader("Shader"))
+    if(ImGui::CollapsingHeader("Shaders"))
     {
         showShaderPanel();
     }
 
-    if(ImGui::CollapsingHeader("Mesh"))
+    if(ImGui::CollapsingHeader("Object Data"))
     {
-        showMeshPanel();
+        showObjectPanel();
     }
 
-
-    if(ImGui::CollapsingHeader("Texture"))
+    if(ImGui::CollapsingHeader("Textures"))
     {
         showTexturePanel();
     }
@@ -272,13 +190,18 @@ void Dock::show_side_panel(float dt)
 
 void Dock::showScenePanel()
 {    
+    //float v4f[4] = {0, 0, 0, 0};
     if(ImGui::TreeNode("Lights"))
     {
-        std::vector<Light>& lights = s_prog_instance->getScene().getLights();
-        for(int i = 0; i < lights.size(); i++)
+        std::vector<Light> &lights = s_prog_instance->getScene().getLights();
+        float input_data[MAX_NUM_LIGHTS][3];
+        for(int i = 0; i < lights.size(); i++) 
         {
             ImGui::Text("light %d", i);
+            ImGui::Text("  x:%.1f y:%.1f z:%.1f", lights[i].getPosition().x, lights[i].getPosition().y, lights[i].getPosition().z);
 
+            
+            // lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
         }
         ImGui::TreePop();
     }
@@ -288,6 +211,7 @@ void Dock::showScenePanel()
         for(int i = 0; i < entities.size(); i++)
         {
             ImGui::Text(entities[i].getName().c_str());
+            ImGui::Text("  x:%.1f y:%.1f z:%.1f",entities[i].getPosition().x, entities[i].getPosition().y, entities[i].getPosition().z);
         }
         ImGui::TreePop();
     }
@@ -296,10 +220,9 @@ void Dock::showScenePanel()
 
 void Dock::showRenderPanel()
 {   
-    ImGui::Text("Rendering Mode");
-    if(ImGui::Combo("", &renderer_selector, "OpenGL\0OpenGL ES\0Vulkan\0"))
+    ImGui::Text("Renderer Mode");
+    if(ImGui::Combo("", &renderer_selector, "OpenGL\0OpenGL ES\0"))
     {
-
         // switch(renderer_selector)
         // {
         // case 0: // switch to openGl    // break;
@@ -307,6 +230,13 @@ void Dock::showRenderPanel()
         // case 2: // switch to Vulkan    // break;
         // }
     }
+
+    if(ImGui::Checkbox("Wireframe Mode", &render_effect_wireframe))
+    {
+        notify(RenderWireframeEvent(render_effect_wireframe));
+    }
+
+
 }
 
 
@@ -320,7 +250,7 @@ void Dock::showShaderPanel()
 
 }
 
-void Dock::showMeshPanel()
+void Dock::showObjectPanel()
 {
 
 }

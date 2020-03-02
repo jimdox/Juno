@@ -8,8 +8,8 @@
 namespace juno {
 
 /* references for garbage collection upon program closing */
-static std::vector<unsigned int> VAO_refs;
-static std::vector<unsigned int> VBO_refs;
+// static std::vector<unsigned int> VAO_refs;
+// static std::vector<unsigned int> VBO_refs;
 
 static unsigned int generateVAO()
 {

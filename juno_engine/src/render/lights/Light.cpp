@@ -36,7 +36,7 @@ glm::vec3& Light::getAttenuation()
     return this->attenuation_factors;
 }
 
-void Light::setPosition(glm::vec3 pos)
+void Light::setPosition(const glm::vec3& pos)
 {
     this->position = pos;
 }
