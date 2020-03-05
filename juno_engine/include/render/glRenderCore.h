@@ -106,23 +106,23 @@ static void render(juno::Mesh *m, juno::Shader &shader)
 	
 }
 
-/* render entity */
-static void renderEntity(juno::Entity* entity, std::shared_ptr<juno::Shader> & shader)
+/* for single texture, diffuse-mapped only geometry */
+static void renderEntity(juno::Entity& entity, std::shared_ptr<juno::Shader> & shader)
 {
-	glBindVertexArray(entity->getMesh().getVAO_ID()); 
+	glBindVertexArray(entity.getMesh().getVAO_ID()); 
 	glEnableVertexAttribArray(0); 
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2); 
 
-	glm::mat4 transformationMat = juno::createTransformationMat(entity->getPosition(), entity->getRotation(), entity->getScale());
+	glm::mat4 transformationMat = juno::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
 	shader->loadTransformMatrix(transformationMat);
-	shader->loadPBRVars(entity->getMesh().getMaterial());
+	shader->loadPBRVars(entity.getMesh().getMaterial());
 	/* --- */
-	setBackFaceCulling(!entity->getMesh().getDiffuseTextures()[0].containsTransparency());
+	setBackFaceCulling(!entity.getMesh().getDiffuseTextures()[0].containsTransparency());
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, entity->getMesh().getDiffuseTextures()[0].getID());
-	glDrawElements(GL_TRIANGLES, entity->getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
+	glBindTexture(GL_TEXTURE_2D, entity.getMesh().getDiffuseTextures()[0].getID());
+	glDrawElements(GL_TRIANGLES, entity.getMesh().getNumIndices(), GL_UNSIGNED_INT, 0);
 	
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -132,31 +132,27 @@ static void renderEntity(juno::Entity* entity, std::shared_ptr<juno::Shader> & s
 	checkGLErrors();
 }
 
-static void batchRender(std::vector<juno::Entity> &entities, std::shared_ptr<juno::Shader> & shader)
+static void instancedEntityRender(std::vector<juno::Entity>& entities, std::shared_ptr<juno::Shader>& shader)
 {
-	juno::Mesh& mesh = entities[0].getMesh();
-	glBindVertexArray(mesh.getVAO_ID()); 
+	glBindVertexArray(entities[0].getMesh().getVAO_ID());
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2); 
-	shader->loadPBRVars(mesh.getMaterial());
+	glEnableVertexAttribArray(2);
+
+	glm::mat4 transform; 
+	shader->loadPBRVars(entities[0].getMesh().getMaterial());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
+	glBindTexture(GL_TEXTURE_2D, entities[0].getMesh().getDiffuseTextures()[0].getID());
+	unsigned int num_indices = entities[0].getMesh().getNumIndices();
 
-	for(int i = 0; i < entities.size(); i++)
+	for(unsigned int i = 0; i < entities.size(); i++)
 	{
-	glm::mat4 transformationMat = juno::createTransformationMat(entities[i].getPosition(), entities[i].getRotation(), entities[i].getScale());
-	shader->loadTransformMatrix(transformationMat);
-	glDrawElements(GL_TRIANGLES, mesh.getNumIndices(), GL_UNSIGNED_INT, 0);
+		transform = juno::createTransformationMat(entities[i].getPosition(), entities[i].getRotation(), entities[i].getScale());
+		shader->loadTransformMatrix(transform);
+		glDrawElements(GL_TRIANGLES,num_indices, GL_UNSIGNED_INT, 0);
 	}
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
-	glBindVertexArray(0);
-	
-	checkGLErrors();
 }
+
 
 static void renderSkyBox(juno::SkyBox* skybox, std::shared_ptr<juno::SkyBoxShader> & shader)
 {

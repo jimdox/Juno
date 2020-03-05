@@ -1,5 +1,4 @@
 #include "render/Context.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
@@ -195,10 +194,10 @@ void Context::onEvent(const Event& e)
 	// }
 }
 
-void Context::update(float dt)
+void Context::update(Scene& scene, float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
-	guiDock.update(dt);
+	guiDock.update(scene, dt);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }

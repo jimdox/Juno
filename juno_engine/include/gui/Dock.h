@@ -1,6 +1,6 @@
 #pragma once
 #include "events/Event.h"
-
+#include "entity/Scene.h"
 namespace juno {
 class Dock : public EventDispatcher
 {
@@ -8,13 +8,13 @@ public:
     Dock();
     ~Dock();
     void init();
-    void update(float dt);
+    void update(Scene& scene, float dt);
     void show_menubar(bool flag);
     void show_side_panel(bool flag, float dt);
     void menu_file_dropdown();
 
-    void show_side_panel(float dt);
-    void showScenePanel();
+    void show_side_panel(Scene& scene, float dt);
+    void showScenePanel(Scene& scene);
     void showRenderPanel();
     void showPhysicsPanel();
     void showShaderPanel();

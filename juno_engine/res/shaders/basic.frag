@@ -23,7 +23,7 @@ void main()
 
         vec3 test_att = vec3(1.0, 0.00, 0.000);
 
-        for(int i=0; i<2; i++)
+        for(int i=0; i<4; i++)
         {
                 float distToSrc = length(toLightDir[i]);
                 float att_factor = test_att.x + (test_att.y * distToSrc) + (test_att.z * distToSrc * distToSrc);

@@ -48,12 +48,12 @@ std::string& Entity::getName()
 	return this->name;
 }
 
-void Entity::setPosition(glm::vec3& pos)
+void Entity::setPosition(const glm::vec3& pos)
 {
 	this->position = pos;
 }
 
-void Entity::setRotation(glm::vec3& rot)
+void Entity::setRotation(const glm::vec3& rot)
 {
 	this->rotation = rot;
 }
@@ -63,12 +63,12 @@ void Entity::setScale(float s)
 	this->scale = s;
 }
 
-void Entity::addPosition(glm::vec3& dpos)
+void Entity::addPosition(const glm::vec3& dpos)
 {
 	this->position += dpos;
 }
 
-void Entity::addRotation(glm::vec3& drot)
+void Entity::addRotation(const glm::vec3& drot)
 {
 	this->rotation += drot;
 }

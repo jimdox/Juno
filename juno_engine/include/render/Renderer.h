@@ -1,6 +1,5 @@
 #pragma once 
 #include "render/Context.h"
-#include "render/RenderQueue.h"
 #include "render/Camera.h"
 #include "entity/Scene.h"
 #include "render/glRenderCore.h"
@@ -18,10 +17,10 @@ public:
     Renderer(const Renderer& renderer) = delete;
 
     Context& getContext();
-    RenderQueue& getQueue();
     Camera& getCamera();
+    Scene& getScene();
 
-    void submit(Scene& scene);
+    void submit(Scene* scene);
     void submit(Entity& entity);
     void submit(Entity& entity, std::shared_ptr<Shader> shader);
     void submit(Light& light);
@@ -33,7 +32,7 @@ private:
     Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
 
     Context context;
-    RenderQueue queue;
+    Scene* scene;
     Camera camera;
     std::shared_ptr<Shader> default_shader;
 

@@ -3,7 +3,6 @@
 #include "entity/Scene.h"
 #include "core/Program.h"
 
-extern juno::Program* s_prog_instance;
 
 using namespace juno;
 
@@ -24,7 +23,7 @@ void Dock::init()
     colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
     colors[ImGuiCol_Border]                 = ImVec4(0.17f, 0.18f, 0.59f, 0.50f);
     colors[ImGuiCol_BorderShadow]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
-    colors[ImGuiCol_FrameBg]                = ImVec4(0.42f, 0.45f, 0.49f, 0.54f);
+    colors[ImGuiCol_FrameBg]                = ImVec4(0.40f, 0.40f, 0.40f, 0.54f);
     colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.40f, 0.34f, 0.82f, 0.40f);
     colors[ImGuiCol_FrameBgActive]          = ImVec4(0.55f, 0.55f, 0.55f, 0.67f);
     colors[ImGuiCol_TitleBg]                = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
@@ -84,13 +83,13 @@ Dock::~Dock()
 
 }
 
-void Dock::update(float dt)
+void Dock::update(Scene& scene, float dt)
 {
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    show_side_panel(dt);
+    show_side_panel(scene, dt);
     ImGui::ShowDemoWindow();
     show_menubar(true);
 
@@ -144,7 +143,7 @@ void Dock::menu_file_dropdown()
     if(ImGui::MenuItem("Save as")) {}
 }
 
-void Dock::show_side_panel(float dt)
+void Dock::show_side_panel(Scene& scene, float dt)
 {
     bool f_open;
     ImGuiWindowFlags panel_flags = 0;
@@ -152,12 +151,12 @@ void Dock::show_side_panel(float dt)
     panel_flags |= ImGuiWindowFlags_NoMove;
     ImGui::Begin(" ", &f_open, panel_flags);    
 
-    ImGui::Text("Frame Time: %.2f", dt); 
+    ImGui::Text("Frame Time: %.3fs", dt); 
     ImGui::Text((const char*)glGetString(GL_VERSION));
     ImGui::Text(" ");
     if(ImGui::CollapsingHeader("Scene"))
     {
-        showScenePanel();
+        showScenePanel(scene);
     }
 
     if(ImGui::CollapsingHeader("Render"))
@@ -188,29 +187,32 @@ void Dock::show_side_panel(float dt)
 }
 
 
-void Dock::showScenePanel()
+void Dock::showScenePanel(Scene& scene)
 {    
     //float v4f[4] = {0, 0, 0, 0};
     if(ImGui::TreeNode("Lights"))
     {
-        std::vector<Light> &lights = s_prog_instance->getScene().getLights();
+        std::vector<Light>& lights = scene.getLights();
         float input_data[MAX_NUM_LIGHTS][3];
+
         for(int i = 0; i < lights.size(); i++) 
         {
-            ImGui::Text("light %d", i);
-            ImGui::Text("  x:%.1f y:%.1f z:%.1f", lights[i].getPosition().x, lights[i].getPosition().y, lights[i].getPosition().z);
-
-            
-            // lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
+            std::string light_name = "light " + std::to_string(i);
+            //ImGui::Text("  x:%.1f y:%.1f z:%.1f", scene.getLights()[i].getPosition().x, scene.getLights()[i].getPosition().y, scene.getLights()[i].getPosition().z);
+            input_data[i][0] = lights[i].getPosition().x;
+            input_data[i][1] = lights[i].getPosition().y;
+            input_data[i][2] = lights[i].getPosition().z;
+            ImGui::InputFloat3(light_name.c_str(), input_data[i], 1, 0);         
+            lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
         }
         ImGui::TreePop();
     }
     if(ImGui::TreeNode("Entities"))
     {
-        std::vector<Entity>& entities = s_prog_instance->getScene().getEntities();
+        std::vector<Entity>& entities = scene.getEntities();
         for(int i = 0; i < entities.size(); i++)
         {
-            ImGui::Text(entities[i].getName().c_str());
+            ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), entities[i].getName().c_str());
             ImGui::Text("  x:%.1f y:%.1f z:%.1f",entities[i].getPosition().x, entities[i].getPosition().y, entities[i].getPosition().z);
         }
         ImGui::TreePop();
@@ -247,7 +249,7 @@ void Dock::showPhysicsPanel()
 
 void Dock::showShaderPanel()
 {
-
+    
 }
 
 void Dock::showObjectPanel()

@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include <stb_image.h>
-
+#include <GL/glew.h>
 #include "entity/Entity.h"
 #include "core/Log.h"
 
@@ -118,7 +118,11 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
     std::vector<float> verticesData;
     std::vector<float> texturesData;
     std::vector<float> normalsData;
-
+    
+    vertices.reserve(1000);
+    normals.reserve(1000);
+    textures.reserve(1000);
+    indices.reserve(300);
 
 
     std::vector<std::string> lineData;
@@ -130,27 +134,27 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
         std::string token;
         while(std::getline(ss, token, ' '))
         {
-            lineData.push_back(token);                              /* split line by ' '  */
+            lineData.emplace_back(token);                              /* split line by ' '  */
         }
-
+        
         if(lineData[0] == "v")
         {
             glm::vec3 vert(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
-            vertices.push_back(vert);
+            vertices.emplace_back(vert);
         }
         else if (lineData[0] == "vt")
         {
             glm::vec2 texCoord(atof(lineData[1].c_str()), atof(lineData[2].c_str()));
-            textures.push_back(texCoord);
+            textures.emplace_back(texCoord);
         }
         else if(lineData[0] == "vn")
         {
             glm::vec3 norm(atof(lineData[1].c_str()), atof(lineData[2].c_str()), atof(lineData[3].c_str()));
-            normals.push_back(norm);
+            normals.emplace_back(norm);
         }
-        if(lineData[0] == "f")
+        else if(lineData[0] == "f")
         {
-            /* this face still needs to be read in the next while loop */
+            /* this data still needs to be read in the next while loop */
             break;
         }
         lineData.clear();
@@ -174,7 +178,6 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
 
         if(lineData[0] == "f")
         {
-        
             int faceVertices[3][3];
 
             for(unsigned int i = 0; i < 3; i++)
@@ -187,12 +190,9 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
                     std::getline(ssVert, tokVert, '/');             /* split face vertices by '/'  */
                     faceVertices[i][j] = atoi(tokVert.c_str());
                 }
-
-                                
-
             }
-            processFace(faceVertices, indices, textures, normals, texturesData, normalsData);
 
+            processFace(faceVertices, indices, textures, normals, texturesData, normalsData);
         }
         lineData.clear();
         std::getline(openFile, line);
@@ -208,7 +208,6 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
     }
 
     juno::Mesh mesh(verticesData, texturesData, normalsData, indices);
-
     auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
     mesh.assignVAO(id, numIndices);
     return mesh;
@@ -360,30 +359,6 @@ static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint
 }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

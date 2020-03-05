@@ -139,7 +139,7 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 			loadFloat3(loc_lightColors[i], lights[i].getColor());
 			loadFloat3(loc_attenuations[i], lights[i].getAttenuation());
 		} else {
-			glm::vec3 empty_light(1.0, 0.0, 0.0);
+			glm::vec3 empty_light(0.0, 0.0, 0.0);
 			loadFloat3(loc_lightPositions[i], empty_light);
 			loadFloat3(loc_lightColors[i], empty_light);
 			loadFloat3(loc_attenuations[i], empty_light);

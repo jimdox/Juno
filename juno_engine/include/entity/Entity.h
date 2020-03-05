@@ -16,12 +16,12 @@ public:
 	float getScale();
 	std::string& getName();
 
-	void setPosition(glm::vec3& pos);
-	void setRotation(glm::vec3& rot);
+	void setPosition(const glm::vec3& pos);
+	void setRotation(const glm::vec3& rot);
+	void addPosition(const glm::vec3& dpos);
+	void addRotation(const glm::vec3& drot);
 	void setScale(float scale);
 
-	void addPosition(glm::vec3& dpos);
-	void addRotation(glm::vec3& drot);
 
 private:
 	std::string name;

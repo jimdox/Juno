@@ -2,10 +2,8 @@
 #include "core/Program.h"
 #include "core/Log.h"
 
-#define MIN_FRAME_TIME 1.0f/120.0f
+#define MIN_FRAME_TIME 1.0f/240.0f
 using namespace juno;
-
-juno::Program* s_prog_instance;	
 
 Program::Program()
 {
@@ -25,8 +23,6 @@ void Program::init()
 	renderer->getContext().getWinEventDispatcher().addListener(this);
 	renderer->getContext().getGuiDock().addListener(this);
 	renderer->getCamera().addListener(this);
-	s_prog_instance = this;
-
 }
 
 void Program::onAttach()

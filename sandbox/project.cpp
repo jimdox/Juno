@@ -1,3 +1,4 @@
+#define STB_IMAGE_IMPLEMENTATION
 #define JN_PLATFORM_LINUX
 #define JN_RENDERER_OPENGL
 #include "core/StartPoint.h"
@@ -22,12 +23,13 @@ class SandboxProgram : public juno::Program
 
 		Light light(glm::vec3(110.5f, 100.01f, 100.0f), glm::vec3(0.9f, 0.9f, 0.9f), glm::vec3(1.0, 0.00001, 0.0005));
 		Light light_b(glm::vec3(-30.5f, 10.0f, 1.0f), glm::vec3(0.8f, 0.8f, 0.9f), glm::vec3(1.0, 0.0001, 0.0005));
-		
+		Light light_c(glm::vec3(300,10,10), glm::vec3(1, 0, 0), glm::vec3(1.0, 0.00001f, 0.0005f));
 		scene.addEntity(entity_one);
 		scene.addEntity(entity_two);
 		scene.addLight(light);
 		scene.addLight(light_b);
-		renderer->submit(scene);
+		scene.addLight(light_c);
+		renderer->submit(&scene);
 	}
 
 	void onDestroy()
@@ -37,7 +39,8 @@ class SandboxProgram : public juno::Program
 
 	void onUpdate()
 	{
-		
+		//renderer->getScene().getLights()[0].setPosition( glm::vec3(0, 0, renderer->getScene().getLights()[0].getPosition().z - 0.00001f));
+
 	}
 
 	void onFrameBufferUpdate()

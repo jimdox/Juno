@@ -26,7 +26,7 @@ public:
 	GLFWwindow* getWindow();
 	void renderUpdate();
 	void init();
-	void update(float dt);
+	void update(Scene& scene, float dt);
 	void destroy();
 	void setVisible(bool flag);
 	Dock& getGuiDock();

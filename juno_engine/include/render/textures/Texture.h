@@ -1,7 +1,6 @@
 #pragma once
 #include "pch.h"
-#include <GL/glew.h>
-#include "stb_image.h"
+
 
 namespace juno {
 

@@ -22,42 +22,31 @@ Context& Renderer::getContext()
     return context;
 }
 
-RenderQueue& Renderer::getQueue()
-{
-    return queue;
-}
-
 Camera& Renderer::getCamera()
 {
     return camera;
 }
 
-void Renderer::submit(Scene& scene)
+Scene& Renderer::getScene()
 {
-    for(int i = 0; i < scene.getEntities().size(); i++)
-    {
-        submit(scene.getEntities()[i]);
-    }
+    return *scene;
+}
 
-    for(int i = 0; i < scene.getLights().size(); i++)
-    {
-        submit(scene.getLights()[i]);
-    }
+void Renderer::submit(Scene* scene)
+{
+    this->scene = scene;
 }
 
 void Renderer::submit(Entity& entity)
 {
-    queue.submit(&entity, default_shader);
 }
 
 void Renderer::submit(Entity& entity, std::shared_ptr<Shader> shader)
 {
-    queue.submit(&entity, shader);
 }
 
 void Renderer::submit(Light &light)
 {
-    queue.addLight(light);
 }
 
 void Renderer::update(float delta_time)
@@ -65,21 +54,21 @@ void Renderer::update(float delta_time)
     camera.update();
     glRender::clear();
 
-    std::vector<Entity *>& entities = queue.getEntities();
-    std::vector<std::shared_ptr<Shader>> entity_shaders = queue.getEntityShaders();
-    std::vector<Light> lights = queue.getLights();
+    std::vector<Entity>& entities = scene->getEntities();
+    //std::vector<std::shared_ptr<Shader>> entity_shaders = queue.getEntityShaders();
+    std::vector<Light> lights = scene->getLights();
 
-    for(unsigned int i = 0; i < queue.getEntities().size(); i++)
+    for(unsigned int i = 0; i < scene->getEntities().size(); i++)
     {   
-        entity_shaders[i]->useProgram();
-	    entity_shaders[i]->loadProjectionMatrix(camera.getProjectionMatrix());			
-        entity_shaders[i]->loadViewMatrix(&camera);
-        entity_shaders[i]->loadLightUniforms(lights);
+        default_shader->useProgram();
+	    default_shader->loadProjectionMatrix(camera.getProjectionMatrix());			
+        default_shader->loadViewMatrix(&camera);
+        default_shader->loadLightUniforms(lights);
         
-        glRender::renderEntity(entities[i] , entity_shaders[i]);
+        glRender::renderEntity(entities[i] , default_shader);
         
-        entity_shaders[i]->unbindProgram();
+        default_shader->unbindProgram();
     }
 
-    context.update(delta_time);
+    context.update(*scene, delta_time);
 }
