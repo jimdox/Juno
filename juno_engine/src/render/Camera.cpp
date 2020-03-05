@@ -94,30 +94,39 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 void Camera::update()
 {
+	float dx, dy, dz = 0;
+	float CAM_MOVE_SPEED = 0.4f;
+	
 	if(keyboard.isKeyDown(GLFW_KEY_W))
 	{
-		pivot.z -= 0.2f;  
+		dz = cosf(toRadians(angle_around_pivot));  
+		dx = sinf(toRadians(angle_around_pivot));
 	} else if(keyboard.isKeyDown(GLFW_KEY_S))
 	{
-		pivot.z += 0.2f;
+		dz = -cosf(toRadians(angle_around_pivot));
+		dx = -sinf(toRadians(angle_around_pivot));
 	}
-
+	
 	if(keyboard.isKeyDown(GLFW_KEY_R))
 	{
-		pivot.y += 0.2f;
+		dy = 1.1;
 	} else if(keyboard.isKeyDown(GLFW_KEY_F)) {
-		pivot.y -= 0.2f;
+		dy = -1.1;
 	}
 
 	if(keyboard.isKeyDown(GLFW_KEY_D))
 	{
-		pivot.x += 0.2f;
+		dx -= cosf(toRadians(angle_around_pivot));
+		dz += sinf(toRadians(angle_around_pivot));
 	} else if(keyboard.isKeyDown(GLFW_KEY_A)) {
-		pivot.x -= 0.2f;
+		dx += cosf(toRadians(angle_around_pivot));
+		dz -= sinf(toRadians(angle_around_pivot));
 	}
+	pivot.x += CAM_MOVE_SPEED * dx;
+	pivot.y += CAM_MOVE_SPEED * dy;
+	pivot.z += CAM_MOVE_SPEED * dz;
 
 	calculatePosition();
-	resetProjectionMatrix();
 }
 
 
