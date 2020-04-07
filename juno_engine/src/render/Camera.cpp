@@ -13,9 +13,12 @@ Camera::Camera(glm::vec3 pos, glm::vec3 rot) : pivot(pos)
 	this->yaw = rot.z;
 	this->moveSpeed = 2.5f;
 	this->zoom = 0.0f;
+	position = glm::vec3(0,0,0);
 	velocity = glm::vec3(0,0,0);
 	angle_around_pivot = 180.0f;
-	distance_to_pivot = 50.0f;
+	keyboard.init();
+	mouse.setDScroll(25);
+
 	calculatePosition();
 	generateProjectionMatrix();
 }
@@ -73,7 +76,6 @@ void Camera::keyEventRecieved(int key_code, bool flag)
 	case GLFW_KEY_D:
 	case GLFW_KEY_R:
 	case GLFW_KEY_F:
-	case GLFW_KEY_X:
 			keyboard.setKeyStatus(key_code, flag);
 			break;
 	case GLFW_KEY_ESCAPE:
@@ -91,41 +93,38 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 }
 
 
-
 void Camera::update()
 {
-	float dx, dy, dz = 0;
+	delta_pos = glm::vec3(0,0,0);
 	float CAM_MOVE_SPEED = 0.4f;
 	
 	if(keyboard.isKeyDown(GLFW_KEY_W))
 	{
-		dz = cosf(toRadians(angle_around_pivot));  
-		dx = sinf(toRadians(angle_around_pivot));
+		delta_pos.z = cosf(toRadians(angle_around_pivot));  
+		delta_pos.x = sinf(toRadians(angle_around_pivot));
 	} else if(keyboard.isKeyDown(GLFW_KEY_S))
 	{
-		dz = -cosf(toRadians(angle_around_pivot));
-		dx = -sinf(toRadians(angle_around_pivot));
+		delta_pos.z = -cosf(toRadians(angle_around_pivot));
+		delta_pos.x = -sinf(toRadians(angle_around_pivot));
 	}
 	
 	if(keyboard.isKeyDown(GLFW_KEY_R))
 	{
-		dy = 1.1;
+		delta_pos.y = 1.1;
 	} else if(keyboard.isKeyDown(GLFW_KEY_F)) {
-		dy = -1.1;
+		delta_pos.y = -1.1;
 	}
 
 	if(keyboard.isKeyDown(GLFW_KEY_D))
 	{
-		dx -= cosf(toRadians(angle_around_pivot));
-		dz += sinf(toRadians(angle_around_pivot));
+		delta_pos.x -= cosf(toRadians(angle_around_pivot));
+		delta_pos.z += sinf(toRadians(angle_around_pivot));
 	} else if(keyboard.isKeyDown(GLFW_KEY_A)) {
-		dx += cosf(toRadians(angle_around_pivot));
-		dz -= sinf(toRadians(angle_around_pivot));
+		delta_pos.x += cosf(toRadians(angle_around_pivot));
+		delta_pos.z -= sinf(toRadians(angle_around_pivot));
 	}
-	pivot.x += CAM_MOVE_SPEED * dx;
-	pivot.y += CAM_MOVE_SPEED * dy;
-	pivot.z += CAM_MOVE_SPEED * dz;
-
+	delta_pos *= CAM_MOVE_SPEED;
+	pivot += delta_pos;
 	calculatePosition();
 }
 

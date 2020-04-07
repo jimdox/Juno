@@ -1,67 +1,19 @@
-#pragma once
-#include "pch.h"
+#pragma once 
+#include <vector>
 #include "render/textures/CubeMap.h"
-
-namespace juno{
-class SkyBox
+namespace juno
+{
+class SkyBox 
 {
 public:
+    SkyBox();
     SkyBox(CubeMap& cubeMap);
     ~SkyBox();
-    
-    CubeMap& getCubeMap();
-    std::vector<float>& getVertices();
+    unsigned int getVaoID();
     unsigned int getNumVertices();
-    unsigned int getVAO_ID();
-
-
 private:
-    CubeMap& cubeMap;
-
-    const float SIZE = 500.0f;
-    std::vector<float> VERTICES{
-    -SIZE,  SIZE, -SIZE,
-    -SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
-
-    -SIZE, -SIZE,  SIZE,
-    -SIZE, -SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE, -SIZE,
-    -SIZE,  SIZE,  SIZE,
-    -SIZE, -SIZE,  SIZE,
-
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-
-    -SIZE, -SIZE,  SIZE,
-    -SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE, -SIZE,  SIZE,
-    -SIZE, -SIZE,  SIZE,
-
-    -SIZE,  SIZE, -SIZE,
-     SIZE,  SIZE, -SIZE,
-     SIZE,  SIZE,  SIZE,
-     SIZE,  SIZE,  SIZE,
-    -SIZE,  SIZE,  SIZE,
-    -SIZE,  SIZE, -SIZE,
-
-    -SIZE, -SIZE, -SIZE,
-    -SIZE, -SIZE,  SIZE,
-     SIZE, -SIZE, -SIZE,
-     SIZE, -SIZE, -SIZE,
-    -SIZE, -SIZE,  SIZE,
-     SIZE, -SIZE,  SIZE
-    };
+    unsigned int vao_id;
+    std::vector<float> vertices;
 
 };
 }

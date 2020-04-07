@@ -4,6 +4,12 @@
 #include "core/EngineConfig.h"
 #include "core/MathUtils.h"
 
+#ifdef JN_RENDERER_OPENGL
+	#include "glRenderCore.h"
+#elseif JN_RENDERER_VULKAN
+	#include "vkRenderCore.h"
+#endif
+
 /*
 	Rendering context: manages the window, initialization of rendering environment. 
 */
@@ -160,7 +166,7 @@ void Context::init()
 	glfwMakeContextCurrent(window);
 
 	//glfwSwapInterval(1);																	/* limits fps to native refresh rate */
-	glfwWindowHint(GLFW_SAMPLES, anti_aliasing_factor);				
+	glfwWindowHint(GLFW_SAMPLES, 8);				
 
 	s_keyDispatcher = &this->keyDispatcher;
 	s_mouseDispatcher = &this->mouseDispatcher;				

@@ -35,6 +35,7 @@ private:
     Scene* scene;
     Camera camera;
     std::shared_ptr<Shader> default_shader;
+    std::shared_ptr<SkyBoxShader> skybox_shader;
 
     static Renderer s_instance;
 };

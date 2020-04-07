@@ -16,8 +16,6 @@ Entity::Entity(Mesh& mesh, const glm::vec3& pos, const glm::vec3& rot, float sca
 	this->visible = true;
 }
 
-
-
 Entity::~Entity()
 {
 	
@@ -63,12 +61,13 @@ void Entity::setScale(float s)
 	this->scale = s;
 }
 
-void Entity::addPosition(const glm::vec3& dpos)
+void Entity::addPosition(const glm::vec3& delta_pos)
 {
-	this->position += dpos;
+	position += delta_pos;
 }
 
-void Entity::addRotation(const glm::vec3& drot)
+void Entity::update()
 {
-	this->rotation += drot;
+
+
 }

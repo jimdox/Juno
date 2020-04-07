@@ -3,9 +3,9 @@ in vec3 pass_texCoordinates;
 
 out vec3 output_Color;
 
-uniform samplerCube skybox;
+uniform samplerCube s_cube;
 
 void main()
 {
-    output_Color = texture(skybox, pass_texCoordinates);
+    output_Color = texture(s_cube, pass_texCoordinates);
 }

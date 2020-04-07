@@ -41,6 +41,14 @@ static void storeInAttribList(unsigned int attribNum, unsigned int dimensions, s
 
     // }
 
+static unsigned int loadToVAO(std::vector<float> &data)
+{
+    unsigned int vaoID = generateVAO();
+    storeInAttribList(0, 1, data);
+    glBindVertexArray(0);
+    return vaoID;
+}
+
    
 static std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float> &positions, std::vector<float> texCoordinates, std::vector<float> normals, std::vector<unsigned int> &indices)
 {
@@ -102,7 +110,7 @@ static void processFace(int faceVertices[3][3], std::vector<unsigned int> &indic
 /* .obj wavefront importer : treats each face as having one normal (in blender: smooth surface), 
     where the mesh indexing requires double vertices along a given texture coordinate seam 
 */
-static juno::Mesh loadOBJFile(const std::string& filepath)
+static const juno::Mesh loadOBJFile(const std::string& filepath)
 {
     std::string line;                            /* per line .obj info */
     std::ifstream openFile(filepath.c_str());
@@ -207,10 +215,8 @@ static juno::Mesh loadOBJFile(const std::string& filepath)
         verticesData.push_back(vertex.z);
     }
 
-    juno::Mesh mesh(verticesData, texturesData, normalsData, indices);
     auto [id, numIndices] = loadToVAO(verticesData, texturesData, normalsData, indices);
-    mesh.assignVAO(id, numIndices);
-    return mesh;
+    return juno::Mesh(id, numIndices, vertices.size());
 }
 
 static juno::Mesh loadModel(const std::string& filepath)
@@ -258,33 +264,35 @@ static unsigned int loadTexture(const std::string& filepath, GLenum format, juno
     return id;
 }
 
-static unsigned int loadCubeMap(std::array<const std::string, 6>& filepaths, GLenum format, juno::TextureType tx_type)
+static unsigned int loadCubeMap(const std::array<std::string, 6>& filepaths, juno::TextureType tx_type)
 {
     int width, height, channels;
     unsigned int id;
 	glGenTextures(1, &id);
-	glBindTexture(format, id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, id);
     unsigned char* imageData;
     for(unsigned int i = 0; i < 6; i++)
     {
         imageData = stbi_load((filepaths[i].c_str()), &width, &height, &channels, 0);
 
         if (imageData)
-        {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
-           
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);   
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);   
-            glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);   
+        {   
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, imageData);       /* GL_RGB or RGBA? */
         }
         else
         {
             JN_CLI_INFO("Failed to load image: " + filepaths[i]);
             stbi_image_free(imageData);
+            return 0;
         }
     }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);   
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);   
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE); 
+
     stbi_image_free(imageData);
     return id;
 }
@@ -363,11 +371,7 @@ static void loadShader(const std::string& filepath, GLuint &vertexShader, GLuint
 
 
 
-
-
-
-
-
+/* attempted solution for seamless .obj files: */
 
 // class Vertex
 // {

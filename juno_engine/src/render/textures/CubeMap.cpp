@@ -2,9 +2,14 @@
 #include "core/AssetLoader.h"
 using namespace juno;
 
-CubeMap::CubeMap(std::array<const std::string, 6> texturePaths, TextureType txType) : Texture(txType), filepaths(texturePaths)
+CubeMap::CubeMap() : Texture(TX_DIFFUSE)
 {
-    textureID = juno::loadCubeMap(texturePaths, GL_TEXTURE_CUBE_MAP, txType);
+    textureID = 0; //loadCubeMap(DEFAULT_CUBE_MAP_PATH, TX_DIFFUSE);
+}
+
+CubeMap::CubeMap(std::array<std::string, 6>& texturePaths, TextureType txType) : Texture(txType), filepaths(texturePaths)
+{
+    textureID = juno::loadCubeMap(texturePaths, txType);
 
 }
 
@@ -13,7 +18,7 @@ CubeMap::~CubeMap()
 
 }
 
-std::array<const std::string, 6>& CubeMap::getFilepaths()
+std::array<std::string, 6>& CubeMap::getFilepaths()
 {
     return this->filepaths;
 }

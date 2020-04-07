@@ -13,7 +13,7 @@ public:
 	Shader(const std::string& filepath);
 	virtual ~Shader();
 	bool loadShader(const std::string& filepath);
-	void useProgram();
+	void setActive();
 	void unbindProgram();
 	GLuint getID();
 
@@ -26,7 +26,7 @@ public:
 	void loadViewMatrix(Camera* camera);
 
 	void loadLightUniforms(std::vector<Light> &light);
-	void loadPBRVars(Material material);
+	void loadMaterialVars(Material material);
 
 	void loadInt(unsigned int loc, int value) const;
 	void loadBool(unsigned int loc, bool flag) const;
@@ -50,6 +50,7 @@ protected:
 	unsigned int loc_viewMatrix;
 	unsigned int loc_reflectivity;
 	unsigned int loc_shineDamper;
+	unsigned int loc_baseColor;
 
 	static const unsigned int NUM_LIGHTS = 4;
 	unsigned int loc_lightPositions[NUM_LIGHTS];

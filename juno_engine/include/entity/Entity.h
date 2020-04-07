@@ -18,20 +18,21 @@ public:
 
 	void setPosition(const glm::vec3& pos);
 	void setRotation(const glm::vec3& rot);
-	void addPosition(const glm::vec3& dpos);
-	void addRotation(const glm::vec3& drot);
 	void setScale(float scale);
 
+	void addPosition(const glm::vec3& delta_pos);
+	void update();
+
+	float delta_x = 0.0f;
 
 private:
 	std::string name;
 	Mesh mesh;
 	glm::vec3 position;
 	glm::vec3 rotation;
+	
 	float scale;
 	bool visible;
-	//std::string& assetFilePath;
-
 };
 }
 

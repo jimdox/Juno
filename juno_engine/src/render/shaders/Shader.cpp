@@ -10,20 +10,19 @@ using namespace juno;
 Shader::Shader()
 {
 	loadShader("./juno_engine/res/shaders/basic");
+	cacheUniformLocations();
 }
-
 
 Shader::Shader(const std::string& filepath)
 {
 	loadShader(filepath);
+	cacheUniformLocations();
 }
-
 
 Shader::~Shader()
 {
 
 }
-
 
 bool Shader::loadShader(const std::string& filepath)
 {
@@ -53,11 +52,8 @@ bool Shader::loadShader(const std::string& filepath)
 		JN_CRIT("Shader linking failed!");
 		JN_CRIT(message);
 	}
-	cacheUniformLocations();
-
 	return true;
 }
-
 
 GLuint Shader::getID()
 {
@@ -66,7 +62,7 @@ GLuint Shader::getID()
 }
 
 /* binds shader */
-void Shader::useProgram()
+void Shader::setActive()
 {
 	glUseProgram(progID);
 }
@@ -97,6 +93,7 @@ void Shader::cacheUniformLocations()
 	loc_viewMatrix = glGetUniformLocation(progID, "view");
 	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
 	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
+	loc_baseColor = glGetUniformLocation(progID, "in_baseColor");
 
 	for(int i = 0; i < NUM_LIGHTS; i++)
 	{
@@ -147,10 +144,11 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 	}
 }
 
-void Shader::loadPBRVars(Material material)
+void Shader::loadMaterialVars(Material material)
 {
 	loadFloat(loc_reflectivity, material.reflectivity);
 	loadFloat(loc_shineDamper, material.shineDamper);
+	loadFloat3(loc_baseColor, material.baseColor);
 }
 
 /* GLSL uniform loaders */
@@ -158,7 +156,6 @@ void Shader::loadInt(unsigned int loc, int value) const
 {
 	glUniform1i(loc, (int)value);
 }
-
 
 void Shader::loadBool(unsigned int loc, bool flag) const
 {

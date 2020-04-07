@@ -6,37 +6,40 @@
 
 namespace juno {
 
-typedef struct Material 
+struct Material 
 {
+	glm::vec3 baseColor = glm::vec3(0.5, 0.5, 0.5);
 	float reflectivity;
 	float shineDamper;
-
-} Material;
-
-
-/* Texture types are sequentially stored */
-typedef struct TextureList
-{
-	std::vector<Texture> diffuse;
-	std::vector<Texture> specular;
-} TextureList;
+	std::vector<Texture> diffuseTextures;
+	std::vector<Texture> specularTextures;
+};
 
 
 class Mesh
 {
 public:
-	Mesh();
-	Mesh(std::vector<float> vertices, std::vector<float> textureCoords, std::vector<float> normals, std::vector<unsigned int> indices);
+	//Mesh();
+	Mesh(unsigned int vao, unsigned int numIndices, unsigned int numVertices);
+
+	// Mesh(const Mesh& mesh)
+	// {
+	// 	JN_WARN("Mesh Copy!");
+	// 	this->vao_id = mesh.vao_id;
+	// 	this->numIndices = mesh.numIndices;
+	// 	this->numVertices = mesh.numVertices;
+	// }
 
 	virtual ~Mesh();
 	
 	void addTexture(Texture& tex);
 	void setMaterial(Material& mat);
 	
-	unsigned int getVAO_ID();
+	unsigned int getVaoID();
 	std::vector<Texture>& getDiffuseTextures();
 	std::vector<Texture>& getSpecTextures();
 	Material& getMaterial();
+	
 
 	std::vector<float>& getVertices();
 	std::vector<float>& getNormals();
@@ -46,26 +49,17 @@ public:
 	std::vector<unsigned int>& getIndices();
 	unsigned int getNumIndices();
 	unsigned int getNumVertices();
+	bool isTextured();
 	//float getFurthest();
 
-	void assignVAO(unsigned int id, unsigned int numIndices);
+	void assignVAO(unsigned int id, unsigned int numIndices, unsigned int numVertices);
 	
-	void regenerateMesh();
-
-private:
-
-	std::vector<float> vertices;
-	std::vector<float> normals;
-	std::vector<float> textureCoords;
-	std::vector<unsigned int> indices;
-
-	TextureList textureList;
+protected:
 	Material material;
-
-	unsigned int VAO_ID;
+	bool f_textured;
+	unsigned int vao_id;
 	unsigned int numVertices;
 	unsigned int numIndices;
-	//float ptr_furthest;
 };
 
 }

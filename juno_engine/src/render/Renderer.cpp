@@ -8,10 +8,11 @@ Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, 
 {
 	// JN_WARN(JN_GFX_DEVICE);
     default_shader = std::make_shared<Shader>("./juno_engine/res/shaders/basic");												        /* useful for debugging w/ hybrid graphics */
-	context.getKeyDispatcher().addListener(&camera);
+	//skybox_shader = std::make_shared<SkyBoxShader>("./juno_engine/res/shaders/skybox");
+    context.getKeyDispatcher().addListener(&camera);
 	context.getMouseDispatcher().addListener(&camera);
 	context.getWinEventDispatcher().addListener(&camera);
-	default_shader->useProgram();
+	default_shader->setActive();
 	default_shader->loadProjectionMatrix(camera.getProjectionMatrix());				/* load the perspective, view matrix from Camera */
 	default_shader->loadViewMatrix(&camera);
 	default_shader->unbindProgram();
@@ -58,10 +59,12 @@ void Renderer::update(float delta_time)
     //std::vector<std::shared_ptr<Shader>> entity_shaders = queue.getEntityShaders();
     std::vector<Light> lights = scene->getLights();
 
+
+
     for(unsigned int i = 0; i < scene->getEntities().size(); i++)
     {   
-        default_shader->useProgram();
-	    default_shader->loadProjectionMatrix(camera.getProjectionMatrix());			
+        default_shader->setActive();
+        default_shader->loadProjectionMatrix(camera.getProjectionMatrix());			
         default_shader->loadViewMatrix(&camera);
         default_shader->loadLightUniforms(lights);
         
@@ -69,6 +72,12 @@ void Renderer::update(float delta_time)
         
         default_shader->unbindProgram();
     }
+
+    /* render skybox */
+    // skybox_shader->setActive();
+    // skybox_shader->loadProjectionMatrix(camera.getProjectionMatrix());
+    // skybox_shader->loadViewMatrix(&camera);
+    // glRender::renderSkyBox(scene->getSkyBox(), skybox_shader);
 
     context.update(*scene, delta_time);
 }

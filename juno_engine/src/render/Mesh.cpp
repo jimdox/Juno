@@ -5,17 +5,19 @@ using namespace juno;
 
 
 
-Mesh::Mesh()
-{
-	this->material.reflectivity = 0.01f;
-	this->material.shineDamper = 0.95f;
-}
+// Mesh::Mesh()
+// {
+// 	this->material.reflectivity = 0.01f;
+// 	this->material.shineDamper = 0.95f;
+// }
 
 
-Mesh::Mesh(std::vector<float> vertices, std::vector<float> texCoords, std::vector<float> normals, std::vector<unsigned int> indices) : vertices(vertices), textureCoords(texCoords), normals(normals), indices(indices)
+Mesh::Mesh(unsigned int vao, unsigned int numIndices, unsigned int numVertices) : vao_id(vao), numIndices(numIndices), numVertices(numVertices)
 {
 	this->material.reflectivity = 0.2f;
 	this->material.shineDamper = 0.95f;
+	this->material.baseColor = glm::vec3(0.55f,0.55f, 0.55f);
+	f_textured = false;
 }
 
 
@@ -28,11 +30,15 @@ void Mesh::addTexture(Texture& tex)
 {
 	if(tex.getTexType() == TX_DIFFUSE)
 	{
-		this->textureList.diffuse.push_back(tex);
+		if(!f_textured)
+		{
+			f_textured = true;
+		}
+		this->material.diffuseTextures.push_back(tex);
 	}
 	else if(tex.getTexType() == TX_SPECULAR)
 	{
-		this->textureList.specular.push_back(tex);
+		this->material.specularTextures.push_back(tex);
 	}
 }
 
@@ -48,31 +54,11 @@ Material& Mesh::getMaterial()
 
 std::vector<Texture>& Mesh::getDiffuseTextures()
 {
-	return textureList.diffuse;
+	return material.diffuseTextures;
 }
 std::vector<Texture>& Mesh::getSpecTextures()
 {
-	return textureList.specular;
-}
-
-std::vector<float>& Mesh::getVertices()
-{
-	return vertices;
-}
-
-std::vector<float>& Mesh::getNormals()
-{
-	return this->normals;
-}
-
-std::vector<float>& Mesh::getTextureCoords()
-{
-	return this->textureCoords;
-}
-
-std::vector<unsigned int>& Mesh::getIndices()
-{
-	return this->indices;
+	return material.specularTextures;
 }
 
 unsigned int Mesh::getNumIndices()
@@ -80,9 +66,9 @@ unsigned int Mesh::getNumIndices()
 	return this->numIndices;
 }
 
-unsigned int Mesh::getVAO_ID()
+unsigned int Mesh::getVaoID()
 {
-	return this->VAO_ID;
+	return this->vao_id;
 }
 
 unsigned int Mesh::getNumVertices()
@@ -90,13 +76,14 @@ unsigned int Mesh::getNumVertices()
 	return this->numVertices;
 }
 
-void Mesh::assignVAO(unsigned int id, unsigned int numIndices)
+bool Mesh::isTextured()
 {
-	this->VAO_ID = id;
-	this->numIndices = numIndices;
+	return f_textured;
 }
 
-void Mesh::regenerateMesh()
+void Mesh::assignVAO(unsigned int id, unsigned int numIndices, unsigned int numVertices)
 {
-	/* TODO: if texture uv coordinates need to be remapped, reload mesh */
+	this->vao_id = id;
+	this->numIndices = numIndices;
+	this->numVertices = numVertices;
 }

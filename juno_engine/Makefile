@@ -75,7 +75,6 @@ OBJECTS := \
 	$(OBJDIR)/imgui_impl_glfw.o \
 	$(OBJDIR)/imgui_impl_opengl3.o \
 	$(OBJDIR)/imgui_widgets.o \
-	$(OBJDIR)/InputManager.o \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/Entity.o \
@@ -170,9 +169,6 @@ $(OBJDIR)/imgui_impl_opengl3.o: lib/imgui/imgui_impl_opengl3.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/imgui_widgets.o: lib/imgui/imgui_widgets.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/InputManager.o: src/core/InputManager.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Log.o: src/core/Log.cpp

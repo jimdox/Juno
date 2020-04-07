@@ -19,14 +19,10 @@ public:
 	virtual void onUpdate() = 0;
 	virtual void onFrameBufferUpdate() = 0;
 
-	
-
 	void onAttach();
 	void onEvent(const Event& e);
 
 	Scene& getScene();
-
-
 
 protected:
 	bool programShouldClose();
@@ -38,7 +34,6 @@ protected:
 	float frame_time;
 	float delta_time;
 	u_int16_t num_frames;
-	
 
 private:
 	std::shared_ptr<Shader> shader;

@@ -1,8 +1,9 @@
 #include "entity/Scene.h"
-
+#include <array>
+#include "core/AssetLoader.h"
 using namespace juno;
 
-Scene::Scene()
+Scene::Scene() 
 {
 
 }
@@ -38,3 +39,7 @@ std::vector<Light>& Scene::getLights()
     return lights;
 }
 
+SkyBox& Scene::getSkyBox()
+{
+    return skybox;
+}

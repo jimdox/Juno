@@ -1,16 +1,12 @@
 #include "render/shaders/SkyBoxShader.h"
-#include "core/AssetLoader.h"
 
 using namespace juno;
-
-SkyBoxShader::SkyBoxShader()
-{
-    loadShader(DEFAULT_PATH);
-}
 
 SkyBoxShader::SkyBoxShader(const std::string& filepath)
 {
     loadShader(filepath);
+    loc_projectionMatrix = glGetUniformLocation(progID, "projection");
+    loc_viewMatrix = glGetUniformLocation(progID, "view");
 }
 
 SkyBoxShader::~SkyBoxShader()
@@ -18,46 +14,4 @@ SkyBoxShader::~SkyBoxShader()
 
 }
 
-bool SkyBoxShader::loadShader(const std::string& filepath)
-{
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	juno::loadShader(filepath, vertexShader, fragmentShader);
-
-	JN_INFO("Linking shaders");
-	this->progID = glCreateProgram();
-
-	glAttachShader(progID, vertexShader);
-	glAttachShader(progID, fragmentShader);
-	bindAllAttribs();
-	glLinkProgram(progID);
-
-	int errorLength;
-	GLint linkStatus;
-	glGetProgramiv(progID, GL_LINK_STATUS, &linkStatus);
-	glGetProgramiv(progID, GL_INFO_LOG_LENGTH, &errorLength);
-
-	if (errorLength > 0)
-	{
-		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(fragmentShader, errorLength, NULL, &errorMsg[0]);
-		std::string message(errorMsg.begin(), errorMsg.end());
-		JN_CRIT("Shader linking failed!");
-		JN_CRIT(message);
-	}
-	cacheUniformLocations();
-
-	return true;
-}
-
-void SkyBoxShader::bindAllAttribs()
-{
-    bindAttrib(0, "position");
-}
-
-void SkyBoxShader::cacheUniformLocations()
-{
-	loc_projectionMatrix = glGetUniformLocation(progID, "projection");
-	loc_viewMatrix = glGetUniformLocation(progID, "view");
-}

@@ -19,10 +19,12 @@ Program::~Program()
 
 void Program::init()
 {
-	onCreate();
+	renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,20.0f,0));
 	renderer->getContext().getWinEventDispatcher().addListener(this);
 	renderer->getContext().getGuiDock().addListener(this);
 	renderer->getCamera().addListener(this);
+	onCreate();
+
 }
 
 void Program::onAttach()
@@ -55,10 +57,10 @@ void Program::run()
 
 	while (!programShouldClose())
 	{
-		onUpdate();
 
 		if(frame_time > MIN_FRAME_TIME)
 		{
+			onUpdate();
 			onFrameBufferUpdate();
 			renderer->update(frame_time);
 			frame_time = 0;

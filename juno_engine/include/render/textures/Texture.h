@@ -33,13 +33,12 @@ protected:
 	Texture(TextureType tx_type);
 	unsigned int textureID;
 	bool transparency;
-	const std::string& filepath;
 	TextureType tex_type;
 
+private:
+	const std::string& filepath;
 
-
-
-	};
+};
 }
 
 

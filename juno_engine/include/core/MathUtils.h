@@ -24,7 +24,6 @@ static glm::mat4 createTransformationMat(glm::vec3 translation, glm::vec3 rotati
     return transform;
 }
 
-
 static glm::mat4 generateViewMatrix(juno::Camera* camera)
 {
     glm::mat4 viewMat = glm::mat4(1.0f);

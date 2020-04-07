@@ -66,8 +66,14 @@ struct mouse_states
 };
 
 struct keyboard_states {
-	bool keys[91] = {false};
-
+	bool keys[91];
+	void init()
+	{
+		for(unsigned int i = 0; i < 91; i++)
+		{
+			keys[i] = false;
+		}
+	}
 	bool isKeyDown(int keycode)
 	{
 		return keys[keycode];

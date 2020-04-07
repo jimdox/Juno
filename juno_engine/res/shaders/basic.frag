@@ -1,12 +1,11 @@
 #version 450 core
-in vec2 pass_texCoordinates;
+in vec3 baseColor;
 in vec3 surfaceNormal;
 in vec3 toLightDir[4];
 in vec3 cameraDir;
 
 out vec4 output_color; 
 
-uniform sampler2D diffuse;
 uniform vec3 lightColor[4];
 uniform vec3 attenuations[4];
 uniform float reflectivity;
@@ -21,9 +20,9 @@ void main()
         vec3 net_diffuse = vec3(0.0, 0.0, 0.0);
         vec3 net_specular = vec3(0.0, 0.0, 0.0);
 
-        vec3 test_att = vec3(1.0, 0.00, 0.000);
+        vec3 test_att = vec3(0.5, 0.0, 0.0);
 
-        for(int i=0; i<4; i++)
+        for(int i = 0; i < 4; i++)
         {
                 float distToSrc = length(toLightDir[i]);
                 float att_factor = test_att.x + (test_att.y * distToSrc) + (test_att.z * distToSrc * distToSrc);
@@ -50,13 +49,9 @@ void main()
 
         net_diffuse = max(net_diffuse, 0.05);
 
+        //vec3 test = vec3(0.5, 0.5, 0.5);
 
-        vec4 texColor = texture(diffuse, pass_texCoordinates);
-        if(texColor.a < 0.5)
-        {
-                discard;
-        }
-        output_color = vec4(net_diffuse, 1.0) * texColor + vec4(net_specular, 1.0);
+        output_color = vec4(net_diffuse, 1.0) * vec4(baseColor, 1.0) + vec4(net_specular, 1.0);
 
 
 }
