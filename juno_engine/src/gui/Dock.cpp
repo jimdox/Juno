@@ -1,6 +1,5 @@
 #include "gui/Dock.h"
 #include "render/glRenderCore.h"
-#include "entity/Scene.h"
 #include "core/Program.h"
 
 
@@ -8,9 +7,10 @@ using namespace juno;
 
 //static Renderer* s_renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,0,0));
 
-Dock::Dock()
+Dock::Dock() 
 {
     f_show_menubar = true;
+    f_show_startup = true;
 }
 
 void Dock::init()
@@ -70,7 +70,7 @@ void Dock::init()
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(0.93f, 0.93f, 0.93f, 1.00f);
     colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.06f, 0.06f, 0.06f, 0.90f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.06f, 0.06f, 0.06f, 0.92f);
     colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
     colors[ImGuiCol_Border]                 = ImVec4(0.44f, 0.19f, 0.19f, 0.50f);
@@ -119,17 +119,14 @@ void Dock::init()
 
 
 
+
     /* --- style elements --- */
     ImGui::GetStyle().WindowRounding = 0.0f;
     ImGui::GetStyle().WindowBorderSize = 0.0f;
-    ImGui::GetStyle().ItemSpacing = ImVec2(7,8);
+    ImGui::GetStyle().ScrollbarSize = 0.6f;
+    ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
 
-
-/* --- style elements --- */
-ImGui::GetStyle().WindowRounding = 0.0f;
-ImGui::GetStyle().WindowBorderSize = 0.0f;
-ImGui::GetStyle().ScrollbarSize = 0.6f;
-ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
+    startup_img_id = loadTexture("./juno_engine/res/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
 }
 
 Dock::~Dock()
@@ -139,22 +136,34 @@ Dock::~Dock()
 
 void Dock::update(Scene& scene, float dt)
 {
-
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+
+    if(f_show_startup)
+    {
+        if(ImGui::IsAnyMouseDown() && !ImGui::IsAnyWindowHovered() || ImGui::IsKeyDown(GLFW_KEY_ESCAPE))
+        {
+            f_show_startup = false;
+        } else
+        {
+            showStartupWindow();
+        }
+    }
+
     show_side_panel(scene, dt);
+    show_menubar();
+
     //ImGui::ShowDemoWindow();
-    show_menubar(true);
 
     ImGui::Render();
     glRender::renderGui();
 }
 
 
-void Dock::show_menubar(bool flag)
+void Dock::show_menubar()
 {
-    if(flag)
+    if(f_show_menubar)
     {
         if (ImGui::BeginMainMenuBar())
         {
@@ -179,7 +188,7 @@ void Dock::show_menubar(bool flag)
             }
             ImGui::EndMainMenuBar();
             }
-        }
+    }
 }
 
 void Dock::menu_file_dropdown()
@@ -203,7 +212,7 @@ void Dock::show_side_panel(Scene& scene, float dt)
     ImGuiWindowFlags panel_flags = 0;
     panel_flags |= ImGuiWindowFlags_NoTitleBar;
     panel_flags |= ImGuiWindowFlags_NoMove;
-    ImGui::Begin(" ", &f_open, panel_flags);    
+    ImGui::Begin("SidePanel", &f_open, panel_flags);    
 
     ImGui::Text("Frame Time: %.2fs", dt); 
     ImGui::Text((const char*)glGetString(GL_VERSION));
@@ -314,5 +323,47 @@ void Dock::showObjectPanel()
 void Dock::showTexturePanel()
 {
 
+}
+
+void Dock::showStartupWindow()
+{
+        bool f_open;
+        ImGuiWindowFlags win_flags = 0;
+        win_flags |= ImGuiWindowFlags_NoTitleBar;
+        win_flags |= ImGuiWindowFlags_NoMove;
+        win_flags |= ImGuiWindowFlags_NoResize;
+        
+        ImGui::SetNextWindowPos(ImVec2(1920/2,1080/2), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+        ImGui::Begin("welcome menu", &f_open, win_flags);
+        ImGui::Text("[press esc to hide]\t\t\t\t\tv0.1.2d");
+        ImGui::Image((void*)(intptr_t)startup_img_id, ImVec2(330, 245));
+        //ImGui::Text("You can follow the project @ github.com/jimdox/Juno");
+        ImGui::Text("Templates:\t\t\tRecent Files:");
+        ImGui::Separator();
+        ImGui::Columns(2);
+
+        std::vector<std::string> template_programs; 
+        std::vector<std::string> recent_programs;
+        template_programs.push_back("General Scene"); 
+        template_programs.push_back("Physics Demo");
+        template_programs.push_back("Rendering Demo");
+
+        for(int i = 0; i < template_programs.size(); i++)
+        {
+            if(ImGui::Selectable(template_programs[i].c_str()))
+            {
+
+            }
+        }
+        ImGui::NextColumn();
+        for(int i = 0; i < recent_programs.size(); i++)
+        {
+            if(ImGui::Selectable(recent_programs[i].c_str()))
+            {
+
+            }
+        }
+
+        ImGui::End();
 }
 

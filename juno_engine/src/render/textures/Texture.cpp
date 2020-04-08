@@ -23,7 +23,7 @@ Texture::Texture(TextureType tx_type) : filepath(""), tex_type(tx_type)
 
 Texture::~Texture()
 {
-
+	
 }
 
 GLuint Texture::getID()

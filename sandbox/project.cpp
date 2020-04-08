@@ -4,6 +4,7 @@
 #include "core/StartPoint.h"
 using namespace juno;
 
+
 class SandboxProgram : public juno::Program
 {
 	void onCreate()
@@ -42,7 +43,7 @@ class SandboxProgram : public juno::Program
 	void onFrameBufferUpdate()
 	{
 		/* update display info */
-\
+
 		//scene.getEntities()[0].addPosition(glm::vec3(delta_x, 0, 0));
 		delta_x = 0;
 	}
