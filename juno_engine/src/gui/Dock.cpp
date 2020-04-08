@@ -154,7 +154,7 @@ void Dock::update(Scene& scene, float dt)
     show_side_panel(scene, dt);
     show_menubar();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     glRender::renderGui();
@@ -345,8 +345,8 @@ void Dock::showStartupWindow()
         std::vector<std::string> template_programs; 
         std::vector<std::string> recent_programs;
         template_programs.push_back("General Scene"); 
-        template_programs.push_back("Physics Demo");
-        template_programs.push_back("Rendering Demo");
+        template_programs.push_back("Simple Physics");
+        template_programs.push_back("Particle Systems");
 
         for(int i = 0; i < template_programs.size(); i++)
         {

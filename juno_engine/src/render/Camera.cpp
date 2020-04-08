@@ -68,20 +68,20 @@ void Camera::onEvent(const Event &e)
 /* camera only processes certain mouse keys, other key events are discarded for now. */
 void Camera::keyEventRecieved(int key_code, bool flag)
 {
-	switch(key_code)
-	{
-	case GLFW_KEY_W:
-	case GLFW_KEY_S:
-	case GLFW_KEY_A:
-	case GLFW_KEY_D:
-	case GLFW_KEY_R:
-	case GLFW_KEY_F:
-			keyboard.setKeyStatus(key_code, flag);
-			break;
-	default:
-		break;
-	}
-	
+	// switch(key_code)
+	// {
+	// case GLFW_KEY_W:
+	// case GLFW_KEY_S:
+	// case GLFW_KEY_A:
+	// case GLFW_KEY_D:
+	// case GLFW_KEY_R:
+	// case GLFW_KEY_F:
+	// 		break;
+	// default:
+	// 	break;
+	// }
+	keyboard.setKeyStatus(key_code, flag);
+
 }
 
 void Camera::move(glm::vec3& pos, glm::vec3& dRot)
@@ -133,10 +133,18 @@ void Camera::calculatePosition()
 
 	if(mouse.isButtonDown(MouseCode::M_BUTTON_MID))
 	{
-		float delta_pitch = mouse.getDY() * 0.22f;
-		pitch -= delta_pitch;
-		float angle_delta = mouse.getDX() * 0.2f;
-		angle_around_pivot += angle_delta;
+		if(keyboard.isKeyDown(GLFW_KEY_LEFT_SHIFT) || keyboard.isKeyDown(GLFW_KEY_RIGHT_SHIFT))
+		{
+			float dx = mouse.getDX() * 0.02f;
+			float dy = mouse.getDY() *  0.02f;
+			pivot.x -= dx * cosf(toRadians(yaw)) - dy * sinf(toRadians(pitch)) * sinf(toRadians(yaw));
+			pivot.y += dy * cosf(toRadians(pitch));
+			pivot.z -= dx * sinf(toRadians(yaw)) + dy * sinf(toRadians(pitch)) * cosf(toRadians(yaw));
+
+		} else {
+			pitch -= mouse.getDY() * 0.25f;
+			angle_around_pivot += mouse.getDX() * 0.25f;
+		}
 	}
 
 	float h_distance = distance_to_pivot * cosf(toRadians(pitch));

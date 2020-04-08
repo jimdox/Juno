@@ -26,12 +26,15 @@ static WindowEventDispatcher* s_winDispatcher;
 /* /// GLFW Callbacks /// */
 
 static void keyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
-{	 
-	if(action == GLFW_PRESS || action == GLFW_REPEAT)
+{
+	if(!ImGui::GetIO().WantCaptureKeyboard)										/* check if imgui is using keyboard input */
 	{
-		s_keyDispatcher->notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
-	} else {
-		s_keyDispatcher->notify(KeyReleaseEvent(key));
+		if(action == GLFW_PRESS || action == GLFW_REPEAT)
+		{
+			s_keyDispatcher->notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
+		} else {
+			s_keyDispatcher->notify(KeyReleaseEvent(key));
+		}
 	}
 }
 

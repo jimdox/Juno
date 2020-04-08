@@ -66,7 +66,7 @@ struct mouse_states
 };
 
 struct keyboard_states {
-	bool keys[91];
+	bool keys[348];
 	void init()
 	{
 		for(unsigned int i = 0; i < 91; i++)
