@@ -17,8 +17,8 @@ ifeq ($(config),debug)
   OBJDIR = ../bin/int/Debug
   PCH = ../juno_engine/pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES +=
-  INCLUDES += -I../juno_engine/include -I../juno_engine/lib/stb -I../juno_engine/lib/jpl -I../juno_engine/lib/imgui -I../juno_engine/lib/spdlog/include -I../juno_engine
+  DEFINES += -DSTB_IMAGE_IMPLEMENTATION
+  INCLUDES += -I../juno_engine/include -I../juno_engine/vendor/glm -I../juno_engine/vendor/stb -I../juno_engine/vendor/jpl -I../juno_engine/vendor/imgui -I../juno_engine/vendor/spdlog/include -I../juno_engine
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
@@ -46,8 +46,8 @@ ifeq ($(config),release)
   OBJDIR = ../bin/int/Release
   PCH = ../juno_engine/pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES +=
-  INCLUDES += -I../juno_engine/include -I../juno_engine/lib/stb -I../juno_engine/lib/jpl -I../juno_engine/lib/imgui -I../juno_engine/lib/spdlog/include -I../juno_engine
+  DEFINES += -DSTB_IMAGE_IMPLEMENTATION
+  INCLUDES += -I../juno_engine/include -I../juno_engine/vendor/glm -I../juno_engine/vendor/stb -I../juno_engine/vendor/jpl -I../juno_engine/vendor/imgui -I../juno_engine/vendor/spdlog/include -I../juno_engine
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64

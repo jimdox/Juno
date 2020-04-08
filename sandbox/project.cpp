@@ -1,4 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
 #define JN_PLATFORM_LINUX
 #define JN_RENDERER_OPENGL
 #include "core/StartPoint.h"

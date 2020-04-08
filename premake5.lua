@@ -138,4 +138,8 @@ project "sandbox"
 		"glfw"
 	}
 
+	defines
+	{
+		"STB_IMAGE_IMPLEMENTATION"
+	}
 
