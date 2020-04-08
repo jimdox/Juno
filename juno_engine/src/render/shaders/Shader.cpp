@@ -3,7 +3,7 @@
 #include <sstream>
 #include "core/Log.h"
 #include "core/MathUtils.h"
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 
 using namespace juno;
 
@@ -26,10 +26,8 @@ Shader::~Shader()
 
 bool Shader::loadShader(const std::string& filepath)
 {
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	auto[vertexShader, fragmentShader] = AssetManager::getInstance().loadShader(filepath);
 
-	juno::loadShader(filepath, vertexShader, fragmentShader);
 
 	JN_INFO("Linking shaders");
 	this->progID = glCreateProgram();

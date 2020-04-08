@@ -19,6 +19,8 @@ Program::~Program()
 
 void Program::init()
 {
+	assetManager = &AssetManager::getInstance();
+
 	renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,20.0f,0));
 	renderer->getContext().getWinEventDispatcher().addListener(this);
 	renderer->getContext().getGuiDock().addListener(this);

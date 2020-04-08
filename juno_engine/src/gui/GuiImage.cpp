@@ -1,5 +1,5 @@
 #include "gui/GuiImage.h"
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 using namespace juno;
 
 GuiImage::GuiImage(const std::string& filepath, glm::vec2 pos, glm::vec2 sc) : Texture(filepath, TX_DIFFUSE)

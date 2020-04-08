@@ -1,5 +1,5 @@
 #include "render/textures/Texture.h"
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 // #include <GL/glew.h>
 //#include "stb_image.h"
 using namespace juno;
@@ -7,12 +7,12 @@ using namespace juno;
 Texture::Texture(const std::string& filepath, TextureType tx_type) : filepath(filepath), tex_type(tex_type)
 {
 	transparency = false;
-	textureID = juno::loadTexture(filepath, GL_TEXTURE_2D, tex_type);
+	textureID = AssetManager::getInstance().loadTexture(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 Texture::Texture(const std::string& filepath, TextureType tx_type, bool transp) : filepath(filepath), tex_type(tx_type), transparency(transp)
 {	
-	textureID = juno::loadTexture(filepath, GL_TEXTURE_2D, tex_type);
+	textureID = AssetManager::getInstance().loadTexture(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 Texture::Texture(TextureType tx_type) : filepath(""), tex_type(tx_type)

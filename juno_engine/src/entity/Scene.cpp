@@ -1,6 +1,6 @@
 #include "entity/Scene.h"
 #include <array>
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 using namespace juno;
 
 Scene::Scene() 

@@ -8,10 +8,10 @@ class SandboxProgram : public juno::Program
 {
 	void onCreate()
 	{
-		Mesh susy = loadModel("./juno_engine/res/ico_sphere.obj");
+		Mesh susy = AssetManager::getInstance().loadOBJFile("./juno_engine/res/ico_sphere.obj");
 		Entity entity_one(susy, glm::vec3(0.0f, 2.8f, -8.0f), glm::vec3(0,0,0), 4.75f, "Entity One");
 		
-		Mesh plane = loadModel("./juno_engine/res/plane.obj");
+		Mesh plane = AssetManager::getInstance().loadOBJFile("./juno_engine/res/plane.obj");
 		plane.getMaterial().baseColor = glm::vec3(0.12f, 0.12f, 0.12f);
 		Entity entity_two(plane, glm::vec3(0,0.0f,0), glm::vec3(0,0,0), 5.0f, "Default Plane");
 

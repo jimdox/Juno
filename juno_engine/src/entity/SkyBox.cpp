@@ -1,5 +1,5 @@
 #include "entity/SkyBox.h"
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 using namespace juno;
 
 SkyBox::SkyBox()

@@ -126,7 +126,7 @@ void Dock::init()
     ImGui::GetStyle().ScrollbarSize = 0.6f;
     ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
 
-    startup_img_id = loadTexture("./juno_engine/res/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
+    startup_img_id = AssetManager::getInstance().loadTexture("./juno_engine/res/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
 }
 
 Dock::~Dock()
@@ -186,6 +186,9 @@ void Dock::show_menubar()
 
                 ImGui::EndMenu();
             }
+            ImGui::SameLine(1920-65, 0);
+            ImGui::Text("v0.1.2d");
+
             ImGui::EndMainMenuBar();
             }
     }
@@ -214,8 +217,9 @@ void Dock::show_side_panel(Scene& scene, float dt)
     panel_flags |= ImGuiWindowFlags_NoMove;
     ImGui::Begin("SidePanel", &f_open, panel_flags);    
 
-    ImGui::Text("Frame Time: %.2fs", dt); 
+    //ImGui::Text("Frame Time: %.2fs", dt);
     ImGui::Text((const char*)glGetString(GL_VERSION));
+    ImGui::Text(" ");
     ImGui::Text(" ");
     if(ImGui::CollapsingHeader("Scene"))
     {
@@ -338,7 +342,7 @@ void Dock::showStartupWindow()
         ImGui::Text("[press esc to hide]\t\t\t\t\tv0.1.2d");
         ImGui::Image((void*)(intptr_t)startup_img_id, ImVec2(330, 245));
         //ImGui::Text("You can follow the project @ github.com/jimdox/Juno");
-        ImGui::Text("Templates:\t\t\tRecent Files:");
+        ImGui::Text("Templates:\t\t\t Recent Files:");
         ImGui::Separator();
         ImGui::Columns(2);
 

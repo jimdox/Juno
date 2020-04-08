@@ -54,7 +54,7 @@ static void init(GLFWwindow* window)
 /* clear screen */
 static void clear()
 {
-	glClearColor(0.45f, 0.45f, 0.45f, 1.0f);
+	glClearColor(0.15f, 0.15f, 0.15f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

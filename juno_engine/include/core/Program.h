@@ -1,6 +1,6 @@
 #pragma once
 #include "render/Renderer.h"
-#include "core/AssetLoader.h"
+#include "core/AssetManager.h"
 #include "events/RenderEvent.h"
 
 namespace juno {
@@ -27,7 +27,8 @@ public:
 protected:
 	bool programShouldClose();
 
-	Renderer *renderer;
+	Renderer* renderer;
+	AssetManager* assetManager; 
 	Scene scene;
 	/* time-keeping vars. */
 	float last_time;     
