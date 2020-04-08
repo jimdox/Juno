@@ -18,7 +18,7 @@ ifeq ($(config),debug)
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_DEBUG_BUILD
-  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/jpl -Ilib/imgui -I.
+  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I.
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
@@ -47,7 +47,7 @@ ifeq ($(config),release)
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
-  INCLUDES += -Isrc -Iinclude -Ilib/stb -Ilib/spdlog/include -Ilib/jpl -Ilib/imgui -I.
+  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I.
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
@@ -69,12 +69,6 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
-	$(OBJDIR)/imgui.o \
-	$(OBJDIR)/imgui_demo.o \
-	$(OBJDIR)/imgui_draw.o \
-	$(OBJDIR)/imgui_impl_glfw.o \
-	$(OBJDIR)/imgui_impl_opengl3.o \
-	$(OBJDIR)/imgui_widgets.o \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/Entity.o \
@@ -87,6 +81,7 @@ OBJECTS := \
 	$(OBJDIR)/Panel.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Context.o \
+	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/Light.o \
@@ -95,6 +90,12 @@ OBJECTS := \
 	$(OBJDIR)/TerrainShader.o \
 	$(OBJDIR)/CubeMap.o \
 	$(OBJDIR)/Texture.o \
+	$(OBJDIR)/imgui.o \
+	$(OBJDIR)/imgui_demo.o \
+	$(OBJDIR)/imgui_draw.o \
+	$(OBJDIR)/imgui_impl_glfw.o \
+	$(OBJDIR)/imgui_impl_opengl3.o \
+	$(OBJDIR)/imgui_widgets.o \
 
 RESOURCES := \
 
@@ -153,24 +154,6 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/imgui.o: lib/imgui/imgui.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_demo.o: lib/imgui/imgui_demo.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_draw.o: lib/imgui/imgui_draw.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_impl_glfw.o: lib/imgui/imgui_impl_glfw.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_impl_opengl3.o: lib/imgui/imgui_impl_opengl3.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_widgets.o: lib/imgui/imgui_widgets.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Log.o: src/core/Log.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -207,6 +190,9 @@ $(OBJDIR)/Camera.o: src/render/Camera.cpp
 $(OBJDIR)/Context.o: src/render/Context.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Material.o: src/render/Material.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -229,6 +215,24 @@ $(OBJDIR)/CubeMap.o: src/render/textures/CubeMap.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Texture.o: src/render/textures/Texture.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui.o: vendor/imgui/imgui.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_demo.o: vendor/imgui/imgui_demo.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_draw.o: vendor/imgui/imgui_draw.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_glfw.o: vendor/imgui/imgui_impl_glfw.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_impl_opengl3.o: vendor/imgui/imgui_impl_opengl3.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/imgui_widgets.o: vendor/imgui/imgui_widgets.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

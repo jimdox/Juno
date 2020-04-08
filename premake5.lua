@@ -18,10 +18,13 @@ workspace "Juno"
 	outputdir = "%{cfg.buildcfg}"
 	
 IncludeDir = {}
-IncludeDir["imgui"] = "%{prj.name}/lib/imgui"
-IncludeDir["spdlog"] = "%{prj.name}/lib/spdlog"
-IncludeDir["stb"] = "%{prj.name}/lib/stb"
-IncludeDir["jpl"] = "%{prj.name}/lib/jpl"
+IncludeDir["imgui"] = "%{prj.name}/vendor/imgui"
+IncludeDir["spdlog"] = "%{prj.name}/vendor/spdlog"
+IncludeDir["stb"] = "%{prj.name}/vendor/stb"
+IncludeDir["jpl"] = "%{prj.name}/vendor/jpl"
+IncludeDir["glfw"] = "%{prj.name}/vendor/glfw"
+IncludeDir["glew"] = "%{prj.name}/vendor/glew"
+IncludeDir["glm"] = "%{prj.name}/vendor/glm"
 	
 project "juno_engine"
 	location "juno_engine"
@@ -30,12 +33,22 @@ project "juno_engine"
 	cppdialect "C++17"
 	staticruntime "on"
 	
+	includedirs {
+		"%{prj.name}/vendor/imgui", 
+		"%{prj.name}/vendor/spdlog",
+		"%{prj.name}/vendor/stb",
+		"%{prj.name}/vendor/jpl",
+		"%{prj.name}/vendor/glm"
+	}
+	
 	targetdir ("./bin/%{cfg.buildcfg}/")
 	objdir ("./bin/int/" .. outputdir .. "/%{prj.name}")
 	
 	pchheader "%{prj.name}/pch.h"
 	pchsource "%{prj.name}/pch.cpp"
 	
+	--include "juno_engine/vendor/glm"
+
 	
 	files
 	{
@@ -45,12 +58,11 @@ project "juno_engine"
 		"%{prj.name}/include/events/**.h",
 		"%{prj.name}/include/gui/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/lib/stb/stb_image.h",
 
-		"%{prj.name}/lib/jpl/*.hpp",
-
-		"%{prj.name}/lib/imgui/*.h",
-		"%{prj.name}/lib/imgui/*.cpp",
+		"%{prj.name}/vendor/stb/stb_image.h",
+		"%{prj.name}/vendor/jpl/*.hpp",
+		"%{prj.name}/vendor/imgui/*.h",
+		"%{prj.name}/vendor/imgui/*.cpp",
 	}
 	
 	defines
@@ -62,11 +74,13 @@ project "juno_engine"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/include",
-		"%{prj.name}/lib/stb",
-		"%{prj.name}/lib/spdlog/include",
-		"%{prj.name}/lib/jpl",
-		"%{prj.name}/lib/imgui",
-		"%{prj.name}/"
+		"%{prj.name}/vendor/stb",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/jpl",
+		"%{prj.name}/vendor/imgui",
+		"%{prj.name}/vendor/glm",
+		"%{prj.name}/",
+
 	}
 	
 	links 
@@ -95,21 +109,24 @@ project "sandbox"
 	pchheader "juno_engine/pch.h"
 	pchsource "juno_engine/pch.cpp"
 
+
 	files
 	{
 		"sandbox/**.h",
 		"sandbox/**.cpp",
 		"juno_engine/pch.h",
 		"juno_engine/pch.cpp"
+
 	}
 
 	includedirs
 	{
 		"juno_engine/include",
-		"juno_engine/lib/stb",
-		"juno_engine/lib/jpl",
-		"juno_engine/lib/imgui",
-		"juno_engine/lib/spdlog/include",
+		"juno_engine/vendor/glm",
+		"juno_engine/vendor/stb",
+		"juno_engine/vendor/jpl",
+		"juno_engine/vendor/imgui",
+		"juno_engine/vendor/spdlog/include",
 		"juno_engine"
 	}
 
