@@ -1,10 +1,9 @@
 #include "gui/Dock.h"
 #include "render/glRenderCore.h"
 #include "core/Program.h"
-
+#include "core/EngineConfig.h"
 
 using namespace juno;
-
 //static Renderer* s_renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,0,0));
 
 Dock::Dock() 
@@ -153,6 +152,7 @@ void Dock::update(Scene& scene, float dt)
 
     show_side_panel(scene, dt);
     show_menubar();
+    showDebugWindow();
 
     ImGui::ShowDemoWindow();
 
@@ -329,6 +329,37 @@ void Dock::showTexturePanel()
 
 }
 
+void Dock::enableDebug()
+{
+    f_debug = true;
+}
+
+void Dock::printToDebug(const char* str) 
+{
+    debug_buffer.push_back(str);
+}
+
+void Dock::showDebugWindow()
+{
+    if(f_debug)
+    {
+        bool f_open;
+        ImGuiWindowFlags win_flags = 0;
+        //win_flags |= ImGuiWindowFlags_NoTitleBar;
+        // win_flags |= ImGuiWindowFlags_NoMove;
+        // win_flags |= ImGuiWindowFlags_NoResize;
+        ImGui::SetNextWindowSize(ImVec2(200,100), ImGuiCond_Always);
+        ImGui::Begin("Debug", &f_open, win_flags);
+        for(unsigned int i = 0; i < debug_buffer.size(); i++)
+        {
+            ImGui::Text(debug_buffer[i]);
+        }
+        debug_buffer.clear();
+
+        ImGui::End();
+    }
+}
+
 void Dock::showStartupWindow()
 {
         bool f_open;
@@ -339,7 +370,7 @@ void Dock::showStartupWindow()
         
         ImGui::SetNextWindowPos(ImVec2(1920/2,1080/2), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
         ImGui::Begin("welcome menu", &f_open, win_flags);
-        ImGui::Text("[press esc to hide]\t\t\t\t\tv0.1.2d");
+        ImGui::Text("[esc to hide] \t\t\t\t\t\t v%s", juno::JN_VERSION);
         ImGui::Image((void*)(intptr_t)startup_img_id, ImVec2(330, 245));
         //ImGui::Text("You can follow the project @ github.com/jimdox/Juno");
         ImGui::Text("Templates:\t\t\t Recent Files:");

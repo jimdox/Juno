@@ -46,9 +46,20 @@ project "juno_engine"
 	
 	pchheader "%{prj.name}/pch.h"
 	pchsource "%{prj.name}/pch.cpp"
-	
-	--include "juno_engine/vendor/glm"
-
+		
+	includedirs
+	{
+		"%{prj.name}/src",
+		"%{prj.name}/include",
+		"%{prj.name}/vendor/stb",
+		"%{prj.name}/vendor/spdlog/include",
+		"%{prj.name}/vendor/jpl",
+		"%{prj.name}/vendor/imgui",
+		"%{prj.name}/vendor/glm",
+		"%{prj.name}/",
+		"juno_engine/vendor/glew/include/",
+		"juno_engine/vendor/glew/lib"
+	}
 	
 	files
 	{
@@ -70,28 +81,13 @@ project "juno_engine"
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 	
-	includedirs
-	{
-		"%{prj.name}/src",
-		"%{prj.name}/include",
-		"%{prj.name}/vendor/stb",
-		"%{prj.name}/vendor/spdlog/include",
-		"%{prj.name}/vendor/jpl",
-		"%{prj.name}/vendor/imgui",
-		"%{prj.name}/vendor/glm",
-		"%{prj.name}/",
-
-	}
-	
 	links 
 	{ 
-		"GL",
-		"GLEW",
-		"glfw"
+--
 	}
 
 	filter "configurations:Debug"
-		defines { "JN_DEBUG_BUILD" }
+		defines { "JN_BUILD_DEBUG" }
 		symbols "on"
 
 	filter "configurations:Release"
@@ -109,6 +105,20 @@ project "sandbox"
 	pchheader "juno_engine/pch.h"
 	pchsource "juno_engine/pch.cpp"
 
+	includedirs
+	{
+		"juno_engine/include",
+		"juno_engine/vendor/glm",
+		
+		"juno_engine/vendor/glew/include/",
+		"juno_engine/vendor/glew/lib",
+
+		"juno_engine/vendor/stb",
+		"juno_engine/vendor/jpl",
+		"juno_engine/vendor/imgui",
+		"juno_engine/vendor/spdlog/include",
+		"juno_engine"
+	}
 
 	files
 	{
@@ -116,18 +126,6 @@ project "sandbox"
 		"sandbox/**.cpp",
 		"juno_engine/pch.h",
 		"juno_engine/pch.cpp"
-
-	}
-
-	includedirs
-	{
-		"juno_engine/include",
-		"juno_engine/vendor/glm",
-		"juno_engine/vendor/stb",
-		"juno_engine/vendor/jpl",
-		"juno_engine/vendor/imgui",
-		"juno_engine/vendor/spdlog/include",
-		"juno_engine"
 	}
 
 	links
@@ -142,4 +140,3 @@ project "sandbox"
 	{
 		"STB_IMAGE_IMPLEMENTATION"
 	}
-

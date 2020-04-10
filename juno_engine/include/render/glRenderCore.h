@@ -1,6 +1,6 @@
 #pragma once
 #include "pch.h"
-#include "render/Context.h"
+#include "render/Window.h"
 #define IMGUI_IMPL_OPENGL_LOADER_GLEW
 #include "imgui.h"
 #include "imgui_impl_glfw.h"

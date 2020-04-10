@@ -1,5 +1,5 @@
 #pragma once 
-#include "render/Context.h"
+#include "render/Window.h"
 #include "render/Camera.h"
 #include "entity/Scene.h"
 #include "render/glRenderCore.h"
@@ -16,7 +16,7 @@ public:
 
     Renderer(const Renderer& renderer) = delete;
 
-    Context& getContext();
+    Window& getWindow();
     Camera& getCamera();
     Scene& getScene();
 
@@ -31,7 +31,7 @@ public:
 private:
     Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
 
-    Context context;
+    Window window;
     Scene* scene;
     Camera camera;
     std::shared_ptr<Shader> default_shader;

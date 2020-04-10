@@ -1,5 +1,5 @@
 #pragma once
-#include <GL/glew.h>
+#include "GL/glew.h"
 #include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
@@ -12,13 +12,13 @@
 
 namespace juno {
 
-class Context : public EventListener
+class Window : public EventListener
 {
 public:
-	Context();
-	Context(int width, int height, std::string title);
-	Context(int width, int height, std::string title, bool border);
-	virtual ~Context();
+	Window();
+	Window(int width, int height, std::string title);
+	Window(int width, int height, std::string title, bool border);
+	virtual ~Window();
 
 	void onAttach();
 	void onEvent(const Event& e);
@@ -39,9 +39,8 @@ public:
 	int getHeight();
 	int getWidth();
 
-
 private:
-	Context(const Context& other) {}
+	Window(const Window& other) {}
 
 	GLFWwindow* window;
 	int height;

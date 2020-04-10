@@ -1,6 +1,8 @@
 #define JN_PLATFORM_LINUX
 #define JN_RENDERER_OPENGL
 #include "core/StartPoint.h"
+
+#include "igl3D.h"
 using namespace juno;
 
 
@@ -23,6 +25,7 @@ class SandboxProgram : public juno::Program
 		scene.addLight(light_b);
 		renderer->submit(&scene);
 
+		//renderer->getWindow().getGuiDock().enableDebug();
 
 		/* simulation setup */
 	}
@@ -42,7 +45,7 @@ class SandboxProgram : public juno::Program
 	void onFrameBufferUpdate()
 	{
 		/* update display info */
-
+		//renderer->getWindow().getGuiDock().printToDebug("info %f", delta_x);
 		//scene.getEntities()[0].addPosition(glm::vec3(delta_x, 0, 0));
 		delta_x = 0;
 	}

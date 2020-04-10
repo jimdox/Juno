@@ -107,7 +107,7 @@ void updateInfo(double& momentum, double& potential, double& kinetic, double inf
     kinetic = 0;
 }
 
-void run_sim()
+std::vector<Particle> genParticles()
 {
     double time = 0;
     int i, j, k, l;
@@ -121,4 +121,10 @@ void run_sim()
     particles.reserve(NUM_PARTICLES);
 
     //for(int i = )
+
+}
+
+void updateParticles(std::vector<Particle>& particles)
+{
+
 }

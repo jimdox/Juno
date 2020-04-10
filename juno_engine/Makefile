@@ -17,14 +17,14 @@ ifeq ($(config),debug)
   OBJDIR = ../bin/int/Debug/juno_engine
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_DEBUG_BUILD
-  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I.
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_BUILD_DEBUG
+  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I. -Ivendor/glew/include -Ivendor/glew/lib
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -lGL -lGLEW -lglfw
+  LIBS +=
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
@@ -47,13 +47,13 @@ ifeq ($(config),release)
   PCH = pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -D_CRT_SECURE_NO_WARNINGS
-  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I.
+  INCLUDES += -Ivendor/spdlog -Isrc -Iinclude -Ivendor/stb -Ivendor/spdlog/include -Ivendor/jpl -Ivendor/imgui -Ivendor/glm -I. -Ivendor/glew/include -Ivendor/glew/lib
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += -lGL -lGLEW -lglfw
+  LIBS +=
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
@@ -81,10 +81,10 @@ OBJECTS := \
 	$(OBJDIR)/MainPanel.o \
 	$(OBJDIR)/Panel.o \
 	$(OBJDIR)/Camera.o \
-	$(OBJDIR)/Context.o \
 	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
 	$(OBJDIR)/Renderer.o \
+	$(OBJDIR)/Window.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/SkyBoxShader.o \
@@ -191,9 +191,6 @@ $(OBJDIR)/Panel.o: src/gui/Panel.cpp
 $(OBJDIR)/Camera.o: src/render/Camera.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Context.o: src/render/Context.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Material.o: src/render/Material.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -201,6 +198,9 @@ $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Renderer.o: src/render/Renderer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Window.o: src/render/Window.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: src/render/lights/Light.cpp

@@ -1,4 +1,4 @@
-#include "render/Context.h"
+#include "render/Window.h"
 #include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
@@ -95,7 +95,7 @@ void windowResizeHandler(GLFWwindow* window, int width, int height)
 /* /// End Callbacks /// */
 
 
-Context::Context()
+Window::Window()
 {
 	this->width = 400;
 	this->height = 400;
@@ -104,7 +104,7 @@ Context::Context()
 
 }
 
-Context::Context(int width, int height, const std::string name)
+Window::Window(int width, int height, const std::string name)
 {
 	this->width = width;
 	this->height = height;
@@ -113,7 +113,7 @@ Context::Context(int width, int height, const std::string name)
 }
 
 /* set window border T/F */
-Context::Context(int width, int height, std::string title, bool border)
+Window::Window(int width, int height, std::string title, bool border)
 {
 	this->width = width;
 	this->height = height;	
@@ -126,12 +126,12 @@ Context::Context(int width, int height, std::string title, bool border)
 	init();
 }
 
-Context::~Context()
+Window::~Window()
 {
 	destroy();
 }
 /* closes current glfw window */
-void Context::destroy()
+void Window::destroy()
 {
 	ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
@@ -146,7 +146,7 @@ static void setErrCallback(int code, const char* message)
 	JN_CRIT(error);
 }
 
-void Context::init()
+void Window::init()
 {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Version of GLSL (4.5)
@@ -190,12 +190,12 @@ void Context::init()
 	aspectRatio = this->width / this->height;
 }
 
-void Context::onAttach()
+void Window::onAttach()
 {
 	
 }
 
-void Context::onEvent(const Event& e)
+void Window::onEvent(const Event& e)
 {
 	// if(e.getType() == EventType::WINDOW_RESIZE)
 	// {
@@ -203,7 +203,7 @@ void Context::onEvent(const Event& e)
 	// }
 }
 
-void Context::update(Scene& scene, float dt)
+void Window::update(Scene& scene, float dt)
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	guiDock.update(scene, dt);
@@ -211,42 +211,42 @@ void Context::update(Scene& scene, float dt)
 	glfwPollEvents();
 }
 
-Dock& Context::getGuiDock()
+Dock& Window::getGuiDock()
 {
 	return guiDock;
 }
 
-KeyEventDispatcher& Context::getKeyDispatcher()
+KeyEventDispatcher& Window::getKeyDispatcher()
 {
 	return *s_keyDispatcher;
 }
 
-MouseEventDispatcher& Context::getMouseDispatcher()
+MouseEventDispatcher& Window::getMouseDispatcher()
 {
 	return *s_mouseDispatcher;
 }
 
-WindowEventDispatcher& Context::getWinEventDispatcher()
+WindowEventDispatcher& Window::getWinEventDispatcher()
 {
 	return *s_winDispatcher;
 }
 
-bool Context::isRunning()
+bool Window::isRunning()
 {
 	return !glfwWindowShouldClose(this->window);
 }
 
-int Context::getWidth()
+int Window::getWidth()
 {
 	return width;
 }
 
-int Context::getHeight()
+int Window::getHeight()
 {
 	return height;
 }
 
-GLFWwindow* Context::getWindow()
+GLFWwindow* Window::getWindow()
 {
 	return this->window;
 }

@@ -1,23 +1,15 @@
 #include "core/Program.h"
 #include "core/Log.h"
-
+#include "EngineConfig.h"
 extern juno::Program* createProgram();
 
 namespace juno {
-const std::string JN_VERSION = "v0.0.1.1";
 
 void junoInit()
 {
 	Log::init();
-	JN_INFO("{}: Launching", JN_VERSION);
+	JN_INFO("ver {} -- Launching...", JN_VERSION);
 }
-
-// Program* createProgram()
-// {	
-// 	Program* prog = new Program();
-// 	return prog;
-// }
-
 }
 
 
@@ -28,6 +20,13 @@ int main()
 	program->init();
 	program->run(); 
 	program->exit();
-	JN_CLI_INFO("Closing...");
+	JN_INFO("Closing...");
 	return 0;
 }
+
+/* example of how to init engine */
+// Program* createProgram()
+// {	
+// 	DerivedProgram* prog = new DerivedProgram();
+// 	return prog;
+// }

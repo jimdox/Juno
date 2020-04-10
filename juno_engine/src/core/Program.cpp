@@ -22,8 +22,8 @@ void Program::init()
 	assetManager = &AssetManager::getInstance();
 
 	renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,20.0f,0));
-	renderer->getContext().getWinEventDispatcher().addListener(this);
-	renderer->getContext().getGuiDock().addListener(this);
+	renderer->getWindow().getWinEventDispatcher().addListener(this);
+	renderer->getWindow().getGuiDock().addListener(this);
 	renderer->getCamera().addListener(this);
 	onCreate();
 
@@ -81,10 +81,10 @@ Scene& Program::getScene()
 
 bool Program::programShouldClose()
 {
-	return f_program_should_close || !renderer->getContext().isRunning();
+	return f_program_should_close || !renderer->getWindow().isRunning();
 }
 
 void Program::exit()
 {
-	//render_context->~Context();
+	//render_context->~Window();
 }

@@ -4,10 +4,8 @@
 #include<GL/glew.h>
 #include "entity/Entity.h"
 
-
-/* using singleton semantics to control memory management
-   in a single instance across the program */
-
+/* using singleton schenanagans to control memory management
+   in one instance across the program */
 namespace juno
 {
 class AssetManager
@@ -24,7 +22,6 @@ public:
     std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float>& data, unsigned int dim);
     std::tuple<unsigned int, unsigned int> loadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
                                                      std::vector<float>& normals, std::vector<unsigned int>& indices);
-
 
     std::tuple<GLuint, GLuint> loadShader(const std::string& filepath);
 
