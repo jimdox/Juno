@@ -154,7 +154,7 @@ void Dock::update(Scene& scene, float dt)
     show_menubar();
     showDebugWindow();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     ImGui::Render();
     glRender::renderGui();
