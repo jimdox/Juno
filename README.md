@@ -4,7 +4,7 @@
 
 
 ## Project Setup
-Sandbox is an example project which has everything you need to get started. Currently, since glfw is a git submodule, you will need to install the glfw-dev (or glfw-x11) package on your system. This is an unfortunate extra step, but I am hoping to resolve this for both Windows and Linux soon. Most modern distributions will have glew installed by default, if not, then you will have to install that package also. 
+Sandbox is an example project which has everything you need to get started. Currently, since glfw is not behaving well with gcc + Premake, you will need to install the glfw-dev (or glfw-x11) package on your system. This is an unfortunate extra step, but I am hoping to resolve this for both Windows and Linux soon. Most modern distributions will have glew installed by default, if not, then you will have to install that package also. 
 
 
 ### Status of Loading Custom .obj Files
