@@ -1,6 +1,6 @@
 
 
-![alt text](https://github.com/jimdox/black_box/blob/master/juno_engine/res/snapshot-0-1-2d.jpg)
+![alt text](https://github.com/jimdox/black_box/blob/master/juno_engine/res/snapshot-0-1-2d.png)
 
 
 ## Project Setup
