@@ -41,12 +41,13 @@ public:
 
 private:
 	Window(const Window& other) {}
-
 	GLFWwindow* window;
+	GLFWimage win_icon[1];
+
+	Dock guiDock;
 	int height;
 	int width;
 	std::string title;
-	Dock guiDock;
 
 	KeyEventDispatcher keyDispatcher;
 	MouseEventDispatcher mouseDispatcher;

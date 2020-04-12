@@ -69,6 +69,7 @@ all: prebuild prelink $(TARGET)
 endif
 
 OBJECTS := \
+	$(OBJDIR)/Asset.o \
 	$(OBJDIR)/AssetManager.o \
 	$(OBJDIR)/Log.o \
 	$(OBJDIR)/Program.o \
@@ -83,6 +84,7 @@ OBJECTS := \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
+	$(OBJDIR)/Model.o \
 	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/Window.o \
 	$(OBJDIR)/Light.o \
@@ -155,6 +157,9 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
+$(OBJDIR)/Asset.o: src/core/Asset.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/AssetManager.o: src/core/AssetManager.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -195,6 +200,9 @@ $(OBJDIR)/Material.o: src/render/Material.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Mesh.o: src/render/Mesh.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Model.o: src/render/Model.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Renderer.o: src/render/Renderer.cpp

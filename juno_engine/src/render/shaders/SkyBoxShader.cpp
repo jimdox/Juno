@@ -4,7 +4,7 @@ using namespace juno;
 
 SkyBoxShader::SkyBoxShader(const std::string& filepath)
 {
-    loadShader(filepath);
+    compileShader();
     loc_projectionMatrix = glGetUniformLocation(progID, "projection");
     loc_viewMatrix = glGetUniformLocation(progID, "view");
 }

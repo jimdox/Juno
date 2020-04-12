@@ -19,12 +19,12 @@ private:
 
     const std::array<std::string, 6> DEFAULT_CUBE_MAP_PATH = 
     {
-        "./juno_engine/res/green.png",
-        "./juno_engine/res/green.png",
-        "./juno_engine/res/green.png",
-        "./juno_engine/res/green.png",
-        "./juno_engine/res/green.png",
-        "./juno_engine/res/green.png"
+        "./juno_engine/res/red.png",
+        "./juno_engine/res/red.png",
+        "./juno_engine/res/red.png",
+        "./juno_engine/res/red.png",
+        "./juno_engine/res/red.png",
+        "./juno_engine/res/red.png"
     };
 
 };

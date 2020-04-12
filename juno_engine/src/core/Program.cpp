@@ -19,7 +19,7 @@ Program::~Program()
 
 void Program::init()
 {
-	assetManager = &AssetManager::getInstance();
+	assetManager = &AssetManager::get();
 
 	renderer = &Renderer::init(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,20.0f,0));
 	renderer->getWindow().getWinEventDispatcher().addListener(this);

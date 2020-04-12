@@ -7,12 +7,12 @@ using namespace juno;
 Texture::Texture(const std::string& filepath, TextureType tx_type) : filepath(filepath), tex_type(tex_type)
 {
 	transparency = false;
-	textureID = AssetManager::getInstance().loadTexture(filepath, GL_TEXTURE_2D, tex_type);
+	textureID = AssetManager::get().loadTextureFile(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 Texture::Texture(const std::string& filepath, TextureType tx_type, bool transp) : filepath(filepath), tex_type(tx_type), transparency(transp)
 {	
-	textureID = AssetManager::getInstance().loadTexture(filepath, GL_TEXTURE_2D, tex_type);
+	textureID = AssetManager::get().loadTextureFile(filepath, GL_TEXTURE_2D, tex_type);
 }
 
 Texture::Texture(TextureType tx_type) : filepath(""), tex_type(tx_type)

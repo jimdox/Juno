@@ -2,7 +2,7 @@
 #include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
-#include "core/MathUtils.h"
+//#include "core/AssetManager.h"
 
 #ifdef JN_RENDERER_OPENGL
 	#include "glRenderCore.h"
@@ -13,10 +13,9 @@
 /*
 	Rendering context: manages the window, initialization of rendering environment. 
 */
-
 using namespace juno;
 
-/* pass these to glfw callbacks to link to Event system */
+/* These get passed to glfw callbacks to get IO events */
 static KeyEventDispatcher* s_keyDispatcher;
 static MouseEventDispatcher* s_mouseDispatcher;
 static WindowEventDispatcher* s_winDispatcher;
@@ -94,14 +93,11 @@ void windowResizeHandler(GLFWwindow* window, int width, int height)
 }	
 /* /// End Callbacks /// */
 
-
 Window::Window()
 {
-	this->width = 400;
-	this->height = 400;
+	this->width = 1920;
+	this->height = 1080;
 	this->title = " ";
-
-
 }
 
 Window::Window(int width, int height, const std::string name)
@@ -184,10 +180,19 @@ void Window::init()
 
 	// GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	// glfwSetCursor(window, cursor);
+
+	// win_icon[0].pixels = stbi_load("./juno_engine/res/red.png", &win_icon[0].width, &win_icon[0].height, 0, 4);
+	// if(win_icon[0].pixels)
+	// {
+	// 	glfwSetWindowIcon(window, 1, win_icon);
+	// 	JN_INFO("loaded successfully.");
+	// }
+
 	glRender::init(window);
 	guiDock.init();
-
 	aspectRatio = this->width / this->height;
+
+
 }
 
 void Window::onAttach()

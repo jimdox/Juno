@@ -1,26 +1,16 @@
 #pragma once
 #include "pch.h"
 #include "render/textures/Texture.h"
-#include "core/Log.h"
-
-
+#include "render/Material.h"
+#include "core/Asset.h"
 namespace juno {
 
-struct Material 
-{
-	glm::vec3 baseColor = glm::vec3(0.5, 0.5, 0.5);
-	float reflectivity;
-	float shineDamper;
-	std::vector<Texture> diffuseTextures;
-	std::vector<Texture> specularTextures;
-};
 
-
-class Mesh
+class Mesh : public Asset
 {
 public:
 	//Mesh();
-	Mesh(unsigned int vao, unsigned int numIndices, unsigned int numVertices);
+	Mesh(const std::string& filepath);
 
 	// Mesh(const Mesh& mesh)
 	// {
@@ -32,12 +22,13 @@ public:
 
 	virtual ~Mesh();
 	
-	void addTexture(Texture& tex);
+	//void addTexture(Texture& tex);
 	void setMaterial(Material& mat);
 	
 	unsigned int getVaoID();
-	std::vector<Texture>& getDiffuseTextures();
-	std::vector<Texture>& getSpecTextures();
+	// std::vector<Texture>& getDiffuseTextures();
+	// std::vector<Texture>& getSpecTextures();
+	std::string& getFilepath();
 	Material& getMaterial();
 	
 
@@ -57,9 +48,11 @@ public:
 protected:
 	Material material;
 	bool f_textured;
-	unsigned int vao_id;
+	unsigned int vaoID;
 	unsigned int numVertices;
 	unsigned int numIndices;
+
+private: 
 };
 
 }

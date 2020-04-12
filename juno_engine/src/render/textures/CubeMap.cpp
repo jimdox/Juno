@@ -9,7 +9,7 @@ CubeMap::CubeMap() : Texture(TX_DIFFUSE)
 
 CubeMap::CubeMap(std::array<std::string, 6>& texturePaths, TextureType txType) : Texture(txType), filepaths(texturePaths)
 {
-    textureID = AssetManager::getInstance().loadCubeMap(texturePaths, txType);
+    textureID = AssetManager::get().loadCubeMapFiles(texturePaths, txType);
 
 }
 

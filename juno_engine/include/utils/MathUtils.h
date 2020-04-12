@@ -4,6 +4,13 @@
 namespace juno
 {
 
+inline float max(float a, float b)
+{
+    if(a > b)
+        return a;
+    return b;
+}
+
 inline float toRadians(float degrees)
 {
     return degrees * (M_PI/180.0f);

@@ -11,7 +11,7 @@
 #include "render/Mesh.h"
 #include "render/textures/Texture.h"
 #include "core/Log.h"
-#include "core/MathUtils.h"
+#include "utils/MathUtils.h"
 #include "render/shaders/TerrainShader.h"
 #include "entity/terrain/Terrain.h"
 #include "render/shaders/SkyBoxShader.h"
@@ -88,19 +88,19 @@ static void setBackFaceCulling(bool flag)
 /* render static mesh */
 static void render(juno::Mesh *m, juno::Shader &shader)
 {
-	juno::Mesh mesh = *m;
-	glBindVertexArray(mesh.getVaoID());
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
-	/* draw entity */
-	//JN_CLI_WARN("RENDERING...");
-	glDrawElements(GL_TRIANGLES, mesh.getNumIndices(), GL_UNSIGNED_INT, 0);
-	/* --- */
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glBindVertexArray(0);
+	// juno::Mesh mesh = *m;
+	// glBindVertexArray(mesh.getVaoID());
+	// glEnableVertexAttribArray(0);
+	// glEnableVertexAttribArray(1);
+	// glActiveTexture(GL_TEXTURE0);
+	// glBindTexture(GL_TEXTURE_2D, mesh.getDiffuseTextures()[0].getID());
+	// /* draw entity */
+	// //JN_CLI_WARN("RENDERING...");
+	// glDrawElements(GL_TRIANGLES, mesh.getNumIndices(), GL_UNSIGNED_INT, 0);
+	// /* --- */
+	// glDisableVertexAttribArray(0);
+	// glDisableVertexAttribArray(1);
+	// glBindVertexArray(0);
 	
 }
 
@@ -140,7 +140,7 @@ static void instancedEntityRender(std::vector<juno::Entity>& entities, std::shar
 	glm::mat4 transform; 
 	shader->loadMaterialVars(entities[0].getMesh().getMaterial());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, entities[0].getMesh().getDiffuseTextures()[0].getID());
+	//glBindTexture(GL_TEXTURE_2D, entities[0].getMesh().getDiffuseTextures()[0].getID());
 	unsigned int num_indices = entities[0].getMesh().getNumIndices();
 
 	for(unsigned int i = 0; i < entities.size(); i++)

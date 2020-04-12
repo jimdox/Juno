@@ -10,7 +10,7 @@
 // public:
 //     IOCallback(const IOCallback&) = delete;
 
-//     static IOCallback& getInstance()
+//     static IOCallback& get()
 //     {
 //         return s_instance;
 //     }

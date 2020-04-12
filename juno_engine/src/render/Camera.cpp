@@ -1,10 +1,9 @@
 #include "render/Camera.h"
 #include "core/EngineConfig.h"
 #include "core/Log.h"
-#include "core/MathUtils.h"
+#include "utils/MathUtils.h"
 #include "events/RenderEvent.h"
 using namespace juno;
-
 
 Camera::Camera(glm::vec3 pos, glm::vec3 rot) : pivot(pos)
 {
@@ -89,54 +88,48 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 }
 
-
 void Camera::update()
 {
 	delta_pos = glm::vec3(0,0,0);
-	float CAM_MOVE_SPEED = 0.4f;
+	float CAM_MOVE_SPEED = 0.25f;
 	
-	if(keyboard.isKeyDown(GLFW_KEY_W))
+	if(keyboard.isKeyDown(GLFW_KEY_UP))
 	{
 		delta_pos.z = cosf(toRadians(angle_around_pivot));  
 		delta_pos.x = sinf(toRadians(angle_around_pivot));
-	} else if(keyboard.isKeyDown(GLFW_KEY_S))
+	} else if(keyboard.isKeyDown(GLFW_KEY_DOWN))
 	{
 		delta_pos.z = -cosf(toRadians(angle_around_pivot));
 		delta_pos.x = -sinf(toRadians(angle_around_pivot));
 	}
-	
-	if(keyboard.isKeyDown(GLFW_KEY_R))
-	{
-		delta_pos.y = 1.1;
-	} else if(keyboard.isKeyDown(GLFW_KEY_F)) {
-		delta_pos.y = -1.1;
-	}
 
-	if(keyboard.isKeyDown(GLFW_KEY_D))
+	if(keyboard.isKeyDown(GLFW_KEY_RIGHT))
 	{
 		delta_pos.x -= cosf(toRadians(angle_around_pivot));
 		delta_pos.z += sinf(toRadians(angle_around_pivot));
-	} else if(keyboard.isKeyDown(GLFW_KEY_A)) {
+	} else if(keyboard.isKeyDown(GLFW_KEY_LEFT)) {
 		delta_pos.x += cosf(toRadians(angle_around_pivot));
 		delta_pos.z -= sinf(toRadians(angle_around_pivot));
 	}
+
 	delta_pos *= CAM_MOVE_SPEED;
 	pivot += delta_pos;
 	calculatePosition();
 }
 
-
 /* 3rd person camera */
 void Camera::calculatePosition()
 {
 	distance_to_pivot += mouse.getDScroll()*1.5f;
+	distance_to_pivot = max(distance_to_pivot, 0.001f);
 
 	if(mouse.isButtonDown(MouseCode::M_BUTTON_MID))
 	{
 		if(keyboard.isKeyDown(GLFW_KEY_LEFT_SHIFT) || keyboard.isKeyDown(GLFW_KEY_RIGHT_SHIFT))
 		{
-			float dx = mouse.getDX() * 0.02f;
-			float dy = mouse.getDY() *  0.02f;
+			float dx = mouse.getDX() * max(distance_to_pivot, 2.0f)/1000.0f;
+			float dy = mouse.getDY() * max(distance_to_pivot, 2.0f)/1000.0f;
+
 			pivot.x -= dx * cosf(toRadians(yaw)) - dy * sinf(toRadians(pitch)) * sinf(toRadians(yaw));
 			pivot.y += dy * cosf(toRadians(pitch));
 			pivot.z -= dx * sinf(toRadians(yaw)) + dy * sinf(toRadians(pitch)) * cosf(toRadians(yaw));

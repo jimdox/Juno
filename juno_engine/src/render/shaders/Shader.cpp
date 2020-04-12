@@ -1,21 +1,20 @@
 #include "render/shaders/Shader.h"
-#include <ios>
-#include <sstream>
-#include "core/Log.h"
-#include "core/MathUtils.h"
 #include "core/AssetManager.h"
+#include "utils/MathUtils.h"
 
 using namespace juno;
 
 Shader::Shader()
 {
-	loadShader("./juno_engine/res/shaders/basic");
+	filepath = "./juno_engine/res/shaders/basic";
+	compileShader();
 	cacheUniformLocations();
 }
 
 Shader::Shader(const std::string& filepath)
 {
-	loadShader(filepath);
+	this->filepath = filepath;
+	compileShader();
 	cacheUniformLocations();
 }
 
@@ -24,9 +23,9 @@ Shader::~Shader()
 
 }
 
-bool Shader::loadShader(const std::string& filepath)
+bool Shader::compileShader()
 {
-	auto[vertexShader, fragmentShader] = AssetManager::getInstance().loadShader(filepath);
+	auto[vertexShader, fragmentShader] = AssetManager::get().loadShaderFiles(filepath);
 
 
 	JN_INFO("Linking shaders");
@@ -57,6 +56,11 @@ GLuint Shader::getID()
 {
 	const GLuint p = progID;
 	return p;
+}
+
+std::string& Shader::getFilepath()
+{
+	return filepath;
 }
 
 /* binds shader */
@@ -144,9 +148,9 @@ void Shader::loadLightUniforms(std::vector<Light> &lights)
 
 void Shader::loadMaterialVars(Material material)
 {
-	loadFloat(loc_reflectivity, material.reflectivity);
-	loadFloat(loc_shineDamper, material.shineDamper);
-	loadFloat3(loc_baseColor, material.baseColor);
+	loadFloat(loc_reflectivity, material.getReflectivity());
+	loadFloat(loc_shineDamper, material.getShineDamper());
+	loadFloat3(loc_baseColor, material.getBaseColor());
 }
 
 /* GLSL uniform loaders */

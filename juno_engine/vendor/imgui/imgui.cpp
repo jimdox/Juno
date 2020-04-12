@@ -4268,7 +4268,7 @@ bool ImGui::IsMouseDown(int button)
     return g.IO.MouseDown[button];
 }
 
-bool ImGui::IsAnyMouseDown()
+bool ImGui:: IsAnyMouseDown()
 {
     ImGuiContext& g = *GImGui;
     for (int n = 0; n < IM_ARRAYSIZE(g.IO.MouseDown); n++)

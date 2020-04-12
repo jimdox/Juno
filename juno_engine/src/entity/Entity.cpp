@@ -36,6 +36,16 @@ glm::vec3& Entity::getRotation()
 	return this->rotation;
 }
 
+glm::vec3& Entity::getVelocity()
+{
+	return velocity;
+}
+
+glm::vec3& Entity::getRotVelocity()
+{
+	return rot_velocity;
+}
+
 float Entity::getScale()
 {
 	return this->scale;
@@ -54,6 +64,16 @@ void Entity::setPosition(const glm::vec3& pos)
 void Entity::setRotation(const glm::vec3& rot)
 {
 	this->rotation = rot;
+}
+
+void Entity::setVelocity(const glm::vec3& vel)
+{
+	this->velocity = vel;
+}
+
+void Entity::setRotVelocity(const glm::vec3& rvel)
+{
+	this->rot_velocity = rvel;
 }
 
 void Entity::setScale(float s)

@@ -1,4 +1,5 @@
 #include "render/Mesh.h"
+#include "core/AssetManager.h"
 using namespace juno;
 
 
@@ -12,11 +13,12 @@ using namespace juno;
 // }
 
 
-Mesh::Mesh(unsigned int vao, unsigned int numIndices, unsigned int numVertices) : vao_id(vao), numIndices(numIndices), numVertices(numVertices)
-{
-	this->material.reflectivity = 0.2f;
-	this->material.shineDamper = 0.95f;
-	this->material.baseColor = glm::vec3(0.55f,0.55f, 0.55f);
+Mesh::Mesh(const std::string& filepath)
+{	
+	auto [id, indices, verts] = AssetManager::get().loadOBJFile(filepath);
+	this->vaoID = id;
+	this->numIndices = indices;
+	this->numVertices = verts;
 	f_textured = false;
 }
 
@@ -26,21 +28,21 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::addTexture(Texture& tex)
-{
-	if(tex.getTexType() == TX_DIFFUSE)
-	{
-		if(!f_textured)
-		{
-			f_textured = true;
-		}
-		this->material.diffuseTextures.push_back(tex);
-	}
-	else if(tex.getTexType() == TX_SPECULAR)
-	{
-		this->material.specularTextures.push_back(tex);
-	}
-}
+// void Mesh::addTexture(Texture& tex)
+// {
+// 	if(tex.getTexType() == TX_DIFFUSE)
+// 	{
+// 		if(!f_textured)
+// 		{
+// 			f_textured = true;
+// 		}
+// 		this->material.diffuseTextures.push_back(tex);
+// 	}
+// 	else if(tex.getTexType() == TX_SPECULAR)
+// 	{
+// 		this->material.specularTextures.push_back(tex);
+// 	}
+// }
 
 void Mesh::setMaterial(Material& mat)
 {
@@ -52,14 +54,14 @@ Material& Mesh::getMaterial()
 	return material;
 }
 
-std::vector<Texture>& Mesh::getDiffuseTextures()
-{
-	return material.diffuseTextures;
-}
-std::vector<Texture>& Mesh::getSpecTextures()
-{
-	return material.specularTextures;
-}
+// std::vector<Texture>& Mesh::getDiffuseTextures()
+// {
+// 	return material.diffuseTextures;
+// }
+// std::vector<Texture>& Mesh::getSpecTextures()
+// {
+// 	return material.specularTextures;
+// }
 
 unsigned int Mesh::getNumIndices()
 {
@@ -68,7 +70,7 @@ unsigned int Mesh::getNumIndices()
 
 unsigned int Mesh::getVaoID()
 {
-	return this->vao_id;
+	return this->vaoID;
 }
 
 unsigned int Mesh::getNumVertices()
@@ -83,7 +85,7 @@ bool Mesh::isTextured()
 
 void Mesh::assignVAO(unsigned int id, unsigned int numIndices, unsigned int numVertices)
 {
-	this->vao_id = id;
+	this->vaoID = id;
 	this->numIndices = numIndices;
 	this->numVertices = numVertices;
 }

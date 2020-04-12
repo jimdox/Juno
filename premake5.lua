@@ -88,10 +88,12 @@ project "juno_engine"
 
 	filter "configurations:Debug"
 		defines { "JN_BUILD_DEBUG" }
+		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
-	optimize "on"	
+		runtime "Release"
+		optimize "on"	
 
 project "sandbox"
 	location "sandbox"

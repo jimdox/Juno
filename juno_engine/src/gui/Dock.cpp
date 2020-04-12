@@ -125,7 +125,7 @@ void Dock::init()
     ImGui::GetStyle().ScrollbarSize = 0.6f;
     ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
 
-    startup_img_id = AssetManager::getInstance().loadTexture("./juno_engine/res/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
+    startup_img_id = AssetManager::get().loadTextureFile("./juno_engine/res/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
 }
 
 Dock::~Dock()

@@ -4,18 +4,21 @@
 #include "render/Camera.h"
 #include "render/lights/Light.h"
 #include "render/Mesh.h"
+#include "render/Material.h"
 
 namespace juno {
+//enum ShaderType { VERTEX, FRAGMENT, GEOMETRY };
 class Shader
 {
 public:
 	Shader();
 	Shader(const std::string& filepath);
 	virtual ~Shader();
-	bool loadShader(const std::string& filepath);
+
 	void setActive();
 	void unbindProgram();
 	GLuint getID();
+	std::string& getFilepath();
 
 	void bindAllAttribs();
 	void bindAttrib(unsigned int attrib, const std::string& var);
@@ -39,12 +42,11 @@ public:
 	void loadMat4(unsigned int loc, glm::mat4& mat) const;
 
 protected:
+	bool compileShader();
 	GLuint progID;
-	std::string shaderPath;
-	enum Shdr { VERTEX, FRAGMENT, GEOMETRY };
-	std::string vertFilePath;
-	std::string fragFilePath;
+	std::string filepath;
 	
+	/* uniform caching: */
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
 	unsigned int loc_viewMatrix;

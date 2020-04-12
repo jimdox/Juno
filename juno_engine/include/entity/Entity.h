@@ -13,11 +13,15 @@ public:
 	Mesh& getMesh();
 	glm::vec3& getPosition();
 	glm::vec3& getRotation();
+	glm::vec3& getVelocity();
+	glm::vec3& getRotVelocity();
 	float getScale();
 	std::string& getName();
 
 	void setPosition(const glm::vec3& pos);
 	void setRotation(const glm::vec3& rot);
+	void setVelocity(const glm::vec3& vel);
+	void setRotVelocity(const glm::vec3& rvel);
 	void setScale(float scale);
 
 	void addPosition(const glm::vec3& delta_pos);
@@ -30,6 +34,8 @@ private:
 	Mesh mesh;
 	glm::vec3 position;
 	glm::vec3 rotation;
+	glm::vec3 velocity;
+	glm::vec3 rot_velocity;
 	
 	float scale;
 	bool visible;
