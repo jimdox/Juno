@@ -144,77 +144,49 @@ std::pair<unsigned int, unsigned int> AssetManager::loadToVAO(std::vector<float>
     return {vaoID, numIndices};
 }   
 
-
-std::tuple<GLuint, GLuint> AssetManager::loadShaderFiles(const std::string& filepath)
+unsigned int AssetManager::loadShaderFile(const std::string& filepath, GLenum shaderType)
 {
-    GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER); 
-    GLuint fragShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint shaderID = glCreateShader(shaderType);
+    std::string fileExt;
+    if(shaderType == GL_VERTEX_SHADER)
+    {
+        fileExt = ".vert";
+    } else if(shaderType == GL_FRAGMENT_SHADER)
+    {
+        fileExt = ".frag";    
 
-	std::string vertFilePath = filepath + ".vert";
-	std::string fragFilePath = filepath + ".frag";
-    std::string vertSource;
-	std::string fragSource;
+    } else if(shaderType == GL_COMPUTE_SHADER)
+    {
+        fileExt = ".comp";
+    } else if(shaderType == GL_GEOMETRY_SHADER)
+    {
+        fileExt = ".geom";
+    }
 
-	std::ifstream sourceStream(vertFilePath, std::ios::in);
+    std::string fullFilePath = filepath + fileExt;
+    std::string source;
+
+	std::ifstream sourceStream(fullFilePath, std::ios::in);
 	if (sourceStream.is_open())
 	{
 		std::stringstream src;
 		src << sourceStream.rdbuf();
-		vertSource = src.str();
+		source = src.str();
 		sourceStream.close();
 	}
 	else {
-		JN_CLI_ERR("Error: cannot access file: " + vertFilePath);
-	}
-
-	std::ifstream sourceStream2(fragFilePath, std::ios::in);
-	if (sourceStream2.is_open())
-	{
-
-		std::stringstream src;
-		src << sourceStream2.rdbuf();
-		fragSource = src.str();
-		sourceStream2.close();
-	}
-	else {
-		JN_CLI_ERR("Error: cannot access file: " + fragFilePath);
-		return{0,0};
+		JN_CLI_ERR("Error: cannot access file: " + fullFilePath);
 	}
 
 	GLint compileFlag = GL_FALSE;
 	int errorLength;
-	JN_WARN("Compiling shaders");
+	JN_WARN("Compiling shader: {}", fullFilePath);
 
-	char const* vertSrcPtr = vertSource.c_str();
-	char const* fragSrcPtr = fragSource.c_str();
+	char const* srcPtr = source.c_str();
 
-	glShaderSource(vertexShaderID, 1, &vertSrcPtr, NULL);
-	glCompileShader(vertexShaderID);
-
-	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &compileFlag);
-	glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &errorLength);
-
-	if (errorLength > 0)
-	{
-		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(vertexShaderID, errorLength, NULL, &errorMsg[0]);
-		std::string message(errorMsg.begin(), errorMsg.end());
-		JN_CRIT(message);
-	}
-
-	glShaderSource(fragShaderID, 1, &fragSrcPtr, NULL);
-	glCompileShader(fragShaderID);
-	glGetShaderiv(fragShaderID, GL_COMPILE_STATUS, &compileFlag);
-	glGetShaderiv(fragShaderID, GL_INFO_LOG_LENGTH, &errorLength);
-
-	if (errorLength > 0)
-	{
-		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(fragShaderID, errorLength, NULL, &errorMsg[0]);
-		std::string message(errorMsg.begin(), errorMsg.end());
-		JN_CRIT(message);
-	}
-    return {vertexShaderID, fragShaderID};
+	glShaderSource(shaderID, 1, &srcPtr, NULL);
+	glCompileShader(shaderID);
+    return shaderID;
 }
 
 unsigned int AssetManager::loadTextureFile(const std::string& filepath, GLenum format, juno::TextureType texType)

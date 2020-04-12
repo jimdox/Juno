@@ -13,7 +13,4 @@ void Log::init()
 	clientLogger = spdlog::stdout_color_mt("User");
 	clientLogger->set_level(spdlog::level::trace);
 
-
-
-
 }

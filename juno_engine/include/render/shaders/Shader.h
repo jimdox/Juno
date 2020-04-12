@@ -42,11 +42,13 @@ public:
 	void loadMat4(unsigned int loc, glm::mat4& mat) const;
 
 protected:
-	bool compileShader();
+	void compileShader();
+	bool linkErrorCheck(GLuint id, GLenum type);
 	GLuint progID;
 	std::string filepath;
 	
 	/* uniform caching: */
+
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
 	unsigned int loc_viewMatrix;

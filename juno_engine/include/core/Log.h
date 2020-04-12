@@ -33,4 +33,4 @@ private:
 #define JN_CLI_INFO(...) ::juno::Log::clientLog()->info(__VA_ARGS__)
 #define JN_CLI_WARN(...) ::juno::Log::clientLog()->warn(__VA_ARGS__)
 #define JN_CLI_CRIT(...) ::juno::Log::clientLog()->critical(__VA_ARGS__)
-
+#define JN_CLI_TRACE(...) ::juno::Log::clientLog()->trace(__VA_ARGS__)

@@ -23,19 +23,26 @@ Shader::~Shader()
 
 }
 
-bool Shader::compileShader()
+void Shader::compileShader()
 {
-	auto[vertexShader, fragmentShader] = AssetManager::get().loadShaderFiles(filepath);
+	GLuint vertShader = AssetManager::get().loadShaderFile(filepath, GL_VERTEX_SHADER);
+	GLuint fragShader = AssetManager::get().loadShaderFile(filepath, GL_FRAGMENT_SHADER);
 
 
 	JN_INFO("Linking shaders");
 	this->progID = glCreateProgram();
 
-	glAttachShader(progID, vertexShader);
-	glAttachShader(progID, fragmentShader);
+	glAttachShader(progID, vertShader);
+	glAttachShader(progID, fragShader);
 	bindAllAttribs();
 	glLinkProgram(progID);
 
+	linkErrorCheck(vertShader, GL_VERTEX_SHADER);
+	linkErrorCheck(fragShader, GL_FRAGMENT_SHADER);
+}
+
+bool Shader::linkErrorCheck(GLuint id, GLenum type)
+{
 	int errorLength;
 	GLint linkStatus;
 	glGetProgramiv(progID, GL_LINK_STATUS, &linkStatus);
@@ -44,12 +51,30 @@ bool Shader::compileShader()
 	if (errorLength > 0)
 	{
 		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(fragmentShader, errorLength, NULL, &errorMsg[0]);
+		glGetShaderInfoLog(id, errorLength, NULL, &errorMsg[0]);
 		std::string message(errorMsg.begin(), errorMsg.end());
-		JN_CRIT("Shader linking failed!");
-		JN_CRIT(message);
+
+		std::string shaderTypeName;
+		if(type == GL_VERTEX_SHADER)
+		{
+			shaderTypeName = "Vertex";
+		} else if(type == GL_FRAGMENT_SHADER)
+		{
+			shaderTypeName = "Fragment";
+		} else if(type == GL_COMPUTE_SHADER)
+		{
+			shaderTypeName = "Compute";
+		} else if(type == GL_GEOMETRY_SHADER)
+		{
+			shaderTypeName = "Geometry";
+		}
+
+		JN_CLI_CRIT("Error trying to link {} Shader!", shaderTypeName);
+		JN_CLI_TRACE(message);
+		//std::cerr << message;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 GLuint Shader::getID()

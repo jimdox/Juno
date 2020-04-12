@@ -22,7 +22,7 @@ public:
 
     unsigned int findAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath);
     Shader& loadShader(const std::string& filepath);
-    std::tuple<GLuint, GLuint> loadShaderFiles(const std::string& filepath);
+    GLuint loadShaderFile(const std::string& filepath, GLenum shaderType);
     Shader& getDefaultShader();
 
     //bool textureIsLoaded(const std::string& filepath);
