@@ -1,4 +1,5 @@
 #version 450 core
+
 in vec3 baseColor;
 in vec3 surfaceNormal;
 in vec3 toLightDir[4];

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "core/Program.h"
 #include "core/Log.h"
+#include "render/glRenderCore.h"
 
 #define MIN_FRAME_TIME 1.0f/240.0f
 using namespace juno;

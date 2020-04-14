@@ -39,7 +39,7 @@ std::vector<Light>& Scene::getLights()
     return lights;
 }
 
-SkyBox& Scene::getSkyBox()
-{
-    return skybox;
-}
+// SkyBox& Scene::getSkyBox()
+// {
+//     return skybox;
+// }

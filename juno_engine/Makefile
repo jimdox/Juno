@@ -79,8 +79,6 @@ OBJECTS := \
 	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Dock.o \
 	$(OBJDIR)/GuiImage.o \
-	$(OBJDIR)/MainPanel.o \
-	$(OBJDIR)/Panel.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
@@ -88,6 +86,7 @@ OBJECTS := \
 	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/Window.o \
 	$(OBJDIR)/Light.o \
+	$(OBJDIR)/ComputeShader.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/SkyBoxShader.o \
 	$(OBJDIR)/TerrainShader.o \
@@ -187,12 +186,6 @@ $(OBJDIR)/Dock.o: src/gui/Dock.cpp
 $(OBJDIR)/GuiImage.o: src/gui/GuiImage.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/MainPanel.o: src/gui/MainPanel.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Panel.o: src/gui/Panel.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/render/Camera.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -212,6 +205,9 @@ $(OBJDIR)/Window.o: src/render/Window.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: src/render/lights/Light.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/ComputeShader.o: src/render/shaders/ComputeShader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: src/render/shaders/Shader.cpp

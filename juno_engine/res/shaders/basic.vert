@@ -8,8 +8,9 @@ out vec3 toLightDir[4];
 out vec3 cameraDir;
 
 uniform mat4 model;
-uniform mat4 projection;
 uniform mat4 view;
+uniform mat4 projection;
+
 uniform vec3 lightPosition[4];
 uniform vec3 in_baseColor;
 

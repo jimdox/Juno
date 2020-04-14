@@ -256,9 +256,13 @@ void Dock::show_side_panel(Scene& scene, float dt)
 
 void Dock::showScenePanel(Scene& scene)
 {    
-    //float v4f[4] = {0, 0, 0, 0};
-    if(ImGui::TreeNode("Lights"))
-    {
+
+    ImGuiWindowFlags winFlags = 0;
+    winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
+    ImGui::BeginChild("Scene Info", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 300), true, winFlags);
+
+    //float v4f[4] = {0, 0, 0, 0}
+    ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Lights");
         std::vector<Light>& lights = scene.getLights();
         float input_data[MAX_NUM_LIGHTS][3];
 
@@ -272,18 +276,19 @@ void Dock::showScenePanel(Scene& scene)
             ImGui::InputFloat3(light_name.c_str(), input_data[i], 1, 0);         
             lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
         }
-        ImGui::TreePop();
-    }
-    if(ImGui::TreeNode("Entities"))
-    {
+        //ImGui::TreePop();
+    ImGui::Separator();
+    ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Entities");
+
         std::vector<Entity>& entities = scene.getEntities();
         for(int i = 0; i < entities.size(); i++)
         {
-            ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), entities[i].getName().c_str());
+            ImGui::TextColored(ImVec4(0.2f, 0.72f, 0.75f, 1.0f), entities[i].getName().c_str());
             ImGui::Text("  x:%.1f y:%.1f z:%.1f",entities[i].getPosition().x, entities[i].getPosition().y, entities[i].getPosition().z);
         }
-        ImGui::TreePop();
-    }
+        //ImGui::TreePop();
+    
+    ImGui::EndChild();
 
 }
 
@@ -316,7 +321,17 @@ void Dock::showPhysicsPanel()
 
 void Dock::showShaderPanel()
 {
+    ImGuiWindowFlags winFlags = 0;
+    winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
+    ImGui::BeginChild("Loaded Shaders", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 200), true, winFlags);
     
+    std::map<unsigned int, std::unique_ptr<Shader>>& shaderMap = *AssetManager::get().getShaderMap();
+    for(auto itr = shaderMap.begin(); itr != shaderMap.end(); ++itr)   
+    {
+        ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), "Shader:%s", itr->second->getFilepath().c_str());
+
+    }
+    ImGui::EndChild();
 }
 
 void Dock::showObjectPanel()
@@ -327,6 +342,27 @@ void Dock::showObjectPanel()
 void Dock::showTexturePanel()
 {
 
+    ImGuiWindowFlags winFlags = 0;
+    winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
+    ImGui::BeginChild("Loaded Textures", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 300), true, winFlags);
+    
+    std::map<unsigned int, std::unique_ptr<Texture>>& texMap = *AssetManager::get().getTextureMap();
+    for(auto itr = texMap.begin(); itr != texMap.end(); ++itr)   
+    {
+        ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), "Texture %d", itr->second->getID()-1);
+
+        ImGui::Image((void*)(intptr_t)itr->second->getID(), ImVec2(120, 120));
+    }
+
+    // for (int i = 0; i < 100; i++)
+    // {
+    //     ImGui::Text("%04d: scrollable region", i);
+    //     // if (goto_line && line == i)
+    //     //     ImGui::SetScrollHereY();
+    // }
+    // if (goto_line && line >= 100)
+    //     ImGui::SetScrollHereY();
+    ImGui::EndChild();
 }
 
 void Dock::enableDebug()

@@ -6,9 +6,7 @@ using namespace juno;
 
 Shader::Shader()
 {
-	filepath = "./juno_engine/res/shaders/basic";
-	compileShader();
-	cacheUniformLocations();
+
 }
 
 Shader::Shader(const std::string& filepath)
@@ -25,11 +23,14 @@ Shader::~Shader()
 
 void Shader::compileShader()
 {
-	GLuint vertShader = AssetManager::get().loadShaderFile(filepath, GL_VERTEX_SHADER);
-	GLuint fragShader = AssetManager::get().loadShaderFile(filepath, GL_FRAGMENT_SHADER);
+	GLuint vertShader = AssetManager::get().loadShaderComponentFile(filepath, GL_VERTEX_SHADER);
+	GLuint fragShader = AssetManager::get().loadShaderComponentFile(filepath, GL_FRAGMENT_SHADER);
 
+	// GLint *shaderIDs = AssetManager::get().loadShaderFile(filepath);
+	// GLuint vertShader = shaderIDs[0];
+	// GLuint fragShader = shaderIDs[1];
 
-	JN_INFO("Linking shaders");
+	//JN_INFO("Linking shaders");
 	this->progID = glCreateProgram();
 
 	glAttachShader(progID, vertShader);

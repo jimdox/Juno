@@ -2,7 +2,8 @@
 #include "render/Window.h"
 #include "render/Camera.h"
 #include "entity/Scene.h"
-#include "render/glRenderCore.h"
+#include "render/shaders/ComputeShader.h"
+#include "render/shaders/SkyBoxShader.h"
 namespace juno {
 
 class Renderer 
@@ -27,6 +28,7 @@ public:
 
     void update(float delta_time);
 
+    void runComputeShader(float dt);
 
 private:
     Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
@@ -34,9 +36,10 @@ private:
     Window window;
     Scene* scene;
     Camera camera;
-    std::shared_ptr<Shader> default_shader;
-    std::shared_ptr<SkyBoxShader> skybox_shader;
+    Shader* defaultShader;
+    ComputeShader computeShader;
+    //SkyBoxShader* skyboxShader;
 
-    static Renderer s_instance;
+    // static Renderer s_instance;
 };
 }

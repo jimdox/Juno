@@ -7,6 +7,8 @@
 #include "imgui_impl_opengl3.h"
 
 #include "render/shaders/Shader.h"
+#include "render/shaders/ComputeShader.h"
+
 #include "entity/Entity.h"
 #include "render/Mesh.h"
 #include "render/textures/Texture.h"
@@ -105,7 +107,7 @@ static void render(juno::Mesh *m, juno::Shader &shader)
 }
 
 /* for single texture, diffuse-mapped only geometry */
-static void renderEntity(juno::Entity& entity, std::shared_ptr<juno::Shader> & shader)
+static void renderEntity(juno::Entity& entity, juno::Shader& shader)
 {
 	glBindVertexArray(entity.getMesh().getVaoID()); 
 	glEnableVertexAttribArray(0); 
@@ -113,8 +115,8 @@ static void renderEntity(juno::Entity& entity, std::shared_ptr<juno::Shader> & s
 	//glEnableVertexAttribArray(2); 
 
 	glm::mat4 transformationMat = juno::createTransformationMat(entity.getPosition(), entity.getRotation(), entity.getScale());
-	shader->loadTransformMatrix(transformationMat);
-	shader->loadMaterialVars(entity.getMesh().getMaterial());
+	shader.loadTransformMatrix(transformationMat);
+	shader.loadMaterialVars(entity.getMesh().getMaterial());
 
 	//setBackFaceCulling(!entity.getMesh().getDiffuseTextures()[0].containsTransparency());
 	// glActiveTexture(GL_TEXTURE0);
@@ -174,8 +176,11 @@ static void renderGui()
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+// static void usingComputeShader(juno::ComputeShader& compShader);
+// {
 
+// 	/* ------------------------ */
 
-
-
+	
+// }
 };

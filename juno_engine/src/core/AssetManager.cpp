@@ -114,6 +114,17 @@ void AssetManager::storeDataInAttribList(unsigned int attribNum, unsigned int di
 
 // }
 
+    std::map<unsigned int, std::unique_ptr<Texture>>* AssetManager::getTextureMap()
+    {
+        return &textureRefs;
+    }
+
+    std::map<unsigned int, std::unique_ptr<Shader>>* AssetManager::getShaderMap()
+    {
+        return &shaderRefs;
+    }
+
+
 /* loads a single vertex buffer object to VAO */
 std::pair<unsigned int, unsigned int> AssetManager::loadToVAO(std::vector<float>& positions, unsigned int dim)
 {
@@ -144,24 +155,117 @@ std::pair<unsigned int, unsigned int> AssetManager::loadToVAO(std::vector<float>
     return {vaoID, numIndices};
 }   
 
-unsigned int AssetManager::loadShaderFile(const std::string& filepath, GLenum shaderType)
+GLint * AssetManager::loadShaderFile(const std::string& filepath)
+{
+    std::string glslVersion; 
+    GLint shaderIDs[4] = {-1, -1, -1, -1};                     /* flags for what stages exist in shader */
+
+    std::string vertSrc, fragSrc, geomSrc, compSrc;
+    std::string* activeSrc;
+    std::string line;                                           
+    std::ifstream openFile(filepath.c_str());
+    
+    if(!openFile.is_open())
+    {
+        JN_CLI_ERR(("Error loading glsl shader: " + filepath).c_str());
+        return shaderIDs;
+    }
+
+    std::getline(openFile, line);
+    glslVersion = line;                                                 /* first line MUST be the glsl version */
+    vertSrc += glslVersion;
+    fragSrc += glslVersion;
+    geomSrc += glslVersion;
+    compSrc += glslVersion;
+
+    while(!openFile.eof())
+    {
+        std::getline(openFile, line);
+        std::stringstream ss(line);
+        std::string token;
+
+        if(line.at(0) == '.')
+        {
+            if(line.find(".vert") != std::string::npos)
+            {
+                shaderIDs[0] = glCreateShader(GL_VERTEX_SHADER);
+                activeSrc = &vertSrc;
+            } else if(line.find(".frag") != std::string::npos)
+            {
+                shaderIDs[1] = glCreateShader(GL_FRAGMENT_SHADER);
+                activeSrc = &fragSrc;
+            } else if(line.find(".geom") != std::string::npos)
+            {
+                shaderIDs[2] = glCreateShader(GL_GEOMETRY_SHADER);
+                activeSrc = &geomSrc;
+            } else if(line.find(".comp") != std::string::npos)
+            {
+                shaderIDs[3] = glCreateShader(GL_COMPUTE_SHADER);
+                activeSrc = &compSrc;
+            }
+            continue;
+        } else if(activeSrc == nullptr)
+            continue;
+
+        *activeSrc += line;
+        *activeSrc += "\n";
+    }
+    openFile.close();
+
+	JN_INFO("Compiling glsl shader file: {}", filepath);
+
+    const char* srcPtr;
+    unsigned int i;
+    if(shaderIDs[0] != -1)
+    {
+        srcPtr = vertSrc.c_str();
+        glShaderSource(shaderIDs[0], 1, &srcPtr, NULL);
+        glCompileShader(shaderIDs[0]);
+    }
+    if(shaderIDs[1] != -1)
+    {
+        srcPtr = fragSrc.c_str();
+        glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
+        glCompileShader(shaderIDs[1]);
+    }
+    if(shaderIDs[2] != -1)
+    {
+        srcPtr = fragSrc.c_str();
+        glShaderSource(shaderIDs[2], 2, &srcPtr, NULL);
+        glCompileShader(shaderIDs[2]);
+    }    
+    if(shaderIDs[3] != -1)
+    {    
+        srcPtr = fragSrc.c_str();
+        glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
+        glCompileShader(shaderIDs[1]);
+    }
+
+    
+    //return shaderIDs;
+    return 0;
+}
+
+GLint AssetManager::loadShaderComponentFile(const std::string& filepath, GLenum shaderType)
 {
     GLuint shaderID = glCreateShader(shaderType);
     std::string fileExt;
-    if(shaderType == GL_VERTEX_SHADER)
-    {
-        fileExt = ".vert";
-    } else if(shaderType == GL_FRAGMENT_SHADER)
-    {
-        fileExt = ".frag";    
 
-    } else if(shaderType == GL_COMPUTE_SHADER)
+    switch(shaderType)
     {
-        fileExt = ".comp";
-    } else if(shaderType == GL_GEOMETRY_SHADER)
-    {
+    case GL_VERTEX_SHADER:
+        fileExt = ".vert";
+        break;
+    case GL_FRAGMENT_SHADER:
+        fileExt = ".frag";
+        break;
+    case GL_GEOMETRY_SHADER:
         fileExt = ".geom";
-    }
+        break;
+    case GL_COMPUTE_SHADER:
+        fileExt = ".comp";
+        break;
+    };
 
     std::string fullFilePath = filepath + fileExt;
     std::string source;
@@ -176,11 +280,11 @@ unsigned int AssetManager::loadShaderFile(const std::string& filepath, GLenum sh
 	}
 	else {
 		JN_CLI_ERR("Error: cannot access file: " + fullFilePath);
+        return -1;
 	}
 
-	GLint compileFlag = GL_FALSE;
-	int errorLength;
-	JN_WARN("Compiling shader: {}", fullFilePath);
+
+	JN_INFO("Compiling shader file: {}", fullFilePath);
 
 	char const* srcPtr = source.c_str();
 

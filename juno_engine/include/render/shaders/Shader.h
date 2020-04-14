@@ -43,12 +43,12 @@ public:
 
 protected:
 	void compileShader();
+
 	bool linkErrorCheck(GLuint id, GLenum type);
 	GLuint progID;
 	std::string filepath;
 	
 	/* uniform caching: */
-
 	unsigned int loc_transformationMatrix;
 	unsigned int loc_projectionMatrix;
 	unsigned int loc_viewMatrix;
@@ -60,5 +60,8 @@ protected:
 	unsigned int loc_lightPositions[NUM_LIGHTS];
 	unsigned int loc_lightColors[NUM_LIGHTS];
 	unsigned int loc_attenuations[NUM_LIGHTS];
+
+private:
+
 };
 }

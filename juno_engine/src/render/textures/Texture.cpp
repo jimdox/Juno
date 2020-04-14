@@ -15,7 +15,7 @@ Texture::Texture(const std::string& filepath, TextureType tx_type, bool transp) 
 	textureID = AssetManager::get().loadTextureFile(filepath, GL_TEXTURE_2D, tex_type);
 }
 
-Texture::Texture(TextureType tx_type) : filepath(""), tex_type(tx_type)
+Texture::Texture(TextureType tx_type) : filepath(" "), tex_type(tx_type)
 {
 	transparency = false;
 

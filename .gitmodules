@@ -1,4 +1,4 @@
 
-[submodule "bx_engine/lib/jpl"]
-	path = bx_engine/lib/jpl
+[submodule "juno_engine/lib/jpl"]
+	path = juno_engine/lib/jpl
 	url = https://github.com/jimdox/jpl

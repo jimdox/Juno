@@ -100,7 +100,7 @@ public:
 	void keyEventRecieved(int keycode, bool flag);
 
 	void move(glm::vec3& dv, glm::vec3& dRot);
-	void update();
+	void update(float dt);
 	
 	glm::vec3& getPosition();
 	inline float getZoom()  { return zoom;  }
@@ -113,7 +113,7 @@ public:
 	void setPitch(float p);
 	void setYaw(float y);
 	
-	void calculatePosition();
+	void calculatePosition(float dt);
 	glm::mat4& getProjectionMatrix();
 	glm::mat4& resetProjectionMatrix();
 	glm::mat4& getViewMatrix();
@@ -146,6 +146,7 @@ private:
 	float pitch;
 	float roll;
 	float zoom;
+	float zoomSpeed;
 	float distanceToPivot;
 	float angle_around_pivot;
 	float moveSpeed;
@@ -154,7 +155,7 @@ private:
 
 	const float FOV = 60.0f;				/* 60 -> ~80 is recommended */
 	const float NEAR_PLANE = 0.1f;			/* min clipping dist. */
-	const float FAR_PLANE = 1000.0f;		/* max clipping dist. */
+	const float FAR_PLANE = 5000.0f;		/* max clipping dist. */
 
 };
 }

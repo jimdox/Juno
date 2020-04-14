@@ -16,10 +16,10 @@ public:
 
     std::vector<Entity>& getEntities();
     std::vector<Light>& getLights();
-    SkyBox& getSkyBox();
+    //SkyBox& getSkyBox();
 
 private:
-    SkyBox skybox;
+    //SkyBox skybox;
     std::vector<Entity> entities;
     std::vector<Light> lights;
 

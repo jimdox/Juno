@@ -5,6 +5,7 @@
 #include "render/textures/CubeMap.h"
 #include "entity/Entity.h"
 #include "render/shaders/Shader.h"
+#include "gui/Dock.h"
 
 /* using singleton schenanagans to control memory management
    in one instance across the program */
@@ -12,6 +13,7 @@ namespace juno
 {
 class AssetManager
 {
+friend class Dock;
 public:
     static AssetManager& get()
     {   
@@ -22,7 +24,9 @@ public:
 
     unsigned int findAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath);
     Shader& loadShader(const std::string& filepath);
-    GLuint loadShaderFile(const std::string& filepath, GLenum shaderType);
+    
+    GLint * loadShaderFile(const std::string& filepath);
+    GLint loadShaderComponentFile(const std::string& filepath, GLenum shaderType);
     Shader& getDefaultShader();
 
     //bool textureIsLoaded(const std::string& filepath);
@@ -39,6 +43,7 @@ public:
     std::pair<unsigned int, unsigned int> loadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
                                                      std::vector<float>& normals, std::vector<unsigned int>& indices);
 
+
 private:
     AssetManager(){}
     unsigned int genAssetID();
@@ -49,9 +54,8 @@ private:
     void processFace(int faceVertices[3][3], std::vector<unsigned int>& indices, std::vector<glm::vec2>& textures, 
                     std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float>& normalsData);
     
-
-
-    
+    std::map<unsigned int, std::unique_ptr<Texture>>* getTextureMap(); 
+    std::map<unsigned int, std::unique_ptr<Shader>>* getShaderMap();
 
     unsigned int currentIDPtr;
     std::map<unsigned int, std::unique_ptr<Shader>> shaderRefs;

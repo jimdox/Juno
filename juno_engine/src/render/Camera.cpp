@@ -16,9 +16,11 @@ Camera::Camera(glm::vec3 pos, glm::vec3 rot) : pivot(pos)
 	velocity = glm::vec3(0,0,0);
 	angle_around_pivot = 180.0f;
 	keyboard.init();
-	mouse.setDScroll(25);
+	//mouse.setDScroll(25);
 
-	calculatePosition();
+	distance_to_pivot += 30;
+	distance_to_pivot = max(distance_to_pivot, 0.001f);
+	calculatePosition(0);
 	generateProjectionMatrix();
 }
 
@@ -88,10 +90,16 @@ void Camera::move(glm::vec3& pos, glm::vec3& dRot)
 
 }
 
-void Camera::update()
+void Camera::update(float dt)
+{
+
+	calculatePosition(dt);
+}
+
+/* 3rd person camera */
+void Camera::calculatePosition(float dt)
 {
 	delta_pos = glm::vec3(0,0,0);
-	float CAM_MOVE_SPEED = 0.25f;
 	
 	if(keyboard.isKeyDown(GLFW_KEY_UP))
 	{
@@ -112,18 +120,20 @@ void Camera::update()
 		delta_pos.z -= sinf(toRadians(angle_around_pivot));
 	}
 
-	delta_pos *= CAM_MOVE_SPEED;
+	// delta_pos *= CAM_MOVE_SPEED;
 	pivot += delta_pos;
-	calculatePosition();
-}
 
-/* 3rd person camera */
-void Camera::calculatePosition()
-{
-	distance_to_pivot += mouse.getDScroll()*1.5f;
+	float deltaScroll = mouse.getDScroll();
+	if(deltaScroll == 0 && abs(zoomSpeed) > 0)
+	{
+		zoomSpeed -= zoomSpeed * 0.082f;
+	} else {
+		zoomSpeed += deltaScroll * 24.0f;
+	}
+	distance_to_pivot += zoomSpeed * dt;
 	distance_to_pivot = max(distance_to_pivot, 0.001f);
 
-	if(mouse.isButtonDown(MouseCode::M_BUTTON_MID))
+	if(mouse.isButtonDown(MouseCode::M_BUTTON_RIGHT) || mouse.isButtonDown(MouseCode::M_BUTTON_MID))
 	{
 		if(keyboard.isKeyDown(GLFW_KEY_LEFT_SHIFT) || keyboard.isKeyDown(GLFW_KEY_RIGHT_SHIFT))
 		{
@@ -135,8 +145,8 @@ void Camera::calculatePosition()
 			pivot.z -= dx * sinf(toRadians(yaw)) + dy * sinf(toRadians(pitch)) * cosf(toRadians(yaw));
 
 		} else {
-			pitch -= mouse.getDY() * 0.25f;
-			angle_around_pivot += mouse.getDX() * 0.25f;
+			pitch -= mouse.getDY() * 0.255f;
+			angle_around_pivot += mouse.getDX() * 0.255f;
 		}
 	}
 
@@ -144,7 +154,6 @@ void Camera::calculatePosition()
 	float v_distance = distance_to_pivot * sinf(toRadians(pitch)); 
 
 	float theta = angle_around_pivot;
-
 	float x_offset = h_distance * sinf(toRadians(theta));
 	float z_offset = h_distance * cosf(toRadians(theta));
 	
