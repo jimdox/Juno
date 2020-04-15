@@ -24,6 +24,8 @@ public:
 
     unsigned int findAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath);
     Shader& loadShader(const std::string& filepath);
+
+    ComputeShader& loadComputeShader(const std::string& fp);
     
     GLint * loadShaderFile(const std::string& filepath);
     GLint loadShaderComponentFile(const std::string& filepath, GLenum shaderType);

@@ -119,17 +119,21 @@ void Camera::calculatePosition(float dt)
 		delta_pos.x += cosf(toRadians(angle_around_pivot));
 		delta_pos.z -= sinf(toRadians(angle_around_pivot));
 	}
-
-	// delta_pos *= CAM_MOVE_SPEED;
 	pivot += delta_pos;
 
 	float deltaScroll = mouse.getDScroll();
-	if(deltaScroll == 0 && abs(zoomSpeed) > 0)
+	if(deltaScroll == 0 && zoomSpeed != 0)
 	{
-		zoomSpeed -= zoomSpeed * 0.082f;
+		if(abs(zoomSpeed) < 0.03f)
+		{
+			zoomSpeed = 0;
+		}else {
+			zoomSpeed -= zoomSpeed * 0.082f;
+		}
 	} else {
-		zoomSpeed += deltaScroll * 24.0f;
+		zoomSpeed += deltaScroll * 20.0f;
 	}
+
 	distance_to_pivot += zoomSpeed * dt;
 	distance_to_pivot = max(distance_to_pivot, 0.001f);
 

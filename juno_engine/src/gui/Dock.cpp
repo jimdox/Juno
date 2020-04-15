@@ -217,8 +217,8 @@ void Dock::show_side_panel(Scene& scene, float dt)
     panel_flags |= ImGuiWindowFlags_NoMove;
     ImGui::Begin("SidePanel", &f_open, panel_flags);    
 
-    //ImGui::Text("Frame Time: %.2fs", dt);
     ImGui::Text((const char*)glGetString(GL_VERSION));
+    ImGui::Text("Frame Time: %.2fs", dt);
     ImGui::Text(" ");
     ImGui::Text(" ");
     if(ImGui::CollapsingHeader("Scene"))

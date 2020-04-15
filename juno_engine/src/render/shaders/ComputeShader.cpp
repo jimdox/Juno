@@ -1,5 +1,6 @@
 #include "render/shaders/ComputeShader.h"
 #include "core/AssetManager.h"
+#include "utils/MathUtils.h"
 using namespace juno;
 
 ComputeShader::ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int wgSize)
@@ -7,8 +8,6 @@ ComputeShader::ComputeShader(const std::string& fp, unsigned int numObjects, uns
     this->filepath = fp;
     this->workGroupSize = wgSize;
     this->numObjects = numObjects;
-    positions.reserve(numObjects);
-    velocities.reserve(numObjects);
 
 
     compileCShader();
@@ -39,27 +38,57 @@ void ComputeShader::compileCShader()
     //JN_INFO("Linking Compute Shader!");
 }
 
-void ComputeShader::init()
+void ComputeShader::setup()
 {
-    loc_viewMatrix = glGetUniformLocation(progID, "view");
-
-    glm::vec4 * csPositions = (glm::vec4 *) calloc(numObjects, sizeof(glm::vec4));
-
-
 
     for(unsigned int i = 0; i < numObjects; i++)
     {
-        float x = (static_cast<float>((rand())) / static_cast<float>(RAND_MAX));
-        float y = (static_cast<float>((rand())) / static_cast<float>(RAND_MAX));
-        float z = (static_cast<float>((rand())) / static_cast<float>(RAND_MAX));
-        //JN_INFO("{}, {}, {}", x, y, z);
-        csPositions[i] = glm::vec4(x,y,z,1.0f);
+        Particle p;
+        p.position = glm::vec3( sinf(i)/(min(i, 50000)) * 5000, cosf(i)/(min(i, 50000)) * 5000, (tanf(-i * M_PI + M_PI*2)/i) * 1000);
+        p.velocity = glm::vec3(100, 100, 100);
+        p.mass = 0.1f;
+        p.scale = 1.0f;
+        particles.emplace_back(p);
     }
 
-    /* generate a buffer for the positions */
-    glGenBuffers(1, &dataBuffers[0]);
-    glBindBuffer(GL_ARRAY_BUFFER, dataBuffers[0]);
-    glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(glm::vec3), csPositions, GL_DYNAMIC_COPY);
+    loc_viewMatrix = glGetUniformLocation(this->progID, "view");
+    loc_projectionMatrix = glGetUniformLocation(this->progID, "projection");
+
+
+
+
+    glGenVertexArrays(1, &computeVaoID);
+    glBindVertexArray(computeVaoID);
+
+    glGenBuffers(1, &computeSSBO);
+    glBindBuffer(GL_ARRAY_BUFFER, computeSSBO);
+    glBufferData(GL_ARRAY_BUFFER, numObjects * sizeof(Particle), &particles[0], GL_STREAM_DRAW);
+
+    /* */
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+    glEnableVertexAttribArray(3);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(glm::vec3)));
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(glm::vec3)*2));
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7));
+
+    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 3));
+	// glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 6));
+	// glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7));
+    glVertexAttribDivisor(0, 1);
+    glVertexAttribDivisor(1, 1);
+    glVertexAttribDivisor(2, 1);
+    glVertexAttribDivisor(3, 1);
+    
+    /* */
+    glBindVertexArray(0);
+
+
+
 
 }
 
@@ -78,45 +107,28 @@ GLuint ComputeShader::getCSID()
     return csProgID;
 }
 
-GLuint ComputeShader::getPositionBufferID()
+GLuint ComputeShader::getParticleSSBO()
 {
-    return dataBuffers[0];
+    return loc_particleBuffer;
 }
 
-GLuint ComputeShader::getVelocityBufferID()
+GLuint ComputeShader::getParticleVaoID()
 {
-    return dataBuffers[1];
+    return computeVaoID;
 }
 
-GLuint ComputeShader::getColorBufferID()
-{
-    return dataBuffers[2];
-}
-
-// GLuint ComputeShader::getForceBufferID()
-// {
-//     return dataBuffers[3];
-// }
 
 unsigned int ComputeShader::getNumObjects()
 {
     return numObjects;
 }
 
-std::vector<glm::vec4>& ComputeShader::getPositions()
+std::vector<Particle>& ComputeShader::getParticles()
 {
-    return positions;
+    return particles;
 }
 
-std::vector<glm::vec4>& ComputeShader::getVelocities()
-{
-    return velocities;
-}
 
-std::vector<glm::vec4>& ComputeShader::getColors()
-{
-    return colors;
-}
 
 // std::vector<glm::vec4>& ComputeShader::getForces()
 // {

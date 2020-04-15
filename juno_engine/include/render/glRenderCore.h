@@ -65,16 +65,6 @@ static void resizeFrameBuffer(float width, float height)
 	glViewport(0, 0, width, height);
 }
 
-static void setModeWireframe(bool flag)
-{
-	if(flag)
-	{
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	} else {
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-}
-
 static void setBackFaceCulling(bool flag)
 {
 	if(flag)
@@ -86,6 +76,17 @@ static void setBackFaceCulling(bool flag)
 	}
 }
 
+static void setModeWireframe(bool flag)
+{
+	if(flag)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		setBackFaceCulling(false);
+	} else {
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		setBackFaceCulling(true);
+	}
+}
 
 /* render static mesh */
 static void render(juno::Mesh *m, juno::Shader &shader)

@@ -1,0 +1,36 @@
+#version 450 core
+// rm "core"?
+
+
+struct Particle {
+	vec3 position;
+	vec3 velocity;
+	float mass;
+	float scale;
+};
+
+
+layout(std430, binding=0) buffer ParticleBuffer
+{
+    Particle particles;
+};
+
+layout(local_size_x=128) in;
+
+
+uniform float dt;
+uniform vec3 forceRadii;
+
+// vec3 calculateForce(uint g_id, float actingMass, vec3 pos)
+// {
+// 	float dist = distance(pos, particles[g_id].position);
+// 	float m = (actingMass * particles[g_id].mass) / dist;
+// 	return (pos - particles[g_id].position) * m;
+// }
+
+void main()
+{
+	uint g_id = gl_GlobalInvocationID.x;
+
+	particles[g_id].position += velocity * dt;	
+}

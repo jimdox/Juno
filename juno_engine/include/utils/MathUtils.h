@@ -11,6 +11,13 @@ inline float max(float a, float b)
     return b;
 }
 
+inline float min(float a, float b)
+{
+    if(a < b)
+        return a;
+    return b;
+}
+
 inline float toRadians(float degrees)
 {
     return degrees * (M_PI/180.0f);

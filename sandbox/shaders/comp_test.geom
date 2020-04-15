@@ -1,6 +1,4 @@
-#version 430
-#extension GL_ARB_compute_shader: enable;
-#extension GL_ARG_shader_storage_buffer_object: enable;
+#version 450
 
 layout (points) in;
 layout (triangle_strip, max_vertices = 4) out;

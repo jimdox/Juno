@@ -4,7 +4,11 @@
 
 
 ## Project Setup
-Sandbox is an example project which has everything you need to get started. Currently, since glfw is not behaving well with gcc + Premake, you will need to install the glfw-dev (or glfw-x11) package on your system. This is an unfortunate extra step, but I am hoping to resolve this for both Windows and Linux soon. Most modern distributions will have glew installed by default, if not, then you will have to install that package also. 
+Sandbox is an example project which has everything you need to get started. Currently, since glfw is not behaving well with gcc + Premake, you will need to install the `glfw-dev` (or glfw-x11) package on your system, as well as download Premake5 from . This is an unfortunate extra step, but I am hoping to resolve this for both Windows and Linux soon. Most modern distributions will have `glew` installed by default, if not, then you will have to install that package also. 
+
+### Running the Sandbox Project
+For those unfamiliar with Premake, whenever you download the project, or create a new file you want to include in your build, use the command `premake5 gmake` to generate new makefiles, then `make all && ./bin/Debug/sandbox` to build + run the default configuration.
+
 
 
 ### Status of Loading Custom .obj Files
