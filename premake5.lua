@@ -26,8 +26,8 @@ IncludeDir["glfw"] = "%{prj.name}/vendor/glfw"
 IncludeDir["glew"] = "%{prj.name}/vendor/glew"
 IncludeDir["glm"] = "%{prj.name}/vendor/glm"
 	
-project "juno_engine"
-	location "juno_engine"
+project "engine"
+	location "engine"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
@@ -57,8 +57,8 @@ project "juno_engine"
 		"%{prj.name}/vendor/imgui",
 		"%{prj.name}/vendor/glm",
 		"%{prj.name}/",
-		"juno_engine/vendor/glew/include/",
-		"juno_engine/vendor/glew/lib"
+		"%{prj.name}/vendor/glew/include/",
+		"%{prj.name}/vendor/glew/lib"
 	}
 	
 	files
@@ -104,35 +104,35 @@ project "sandbox"
 	targetdir ("bin/%{cfg.buildcfg}/")
 	objdir ("bin/int/%{cfg.buildcfg}/")
 
-	pchheader "juno_engine/pch.h"
-	pchsource "juno_engine/pch.cpp"
+	pchheader "engine/pch.h"
+	pchsource "engine/pch.cpp"
 
 	includedirs
 	{
-		"juno_engine/include",
-		"juno_engine/vendor/glm",
+		"engine/include",
+		"engine/vendor/glm",
 		
-		"juno_engine/vendor/glew/include/",
-		"juno_engine/vendor/glew/lib",
+		"engine/vendor/glew/include/",
+		"engine/vendor/glew/lib",
 
-		"juno_engine/vendor/stb",
-		"juno_engine/vendor/jpl",
-		"juno_engine/vendor/imgui",
-		"juno_engine/vendor/spdlog/include",
-		"juno_engine"
+		"engine/vendor/stb",
+		"engine/vendor/jpl",
+		"engine/vendor/imgui",
+		"engine/vendor/spdlog/include",
+		"engine"
 	}
 
 	files
 	{
 		"sandbox/**.h",
 		"sandbox/**.cpp",
-		"juno_engine/pch.h",
-		"juno_engine/pch.cpp"
+		"engine/pch.h",
+		"engine/pch.cpp"
 	}
 
 	links
 	{
-		"juno_engine",
+		"engine",
 		"GL",
 		"GLEW",
 		"glfw"

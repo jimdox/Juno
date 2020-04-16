@@ -6,7 +6,7 @@ struct Particle {
 	vec3 position;
 	vec3 velocity;
 	float mass;
-	// float scale;
+
 };
 
 

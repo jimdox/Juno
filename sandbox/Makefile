@@ -15,17 +15,17 @@ ifeq ($(config),debug)
   TARGETDIR = ../bin/Debug
   TARGET = $(TARGETDIR)/sandbox
   OBJDIR = ../bin/int/Debug
-  PCH = ../juno_engine/pch.h
+  PCH = ../engine/pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DSTB_IMAGE_IMPLEMENTATION
-  INCLUDES += -I../juno_engine/include -I../juno_engine/vendor/glm -I../juno_engine/vendor/glew/include -I../juno_engine/vendor/glew/lib -I../juno_engine/vendor/stb -I../juno_engine/vendor/jpl -I../juno_engine/vendor/imgui -I../juno_engine/vendor/spdlog/include -I../juno_engine
+  INCLUDES += -I../engine/include -I../engine/vendor/glm -I../engine/vendor/glew/include -I../engine/vendor/glew/lib -I../engine/vendor/stb -I../engine/vendor/jpl -I../engine/vendor/imgui -I../engine/vendor/spdlog/include -I../engine
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Debug/libjuno_engine.a -lGL -lGLEW -lglfw
-  LDDEPS += ../bin/Debug/libjuno_engine.a
+  LIBS += ../bin/Debug/libengine.a -lGL -lGLEW -lglfw
+  LDDEPS += ../bin/Debug/libengine.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -44,17 +44,17 @@ ifeq ($(config),release)
   TARGETDIR = ../bin/Release
   TARGET = $(TARGETDIR)/sandbox
   OBJDIR = ../bin/int/Release
-  PCH = ../juno_engine/pch.h
+  PCH = ../engine/pch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DSTB_IMAGE_IMPLEMENTATION
-  INCLUDES += -I../juno_engine/include -I../juno_engine/vendor/glm -I../juno_engine/vendor/glew/include -I../juno_engine/vendor/glew/lib -I../juno_engine/vendor/stb -I../juno_engine/vendor/jpl -I../juno_engine/vendor/imgui -I../juno_engine/vendor/spdlog/include -I../juno_engine
+  INCLUDES += -I../engine/include -I../engine/vendor/glm -I../engine/vendor/glew/include -I../engine/vendor/glew/lib -I../engine/vendor/stb -I../engine/vendor/jpl -I../engine/vendor/imgui -I../engine/vendor/spdlog/include -I../engine
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../bin/Release/libjuno_engine.a -lGL -lGLEW -lglfw
-  LDDEPS += ../bin/Release/libjuno_engine.a
+  LIBS += ../bin/Release/libengine.a -lGL -lGLEW -lglfw
+  LDDEPS += ../bin/Release/libengine.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -129,7 +129,7 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/pch.o: ../juno_engine/pch.cpp
+$(OBJDIR)/pch.o: ../engine/pch.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/project.o: project.cpp
