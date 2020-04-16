@@ -10,7 +10,7 @@ Sandbox is an example project which has everything you need to get started. Curr
 For anyone unfamiliar with how to use Premake, when you initially download the project, or create a new file you want to include in your build, use the command `premake5 gmake` to generate new makefiles, then `make all && ./bin/Debug/sandbox` to build + run the default configuration.
 
 ### Getting Started with Physics Simulation
-In the current version of the project, the templates in the startup menu will now load in some default scenes for you to mess around with. The Particle Simulation template is now using a crude implementation for compute shaders, which allows the user to simulate objects fully on the GPU, allowing for much higher particle counts than would otherwise be possible in real-time. 
+In the current version of the project, the templates in the startup menu will now load in some default scenes for you to mess around with. The Particle Simulation template is now using an early implementation of compute shaders, which allows the user to simulate objects fully on the GPU, allowing for much higher particle counts than would otherwise be possible in real-time. 
 
 
 ### Status of Loading Custom .obj Files
