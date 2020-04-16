@@ -47,6 +47,8 @@ void Program::onEvent(const Event& e)
 	case EventType::RENDER_POLYGON_WIREFRAME:
 		glRender::setModeWireframe(((const RenderWireframeEvent&)e).modeSetWireframe());
 		break;
+	case EventType::SCENE_SWITCH:
+		runExampleParticleSim();
 	default:
 		break;
 	}
@@ -88,4 +90,34 @@ bool Program::programShouldClose()
 void Program::exit()
 {
 	//render_context->~Window();
+}
+
+
+
+
+/* temporary code to demonstrate how UI should work from a user perspective, will be replaced soon. */
+void Program::runExampleParticleSim()
+{
+	ImGui::EndFrame();
+
+	delta_time = 0;
+	frame_time = 0;
+	last_time = glfwGetTime();
+
+	while (!programShouldClose())
+	{
+
+		if(frame_time > MIN_FRAME_TIME)
+		{
+			onUpdate();
+			onFrameBufferUpdate();
+			renderer->runComputeShader(frame_time);
+			frame_time = 0;
+		}
+
+		delta_time = (glfwGetTime() - last_time);
+		last_time = glfwGetTime();
+		frame_time += delta_time;
+	}
+
 }

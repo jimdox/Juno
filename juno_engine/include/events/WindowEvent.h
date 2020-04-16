@@ -29,6 +29,12 @@ public:
     inline EventType getType() const { return EventType::WINDOW_CLOSE; }
 };
 
+class CustomWindowEvent : public WindowEvent
+{
+public:
+    inline EventType getType() const {return EventType::SCENE_SWITCH; }
+};
+
 class WindowEventDispatcher : public EventDispatcher
 {
 public:

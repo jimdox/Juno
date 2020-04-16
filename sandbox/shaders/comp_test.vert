@@ -16,5 +16,5 @@ void main()
 {
     pass_scale = 1.0f;
     pass_speed = length(velocity);
-    gl_Position = projection * view * vec4(position,1.0);
+    gl_Position = projection * view * vec4(position, 1.0);
 }

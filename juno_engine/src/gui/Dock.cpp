@@ -80,7 +80,7 @@ void Dock::init()
     colors[ImGuiCol_TitleBg]                = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
     colors[ImGuiCol_TitleBgActive]          = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
     colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
-    colors[ImGuiCol_MenuBarBg]              = ImVec4(0.12f, 0.12f, 0.12f, 1.00f);
+    colors[ImGuiCol_MenuBarBg]              = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
     colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
     colors[ImGuiCol_ScrollbarGrab]          = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabHovered]   = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
@@ -135,13 +135,17 @@ Dock::~Dock()
 
 void Dock::update(Scene& scene, float dt)
 {
+
+
+
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     if(f_show_startup)
     {
-        if(ImGui::IsAnyMouseDown() && !ImGui::IsAnyWindowHovered() || ImGui::IsKeyDown(GLFW_KEY_ESCAPE))
+        if(ImGui::IsAnyMouseDown() && !ImGui::GetIO().WantCaptureMouse || ImGui::IsKeyDown(GLFW_KEY_ESCAPE))
         {
             f_show_startup = false;
         } else
@@ -417,13 +421,15 @@ void Dock::showStartupWindow()
         std::vector<std::string> recent_programs;
         template_programs.push_back("General Scene"); 
         template_programs.push_back("Simple Physics");
-        template_programs.push_back("Particle Systems");
+        template_programs.push_back("Particle System");
 
         for(int i = 0; i < template_programs.size(); i++)
         {
-            if(ImGui::Selectable(template_programs[i].c_str()))
+            if(ImGui::Selectable(template_programs[i].c_str(), false))
             {
-
+                f_show_startup = false;
+                ImGui::End();
+                notify(CustomWindowEvent());
             }
         }
         ImGui::NextColumn();
@@ -436,5 +442,7 @@ void Dock::showStartupWindow()
         }
 
         ImGui::End();
+
+        
 }
 

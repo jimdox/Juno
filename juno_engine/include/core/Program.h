@@ -37,6 +37,7 @@ protected:
 	u_int16_t num_frames;
 
 private:
+	void runExampleParticleSim();
 	std::shared_ptr<Shader> shader;
 	bool f_program_should_close;
 };

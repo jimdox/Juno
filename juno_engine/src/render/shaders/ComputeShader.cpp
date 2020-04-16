@@ -40,29 +40,26 @@ void ComputeShader::compileCShader()
 
 void ComputeShader::setup()
 {
+    loc_viewMatrix = glGetUniformLocation(this->progID, "view");
+    loc_projectionMatrix = glGetUniformLocation(this->progID, "projection");
+
+    glGenVertexArrays(1, &computeVaoID);
+    glBindVertexArray(computeVaoID);
 
     for(unsigned int i = 0; i < numObjects; i++)
     {
         Particle p;
-        p.position = glm::vec3( sinf(i)/(min(i, 50000)) * 5000, cosf(i)/(min(i, 50000)) * 5000, (tanf(-i * M_PI + M_PI*2)/i) * 1000);
-        p.velocity = glm::vec3(100, 100, 100);
+        p.position = glm::vec3( sinf(i)/(min(i, 5000)) * 5000, cosf(i)/(min(i, 50000)) * 5000, tanf(i/M_PI));
+        p.velocity = glm::vec3( sinf(i), tanf(i), cosf(i) * 4);
         p.mass = 0.1f;
         p.scale = 1.0f;
         particles.emplace_back(p);
     }
 
-    loc_viewMatrix = glGetUniformLocation(this->progID, "view");
-    loc_projectionMatrix = glGetUniformLocation(this->progID, "projection");
-
-
-
-
-    glGenVertexArrays(1, &computeVaoID);
-    glBindVertexArray(computeVaoID);
 
     glGenBuffers(1, &computeSSBO);
     glBindBuffer(GL_ARRAY_BUFFER, computeSSBO);
-    glBufferData(GL_ARRAY_BUFFER, numObjects * sizeof(Particle), &particles[0], GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), &particles[0], GL_DYNAMIC_COPY);
 
     /* */
     glEnableVertexAttribArray(0);
@@ -71,9 +68,9 @@ void ComputeShader::setup()
     glEnableVertexAttribArray(3);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(glm::vec3)));
-    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(glm::vec3)*2));
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 3 ));
+    glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 6 ));
+    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7 ));
 
     // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
     // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 3));
@@ -86,6 +83,8 @@ void ComputeShader::setup()
     
     /* */
     glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 
 
 
@@ -109,7 +108,7 @@ GLuint ComputeShader::getCSID()
 
 GLuint ComputeShader::getParticleSSBO()
 {
-    return loc_particleBuffer;
+    return computeSSBO;
 }
 
 GLuint ComputeShader::getParticleVaoID()

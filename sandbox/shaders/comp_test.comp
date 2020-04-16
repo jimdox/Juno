@@ -6,19 +6,19 @@ struct Particle {
 	vec3 position;
 	vec3 velocity;
 	float mass;
-	float scale;
+	// float scale;
 };
 
 
 layout(std430, binding=0) buffer ParticleBuffer
 {
-    Particle particles;
+    Particle particles[];
 };
 
-layout(local_size_x=128) in;
+layout(local_size_x=128, local_size_y=1, local_size_z=1) in;
 
 
-uniform float dt;
+uniform float timestep;
 uniform vec3 forceRadii;
 
 // vec3 calculateForce(uint g_id, float actingMass, vec3 pos)
@@ -31,6 +31,9 @@ uniform vec3 forceRadii;
 void main()
 {
 	uint g_id = gl_GlobalInvocationID.x;
-
-	particles[g_id].position += velocity * dt;	
+	vec3 pos = particles[g_id].position;
+	vec3 vel =  particles[g_id].velocity;
+	pos += vel * timestep;
+	
+	particles[g_id].position = pos;
 }

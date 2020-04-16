@@ -34,6 +34,7 @@ private:
     bool f_show_startup;
     bool f_debug;
     bool render_effect_wireframe;
+    bool showTemplateParticles;
     int render_effect_shadow;
     int renderer_selector;
    

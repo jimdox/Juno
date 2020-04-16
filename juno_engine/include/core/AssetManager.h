@@ -5,6 +5,7 @@
 #include "render/textures/CubeMap.h"
 #include "entity/Entity.h"
 #include "render/shaders/Shader.h"
+#include "render/shaders/ComputeShader.h"
 #include "gui/Dock.h"
 
 /* using singleton schenanagans to control memory management

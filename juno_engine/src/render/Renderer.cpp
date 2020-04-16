@@ -74,7 +74,6 @@ void Renderer::update(float delta_time)
         defaultShader->unbindProgram();
     }
 
-    runComputeShader(delta_time);
     /* render skybox */
     // skybox_shader->setActive();
     // skybox_shader->loadProjectionMatrix(camera.getProjectionMatrix());
@@ -87,35 +86,40 @@ void Renderer::update(float delta_time)
 
 void Renderer::runComputeShader(float dt)
 {   
+    camera.update(dt);
+    glRender::clear();
+
     glm::vec3 forceRadii(10.0f, 10.0f, 10.0f);
+    
 
-    //glUseProgram(computeShader.getCSID());
     glUseProgram(computeShader.getCSID());
-    computeShader.loadFloat(glGetUniformLocation(computeShader.getCSID(), "dt"), dt);
+    // GLuint ssbo = computeShader.getParticleSSBO();
+    computeShader.loadFloat(glGetUniformLocation(computeShader.getCSID(), "timestep"), dt);
     computeShader.loadFloat3(glGetUniformLocation(computeShader.getCSID(), "forceRadii"), forceRadii);
-
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, computeShader.getParticleSSBO());
+    
     glDispatchCompute( (computeShader.getNumObjects()/128)+1, 1, 1);
-    glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+    //glMemoryBarrier(GL_ALL_BARRIER_BITS);
+
 
 
     glUseProgram(computeShader.getID());
+
+    glBindVertexArray(computeShader.getParticleVaoID());
     computeShader.loadProjectionMatrix(camera.getProjectionMatrix());
     computeShader.loadViewMatrix(&camera);
-    glBindVertexArray(computeShader.getParticleVaoID());
 
     glDrawArraysInstanced(GL_POINTS, 0, 1, computeShader.getNumObjects());
-    glBindVertexArray(0);
-
-
-
-
-    //glUseProgram(computeShader.getID());
-
 
     
+    GLuint rendererBuffer = computeShader.getParticleSSBO();
+    //glDeleteBuffers(1, &rendererBuffer);
 
-
+    glBindVertexArray(0);
+    glUseProgram(0);
+    
+    window.update(*scene, dt);
 
 
 }

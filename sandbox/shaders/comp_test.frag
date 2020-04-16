@@ -7,10 +7,10 @@ out vec4 outColor;
 
 void main()
 {
-	float minBrightness = 0.6f;
-	float r = max((pass_speed), minBrightness);	
-	float g = max((pass_speed), minBrightness);
-	float b = max((pass_speed), minBrightness);
+	float minBrightness = 0.3f;
+	float c = max((pass_speed), minBrightness);	
+	float g = pass_speed;
+	float b = pass_speed;
 
-	outColor = vec4(r,g,b, 1.0);
+	outColor = vec4(c, c, 0.9, 1.0);
 }

@@ -21,13 +21,9 @@ class SandboxProgram : public juno::Program
 		dragon.getMaterial().setReflectivity(0.25f);
 		Entity entity_one(plane, Vec3(0.0f, -20.0f, 0.0f), Vec3(0,0, 0), 100.0f, "default plane");
 		
-		//Shader shader1 = AssetManager::get().loadShader("./juno_engine/res/shaders/skybox");
-		
-		// Texture txOne = AssetManager::get().loadTexture("./juno_engine/res/red.png", TX_DIFFUSE);
-		// Texture txTwo = AssetManager::get().loadTexture("./juno_engine/res/suse.png", TX_DIFFUSE);
-		
 
-		//Entity entity_two(plane, Vec3(0,-10,0), Vec3(0,0,0), 100.0f, "Default Plane");
+
+		Entity entity_two(plane, Vec3(0,-10,0), Vec3(0,0,0), 100.0f, "Default Plane");
 		Entity entity_three(susy, Vec3(-30,1, -5), Vec3(-50,40,0), 5.0f, "susanne 2");
 		Entity entity_four(dragon, Vec3(60, -5, -30), Vec3(0,-50,0), 5.0f, "Big Boi");
 		
@@ -53,7 +49,7 @@ class SandboxProgram : public juno::Program
 
 
 
-		/* sample code for how compute shaders might used by application */
+		/* sample code for how compute shaders might used by application -- not currently implemented */
 		// std::vector<Particle> particles;
 
 		// for(unsigned int i = 0; i < 1000; i++)
@@ -67,7 +63,6 @@ class SandboxProgram : public juno::Program
 		// }
 
 		// ComputeShader cs = AssetManager::get().loadComputeShader("/path-to-shader-file");
-
 		// renderer->submit(cs);
 
 
@@ -102,7 +97,7 @@ class SandboxProgram : public juno::Program
 
 	void onFrameBufferUpdate()
 	{
-		renderer->runComputeShader(delta_x);
+		//renderer->runComputeShader(delta_x);
 		/* update display info */
 		//renderer->getWindow().getGuiDock().printToDebug("info %f", delta_x);
 		//scene.getEntities()[0].addPosition(glm::vec3(delta_x, 0, 0));

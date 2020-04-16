@@ -24,6 +24,7 @@ public:
     unsigned int getCSID();
 
     GLuint getParticleSSBO();
+    void setParticleSSBO(GLuint ssbo);
     std::vector<Particle>& getParticles();
 
     GLuint getParticleVaoID();
