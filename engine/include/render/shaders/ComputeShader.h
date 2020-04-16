@@ -17,9 +17,10 @@ namespace juno
 class ComputeShader : public Shader
 {
 public:
-    ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int wgSize);
+    ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int numWG);
     void setup();
-    void bind();
+    void bindCS();
+    void run();
     unsigned int getNumObjects();
     unsigned int getCSID();
 
@@ -40,7 +41,7 @@ private:
 
 
     unsigned int numObjects;
-    unsigned int workGroupSize;
+    unsigned int numWorkGroups;
     
     std::vector<Particle> particles;
 

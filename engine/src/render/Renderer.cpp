@@ -5,7 +5,7 @@ using namespace juno;
 
 
 
-Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot), computeShader("./sandbox/shaders/comp_test", 1000000, 128)
+Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot), computeShader("./sandbox/shaders/comp_test", 1200000, 512)
 {
 	// JN_WARN(JN_GFX_DEVICE);                                                                          /* useful for debugging w/ hybrid graphics */
     defaultShader = &AssetManager::get().getDefaultShader();                      
@@ -92,34 +92,15 @@ void Renderer::runComputeShader(float dt)
     glm::vec3 forceRadii(10.0f, 10.0f, 10.0f);
     
 
-    glUseProgram(computeShader.getCSID());
-    // GLuint ssbo = computeShader.getParticleSSBO();
+    computeShader.bindCS();
     computeShader.loadFloat(glGetUniformLocation(computeShader.getCSID(), "timestep"), dt);
     computeShader.loadFloat3(glGetUniformLocation(computeShader.getCSID(), "forceRadii"), forceRadii);
-    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, computeShader.getParticleSSBO());
     
-    glDispatchCompute( (computeShader.getNumObjects()/128)+1, 1, 1);
-    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
-    //glMemoryBarrier(GL_ALL_BARRIER_BITS);
+    computeShader.run();
 
-
-
-    glUseProgram(computeShader.getID());
-
-    glBindVertexArray(computeShader.getParticleVaoID());
     computeShader.loadProjectionMatrix(camera.getProjectionMatrix());
     computeShader.loadViewMatrix(&camera);
+    glRender::applyComputeShader(computeShader);
 
-    glDrawArraysInstanced(GL_POINTS, 0, 1, computeShader.getNumObjects());
-
-    
-    GLuint rendererBuffer = computeShader.getParticleSSBO();
-    //glDeleteBuffers(1, &rendererBuffer);
-
-    glBindVertexArray(0);
-    glUseProgram(0);
-    
     window.update(*scene, dt);
-
-
 }

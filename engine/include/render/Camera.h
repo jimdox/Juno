@@ -155,7 +155,7 @@ private:
 
 	const float FOV = 60.0f;				/* 60 -> ~80 is recommended */
 	const float NEAR_PLANE = 0.1f;			/* min clipping dist. */
-	const float FAR_PLANE = 5000.0f;		/* max clipping dist. */
+	const float FAR_PLANE = 10000.0f;		/* max clipping dist. */
 
 };
 }

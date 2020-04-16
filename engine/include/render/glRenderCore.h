@@ -184,4 +184,20 @@ static void renderGui()
 
 	
 // }
+
+static void applyComputeShader(juno::ComputeShader& cs)
+{
+
+    glDrawArraysInstanced(GL_POINTS, 0, 1, cs.getNumObjects());
+    glBindVertexArray(0);
+    glUseProgram(0);
+}
+
+
+
+
+
+
+
 };
+

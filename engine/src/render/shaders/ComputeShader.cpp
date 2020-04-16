@@ -3,13 +3,9 @@
 #include "utils/MathUtils.h"
 using namespace juno;
 
-ComputeShader::ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int wgSize)
+ComputeShader::ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int numWG) : numWorkGroups(numWG), numObjects(numObjects)
 {
     this->filepath = fp;
-    this->workGroupSize = wgSize;
-    this->numObjects = numObjects;
-
-
     compileCShader();
 }
 
@@ -49,12 +45,16 @@ void ComputeShader::setup()
     for(unsigned int i = 0; i < numObjects; i++)
     {
         Particle p;
-        p.position = glm::vec3( cosf(M_PI - i * 1.2) * 300, (1.2 * tanf(i/3)) * 60, tanf(i)*sinf(i/3) * 60);
-        p.velocity = glm::vec3( 3 * sinf(2 * M_PI * i) + 2 * cosf(-i), cosf(i/(2 * M_PI)), 2 * sinf(2 * M_PI / i));   
+        p.position.x = 100 * cosf(i);
+        p.position.y = 100 * sin(i) * cosf(i);
+        p.position.z = 100 * sinf(i * M_PI/300);
+        p.velocity = glm::vec3(sinf(2 * M_PI * i) + cosf(-i), cosf(i/(2 * M_PI)), sinf(2 * M_PI / i));   
         p.mass = 0.1f;
         p.scale = 1.0f;
         particles.emplace_back(p);
     }
+
+
 
     glGenBuffers(1, &computeSSBO);
     glBindBuffer(GL_ARRAY_BUFFER, computeSSBO);
@@ -88,13 +88,24 @@ void ComputeShader::setup()
 }
 
 
-void ComputeShader::bind()
+void ComputeShader::bindCS()
 {
-
+    glUseProgram(csProgID);
     
 
 
     /* -------------- */
+}
+
+void ComputeShader::run()
+{
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, computeSSBO);
+    glDispatchCompute( (numObjects/numWorkGroups)+1, 1, 1);
+    glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT | GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+
+    glUseProgram(progID);
+    glBindVertexArray(computeVaoID);
+
 }
 
 GLuint ComputeShader::getCSID()
