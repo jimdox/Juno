@@ -49,8 +49,8 @@ void ComputeShader::setup()
     for(unsigned int i = 0; i < numObjects; i++)
     {
         Particle p;
-        p.position = glm::vec3( sinf(i)/(min(i, 5000)) * 5000, cosf(i)/(min(i, 50000)) * 5000, tanf(i/M_PI));
-        p.velocity = glm::vec3( sinf(i), tanf(i), cosf(i) * 4);
+        p.position = glm::vec3( cosf(M_PI - i * 1.2) * 300, (1.2 * tanf(i/3)) * 30, tanf(i)*sinf(i/3) * 30);
+        p.velocity = glm::vec3( 3 * sinf(2 * M_PI * i) + 2 * cosf(-i), cosf(i/(2 * M_PI)), 2 * sinf(2 * M_PI / i));   
         p.mass = 0.1f;
         p.scale = 1.0f;
         particles.emplace_back(p);

@@ -11,10 +11,12 @@ uniform mat4 view;
 
 out float pass_scale;
 out float pass_speed;
+out vec3 pass_position;
 
 void main()
 {
     pass_scale = 1.0f;
     pass_speed = length(velocity);
+    pass_position = position;
     gl_Position = projection * view * vec4(position, 1.0);
 }
