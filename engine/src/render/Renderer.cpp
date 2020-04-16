@@ -5,7 +5,7 @@ using namespace juno;
 
 
 
-Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot), computeShader("./sandbox/shaders/comp_test", 10000000, 128)
+Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot), computeShader("./sandbox/shaders/comp_test", 1000000, 128)
 {
 	// JN_WARN(JN_GFX_DEVICE);                                                                          /* useful for debugging w/ hybrid graphics */
     defaultShader = &AssetManager::get().getDefaultShader();                      

@@ -49,7 +49,7 @@ void ComputeShader::setup()
     for(unsigned int i = 0; i < numObjects; i++)
     {
         Particle p;
-        p.position = glm::vec3( cosf(M_PI - i * 1.2) * 300, (1.2 * tanf(i/3)) * 30, tanf(i)*sinf(i/3) * 30);
+        p.position = glm::vec3( cosf(M_PI - i * 1.2) * 300, (1.2 * tanf(i/3)) * 60, tanf(i)*sinf(i/3) * 60);
         p.velocity = glm::vec3( 3 * sinf(2 * M_PI * i) + 2 * cosf(-i), cosf(i/(2 * M_PI)), 2 * sinf(2 * M_PI / i));   
         p.mass = 0.1f;
         p.scale = 1.0f;
@@ -71,10 +71,7 @@ void ComputeShader::setup()
     glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 6 ));
     glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7 ));
 
-    // glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 3));
-	// glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 6));
-	// glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7));
+  
     glVertexAttribDivisor(0, 1);
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
