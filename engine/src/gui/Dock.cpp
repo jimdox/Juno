@@ -427,9 +427,17 @@ void Dock::showStartupWindow()
         {
             if(ImGui::Selectable(template_programs[i].c_str(), false))
             {
-                f_show_startup = false;
-                ImGui::End();
-                notify(CustomWindowEvent());
+                if(template_programs[i] == "Particle System")
+                {
+                    f_show_startup = false;
+                    ImGui::End();
+                    notify(CustomWindowEvent());
+                } else if (template_programs[i] == "Simple Physics")
+                {
+
+                } else {
+                    
+                }
             }
         }
         ImGui::NextColumn();
