@@ -123,7 +123,7 @@ void Program::RunExampleParticleSim()
         particles.emplace_back(p, v, 1.0f);
     }
 	
-	ComputeShader cs(particles, "./sandbox/shaders/example", 512);
+	ComputeShader cs(particles, "./Resources/Shaders/ComputeShaders/example", 512);
 
 	while (!ProgramShouldClose())
 	{

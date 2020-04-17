@@ -1,6 +1,6 @@
 #!/bin/bash
 
 premake5 gmake
-make all && ./bin/Debug/sandbox 
+make all -j 4 && ./Bin/Debug/Sandbox 
 
 

@@ -7,7 +7,7 @@ using namespace Juno;
 
 static ComputeShader* g_computeShader;
 
-class SandboxProgram : public Juno::Program
+class SandboxProgram : public Program
 {
 	void OnUserCreate()
 	{

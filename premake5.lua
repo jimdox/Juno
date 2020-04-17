@@ -10,7 +10,6 @@ workspace "Juno"
 
 	flags {
 		--"MultiProcessorCompile"
-
 	}
 	
 	outputdir = "%{cfg.buildcfg}"

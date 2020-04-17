@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build makefile + run Juno",
+            "label": "Build Makefile + Run Juno",
             "type": "shell",
-            "command": "make all -j 6 && ~/dev/Juno/bin/Debug/sandbox",
+            "command": "make all -j 6 && ~/dev/Juno/Bin/Debug/Sandbox",
             "group": {
                 "kind": "build",
                 "isDefault": true
