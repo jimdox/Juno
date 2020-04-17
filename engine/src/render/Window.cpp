@@ -1,8 +1,7 @@
+#include "pch.h"
 #include "render/Window.h"
-#include "render/textures/Texture.h"
 #include "render/glRenderCore.h"
 #include "core/EngineConfig.h"
-//#include "core/AssetManager.h"
 
 #ifdef JN_RENDERER_OPENGL
 	#include "glRenderCore.h"
@@ -19,8 +18,6 @@ using namespace juno;
 static KeyEventDispatcher* s_keyDispatcher;
 static MouseEventDispatcher* s_mouseDispatcher;
 static WindowEventDispatcher* s_winDispatcher;
-/* ---- */
-
 
 /* /// GLFW Callbacks /// */
 

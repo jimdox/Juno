@@ -28,7 +28,7 @@ public:
 
     ComputeShader& loadComputeShader(const std::string& fp);
     
-    GLint * loadShaderFile(const std::string& filepath);
+    std::array<GLint,4> loadShaderFile(const std::string& filepath);
     GLint loadShaderComponentFile(const std::string& filepath, GLenum shaderType);
     Shader& getDefaultShader();
 

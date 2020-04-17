@@ -66,6 +66,7 @@ project "engine"
 		"%{prj.name}/include/core/**.h",
 		"%{prj.name}/include/render/**.h",
 		"%{prj.name}/include/entity/**.h",
+		"%{prj.name}/include/physics/**.h",
 		"%{prj.name}/include/events/**.h",
 		"%{prj.name}/include/gui/**.h",
 		"%{prj.name}/src/**.cpp",

@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 /* This is an example class of how a Material would work, in the future, I will add features to the shader compiler 
     to detect what variables are needed for a given material, instead of hard-coding them here. */
 namespace juno 

@@ -9,9 +9,9 @@ namespace juno {
 class Renderer 
 {
 public:
-    static Renderer& init(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot)
-    {
-        static Renderer s_instance(sc_width, sc_height,window_title, cam_pos, cam_rot);
+    static Renderer& get()
+    {	
+        static Renderer s_instance(1920, 1080, " ", glm::vec3(0,0,0), glm::vec3(0,20.0f,0));
         return s_instance;
     }
 
@@ -21,14 +21,15 @@ public:
     Camera& getCamera();
     Scene& getScene();
 
-    void submit(Scene* scene);
+    void submit(Scene& scene);
     void submit(Entity& entity);
     void submit(Entity& entity, std::shared_ptr<Shader> shader);
     void submit(Light& light);
 
-    void update(float delta_time);
+    void render(float dt);
+    void updateWindow(float dt);
 
-    void runComputeShader(float dt);
+    void runComputeShader(ComputeShader& cs, float dt);
 
 private:
     Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
@@ -37,7 +38,6 @@ private:
     Scene* scene;
     Camera camera;
     Shader* defaultShader;
-    ComputeShader computeShader;
     //SkyBoxShader* skyboxShader;
 
     // static Renderer s_instance;

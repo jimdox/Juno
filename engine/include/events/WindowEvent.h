@@ -32,7 +32,9 @@ public:
 class CustomWindowEvent : public WindowEvent
 {
 public:
+    CustomWindowEvent(int code) : sceneCode(code){}
     inline EventType getType() const {return EventType::SCENE_SWITCH; }
+    int sceneCode;
 };
 
 class WindowEventDispatcher : public EventDispatcher

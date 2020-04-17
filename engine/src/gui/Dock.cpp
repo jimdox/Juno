@@ -69,7 +69,7 @@ void Dock::init()
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(0.93f, 0.93f, 0.93f, 1.00f);
     colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.06f, 0.06f, 0.06f, 0.92f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.055f, 0.055f, 0.055f, 0.92f);
     colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
     colors[ImGuiCol_Border]                 = ImVec4(0.44f, 0.19f, 0.19f, 0.50f);
@@ -145,7 +145,7 @@ void Dock::update(Scene& scene, float dt)
 
     if(f_show_startup)
     {
-        if(ImGui::IsAnyMouseDown() && !ImGui::GetIO().WantCaptureMouse || ImGui::IsKeyDown(GLFW_KEY_ESCAPE))
+        if(ImGui::IsAnyMouseDown() && !ImGui::GetIO().WantCaptureMouse || ImGui::IsKeyDown(GLFW_KEY_ESCAPE) || SceneManager::get().getScene().getEntities().size() != 0)
         {
             f_show_startup = false;
         } else
@@ -158,7 +158,7 @@ void Dock::update(Scene& scene, float dt)
     show_menubar();
     showDebugWindow();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     glRender::renderGui();
@@ -173,7 +173,6 @@ void Dock::show_menubar()
         {
             if (ImGui::BeginMenu("File"))
             {
-                //ImGui::ShowExampleMenuFile();
                 menu_file_dropdown();
                 ImGui::EndMenu();   
             }
@@ -260,46 +259,43 @@ void Dock::show_side_panel(Scene& scene, float dt)
 
 void Dock::showScenePanel(Scene& scene)
 {    
-
     ImGuiWindowFlags winFlags = 0;
     winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
     ImGui::BeginChild("Scene Info", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 300), true, winFlags);
 
     //float v4f[4] = {0, 0, 0, 0}
     ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Lights");
-        std::vector<Light>& lights = scene.getLights();
-        float input_data[MAX_NUM_LIGHTS][3];
+    std::vector<Light>& lights = scene.getLights();
+    float input_data[MAX_NUM_LIGHTS][3];
 
-        for(int i = 0; i < lights.size(); i++) 
-        {
-            std::string light_name = "light " + std::to_string(i);
-            //ImGui::Text("  x:%.1f y:%.1f z:%.1f", scene.getLights()[i].getPosition().x, scene.getLights()[i].getPosition().y, scene.getLights()[i].getPosition().z);
-            input_data[i][0] = lights[i].getPosition().x;
-            input_data[i][1] = lights[i].getPosition().y;
-            input_data[i][2] = lights[i].getPosition().z;
-            ImGui::InputFloat3(light_name.c_str(), input_data[i], 1, 0);         
-            lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
-        }
-        //ImGui::TreePop();
+    for(int i = 0; i < lights.size(); i++) 
+    {
+        std::string light_name = "light " + std::to_string(i);
+        //ImGui::Text("  x:%.1f y:%.1f z:%.1f", scene.getLights()[i].getPosition().x, scene.getLights()[i].getPosition().y, scene.getLights()[i].getPosition().z);
+        input_data[i][0] = lights[i].getPosition().x;
+        input_data[i][1] = lights[i].getPosition().y;
+        input_data[i][2] = lights[i].getPosition().z;
+        ImGui::InputFloat3(light_name.c_str(), input_data[i], 1, 0);         
+        lights[i].setPosition(glm::vec3(input_data[i][0], input_data[i][1], input_data[i][2]));
+    }
+
     ImGui::Separator();
     ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Entities");
 
-        std::vector<Entity>& entities = scene.getEntities();
-        for(int i = 0; i < entities.size(); i++)
-        {
-            ImGui::TextColored(ImVec4(0.2f, 0.72f, 0.75f, 1.0f), entities[i].getName().c_str());
-            ImGui::Text("  x:%.1f y:%.1f z:%.1f",entities[i].getPosition().x, entities[i].getPosition().y, entities[i].getPosition().z);
-        }
-        //ImGui::TreePop();
+    std::vector<Entity>& entities = scene.getEntities();
+    for(int i = 0; i < entities.size(); i++)
+    {
+        ImGui::TextColored(ImVec4(0.2f, 0.72f, 0.75f, 1.0f), entities[i].getName().c_str());
+        ImGui::Text("  x:%.1f y:%.1f z:%.1f",entities[i].getPosition().x, entities[i].getPosition().y, entities[i].getPosition().z);
+    }
     
     ImGui::EndChild();
-
 }
 
 void Dock::showRenderPanel()
 {   
     ImGui::Text("Renderer Mode");
-    if(ImGui::Combo("", &renderer_selector, "OpenGL\0OpenGL ES\0"))
+    if(ImGui::Combo("", &renderer_selector, "OpenGL\0Vulkan\0"))
     {
         // switch(renderer_selector)
         // {
@@ -312,7 +308,7 @@ void Dock::showRenderPanel()
     if(ImGui::Checkbox("Wireframe Mode", &render_effect_wireframe))
     {
         notify(RenderWireframeEvent(render_effect_wireframe));
-    }
+    } 
 
 
 }
@@ -420,24 +416,31 @@ void Dock::showStartupWindow()
         std::vector<std::string> template_programs; 
         std::vector<std::string> recent_programs;
         template_programs.push_back("General Scene"); 
-        template_programs.push_back("Simple Physics");
         template_programs.push_back("Particle System");
 
         for(int i = 0; i < template_programs.size(); i++)
         {
             if(ImGui::Selectable(template_programs[i].c_str(), false))
             {
-                if(template_programs[i] == "Particle System")
-                {
-                    f_show_startup = false;
-                    ImGui::End();
-                    notify(CustomWindowEvent());
-                } else if (template_programs[i] == "Simple Physics")
-                {
+                // if(i == 2)
+                // {
+                //     f_show_startup = false;
+                //     ImGui::End();
+                //     ImGui::EndFrame();
+                //     notify(CustomWindowEvent(2));
+                // } else if (i == 1)
+                // {
 
-                } else {
-                    
-                }
+                // } else {
+                //     f_show_startup = false;
+                //     ImGui::End();
+                //     ImGui::EndFrame();
+                //     notify(CustomWindowEvent(0));
+                // }
+                f_show_startup = false;
+                ImGui::End();
+                ImGui::EndFrame();
+                notify(CustomWindowEvent(i));
             }
         }
         ImGui::NextColumn();

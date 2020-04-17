@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "render/shaders/Shader.h"
 #include "core/AssetManager.h"
 #include "utils/MathUtils.h"

@@ -1,12 +1,14 @@
+
 #include "render/shaders/ComputeShader.h"
 #include "core/AssetManager.h"
 #include "utils/MathUtils.h"
 using namespace juno;
 
-ComputeShader::ComputeShader(const std::string& fp, unsigned int numObjects, unsigned int numWG) : numWorkGroups(numWG), numObjects(numObjects)
+ComputeShader::ComputeShader(std::vector<Particle>& particles, const std::string& fp, unsigned int numWG) : numWorkGroups(numWG), numObjects(particles.size())
 {
     this->filepath = fp;
     compileCShader();
+    setup(particles);
 }
 
 void ComputeShader::compileCShader()
@@ -31,57 +33,42 @@ void ComputeShader::compileCShader()
     glLinkProgram(csProgID);
 
     linkErrorCheck(compShader, GL_COMPUTE_SHADER);
-    //JN_INFO("Linking Compute Shader!");
 }
 
-void ComputeShader::setup()
+void ComputeShader::setup(std::vector<Particle>& particles)
 {
+    //setActive();
     loc_viewMatrix = glGetUniformLocation(this->progID, "view");
     loc_projectionMatrix = glGetUniformLocation(this->progID, "projection");
 
+    glUseProgram(csProgID);
     glGenVertexArrays(1, &computeVaoID);
     glBindVertexArray(computeVaoID);
-
-    for(unsigned int i = 0; i < numObjects; i++)
-    {
-        Particle p;
-        p.position.x = 100 * cosf(i);
-        p.position.y = 100 * sin(i) * cosf(i);
-        p.position.z = 100 * sinf(i * M_PI/300);
-        p.velocity = glm::vec3(sinf(2 * M_PI * i) + cosf(-i), cosf(i/(2 * M_PI)), sinf(2 * M_PI / i));   
-        p.mass = 0.1f;
-        p.scale = 1.0f;
-        particles.emplace_back(p);
-    }
 
 
 
     glGenBuffers(1, &computeSSBO);
     glBindBuffer(GL_ARRAY_BUFFER, computeSSBO);
-    glBufferData(GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), &particles[0], GL_DYNAMIC_COPY);
+    glBufferData(GL_ARRAY_BUFFER, particles.size() * sizeof(Particle), &particles[0], GL_STREAM_DRAW);
 
     /* */
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
-    glEnableVertexAttribArray(3);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), 0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 3 ));
     glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 6 ));
-    glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Particle), (GLvoid*)(sizeof(float) * 7 ));
 
   
     glVertexAttribDivisor(0, 1);
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
+    // glVertexAttribDivisor(3, 1);
     
     /* */
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
 
 
 
@@ -105,8 +92,10 @@ void ComputeShader::run()
 
     glUseProgram(progID);
     glBindVertexArray(computeVaoID);
-
 }
+
+
+
 
 GLuint ComputeShader::getCSID()
 {
@@ -128,13 +117,6 @@ unsigned int ComputeShader::getNumObjects()
 {
     return numObjects;
 }
-
-std::vector<Particle>& ComputeShader::getParticles()
-{
-    return particles;
-}
-
-
 
 // std::vector<glm::vec4>& ComputeShader::getForces()
 // {

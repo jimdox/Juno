@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "render/Renderer.h"
 #include "render/glRenderCore.h"
 #include "core/AssetManager.h"
@@ -5,19 +6,13 @@ using namespace juno;
 
 
 
-Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot), computeShader("./sandbox/shaders/comp_test", 1200000, 512)
+Renderer::Renderer(float sc_width, float sc_height, const std::string& w_title, glm::vec3 cam_pos, glm::vec3 cam_rot) : window(sc_width, sc_height, w_title), camera(cam_pos, cam_rot)
 {
-	// JN_WARN(JN_GFX_DEVICE);                                                                          /* useful for debugging w/ hybrid graphics */
     defaultShader = &AssetManager::get().getDefaultShader();                      
-    computeShader.setup();
-	//skybox_shader = std::make_shared<SkyBoxShader>("./engine/res/shaders/skybox");
     window.getKeyDispatcher().addListener(&camera);
 	window.getMouseDispatcher().addListener(&camera);
 	window.getWinEventDispatcher().addListener(&camera);
-	defaultShader->setActive();
-	defaultShader->loadProjectionMatrix(camera.getProjectionMatrix());				                    /* load the perspective, view matrix from Camera */
-	defaultShader->loadViewMatrix(&camera);
-	defaultShader->unbindProgram();
+
 }
 
 Window& Renderer::getWindow()
@@ -35,9 +30,9 @@ Scene& Renderer::getScene()
     return *scene;
 }
 
-void Renderer::submit(Scene* scene)
+void Renderer::submit(Scene& scene)
 {
-    this->scene = scene;
+    this->scene = &scene;
 }
 
 void Renderer::submit(Entity& entity)
@@ -52,10 +47,11 @@ void Renderer::submit(Light &light)
 {
 }
 
-void Renderer::update(float delta_time)
+void Renderer::render(float dt)
 {
-    camera.update(delta_time);
+    camera.update(dt);
     glRender::clear();
+
 
     std::vector<Entity>& entities = scene->getEntities();
     //std::vector<std::shared_ptr<Shader>> entity_shaders = queue.getEntityShaders();
@@ -80,27 +76,27 @@ void Renderer::update(float delta_time)
     // skybox_shader->loadViewMatrix(&camera);
     // glRender::renderSkyBox(scene->getSkyBox(), skybox_shader);
 
-    window.update(*scene, delta_time);
 
 }
 
-void Renderer::runComputeShader(float dt)
-{   
-    camera.update(dt);
-    glRender::clear();
-
-    glm::vec3 forceRadii(10.0f, 10.0f, 10.0f);
-    
-
-    computeShader.bindCS();
-    computeShader.loadFloat(glGetUniformLocation(computeShader.getCSID(), "timestep"), dt);
-    computeShader.loadFloat3(glGetUniformLocation(computeShader.getCSID(), "forceRadii"), forceRadii);
-    
-    computeShader.run();
-
-    computeShader.loadProjectionMatrix(camera.getProjectionMatrix());
-    computeShader.loadViewMatrix(&camera);
-    glRender::applyComputeShader(computeShader);
-
+void Renderer::updateWindow(float dt)
+{
     window.update(*scene, dt);
+
+}
+
+
+void Renderer::runComputeShader(ComputeShader& cs, float dt)
+{   
+    float forceRadii = 10;
+
+    cs.bindCS();
+    cs.loadFloat(glGetUniformLocation(cs.getCSID(), "timestep"), dt);
+    cs.loadFloat(glGetUniformLocation(cs.getCSID(), "forceRadii"), forceRadii);
+
+    cs.run();
+
+    cs.loadProjectionMatrix(camera.getProjectionMatrix());
+    cs.loadViewMatrix(&camera);
+    glRender::applyComputeShader(cs);
 }

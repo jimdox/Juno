@@ -2,6 +2,7 @@
 #include "render/Renderer.h"
 #include "core/AssetManager.h"
 #include "events/RenderEvent.h"
+#include "entity/SceneManager.h"
 
 namespace juno {
 class Program : public EventListener
@@ -15,9 +16,9 @@ public:
 	void exit();
 
 	virtual void onCreate() = 0;
-	virtual void onDestroy() = 0;
 	virtual void onUpdate() = 0;
 	virtual void onFrameBufferUpdate() = 0;
+	virtual void onExit() = 0;
 
 	void onAttach();
 	void onEvent(const Event& e);
@@ -29,7 +30,7 @@ protected:
 
 	Renderer* renderer;
 	AssetManager* assetManager; 
-	Scene scene;
+	Scene& scene;
 	/* time-keeping vars. */
 	float last_time;     
 	float frame_time;
@@ -38,7 +39,9 @@ protected:
 
 private:
 	void runExampleParticleSim();
-	std::shared_ptr<Shader> shader;
+	void runExamplePhysics();
+	void runExampleGeneral();
+
 	bool f_program_should_close;
 };
 }

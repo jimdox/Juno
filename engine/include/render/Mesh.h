@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "render/textures/Texture.h"
 #include "render/Material.h"
 #include "core/Asset.h"

@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 namespace juno {
 #define MAX_NUM_LIGHTS 4
 class Light

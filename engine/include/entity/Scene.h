@@ -10,8 +10,8 @@ public:
     Scene();
     ~Scene();
 
-    void addEntity(Entity& entity);
-    void addLight(Light& light);
+    void add(Entity& entity);
+    void add(Light& light);
     void clear();
 
     std::vector<Entity>& getEntities();

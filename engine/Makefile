@@ -75,10 +75,12 @@ OBJECTS := \
 	$(OBJDIR)/Program.o \
 	$(OBJDIR)/Entity.o \
 	$(OBJDIR)/Scene.o \
+	$(OBJDIR)/SceneManger.o \
 	$(OBJDIR)/SkyBox.o \
 	$(OBJDIR)/Terrain.o \
 	$(OBJDIR)/Dock.o \
 	$(OBJDIR)/GuiImage.o \
+	$(OBJDIR)/Particle.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
@@ -174,6 +176,9 @@ $(OBJDIR)/Entity.o: src/entity/Entity.cpp
 $(OBJDIR)/Scene.o: src/entity/Scene.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/SceneManger.o: src/entity/SceneManger.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/SkyBox.o: src/entity/SkyBox.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -184,6 +189,9 @@ $(OBJDIR)/Dock.o: src/gui/Dock.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/GuiImage.o: src/gui/GuiImage.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Particle.o: src/physics/Particle.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: src/render/Camera.cpp

@@ -155,10 +155,10 @@ std::pair<unsigned int, unsigned int> AssetManager::loadToVAO(std::vector<float>
     return {vaoID, numIndices};
 }   
 
-GLint * AssetManager::loadShaderFile(const std::string& filepath)
+std::array<GLint, 4> AssetManager::loadShaderFile(const std::string& filepath)
 {
     std::string glslVersion; 
-    GLint shaderIDs[4] = {-1, -1, -1, -1};                     /* flags for what stages exist in shader */
+    std::array<GLint, 4> shaderIDs = {-1, -1, -1, -1};                     /* flags for what stages exist in shader */
 
     std::string vertSrc, fragSrc, geomSrc, compSrc;
     std::string* activeSrc;
@@ -242,8 +242,7 @@ GLint * AssetManager::loadShaderFile(const std::string& filepath)
     }
 
     
-    //return shaderIDs;
-    return 0;
+    return shaderIDs;
 }
 
 GLint AssetManager::loadShaderComponentFile(const std::string& filepath, GLenum shaderType)

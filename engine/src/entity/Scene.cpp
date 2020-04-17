@@ -13,12 +13,12 @@ Scene::~Scene()
     clear();
 }
 
-void Scene::addEntity(Entity& entity)
+void Scene::add(Entity& entity)
 {
     entities.push_back(entity);
 }
 
-void Scene::addLight(Light& light)
+void Scene::add(Light& light)
 {
     lights.push_back(light);
 }
