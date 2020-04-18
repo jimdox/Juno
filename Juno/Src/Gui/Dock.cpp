@@ -100,7 +100,7 @@ void Dock::Update(Scene& scene, float dt)
     ShowMenubar();
     ShowDebugWindow();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     ImGui::Render();
     RenderCall::RenderGui();
@@ -253,7 +253,7 @@ void Dock::ShowRenderPanel()
     } 
 
     float clearColorVal = Renderer::Get().GetClearColorBrightness();
-    ImGui::SliderFloat("Clear Color", &clearColorVal, 0.0f, 1.0f, "ratio = %.3f");
+    ImGui::SliderFloat(" ", &clearColorVal, 0.0f, 1.0f, "Clear Color = %.3f");
     Renderer::Get().SetClearColorBrightness(clearColorVal);
 
 
@@ -352,7 +352,7 @@ void Dock::ShowStartupWindow()
     
     ImGui::SetNextWindowPos(ImVec2(1920/2,1080/2), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
     ImGui::Begin("welcome menu", &f_open, win_flags);
-    ImGui::Text("[esc to hide] \t\t\t\tv%s", Juno::JN_VERSION);
+    ImGui::Text("[esc to hide] \t\t\t   v%s", Juno::JN_VERSION);
     ImGui::Image((void*)(intptr_t)id_startupImg, ImVec2(255, 225));
     //ImGui::Text("You can follow the project @ github.com/jimdox/Juno");
     ImGui::Text("Templates:\t\t\t Recent Files:");
