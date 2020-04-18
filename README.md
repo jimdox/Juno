@@ -1,13 +1,13 @@
 
 
-![alt text](https://github.com/jimdox/black_box/blob/master/engine/res/snapshot-0-1-2d.png)
+![alt text]() 
 
 
 ## Project Setup
 Sandbox is an example project which has everything you need to get started. Currently, since glfw is not behaving well with gcc + Premake, you will need to install the `glfw-dev` (or glfw-x11) package on your system, as well as [Premake5](https://premake.github.io/download.html#v5). This is an unfortunate extra step, but I am hoping to resolve this for both Windows and Linux soon. Most modern distributions should have `glew` installed by default, but you may need to install it manually in some cases. 
 
 ### Running the Sandbox Project
-For anyone unfamiliar with how to use Premake, when you initially download the project, or create a new file you want to include in your build, use the command `premake5 gmake` to generate new makefiles, then `make all -j 4 && ./Bin/Debug/Sandbox` to build + run the default configuration. You can also use `build.sh` to do this for you.  
+For anyone unfamiliar with how to use Premake, when you initially download the project, or create a new file you want to include in your build, use the command `premake5 gmake` to generate new makefiles, then `make all -j4 && ./Bin/Debug/Sandbox` to build + run the default configuration. You can also use `build.sh` to do this for you.  
 
 ### Getting Started with Physics Simulation
 In the current version of the project, the templates in the startup menu will now load in some default scenes for you to mess around with. The Particle Simulation template is now using an early implementation of compute shaders, which allows the user to simulate objects fully on the GPU, allowing for much higher particle counts than would otherwise be possible in real-time. 

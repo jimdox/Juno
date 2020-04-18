@@ -11,7 +11,7 @@ Renderer::Renderer(float sWidth, float sHeight, const std::string& wTitle, glm::
     window.GetKeyDispatcher().AddListener(&camera);
 	window.GetMouseDispatcher().AddListener(&camera);
 	window.GetWinEventDispatcher().AddListener(&camera);
-
+    clearColorBrightness = 0.09f;
 }
 
 Window& Renderer::GetWindow()
@@ -49,7 +49,7 @@ void Renderer::Submit(Light &light)
 void Renderer::Render(float dt)
 {
     camera.Update(dt);
-    RenderCall::Clear();
+    RenderCall::Clear(clearColorBrightness);
 
 
     std::vector<Entity>& entities = scene->GetEntities();
@@ -84,6 +84,15 @@ void Renderer::UpdateWindow(float dt)
 
 }
 
+GLclampf Renderer::GetClearColorBrightness()
+{
+    return clearColorBrightness;
+}
+
+void Renderer::SetClearColorBrightness(GLclampf brightness)
+{
+    this->clearColorBrightness = brightness;
+}
 
 void Renderer::RunComputeShader(ComputeShader& cs, float dt)
 {   

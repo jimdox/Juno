@@ -55,9 +55,9 @@ static void ErrorCheck()
 }
 
 /* clear screen */
-static void Clear()
+static void Clear(GLclampf brightness)
 {
-	glClearColor(0.12f, 0.12f, 0.12f, 1.0f);
+	glClearColor(brightness, brightness, brightness, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 

@@ -31,6 +31,9 @@ public:
 
     void RunComputeShader(ComputeShader& cs, float dt);
 
+    void SetClearColorBrightness(GLclampf brightness);
+    GLclampf GetClearColorBrightness();
+
 private:
     Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
 
@@ -38,6 +41,7 @@ private:
     Scene* scene;
     Camera camera;
     Shader* defaultShader;
+    GLclampf clearColorBrightness;
     //SkyBoxShader* skyboxShader;
 
     // static Renderer s_instance;

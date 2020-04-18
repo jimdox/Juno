@@ -18,7 +18,7 @@ void Dock::Init()
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(0.93f, 0.93f, 0.93f, 1.00f);
     colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.055f, 0.055f, 0.055f, 0.92f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.14f, 0.14f, 0.14f, 0.93f);
     colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_PopupBg]                = ImVec4(0.08f, 0.08f, 0.08f, 0.94f);
     colors[ImGuiCol_Border]                 = ImVec4(0.44f, 0.19f, 0.19f, 0.50f);
@@ -71,7 +71,7 @@ void Dock::Init()
     ImGui::GetStyle().ScrollbarSize = 0.6f;
     ImGui::GetStyle().ItemSpacing = ImVec2(8.0f, 7.0f);
 
-    id_startupImg = AssetManager::Get().LoadTextureFile("./Resources/Textures/juno-s.png", GL_TEXTURE_2D, TX_DIFFUSE);
+    id_startupImg = AssetManager::Get().LoadTextureFile("./Resources/Textures/JunoLogoSmall.png", GL_TEXTURE_2D, TX_DIFFUSE);
 }
 
 Dock::~Dock()
@@ -100,7 +100,7 @@ void Dock::Update(Scene& scene, float dt)
     ShowMenubar();
     ShowDebugWindow();
 
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     RenderCall::RenderGui();
@@ -252,6 +252,10 @@ void Dock::ShowRenderPanel()
         Notify(RenderWireFrameEvent(renderEffectWireFrame));
     } 
 
+    float clearColorVal = Renderer::Get().GetClearColorBrightness();
+    ImGui::SliderFloat("Clear Color", &clearColorVal, 0.0f, 1.0f, "ratio = %.3f");
+    Renderer::Get().SetClearColorBrightness(clearColorVal);
+
 
 }
 
@@ -348,8 +352,8 @@ void Dock::ShowStartupWindow()
     
     ImGui::SetNextWindowPos(ImVec2(1920/2,1080/2), ImGuiCond_Always, ImVec2(0.5f, 0.5f));
     ImGui::Begin("welcome menu", &f_open, win_flags);
-    ImGui::Text("[esc to hide] \t\t\t\t\t\t  v%s", Juno::JN_VERSION);
-    ImGui::Image((void*)(intptr_t)id_startupImg, ImVec2(330, 245));
+    ImGui::Text("[esc to hide] \t\t\t\tv%s", Juno::JN_VERSION);
+    ImGui::Image((void*)(intptr_t)id_startupImg, ImVec2(255, 225));
     //ImGui::Text("You can follow the project @ github.com/jimdox/Juno");
     ImGui::Text("Templates:\t\t\t Recent Files:");
     ImGui::Separator();
