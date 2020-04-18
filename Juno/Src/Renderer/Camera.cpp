@@ -129,7 +129,7 @@ void Camera::CalculatePosition(float dt)
 		{
 			zoomSpeed = 0;
 		}else {
-			zoomSpeed -= zoomSpeed * 0.082f;
+			zoomSpeed -= zoomSpeed * 0.16f;
 		}
 	} else {
 		zoomSpeed += deltaScroll * 20.0f;

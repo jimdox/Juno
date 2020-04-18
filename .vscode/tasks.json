@@ -6,11 +6,12 @@
         {
             "label": "Build Makefile + Run Juno",
             "type": "shell",
-            "command": "make all -j 6 && ~/dev/Juno/Bin/Debug/Sandbox",
+            "command": "make all -j 6 && ./Bin/Debug/Sandbox",
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": []
         }
     ]
 }

@@ -26,8 +26,8 @@ public:
     void Submit(Entity& entity, std::shared_ptr<Shader> shader);
     void Submit(Light& light);
 
-    void Render(float dt);
-    void UpdateWindow(float dt);
+    void Begin(float dt);
+    void End(float dt);
 
     void RunComputeShader(ComputeShader& cs, float dt);
 

@@ -76,9 +76,9 @@ void Program::Run()
 
 		if(frameTime > (1/120.0f))
 		{
-			renderer->Render(frameTime);
+			renderer->Begin(frameTime);
 			OnUserUpdateWindow();
-			renderer->UpdateWindow(frameTime);
+			renderer->End(frameTime);
 			frameTime = 0;
 		}
 
@@ -130,9 +130,9 @@ void Program::RunExampleParticleSim()
 
 		if(frameTime > (1/120.0f))
 		{
-			renderer->Render(frameTime);
+			renderer->Begin(frameTime);
 			renderer->RunComputeShader(cs, frameTime);
-			renderer->UpdateWindow(frameTime);
+			renderer->End(frameTime);
 			frameTime = 0;
 		}
 
@@ -189,9 +189,9 @@ void Program::RunExampleGeneral()
 
 		if(frameTime > (1/120.0f))
 		{
-			renderer->Render(frameTime);
+			renderer->Begin(frameTime);
 
-			renderer->UpdateWindow(frameTime);
+			renderer->End(frameTime);
 			frameTime = 0;
 		}
 

@@ -46,7 +46,7 @@ void Renderer::Submit(Light &light)
 {
 }
 
-void Renderer::Render(float dt)
+void Renderer::Begin(float dt)
 {
     camera.Update(dt);
     RenderCall::Clear(clearColorBrightness);
@@ -78,7 +78,7 @@ void Renderer::Render(float dt)
 
 }
 
-void Renderer::UpdateWindow(float dt)
+void Renderer::End(float dt)
 {
     window.Update(*scene, dt);
 

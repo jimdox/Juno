@@ -19,7 +19,7 @@ class SandboxProgram : public Program
 
 		dragon.GetMaterial().SetBaseColor(Vec3(0.4f, 0.1f, 0.1f));
 		dragon.GetMaterial().SetShineDamper(0.99f);
-		//dragon.GetMaterial().SetReflectivity(0.25f);
+		dragon.GetMaterial().SetReflectivity(0.25f);
 		
 		Entity entityOne (plane, Vec3(0.0f, -5.5f, 0.0f), Vec3(0,0, 0), 100.0f, "default plane");
 		Entity entityTwo (dragon, Vec3(60, -5, -30), Vec3(0,-50,0), 5.0f, "Big Boi");
@@ -27,10 +27,10 @@ class SandboxProgram : public Program
 		Light lightA(Vec3(-110.5f, 500.01f, 100.0f), Vec3(0.9f, 0.9f, 0.9f), Vec3(1.0, 1, 0.005));
 		Light lightB(Vec3(300,100,-1010), Vec3(0.4f, 0.4f, 0.70f), Vec3(1.0, 0.00001f, 0.0005f));
 
-		// scene.add(entityOne);
-		// scene.add(entityTwo);
-		// scene.add(lightA);
-		// scene.add(lightB);
+		// scene.Add(entityOne);
+		// scene.Add(entityTwo);
+		// scene.Add(lightA);
+		// scene.Add(lightB);
 		Renderer::Get().Submit(scene);
 
 		/* sample code for how compute shaders can be used */
