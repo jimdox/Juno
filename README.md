@@ -1,6 +1,6 @@
 
 
-![alt text](https://github.com/jimdox/Juno/blob/master/Resources/Textures/Juno.png) 
+![alt text](https://github.com/jimdox/Juno/blob/master/Resources/Textures/JunoLogo.png) 
 
 
 ## Project Setup
