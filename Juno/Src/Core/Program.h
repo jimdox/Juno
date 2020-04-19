@@ -1,8 +1,5 @@
 #pragma once
-#include "Core/AssetManager.h"
-#include "Core/SceneManager.h"
-#include "Renderer/Renderer.h"
-#include "Events/RenderEvents.h"
+#include "Events/Events.h"
 
 namespace Juno {
 class Program : public EventListener
@@ -25,11 +22,6 @@ public:
 
 protected:
 	bool ProgramShouldClose();
-
-	Renderer* renderer;
-	AssetManager* assetManager; 
-	Scene& scene;
-
 	float frameTime;
 
 private:

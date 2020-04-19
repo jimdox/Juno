@@ -22,6 +22,7 @@ int main()
 	program->Init();
 	program->Run(); 
 	program->Exit();
+	
 	JN_INFO("Exiting...");
 	return 0;
 }

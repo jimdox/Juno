@@ -2,9 +2,9 @@
 
 namespace Juno {
 
-enum TextureType : unsigned char
+enum class TextureType : unsigned char
 {
-	TX_DIFFUSE, TX_SPECULAR, TX_NORMAL, TX_HEIGHT_MAP
+	DIFFUSE, SPECULAR, NORMAL, HEIGHT_MAP
 };
 
 class Texture

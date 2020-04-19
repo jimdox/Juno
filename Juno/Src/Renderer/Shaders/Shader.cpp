@@ -32,12 +32,12 @@ void Shader::CompileShader()
 	// GLuint fragShader = shaderIDs[1];
 
 	//JN_INFO("Linking shaders");
-	this->progID = glCreateProgram();
+	// this->progID = glCreateProgram();
 
-	glAttachShader(progID, vertShader);
-	glAttachShader(progID, fragShader);
-	BindAllAttribs();
-	glLinkProgram(progID);
+	// glAttachShader(progID, vertShader);
+	// glAttachShader(progID, fragShader);
+	// BindAllAttribs();
+	// glLinkProgram(progID);
 
 	LinkErrorCheck(vertShader, GL_VERTEX_SHADER);
 	LinkErrorCheck(fragShader, GL_FRAGMENT_SHADER);
@@ -47,13 +47,13 @@ bool Shader::LinkErrorCheck(GLuint id, GLenum type)
 {
 	int errorLength;
 	GLint linkStatus;
-	glGetProgramiv(progID, GL_LINK_STATUS, &linkStatus);
-	glGetProgramiv(progID, GL_INFO_LOG_LENGTH, &errorLength);
+	//glGetProgramiv(progID, GL_LINK_STATUS, &linkStatus);
+	//glGetProgramiv(progID, GL_INFO_LOG_LENGTH, &errorLength);
 
 	if (errorLength > 0)
 	{
 		std::vector<char> errorMsg(errorLength + 1);
-		glGetShaderInfoLog(id, errorLength, NULL, &errorMsg[0]);
+		//glGetShaderInfoLog(id, errorLength, NULL, &errorMsg[0]);
 		std::string message(errorMsg.begin(), errorMsg.end());
 
 		std::string shaderTypeName;
@@ -93,12 +93,12 @@ std::string& Shader::GetFilepath()
 /* binds shader */
 void Shader::Bind()
 {
-	glUseProgram(progID);
+	//glUseProgram(progID);
 }
 
 void Shader::Unbind()
 {
-    glUseProgram(0);
+    //glUseProgram(0);
 }
 
 void Shader::BindAllAttribs()
@@ -111,29 +111,29 @@ void Shader::BindAllAttribs()
 
 void Shader::BindAttrib(unsigned int attrib, const std::string& var)
 {
-	glBindAttribLocation(this->progID, attrib, var.c_str());
+	//glBindAttribLocation(this->progID, attrib, var.c_str());
 }
 
 /* caches all uniform variables' locations in memory */
 void Shader::CacheUniformLocations()
 {
-	loc_transformationMatrix = glGetUniformLocation(progID, "model");
-	loc_projectionMatrix = glGetUniformLocation(progID, "projection");
-	loc_viewMatrix = glGetUniformLocation(progID, "view");
-	loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
-	loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
-	loc_baseColor = glGetUniformLocation(progID, "in_baseColor");
+	// loc_transformationMatrix = glGetUniformLocation(progID, "model");
+	// loc_projectionMatrix = glGetUniformLocation(progID, "projection");
+	// loc_viewMatrix = glGetUniformLocation(progID, "view");
+	// loc_reflectivity = glGetUniformLocation(progID, "reflectivity");
+	// loc_shineDamper = glGetUniformLocation(progID, "shineDamper");
+	// loc_baseColor = glGetUniformLocation(progID, "in_baseColor");
 
 	for(int i = 0; i < NUM_LIGHTS; i++)
 	{
-		std::string location("lightPosition["+std::to_string(i)+"]");
-		loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
+		// std::string location("lightPosition["+std::to_string(i)+"]");
+		// loc_lightPositions[i] = glGetUniformLocation(progID, location.c_str());
 		
-		location = std::string("lightColor["+std::to_string(i)+"]");
-		loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
+		// location = std::string("lightColor["+std::to_string(i)+"]");
+		// loc_lightColors[i] = glGetUniformLocation(progID, location.c_str());
 		
-		location = std::string("attenuations["+std::to_string(i)+"]");
-		loc_attenuations[i] = glGetUniformLocation(progID, location.c_str());
+		// location = std::string("attenuations["+std::to_string(i)+"]");
+		// loc_attenuations[i] = glGetUniformLocation(progID, location.c_str());
 	}
 }
 
@@ -183,45 +183,45 @@ void Shader::LoadMaterialVars(Material& material)
 /* GLSL uniform loaders */
 void Shader::LoadInt(unsigned int loc, int value) const
 {
-	glUniform1i(loc, (int)value);
+	//glUniform1i(loc, (int)value);
 }
 
 void Shader::LoadBool(unsigned int loc, bool flag) const
 {
-	glUniform1i(loc, flag);
+	//glUniform1i(loc, flag);
 }
 
 void Shader::LoadFloat(unsigned int loc, float value) const
 {
-	glUniform1f(loc, value);
+	//glUniform1f(loc, value);
 }
 
 void Shader::LoadFloat2(unsigned int loc, glm::vec2& vec) const
 {
-	glUniform2fv(loc, 1, &vec[0]);
+	//glUniform2fv(loc, 1, &vec[0]);
 }
 
 void Shader::LoadFloat3(unsigned int loc, glm::vec3 &vec) const
 {
-	glUniform3fv(loc, 1, &vec[0]);
+	//glUniform3fv(loc, 1, &vec[0]);
 }
 
 void Shader::LoadFloat4(unsigned int loc, glm::vec4& vec) const
 {
-	glUniform4fv(loc, 1, &vec[0]);
+	//glUniform4fv(loc, 1, &vec[0]);
 }
 
 void Shader::LoadMat2(unsigned int loc, glm::mat2& mat) const
 {
-	glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
+	//glUniformMatrix2fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::LoadMat3(unsigned int loc, glm::mat3& mat) const
 {
-	glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
+	//glUniformMatrix3fv(loc, 1, GL_FALSE, &mat[0][0]);
 }
 
 void Shader::LoadMat4(unsigned int loc, glm::mat4& mat) const
 {
-	glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
+	//glUniformMatrix4fv(loc, 1, GL_FALSE, &mat[0][0]);
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include "Renderer/Shaders/Shader.h"
 #include "Physics/Particle.h"
-
 namespace Juno
 {
 

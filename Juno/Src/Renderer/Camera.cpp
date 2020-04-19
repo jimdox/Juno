@@ -4,6 +4,7 @@
 #include "Core/Log.h"
 #include "Utils/Math.h"
 #include "Events/RenderEvents.h"
+#include <GLFW/glfw3.h>
 using namespace Juno;
 
 Camera::Camera(glm::vec3 pos, glm::vec3 rot) : pivot(pos)

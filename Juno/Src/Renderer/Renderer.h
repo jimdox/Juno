@@ -3,8 +3,21 @@
 #include "Renderer/Camera.h"
 #include "Core/Scene.h"
 #include "Renderer/Shaders/ComputeShader.h"
-//#include "Renderer/Shaders/SkyBoxShader.h"
+
+// #ifdef JN_RENDERER_MODE_VK
+//     #include "Renderer/RenderCoreVK.h"
+// #else
+// 	#include "Renderer/RenderCoreGL.h"
+// #endif
+
 namespace Juno {
+
+enum class RendererAPI
+{
+    OpenGL,
+    Vulkan
+};
+
 
 class Renderer 
 {
@@ -33,17 +46,17 @@ public:
 
     void SetClearColorBrightness(GLclampf brightness);
     GLclampf GetClearColorBrightness();
+    RendererAPI GetCurrentRendererAPI();
+    void SetRendererAPI(RendererAPI rendererAPI);
 
 private:
-    Renderer(float sc_width, float sc_height, const std::string& window_title, glm::vec3 cam_pos, glm::vec3 cam_rot);
-
+    Renderer(float scWidth, float scHeight, const std::string& wTitle, glm::vec3 camPos, glm::vec3 camRot);
+    RendererAPI currentRenderAPI;
     Window window;
     Scene* scene;
     Camera camera;
-    Shader* defaultShader;
-    GLclampf clearColorBrightness;
-    //SkyBoxShader* skyboxShader;
+    //Shader* defaultShader;
+    float clearColorBrightness;
 
-    // static Renderer s_instance;
 };
 }

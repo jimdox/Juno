@@ -1,6 +1,4 @@
 #version 450 core
-// rm "core"?
-
 
 struct Particle {
 	vec3 position;

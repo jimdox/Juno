@@ -1,6 +1,5 @@
 #pragma once
 #include "Events/Events.h"
-#include <GLFW/glfw3.h>
 
 namespace Juno {
 

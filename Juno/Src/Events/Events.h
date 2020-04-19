@@ -82,7 +82,6 @@ public:
             listeners[i]->OnEvent(e);
         }
     }
-
 protected:    
     static const unsigned int MAX_EVENT_LISTENERS = 5;
     short numListeners = 0;

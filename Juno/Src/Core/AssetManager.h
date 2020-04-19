@@ -1,13 +1,12 @@
 #pragma once
 #include "jnpch.h"
 #include <stb_image.h>
-#include <GL/glew.h>
 #include "Renderer/Textures/CubeMap.h"
 #include "Entities/Entity.h"
 #include "Renderer/Shaders/Shader.h"
 #include "Renderer/Shaders/ComputeShader.h"
-#include "Gui/Dock.h"
-
+#include "Renderer/Window.h"
+#include "Renderer/Data/VertexArray.h"
 /* using singleton schenanagans to control memory management
    in one instance across the program */
 namespace Juno
@@ -42,8 +41,8 @@ public:
     Mesh& LoadMesh(const std::string& filepath);
 
     std::tuple<unsigned int, unsigned int, unsigned int> LoadOBJFile(const std::string& filepath);
-    std::pair<unsigned int, unsigned int> LoadToVAO(std::vector<float>& data, unsigned int dim);
-    std::pair<unsigned int, unsigned int> LoadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
+    std::pair<std::shared_ptr<VertexArray>, unsigned int> LoadToVAO(std::vector<float>& data, unsigned int dim);
+    std::pair<std::shared_ptr<VertexArray>, unsigned int> LoadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
                                                      std::vector<float>& normals, std::vector<unsigned int>& indices);
 
 

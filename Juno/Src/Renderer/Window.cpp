@@ -1,13 +1,12 @@
 #include "jnpch.h"
 #include "Renderer/Window.h"
-#include "Renderer/RenderCoreGL.h"
 #include "Core/Config.h"
-
-#ifdef JN_RENDERER_OPENGL
-	#include "RenderCoreGL.h"
-#elseif JN_RENDERER_VULKAN
-	#include "RenderCoreVK.h"
-#endif
+#include <glad/glad.h>
+// #ifdef JN_RENDERER_MODE_VK
+// 	#include "Renderer/RenderCoreVK.h"
+// #else 
+// 	#include "Renderer/RenderCoreGL.h"
+// #endif
 
 /*
 	Rendering context: manages the window, initialization of rendering environment. 
@@ -23,15 +22,12 @@ static WindowEventDispatcher* s_winDispatcher;
 
 static void KeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if(!ImGui::GetIO().WantCaptureKeyboard)										/* check if imgui is using keyboard input */
-	{
 		if(action == GLFW_PRESS || action == GLFW_REPEAT)
 		{
 			s_keyDispatcher->Notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
 		} else {
 			s_keyDispatcher->Notify(KeyReleaseEvent(key));
 		}
-	}
 }
 
 static void MousePositionHandler(GLFWwindow* window, double x_pos, double y_pos)
@@ -133,9 +129,9 @@ Window::~Window()
 /* closes current glfw window */
 void Window::Destroy()
 {
-	ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+	// ImGui_ImplOpenGL3_Shutdown();
+    // ImGui_ImplGlfw_Shutdown();
+    // ImGui::DestroyContext();
 	glfwDestroyWindow(window);
 }
 
@@ -160,7 +156,6 @@ void Window::Init()
 	{
 		JN_ERR("Window creation failed!");
 	}
-
 	glfwMakeContextCurrent(window);
 
 	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
@@ -186,9 +181,12 @@ void Window::Init()
 	// 	glfwSetWindowIcon(window, 1, win_icon);
 	// 	JN_INFO("loaded successfully.");
 	// }
-
-	RenderCall::Init(window);
-	guiDock.Init();
+	if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		JN_CLI_ERR("Unable to load GLAD!");
+		return;
+	}
+	//RenderCall::Init(window);
 	// aspectRatio = this->width / this->height;
 
 
@@ -207,17 +205,11 @@ void Window::OnEvent(const Event& e)
 	// }
 }
 
-void Window::Update(Scene& scene, float dt)
+void Window::Update()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
-	guiDock.Update(scene, dt);
 	glfwSwapBuffers(window);
 	glfwPollEvents();
-}
-
-Dock& Window::GetGuiDock()
-{
-	return guiDock;
 }
 
 KeyEventDispatcher& Window::GetKeyDispatcher()

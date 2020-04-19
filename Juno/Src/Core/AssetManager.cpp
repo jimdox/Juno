@@ -1,5 +1,8 @@
+#include "jnpch.h"
 #include "Core/AssetManager.h"
 #include "Core/Log.h"
+#include "Renderer/Renderer.h"
+#include "Renderer/Data/VertexBuffer.h"
 using namespace Juno;
 
 /* */
@@ -87,22 +90,26 @@ CubeMap& AssetManager::LoadCubeMap(const std::string& filepath, TextureType texT
     return *cubeMapRefs[assetID];
 }
 
-unsigned int AssetManager::GenerateVAO()
-{
-    unsigned int vaoID;
-    glGenVertexArrays(1, &vaoID);
-    glBindVertexArray(vaoID);
-    return vaoID;
-}
+// unsigned int AssetManager::GenerateVAO()
+// {
+//     unsigned int vaoID;
+//     VertexArray::GenArray
+//     glGenVertexArrays(1, &vaoID);
+//     glBindVertexArray(vaoID);
+//     return vaoID;
+// }
 
 void AssetManager::StoreDataInAttribList(unsigned int attribNum, unsigned int dimensions, std::vector<float> data)
 {
-    unsigned int VBO_ID;
-    glGenBuffers(1, &VBO_ID);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
-    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    std::unique_ptr<VertexBuffer> vbo = VertexBuffer::Create(VertexBufferDataType::ARRAY_BUFFER, VertexBufferUsageType::STATIC_DRAW);
+    vbo->Bind();
+    vbo->StoreData(attribNum, dimensions, data);
+    vbo->Unbind();
+    //glGenBuffers(1, &VBO_ID);
+    //glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
+    // glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
+    // glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
+    // glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 // static void bindIBO(std::vector<unsigned int> &indices)
@@ -126,24 +133,35 @@ std::map<unsigned int, std::unique_ptr<Shader>>* AssetManager::GetShaderMap()
 
 
 /* loads a single vertex buffer object to VAO */
-std::pair<unsigned int, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, unsigned int dim)
+std::pair<std::shared_ptr<VertexArray>, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, unsigned int dim)
 {
-    unsigned int vaoID = GenerateVAO();
-    StoreDataInAttribList(0, dim, positions);
-    glBindVertexArray(0);
-    return {vaoID, positions.size()/dim};
+    std::shared_ptr<VertexArray> vao = VertexArray::Generate();
+    vao->Bind();
+    std::unique_ptr<VertexBuffer> vbo = VertexBuffer::Create(VertexBufferDataType::ARRAY_BUFFER, VertexBufferUsageType::STATIC_DRAW);
+    vbo->Bind();
+    vbo->StoreData(0, dim, positions);
+    vbo->Unbind();
+    vao->Unbind();
+
+    return { vao, positions.size()/dim };
 }
 
 /* used for .obj file loading */
-std::pair<unsigned int, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, std::vector<float>& texCoordinates,
+std::pair<std::shared_ptr<VertexArray>, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, std::vector<float>& texCoordinates,
                                                                std::vector<float>& normals, std::vector<unsigned int>& indices)
 {
-    unsigned int vaoID = GenerateVAO();
+    std::shared_ptr<VertexArray> vao = VertexArray::Generate();
+    vao->Bind();
+    std::unique_ptr<VertexBuffer> vbo = VertexBuffer::Create(VertexBufferDataType::ARRAY_BUFFER, VertexBufferUsageType::STATIC_DRAW);
+    vbo->Bind();
+    vbo->StoreData(0, 3, positions);
+    vbo->StoreData(1, 3, normals);
+    vbo->StoreData(2, 2, texCoordinates);
 
     unsigned int iboID;
-    glGenBuffers(1, &iboID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    // glGenBuffers(1, &iboID);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 
     unsigned int numIndices = indices.size();
     
@@ -151,8 +169,8 @@ std::pair<unsigned int, unsigned int> AssetManager::LoadToVAO(std::vector<float>
     StoreDataInAttribList(1, 3, normals);
     StoreDataInAttribList(2, 2, texCoordinates);
 
-    glBindVertexArray(0);
-    return {vaoID, numIndices};
+    //glBindVertexArray(0);
+    return {vao, numIndices};
 }   
 
 std::array<GLint, 4> AssetManager::LoadShaderFile(const std::string& filepath)
@@ -188,19 +206,19 @@ std::array<GLint, 4> AssetManager::LoadShaderFile(const std::string& filepath)
         {
             if(line.find(".vert") != std::string::npos)
             {
-                shaderIDs[0] = glCreateShader(GL_VERTEX_SHADER);
+                //shaderIDs[0] = glCreateShader(GL_VERTEX_SHADER);
                 activeSrc = &vertSrc;
             } else if(line.find(".frag") != std::string::npos)
             {
-                shaderIDs[1] = glCreateShader(GL_FRAGMENT_SHADER);
+                //shaderIDs[1] = glCreateShader(GL_FRAGMENT_SHADER);
                 activeSrc = &fragSrc;
             } else if(line.find(".geom") != std::string::npos)
             {
-                shaderIDs[2] = glCreateShader(GL_GEOMETRY_SHADER);
+                //shaderIDs[2] = glCreateShader(GL_GEOMETRY_SHADER);
                 activeSrc = &geomSrc;
             } else if(line.find(".comp") != std::string::npos)
             {
-                shaderIDs[3] = glCreateShader(GL_COMPUTE_SHADER);
+                //shaderIDs[3] = glCreateShader(GL_COMPUTE_SHADER);
                 activeSrc = &compSrc;
             }
             continue;
@@ -219,26 +237,26 @@ std::array<GLint, 4> AssetManager::LoadShaderFile(const std::string& filepath)
     if(shaderIDs[0] != -1)
     {
         srcPtr = vertSrc.c_str();
-        glShaderSource(shaderIDs[0], 1, &srcPtr, NULL);
-        glCompileShader(shaderIDs[0]);
+        // glShaderSource(shaderIDs[0], 1, &srcPtr, NULL);
+        // glCompileShader(shaderIDs[0]);
     }
     if(shaderIDs[1] != -1)
     {
         srcPtr = fragSrc.c_str();
-        glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
-        glCompileShader(shaderIDs[1]);
+        // glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
+        // glCompileShader(shaderIDs[1]);
     }
     if(shaderIDs[2] != -1)
     {
         srcPtr = fragSrc.c_str();
-        glShaderSource(shaderIDs[2], 2, &srcPtr, NULL);
-        glCompileShader(shaderIDs[2]);
+        // glShaderSource(shaderIDs[2], 2, &srcPtr, NULL);
+        // glCompileShader(shaderIDs[2]);
     }    
     if(shaderIDs[3] != -1)
     {    
         srcPtr = fragSrc.c_str();
-        glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
-        glCompileShader(shaderIDs[1]);
+        // glShaderSource(shaderIDs[1], 1, &srcPtr, NULL);
+        // glCompileShader(shaderIDs[1]);
     }
 
     
@@ -247,7 +265,7 @@ std::array<GLint, 4> AssetManager::LoadShaderFile(const std::string& filepath)
 
 GLint AssetManager::LoadShaderComponentFile(const std::string& filepath, GLenum shaderType)
 {
-    GLuint shaderID = glCreateShader(shaderType);
+    GLuint shaderID = 0;//glCreateShader(shaderType);
     std::string fileExt;
 
     switch(shaderType)
@@ -287,8 +305,8 @@ GLint AssetManager::LoadShaderComponentFile(const std::string& filepath, GLenum 
 
 	char const* srcPtr = source.c_str();
 
-	glShaderSource(shaderID, 1, &srcPtr, NULL);
-	glCompileShader(shaderID);
+	// glShaderSource(shaderID, 1, &srcPtr, NULL);
+	// glCompileShader(shaderID);
     return shaderID;
 }
 
@@ -305,21 +323,21 @@ unsigned int AssetManager::LoadTextureFile(const std::string& filepath, GLenum f
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 		JN_CLI_INFO(("Loaded Texture from location: " + filepath).c_str());
-		glGenerateMipmap(GL_TEXTURE_2D);
+		//glGenerateMipmap(GL_TEXTURE_2D);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		if(texType == Juno::TX_DIFFUSE || texType == Juno::TX_SPECULAR)
+		if(texType == TextureType::DIFFUSE || texType == TextureType::SPECULAR)
         {
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);	
-            if(glewIsSupported("GL_EXT_texture_filter_anisotropic") || GLEW_EXT_texture_filter_anisotropic)
-            {
+            // if(gladIsSupported("GL_EXT_texture_filter_anisotropic") || GLEW_EXT_texture_filter_anisotropic)
+            // {
                 
-            } else {
-                JN_WARN("anisotropic filtering is not available!");
-                glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1);
-            }
+            // } else {
+            //     JN_WARN("anisotropic filtering is not available!");
+            //     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -1);
+            // }
         }
     }
 	else
@@ -498,6 +516,6 @@ std::tuple<unsigned int, unsigned int, unsigned int> AssetManager::LoadOBJFile(c
         verticesData.push_back(vertex.z);
     }
 
-    auto [vaoID, numIndices] = LoadToVAO(verticesData, texturesData, normalsData, indices);
-    return { vaoID, numIndices, vertices.size() };
+    auto [vao, numIndices] = LoadToVAO(verticesData, texturesData, normalsData, indices);
+    return { vao->GetVaoID(), numIndices, vertices.size() };
 }

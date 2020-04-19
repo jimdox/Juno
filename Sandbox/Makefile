@@ -14,18 +14,18 @@ ifeq ($(config),debug)
   RESCOMP = windres
   TARGETDIR = ../Bin/Debug
   TARGET = $(TARGETDIR)/Sandbox
-  OBJDIR = ../Bin/Int/Debug
+  OBJDIR = ../Bin/Int/Debug/Debug/Sandbox
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DSTB_IMAGE_IMPLEMENTATION
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glew/include -I../Juno/Vendor/glew/lib -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/imgui -I../Juno/Vendor/spdlog/include
+  DEFINES += -DSTB_IMAGE_IMPLEMENTATION -D_X11 -DJUNO_PLATFORM_LINUX
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Bin/Debug/libJuno.a -lGL -lGLEW -lglfw
-  LDDEPS += ../Bin/Debug/libJuno.a
+  LIBS += ../Bin/Debug/libJuno.a ../Bin/Debug/libGLFW.a ../Bin/Debug/libGLAD.a -lX11 -ldl -lpthread
+  LDDEPS += ../Bin/Debug/libJuno.a ../Bin/Debug/libGLFW.a ../Bin/Debug/libGLAD.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS
@@ -43,18 +43,18 @@ ifeq ($(config),release)
   RESCOMP = windres
   TARGETDIR = ../Bin/Release
   TARGET = $(TARGETDIR)/Sandbox
-  OBJDIR = ../Bin/Int/Release
+  OBJDIR = ../Bin/Int/Release/Release/Sandbox
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DSTB_IMAGE_IMPLEMENTATION
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glew/include -I../Juno/Vendor/glew/lib -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/imgui -I../Juno/Vendor/spdlog/include
+  DEFINES += -DSTB_IMAGE_IMPLEMENTATION -D_X11 -DJUNO_PLATFORM_LINUX
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Bin/Release/libJuno.a -lGL -lGLEW -lglfw
-  LDDEPS += ../Bin/Release/libJuno.a
+  LIBS += ../Bin/Release/libJuno.a ../Bin/Release/libGLFW.a ../Bin/Release/libGLAD.a -lX11 -ldl -lpthread
+  LDDEPS += ../Bin/Release/libJuno.a ../Bin/Release/libGLFW.a ../Bin/Release/libGLAD.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
   define PREBUILDCMDS

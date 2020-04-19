@@ -1,6 +1,6 @@
 #!/bin/bash
 
-premake5 gmake
+premake5 gmake config=Release platform=Linux
 make all -j 4 && ./Bin/Debug/Sandbox 
 
 

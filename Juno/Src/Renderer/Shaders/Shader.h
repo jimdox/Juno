@@ -1,10 +1,11 @@
 #pragma once
 #include "jnpch.h"
-#include <GL/glew.h>
 #include "Renderer/Camera.h"
 #include "Renderer/Light.h"
 #include "Renderer/Mesh.h"
 #include "Renderer/Material.h"
+#include "Renderer/Data/VertexArray.h"
+#include <glad/glad.h>
 
 namespace Juno {
 //enum ShaderType { VERTEX, FRAGMENT, GEOMETRY };

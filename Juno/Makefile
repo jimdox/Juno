@@ -17,15 +17,15 @@ ifeq ($(config),debug)
   OBJDIR = ../Bin/Int/Debug/Juno
   PCH = Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DJN_BUILD_DEBUG
-  INCLUDES += -ISrc -IInclude -IVendor/stb -IVendor/spdlog/include -IVendor/jpl -IVendor/imgui -IVendor/glm -I. -IVendor/glew/include -IVendor/glew/lib
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DJN_BUILD_DEBUG
+  INCLUDES += -ISrc -IInclude -IVendor/stb -IVendor/spdlog/include -IVendor/jpl -IVendor/glm -I. -IVendor/glad/include -IVendor/glfw/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
-  LDDEPS +=
+  LIBS += ../Bin/Debug/libGLAD.a ../Bin/Debug/libGLFW.a
+  LDDEPS += ../Bin/Debug/libGLAD.a ../Bin/Debug/libGLFW.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
@@ -46,16 +46,16 @@ ifeq ($(config),release)
   OBJDIR = ../Bin/Int/Release/Juno
   PCH = Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS
-  INCLUDES += -ISrc -IInclude -IVendor/stb -IVendor/spdlog/include -IVendor/jpl -IVendor/imgui -IVendor/glm -I. -IVendor/glew/include -IVendor/glew/lib
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE
+  INCLUDES += -ISrc -IInclude -IVendor/stb -IVendor/spdlog/include -IVendor/jpl -IVendor/glm -I. -IVendor/glad/include -IVendor/glfw/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
-  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
-  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+  ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O3
+  ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -flto -O3 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
-  LDDEPS +=
-  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
+  LIBS += ../Bin/Release/libGLAD.a ../Bin/Release/libGLFW.a
+  LDDEPS += ../Bin/Release/libGLAD.a ../Bin/Release/libGLFW.a
+  ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -flto -s
   LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
   define PREBUILDCMDS
   endef
@@ -79,10 +79,11 @@ OBJECTS := \
 	$(OBJDIR)/Entity.o \
 	$(OBJDIR)/SkyBox.o \
 	$(OBJDIR)/Terrain.o \
-	$(OBJDIR)/Dock.o \
 	$(OBJDIR)/GuiImage.o \
 	$(OBJDIR)/Particle.o \
 	$(OBJDIR)/Camera.o \
+	$(OBJDIR)/VertexArray.o \
+	$(OBJDIR)/VertexBuffer.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Material.o \
 	$(OBJDIR)/Mesh.o \
@@ -93,12 +94,6 @@ OBJECTS := \
 	$(OBJDIR)/CubeMap.o \
 	$(OBJDIR)/Texture.o \
 	$(OBJDIR)/Window.o \
-	$(OBJDIR)/imgui.o \
-	$(OBJDIR)/imgui_demo.o \
-	$(OBJDIR)/imgui_draw.o \
-	$(OBJDIR)/imgui_impl_glfw.o \
-	$(OBJDIR)/imgui_impl_opengl3.o \
-	$(OBJDIR)/imgui_widgets.o \
 
 RESOURCES := \
 
@@ -187,9 +182,6 @@ $(OBJDIR)/SkyBox.o: Src/Entities/SkyBox.cpp
 $(OBJDIR)/Terrain.o: Src/Entities/Terrain/Terrain.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Dock.o: Src/Gui/Dock.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/GuiImage.o: Src/Gui/GuiImage.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -197,6 +189,12 @@ $(OBJDIR)/Particle.o: Src/Physics/Particle.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: Src/Renderer/Camera.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexArray.o: Src/Renderer/Data/VertexArray.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VertexBuffer.o: Src/Renderer/Data/VertexBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Light.o: Src/Renderer/Light.cpp
@@ -227,24 +225,6 @@ $(OBJDIR)/Texture.o: Src/Renderer/Textures/Texture.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Window.o: Src/Renderer/Window.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui.o: Vendor/imgui/imgui.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_demo.o: Vendor/imgui/imgui_demo.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_draw.o: Vendor/imgui/imgui_draw.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_impl_glfw.o: Vendor/imgui/imgui_impl_glfw.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_impl_opengl3.o: Vendor/imgui/imgui_impl_opengl3.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/imgui_widgets.o: Vendor/imgui/imgui_widgets.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 

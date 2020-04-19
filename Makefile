@@ -13,33 +13,51 @@ endif
 ifeq ($(config),debug)
   Juno_config = debug
   Sandbox_config = debug
+  GLFW_config = debug
+  GLAD_config = debug
 endif
 ifeq ($(config),release)
   Juno_config = release
   Sandbox_config = release
+  GLFW_config = release
+  GLAD_config = release
 endif
 
-PROJECTS := Juno Sandbox
+PROJECTS := Juno Sandbox GLFW GLAD
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
 
-Juno:
+Juno: GLAD GLFW
 ifneq (,$(Juno_config))
 	@echo "==== Building Juno ($(Juno_config)) ===="
 	@${MAKE} --no-print-directory -C Juno -f Makefile config=$(Juno_config)
 endif
 
-Sandbox: Juno
+Sandbox: Juno GLFW GLAD
 ifneq (,$(Sandbox_config))
 	@echo "==== Building Sandbox ($(Sandbox_config)) ===="
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile config=$(Sandbox_config)
 endif
 
+GLFW:
+ifneq (,$(GLFW_config))
+	@echo "==== Building GLFW ($(GLFW_config)) ===="
+	@${MAKE} --no-print-directory -C Juno/Vendor/glfw -f Makefile config=$(GLFW_config)
+endif
+
+GLAD:
+ifneq (,$(GLAD_config))
+	@echo "==== Building GLAD ($(GLAD_config)) ===="
+	@${MAKE} --no-print-directory -C Juno/Vendor/glad -f Makefile config=$(GLAD_config)
+endif
+
 clean:
 	@${MAKE} --no-print-directory -C Juno -f Makefile clean
 	@${MAKE} --no-print-directory -C Sandbox -f Makefile clean
+	@${MAKE} --no-print-directory -C Juno/Vendor/glfw -f Makefile clean
+	@${MAKE} --no-print-directory -C Juno/Vendor/glad -f Makefile clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -53,5 +71,7 @@ help:
 	@echo "   clean"
 	@echo "   Juno"
 	@echo "   Sandbox"
+	@echo "   GLFW"
+	@echo "   GLAD"
 	@echo ""
 	@echo "For more information, see https://github.com/premake/premake-core/wiki"

@@ -1,13 +1,11 @@
-#include<glm/glm.hpp>
-#include<glm/gtx/transform.hpp>
+#pragma once
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 namespace Juno 
 {
-#define Vec2 glm::vec2
-#define Vec3 glm::vec3
-#define Vec4 glm::vec4
 
 inline float Max(float a, float b)
 {
@@ -43,15 +41,14 @@ static glm::mat4 CreateTransformationMatrix(glm::vec3 translation, glm::vec3 rot
     return transform;
 }
 
-static glm::mat4 GenerateViewMatrix(Camera& camera)
+static glm::mat4 GenerateViewMatrix(const glm::vec3& cameraAngle, const glm::vec3 cameraPosition)
 {
-    glm::mat4 viewMat = glm::mat4(1.0f);
-    viewMat = glm::rotate(viewMat, ToRadians(camera.GetPitch()), glm::vec3(1.0f, 0.0f, 0.0f));
-    viewMat = glm::rotate(viewMat, ToRadians(camera.GetYaw()), glm::vec3(0.0f, 1.0f, 0.0f));
-    viewMat = glm::rotate(viewMat, ToRadians(camera.GetRoll()), glm::vec3(0.0f, 0.0f, 1.0f));
+    glm::mat4 viewMat = glm::mat4(1.0f);                                                          /* (in radians) */
+    viewMat = glm::rotate(viewMat, cameraAngle.x, glm::vec3(1.0f, 0.0f, 0.0f));                  /* pitch */
+    viewMat = glm::rotate(viewMat, cameraAngle.y, glm::vec3(0.0f, 1.0f, 0.0f));                  /* yaw   */
+    viewMat = glm::rotate(viewMat, cameraAngle.z, glm::vec3(0.0f, 0.0f, 1.0f));                  /* roll  */
     
-    glm::vec3 camPos = camera.GetPosition();
-    glm::vec3 negativeCamPos = glm::vec3(-camPos.x, -camPos.y, -camPos.z);
+    glm::vec3 negativeCamPos = glm::vec3(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z);
     
     viewMat = glm::translate(viewMat, negativeCamPos);
     return viewMat;

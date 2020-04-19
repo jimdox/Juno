@@ -1,15 +1,15 @@
 #pragma once
-#include "GL/glew.h"
-#include <GLFW/glfw3.h>
 #include <string>
 #include <iostream>
 #include <time.h>
 #include "Core/Log.h"
-#include "Gui/Dock.h"
-#include "Core/Scene.h"
 #include "Events/MouseEvents.h"
 #include "Events/KeyEvents.h"
 #include "Events/WindowEvents.h"
+// #define GLFW_INCLUDE_VULKAN
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 
 namespace Juno 
 {
@@ -26,10 +26,9 @@ public:
 
 	GLFWwindow* GetWindow();
 	void Init();
-	void Update(Scene& scene, float dt);
+	void Update();
 	void Destroy();
 	void SetVisible(bool flag);
-	Dock& GetGuiDock();
 
 	static KeyEventDispatcher& GetKeyDispatcher();
 	static MouseEventDispatcher& GetMouseDispatcher();
@@ -44,7 +43,6 @@ private:
 	GLFWwindow* window;
 	GLFWimage winIcon[1];
 
-	Dock guiDock;
 	int height;
 	int width;
 	std::string title;

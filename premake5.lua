@@ -9,18 +9,17 @@ workspace "Juno"
 	}
 
 	flags {
-		--"MultiProcessorCompile"
+		"MultiProcessorCompile"
 	}
 	
 	outputdir = "%{cfg.buildcfg}"
 	
 IncludePaths = {}
-IncludePaths["imgui"]  = "Juno/Vendor/imgui"
 IncludePaths["spdlog"] = "Juno/Vendor/spdlog"
 IncludePaths["stb"]    = "Juno/Vendor/stb"
 IncludePaths["jpl"]    = "Juno/Vendor/jpl"
 IncludePaths["glfw"]   = "Juno/Vendor/glfw"
-IncludePaths["glew"]   = "Juno/Vendor/glew"
+IncludePaths["glad"]   = "Juno/Vendor/glad"
 IncludePaths["glm"]    = "Juno/Vendor/glm"
 	
 project "Juno"
@@ -37,11 +36,10 @@ project "Juno"
         "%{prj.name}/Vendor/stb",
         "%{prj.name}/Vendor/spdlog/include",
         "%{prj.name}/Vendor/jpl",
-        "%{prj.name}/Vendor/imgui",
         "%{prj.name}/Vendor/glm",
         "%{prj.name}/",
-        "%{prj.name}/Vendor/glew/include/",
-        "%{prj.name}/Vendor/glew/lib"
+        "%{prj.name}/Vendor/glad/include/",
+		"%{prj.name}/Vendor/glfw/include/"
     }
 	
 	targetdir ("./Bin/%{cfg.buildcfg}/")
@@ -60,16 +58,17 @@ project "Juno"
         "%{prj.name}/Include/*.h",
 
 		"%{prj.name}/Vendor/stb/stb_image.h",
-		"%{prj.name}/Vendor/imgui/*.h",
-		"%{prj.name}/Vendor/imgui/*.cpp"
+
 	}
 	
 	defines {
-		"_CRT_SECURE_NO_WARNINGS"
+		"_CRT_SECURE_NO_WARNINGS",
+		"GLFW_INCLUDE_NONE"
 	}
 	
 	links { 
---
+		"GLAD",
+		"GLFW"
 	}
 
 	filter "configurations:Debug"
@@ -79,7 +78,8 @@ project "Juno"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"	
+		optimize "Speed"
+		flags {"LinkTimeOptimization"}	
 
 project "Sandbox"
 	location "Sandbox"
@@ -99,11 +99,10 @@ project "Sandbox"
         "Juno/Src",
 
         "Juno/Vendor/glm",
-		"Juno/Vendor/glew/include",
-		"Juno/Vendor/glew/lib",
+		"Juno/Vendor/glad/include/",
+		"Juno/Vendor/glfw/include/",
 		"Juno/Vendor/stb",
 		"Juno/Vendor/jpl",
-		"Juno/Vendor/imgui",
 		"Juno/Vendor/spdlog/include"
 	}
 
@@ -116,11 +115,26 @@ project "Sandbox"
 
 	links {
 		"Juno",
-		"GL",
-		"GLEW",
-		"glfw"
 	}
 
 	defines {
 		"STB_IMAGE_IMPLEMENTATION"
 	}
+
+	filter "system:linux"
+		links {
+			"GLFW",
+			"GLAD",
+			"X11",
+			"dl",
+			"pthread"
+		}
+
+		defines {"_X11", "JUNO_PLATFORM_LINUX"}
+
+	filter "system:windows"
+		defines {"_WINDOWS", "JUNO_PLATFORM_WINDOWS"}
+
+
+include "Juno/Vendor/glfw/glfw.lua"
+include "Juno/Vendor/glad/glad.lua"
