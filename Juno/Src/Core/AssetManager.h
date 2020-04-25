@@ -34,7 +34,7 @@ public:
     SPtr<Shader> GetDefaultShader();
 
     SPtr<Texture> LoadTexture(const std::string& filepath, TextureType tx_type);
-    SPtr<Texture> LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType tx_type);
+    void LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType tx_type);
 
     //SPtr<CubeMap> LoadCubeMap(const std::string& filepath, TextureType tx_type);
     //unsigned int LoadCubeMapFiles(const std::array<std::string, 6>& filepaths, TextureType tx_type);

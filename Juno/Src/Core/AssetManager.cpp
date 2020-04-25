@@ -339,7 +339,7 @@ std::string AssetManager::ReadShaderComponentFile(const std::string& filepath, S
     return source;
 }
 
-SPtr<Texture> AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType texType)
+void AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType texType)
 {
     int width, height, channels;
     unsigned int id;

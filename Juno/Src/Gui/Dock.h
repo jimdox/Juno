@@ -17,8 +17,9 @@ public:
     void ShowScenePanel(SPtr<Scene>& scene);
     void ShowRenderPanel();
     void ShowPhysicsPanel();
-    void ShowShaderPanel();
     void ShowObjectPanel();
+    void ShowMaterialsPanel();
+    void ShowShaderPanel();
     void ShowTexturePanel();
     void ShowStartupWindow();
 

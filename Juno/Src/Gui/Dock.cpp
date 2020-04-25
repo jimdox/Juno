@@ -41,7 +41,7 @@ ImVec4* colors = ImGui::GetStyle().Colors;
 colors[ImGuiCol_Text]                   = ImVec4(0.99f, 0.99f, 0.99f, 1.00f);
 colors[ImGuiCol_TextDisabled]           = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
 colors[ImGuiCol_WindowBg]               = ImVec4(0.12f, 0.12f, 0.12f, 0.96f);
-colors[ImGuiCol_ChildBg]                = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+colors[ImGuiCol_ChildBg]                = ImVec4(0.10f, 0.10f, 0.10f, 0.80f);
 colors[ImGuiCol_PopupBg]                = ImVec4(0.20f, 0.20f, 0.20f, 0.94f);
 colors[ImGuiCol_Border]                 = ImVec4(0.45f, 0.45f, 0.45f, 0.50f);
 colors[ImGuiCol_BorderShadow]           = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
@@ -128,7 +128,7 @@ void Dock::Update(SPtr<Scene>& scene, float dt)
     ShowMenubar();
     ShowDebugWindow();
 
-    ImGui::ShowDemoWindow();
+    //ImGui::ShowDemoWindow();
 
     ImGui::Render();
     //RenderCall::RenderGui();
@@ -162,8 +162,8 @@ void Dock::ShowMenubar()
 
                 ImGui::EndMenu();
             }
-            ImGui::SameLine(1920-65, 0);
-            ImGui::Text("v0.1.2d");
+            ImGui::SameLine(1920-58, 0);
+            ImGui::Text(Juno::JN_VERSION);
 
             ImGui::EndMainMenuBar();
             }
@@ -242,10 +242,11 @@ void Dock::ShowScenePanel(SPtr<Scene>& scene)
 {    
     ImGuiWindowFlags winFlags = 0;
     winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
-    ImGui::BeginChild("Scene Info", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.98f, 300), true, winFlags);
+    ImGui::BeginChild("Scene Info", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.98, 300), true, winFlags);
 
     //float v4f[4] = {0, 0, 0, 0}
-    ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Lights");
+    ImGui::TextColored(ImVec4(0.5, 0.5, 0.95, 1.0), "Lights");
+
     std::vector<SPtr<Light>>& lights = Renderer::Get().GetCurrentScene()->GetLights();
     float input_data[MAX_NUM_LIGHTS][3];
 
@@ -261,7 +262,7 @@ void Dock::ShowScenePanel(SPtr<Scene>& scene)
     }
 
     ImGui::Separator();
-    ImGui::TextColored(ImVec4(0.85, 0.3, 0.3, 1.0), "Entities");
+    ImGui::TextColored(ImVec4(0.5, 0.84, 0.3, 1.0), "Entities");
 
     std::vector<SPtr<Entity>>& entities = Renderer::Get().GetCurrentScene()->GetEntities();
     for(int i = 0; i < entities.size(); i++)
@@ -291,9 +292,7 @@ void Dock::ShowRenderPanel()
         Notify(RenderWireFrameEvent(renderEffectWireFrame));
     } 
 
-    // float clearColorVal = Renderer::Get().GetClearColorBrightness();
-    // ImGui::SliderFloat(" ", &clearColorVal, 0.0f, 1.0f, "Clear Color = %.3f");
-    // Renderer::Get().SetClearColorBrightness(clearColorVal);
+
 
 
 }
@@ -304,16 +303,32 @@ void Dock::ShowPhysicsPanel()
 
 }
 
+void Dock::ShowMaterialsPanel()
+{
+    ImGuiWindowFlags winFlags = 0;
+    winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
+    ImGui::BeginChild("Materials Info", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.98f, 200), true, winFlags);
+    
+    // std::map<unsigned int, SPtr<Shader>>& shaderMap = *AssetManager::Get().GetShaderMap();
+    // unsigned int index;
+    // for(auto itr = shaderMap.begin(); itr != shaderMap.end(); ++itr)   
+    // {
+    //     ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), "Material.%d", index++);
+    // }
+    ImGui::EndChild();
+}
+
+
 void Dock::ShowShaderPanel()
 {
     ImGuiWindowFlags winFlags = 0;
     winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
-    ImGui::BeginChild("Loaded Shaders", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 200), true, winFlags);
+    ImGui::BeginChild("Loaded Shaders", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.98f, 200), true, winFlags);
     
-    // std::map<unsigned int, std::unique_ptr<Shader>>& shaderMap = *AssetManager::Get().GetShaderMap();
+    // std::map<unsigned int, SPtr<Shader>>& shaderMap = *AssetManager::Get().GetShaderMap();
     // for(auto itr = shaderMap.begin(); itr != shaderMap.end(); ++itr)   
     // {
-    //     ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), "Shader:%s", itr->second->GetFilepath().c_str());
+    //     ImGui::TextColored(ImVec4(0.28f, 0.78f, 0.83f, 1.0f), "Shader:%s", itr->second->);
 
     // }
     ImGui::EndChild();
@@ -329,7 +344,7 @@ void Dock::ShowTexturePanel()
 
     ImGuiWindowFlags winFlags = 0;
     winFlags |= ImGuiWindowFlags_HorizontalScrollbar;// (false ? ImGuiWindowFlags_NoScrollWithMouse : 0);
-    ImGui::BeginChild("Loaded Textures", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.95f, 300), true, winFlags);
+    ImGui::BeginChild("Loaded Textures", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.98f, 300), true, winFlags);
     
     // std::map<unsigned int, std::unique_ptr<Texture>>& texMap = *AssetManager::Get().GetTextureMap();
     // for(auto itr = texMap.begin(); itr != texMap.end(); ++itr)   
