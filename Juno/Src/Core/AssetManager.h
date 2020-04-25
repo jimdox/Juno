@@ -25,7 +25,7 @@ public:
     AssetManager(const AssetManager& assetManager) = delete;
 
     unsigned int FindAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath);
-    SPtr<Shader> LoadShader(const std::string& filepath);
+    SPtr<Shader> LoadShader(std::array<ShaderComponentType, 3>& components, const std::string& filepath);
 
     //SPtr<ComputeShader> LoadComputeShader(const std::string& fp);
     

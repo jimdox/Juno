@@ -24,6 +24,7 @@ public:
     void SetProjMatrix(const Mat4& projMat);
 
 private:
+    std::array<ShaderComponentType, 3> renderShaderComponents = { ShaderComponentType::Vertex, ShaderComponentType::Fragment, ShaderComponentType::Empty };
     unsigned int csProgID;
     unsigned int computeVaoID;
     unsigned int computeSSBO;

@@ -3,12 +3,12 @@
 #include "Utils/Math.h"
 namespace Juno
 {
-enum class ShaderComponentType { Vertex, Fragment, Geometry, Compute };
+enum class ShaderComponentType { Empty, Vertex, Fragment, Geometry, Compute };
 
 class Shader
 {
 public:
-    static SPtr<Shader> Create(const std::string& fp);
+    static SPtr<Shader> Create(std::array<ShaderComponentType, 3>& components, const std::string& fp);
     virtual ~Shader(){}
 
     virtual void Bind() = 0;
@@ -39,7 +39,7 @@ protected:
 class GLShader : public Shader
 {
 public:
-	GLShader(const std::string& fp);
+	GLShader(std::array<ShaderComponentType, 3>& components, const std::string& fp);
 	~GLShader();
 
     void Bind();
@@ -70,7 +70,7 @@ protected:
 class VKShader : public Shader
 {
 public:
-	VKShader(const std::string& fp);
+	VKShader(std::array<ShaderComponentType, 3>& components, const std::string& fp);
 	~VKShader();
     
 	void Bind();

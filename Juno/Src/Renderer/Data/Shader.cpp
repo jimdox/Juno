@@ -5,24 +5,31 @@
 #include <glad/glad.h>
 using namespace Juno;
 
-SPtr<Shader> Shader::Create(const std::string& fp)
+SPtr<Shader> Shader::Create(std::array<ShaderComponentType, 3>& components, const std::string& fp)
 {
     if(Renderer::Get().GetCurrentGraphicsAPI() == GraphicsAPI::Vulkan)
     {
-        return std::make_shared<VKShader>(fp);
+        return std::make_shared<VKShader>(components, fp);
     } else {
-        return std::make_shared<GLShader>(fp);
+        return std::make_shared<GLShader>(components, fp);
     }
 }
 
-GLShader::GLShader(const std::string& fp)
+GLShader::GLShader(std::array<ShaderComponentType, 3>& components, const std::string& fp)
 {
-	GLuint vertID = BuildComponent(fp, ShaderComponentType::Vertex);
-	GLuint fragID = BuildComponent(fp, ShaderComponentType::Fragment);
 	shaderID = glCreateProgram();
+	unsigned int ids[3];
+	ShaderComponentType activeComponents[3];
 
-	glAttachShader(shaderID, vertID);
-	glAttachShader(shaderID, fragID);
+	for(unsigned int i = 0; i < 3; i++)
+	{
+		if(components[i] != ShaderComponentType::Empty)
+		{
+			ids[i] = BuildComponent(fp, components[i]);
+			activeComponents[i] = components[i];
+			glAttachShader(shaderID, ids[i]);
+		}
+	}
 
 	glBindAttribLocation(shaderID, 0, "position");
 	glBindAttribLocation(shaderID, 1, "normal");
@@ -30,22 +37,12 @@ GLShader::GLShader(const std::string& fp)
 
 	JN_WARN("Linking shader...");
 	glLinkProgram(shaderID);
-	LinkErrorCheck(vertID, ShaderComponentType::Vertex);
-	LinkErrorCheck(fragID, ShaderComponentType::Fragment);
 
-	// char const* source;
-	// GLuint vertShader, fragShader;
-	// source = AssetManager::Get().ReadShaderComponentFile(fp, ShaderComponentType::Vertex).c_str();
-	// glShaderSource(vertShader, 1, &source, NULL);
-	// glCompileShader(vertShader);
-
-	// source = AssetManager::Get().ReadShaderComponentFile(fp, ShaderComponentType::Fragment).c_str();
-	// glShaderSource(fragShader, 1, &source, NULL);
-	// glCompileShader(fragShader);
-
-
-	// source = AssetManager::Get().ReadShaderComponentFile(fp, ShaderComponentType::Fragment);
-
+	for(unsigned int i = 0; i < 3; i++)
+	{
+		if(components[i] != ShaderComponentType::Empty)
+			LinkErrorCheck(ids[i], components[i]);
+	}
 
 }
 
@@ -195,7 +192,7 @@ bool GLShader::LinkErrorCheck(unsigned int id, ShaderComponentType componentType
 
 /* ----------- */
 
-VKShader::VKShader(const std::string& fp)
+VKShader::VKShader(std::array<ShaderComponentType, 3>& components, const std::string& fp)
 {
 
 }

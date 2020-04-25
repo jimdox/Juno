@@ -6,7 +6,9 @@ using namespace Juno;
 
 Material::Material()
 {
-    shader = AssetManager::Get().LoadShader("./Resources/Shaders/basic");
+	std::array<ShaderComponentType, 3> shaderComponents = {ShaderComponentType::Vertex, ShaderComponentType::Fragment, ShaderComponentType::Empty };
+    shader = AssetManager::Get().LoadShader(shaderComponents, "./Resources/Shaders/basic");
+	
     baseColor = glm::vec3(0.5,0.5,0.5);
     reflectivity = 0.4f;
     shineDamper = 0.8f;

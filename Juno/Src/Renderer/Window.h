@@ -24,7 +24,7 @@ public:
 	void OnAttach();
 	void OnEvent(const Event& e);
 
-	GLFWwindow* GetWindow();
+	GLFWwindow* GetWindowHandle();
 	void Init();
 	void Update();
 	void Destroy();

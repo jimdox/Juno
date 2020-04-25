@@ -42,7 +42,7 @@ SPtr<Mesh> AssetManager::LoadMesh(const std::string& filepath)
     return meshRefs[assetID];
 }
 
-SPtr<Shader> AssetManager::LoadShader(const std::string& filepath)
+SPtr<Shader> AssetManager::LoadShader(std::array<ShaderComponentType, 3>& components, const std::string& filepath)
 {
     unsigned int assetID = FindAssetID(shaderFilepaths, filepath);
 
@@ -51,14 +51,15 @@ SPtr<Shader> AssetManager::LoadShader(const std::string& filepath)
         return shaderRefs[assetID];
     }
     assetID = GenAssetID();
-    shaderRefs.insert(std::pair<unsigned int, SPtr<Shader>>(assetID, Shader::Create(filepath)));
+    shaderRefs.insert(std::pair<unsigned int, SPtr<Shader>>(assetID, Shader::Create(components, filepath)));
     shaderFilepaths.insert(std::pair<std::string, unsigned int>(filepath, assetID));
     return shaderRefs[assetID];
 }
 
 SPtr<Shader> AssetManager::GetDefaultShader()
 {
-    return LoadShader("./Resources/Shaders/basic");
+    std::array<ShaderComponentType, 3> components = { ShaderComponentType::Vertex, ShaderComponentType::Fragment, ShaderComponentType::Empty };
+    return LoadShader(components, "./Resources/Shaders/basic");
 }
 
 SPtr<Texture> AssetManager::LoadTexture(const std::string& filepath, TextureType texType)
@@ -335,7 +336,7 @@ std::string AssetManager::ReadShaderComponentFile(const std::string& filepath, S
 	//glShaderSource(shaderID, 1, &srcPtr, NULL);
 	//glCompileShader(shaderID);
     //Renderer::Get().GetRenderAPI()->CompileShader();
-    JN_INFO("Read shader component from: {}", fullFilePath);
+    JN_CLI_INFO("Read shader component from: {}", fullFilePath);
     return source;
 }
 
@@ -343,9 +344,7 @@ void AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& fi
 {
     int width, height, channels;
     unsigned int id;
-	// glGenTextures(1, &id);
-	// glBindTexture(format, id);
-    // SPtr<GLTexture> texture =  std::make_shared<GLTexture>(texType, false);
+	
     texture->Bind();
 	unsigned char* imageData = stbi_load((filepath.c_str()), &width, &height, &channels, 0);
 	if (imageData)
@@ -547,6 +546,6 @@ std::tuple<VertexArray*, unsigned int, unsigned int> AssetManager::LoadOBJFile(c
         verticesData.push_back(vertex.z);
     }
     auto [vao, numIndices] = LoadToVAO(verticesData, texturesData, normalsData, indices);
-    JN_INFO("Loaded Mesh from location: {}", filepath);
+    JN_CLI_INFO("Loaded Mesh from location: {}", filepath);
     return { vao, numIndices, vertices.size() };
 }

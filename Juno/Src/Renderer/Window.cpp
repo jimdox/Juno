@@ -238,7 +238,7 @@ int Window::GetHeight()
 	return height;
 }
 
-GLFWwindow* Window::GetWindow()
+GLFWwindow* Window::GetWindowHandle()
 {
 	return this->window;
 }

@@ -4,7 +4,7 @@
 
 using namespace Juno;
 
-GLComputeShader::GLComputeShader(std::vector<Particle>& particles, const std::string& fp, unsigned int numWG) : GLShader(fp), numWorkGroups(numWG), numObjects(particles.size())
+GLComputeShader::GLComputeShader(std::vector<Particle>& particles, const std::string& fp, unsigned int numWG) : GLShader(renderShaderComponents, fp), numWorkGroups(numWG), numObjects(particles.size())
 {
     // GLuint vertShader = BuildComponent(fp, ShaderComponentType::Vertex);
     // GLuint fragShader = BuildComponent(fp, ShaderComponentType::Fragment);
