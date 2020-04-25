@@ -5,10 +5,10 @@
 #include "Core/Scene.h"
 #include "Core/Config.h"
 #include "Renderer/RenderObjects/ThirdPersonCamera.h"
-#include "Renderer/Platforms/GLRenderContext.h"
-#include "Renderer/Platforms/VKRenderContext.h"
+// #include "Renderer/Platforms/GLRenderContext.h"
+// #include "Renderer/Platforms/VKRenderContext.h"
 
-#include "Renderer/Data/GLComputeShader.h"
+#include "Renderer/Platforms/GLComputeShader.h"
 
 namespace Juno 
 {
@@ -49,8 +49,8 @@ public:
 private:
     Renderer(int sWidth, int sHeight, const std::string& wTitle);
 
-    UPtr<GraphicsAPIContext> renderAPIContext;
-    GraphicsAPI currentGraphicsAPI = GraphicsAPI::OpenGL;
+    // UPtr<GraphicsAPIContext> renderAPIContext;
+    // GraphicsAPI currentGraphicsAPI = GraphicsAPI::OpenGL;
     Window window;
     SPtr<Scene> currentScene;
     SPtr<Camera> currentCamera;

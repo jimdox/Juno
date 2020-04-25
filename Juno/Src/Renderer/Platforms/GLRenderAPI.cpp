@@ -1,20 +1,9 @@
 #include "jnpch.h"
-#include "Renderer/Platforms/GLRenderContext.h"
+#include "Renderer/Platforms/GLRenderAPI.h"
 #include "Renderer/Window.h"
 using namespace Juno;
 
-// GLRenderContext::GLRenderContext()
-// {
-
-// }
-
-// GLRenderContext::~GLRenderContext()
-// {
-    
-// }
-
-
-void GLRenderContext::Init()
+void RenderCmd::Init()
 {
     if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -29,12 +18,18 @@ void GLRenderContext::Init()
     
 }
 
-void GLRenderContext::ShutDown()
+void RenderCmd::ShutDown()
 {
     
 }
 
-void GLRenderContext::ErrorCheck()
+GraphicsAPI RenderCmd::GetActiveAPI()
+{
+    return GraphicsAPI::OpenGL;
+}
+
+
+void RenderCmd::ErrorCheck()
 {
     while(GLenum error = glGetError())
     {
@@ -44,18 +39,18 @@ void GLRenderContext::ErrorCheck()
 }
 
 
-void GLRenderContext::ClearScreen()
+void RenderCmd::ClearScreen()
 {
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GLRenderContext::ResizeViewport(float width, float height)
+void RenderCmd::ResizeViewport(float width, float height)
 {
     glViewport(0, 0, width, height);
 }
 
-void GLRenderContext::SetBackFaceCulling(bool flag)
+void RenderCmd::SetBackFaceCulling(bool flag)
 {
     if(flag)
     {
@@ -66,7 +61,7 @@ void GLRenderContext::SetBackFaceCulling(bool flag)
     }
 }
 
-void GLRenderContext::SetWireFrameMode(bool flag)
+void RenderCmd::SetWireFrameMode(bool flag)
 {
     if(flag)
     {
@@ -76,38 +71,38 @@ void GLRenderContext::SetWireFrameMode(bool flag)
     }
 }
 
-void GLRenderContext::EnableDepthTest()
+void RenderCmd::EnableDepthTest()
 {
     glEnable(GL_DEPTH_TEST);
 }
 
-void GLRenderContext::DisableDepthTest()
+void RenderCmd::DisableDepthTest()
 {
 
 }
 
-void GLRenderContext::DrawTriangles(unsigned int numIndices)
+void RenderCmd::DrawTriangles(unsigned int numIndices)
 {
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
 }
 
 
-void GLRenderContext::DrawLines(unsigned int numIndices)
+void RenderCmd::DrawLines(unsigned int numIndices)
 {
     glDrawElements(GL_LINES, numIndices, GL_UNSIGNED_INT, 0);
 }
 
-void GLRenderContext::DrawPoints(unsigned int numIndices)
+void RenderCmd::DrawPoints(unsigned int numIndices)
 {
     glDrawElements(GL_POINTS, numIndices, GL_UNSIGNED_INT, 0);
 }
 
-void GLRenderContext::DrawTrianglesInstanced(unsigned int instanceCount)
+void RenderCmd::DrawTrianglesInstanced(unsigned int instanceCount)
 {
     glDrawArraysInstanced(GL_TRIANGLES, 0, 1, instanceCount);
 }
 
-void GLRenderContext::DrawPointsInstanced(unsigned int instanceCount)
+void RenderCmd::DrawPointsInstanced(unsigned int instanceCount)
 {
     glDrawArraysInstanced(GL_POINTS, 0, 1, instanceCount);
 }

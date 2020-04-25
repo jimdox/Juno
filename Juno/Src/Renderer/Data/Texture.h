@@ -20,37 +20,6 @@ protected:
     bool containsTransparency;
     TextureType textureType;
 };
-
-
-class GLTexture : public Texture
-{
-public:
-    GLTexture(TextureType texType, bool transparency);
-    ~GLTexture();
-
-    void Bind() override;
-    void Unbind() override;
-    void Load(unsigned char** imageData, int width, int height) override;
-
-private:
-    unsigned int textureID;
-
-};
-
-
-class VKTexture : public Texture
-{
-public:
-    VKTexture(TextureType texType, bool transparency);
-    ~VKTexture();
-    void Bind() override;
-    void Unbind() override;
-    void Load(unsigned char** imageData, int width, int height) override;
-
-private:
-
-};
-
 }
 
 

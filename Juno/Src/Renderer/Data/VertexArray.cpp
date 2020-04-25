@@ -1,17 +1,23 @@
 #include "jnpch.h"
 #include "VertexArray.h"
-#include "Renderer/Renderer.h"
+
+#ifdef JN_RENDERER_OPENGL
+    #include "Renderer/Platforms/GLVertexArray.h"
+#else 
+    #include "Renderer/Platforms/VKVertexArray.h"
+#endif
+
 using namespace Juno;
 
 
 VertexArray* VertexArray::Generate()
 {
-    if(Renderer::Get().GetCurrentGraphicsAPI() == GraphicsAPI::Vulkan)
-    {
-        return new VKVertexArray();
-    } else {
+
+    #ifdef JN_RENDERER_OPENGL
         return new GLVertexArray();
-    }
+    #else 
+        return new VKVertexArray();
+    #endif
 }
 
 unsigned int VertexArray::GetVaoID()
@@ -19,66 +25,3 @@ unsigned int VertexArray::GetVaoID()
     return this->vaoID;
 }
 
-
-
-
-GLVertexArray::GLVertexArray()
-{
-    glGenVertexArrays(1, &vaoID);
-}
-
-GLVertexArray::~GLVertexArray()
-{
-    glDeleteVertexArrays(1, &vaoID);
-}
-
-void GLVertexArray::Bind()
-{
-    glBindVertexArray(vaoID);
-}
-
-void GLVertexArray::Unbind()
-{
-    glBindVertexArray(0);
-}
-
-void GLVertexArray::EnableAttribute(unsigned int attribNum)
-{
-    glEnableVertexAttribArray(attribNum);
-}
-
-void GLVertexArray::DisableAttribute(unsigned int attribNum)
-{
-    glDisableVertexAttribArray(attribNum);
-}
-
-
-VKVertexArray::VKVertexArray()
-{
-
-}
-
-VKVertexArray::~VKVertexArray()
-{
-
-}
-
-void VKVertexArray::Bind()
-{
-
-}
-
-void VKVertexArray::Unbind()
-{
-
-}
-
-void VKVertexArray::EnableAttribute(unsigned int attribNum)
-{
-
-}
-
-void VKVertexArray::DisableAttribute(unsigned int attribNum)
-{
-
-}

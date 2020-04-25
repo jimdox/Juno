@@ -17,7 +17,7 @@ ifeq ($(config),debug)
   OBJDIR = ../Bin/Int/Debug/Juno
   PCH = Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DJN_BUILD_DEBUG
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DJN_RENDERER_OPENGL -DJN_BUILD_DEBUG
   INCLUDES += -ISrc -IInclude -I. -IVendor/jpl -IVendor/stb -IVendor/spdlog/include -IVendor/glm -IVendor/imgui -IVendor/glad/include -IVendor/glfw/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -46,7 +46,7 @@ ifeq ($(config),release)
   OBJDIR = ../Bin/Int/Release/Juno
   PCH = Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE
+  DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DJN_RENDERER_OPENGL
   INCLUDES += -ISrc -IInclude -I. -IVendor/jpl -IVendor/stb -IVendor/spdlog/include -IVendor/glm -IVendor/imgui -IVendor/glad/include -IVendor/glfw/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -83,14 +83,21 @@ OBJECTS := \
 	$(OBJDIR)/GuiImage.o \
 	$(OBJDIR)/Particle.o \
 	$(OBJDIR)/PhysicsManager.o \
-	$(OBJDIR)/GLComputeShader.o \
 	$(OBJDIR)/Shader.o \
 	$(OBJDIR)/Texture.o \
 	$(OBJDIR)/VertexArray.o \
 	$(OBJDIR)/VertexBuffer.o \
-	$(OBJDIR)/GLRenderContext.o \
-	$(OBJDIR)/GraphicsAPIContext.o \
-	$(OBJDIR)/VKRenderContext.o \
+	$(OBJDIR)/GLComputeShader.o \
+	$(OBJDIR)/GLRenderAPI.o \
+	$(OBJDIR)/GLShader.o \
+	$(OBJDIR)/GLTexture.o \
+	$(OBJDIR)/GLVertexArray.o \
+	$(OBJDIR)/GLVertexBuffer.o \
+	$(OBJDIR)/VKRenderAPI.o \
+	$(OBJDIR)/VKShader.o \
+	$(OBJDIR)/VKTexture.o \
+	$(OBJDIR)/VKVertexArray.o \
+	$(OBJDIR)/VKVertexBuffer.o \
 	$(OBJDIR)/Camera.o \
 	$(OBJDIR)/Light.o \
 	$(OBJDIR)/Material.o \
@@ -206,9 +213,6 @@ $(OBJDIR)/Particle.o: Src/Physics/Particle.cpp
 $(OBJDIR)/PhysicsManager.o: Src/Physics/PhysicsManager.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/GLComputeShader.o: Src/Renderer/Data/GLComputeShader.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Shader.o: Src/Renderer/Data/Shader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
@@ -221,13 +225,37 @@ $(OBJDIR)/VertexArray.o: Src/Renderer/Data/VertexArray.cpp
 $(OBJDIR)/VertexBuffer.o: Src/Renderer/Data/VertexBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/GLRenderContext.o: Src/Renderer/Platforms/GLRenderContext.cpp
+$(OBJDIR)/GLComputeShader.o: Src/Renderer/Platforms/GLComputeShader.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/GraphicsAPIContext.o: Src/Renderer/Platforms/GraphicsAPIContext.cpp
+$(OBJDIR)/GLRenderAPI.o: Src/Renderer/Platforms/GLRenderAPI.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/VKRenderContext.o: Src/Renderer/Platforms/VKRenderContext.cpp
+$(OBJDIR)/GLShader.o: Src/Renderer/Platforms/GLShader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GLTexture.o: Src/Renderer/Platforms/GLTexture.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GLVertexArray.o: Src/Renderer/Platforms/GLVertexArray.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/GLVertexBuffer.o: Src/Renderer/Platforms/GLVertexBuffer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VKRenderAPI.o: Src/Renderer/Platforms/VKRenderAPI.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VKShader.o: Src/Renderer/Platforms/VKShader.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VKTexture.o: Src/Renderer/Platforms/VKTexture.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VKVertexArray.o: Src/Renderer/Platforms/VKVertexArray.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/VKVertexBuffer.o: Src/Renderer/Platforms/VKVertexBuffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/Camera.o: Src/Renderer/RenderObjects/Camera.cpp

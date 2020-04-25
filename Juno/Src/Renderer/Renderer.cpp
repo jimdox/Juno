@@ -2,6 +2,14 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/RenderObjects/ThirdPersonCamera.h"
 #include "Core/SceneManager.h"
+
+#ifdef JN_RENDERER_OPENGL
+    #include "Renderer/Platforms/GLRenderAPI.h"
+#else 
+    #include "Renderer/Platforms/VKRenderAPI.h"
+#endif
+
+
 using namespace Juno;
 
 static GraphicsAPI s_gfxAPI = GraphicsAPI::OpenGL;
@@ -14,8 +22,7 @@ void Renderer::SetGraphicsAPI(GraphicsAPI rendererAPI)
 
 Renderer::Renderer(int sWidth, int sHeight, const std::string& wTitle) : window(sWidth, sHeight, wTitle), thirdPersonCamera({0,0,0},{0,0,0})
 {
-    renderAPIContext = GraphicsAPIContext::Create(GraphicsAPI::OpenGL);
-    renderAPIContext->Init();
+    RenderCmd::Init();
     //currentCamera = std::make_shared<ThirdPersonCamera>(Vec3(0,0,0), Vec3(0,0,0));
 }
 
@@ -43,7 +50,7 @@ void Renderer::Submit(SPtr<Scene> scene)
 
 void Renderer::Begin(float dt)
 {
-    renderAPIContext->ClearScreen();
+    RenderCmd::ClearScreen();
     currentScene->GetCamera()->Update(dt);
 
     if(currentScene != nullptr)
@@ -59,7 +66,7 @@ void Renderer::Begin(float dt)
 void Renderer::End()
 {
     #ifdef JN_BUILD_DEBUG
-        renderAPIContext->ErrorCheck();
+        RenderCmd::ErrorCheck();
     #endif
     window.Update();
 }
@@ -79,7 +86,7 @@ void Renderer::RenderEntity(Entity& entity)
     vao.EnableAttribute(0);
     vao.EnableAttribute(1);
 
-    renderAPIContext->DrawTriangles(entity.GetMesh()->GetNumIndices());
+    RenderCmd::DrawTriangles(entity.GetMesh()->GetNumIndices());
 
     vao.DisableAttribute(1);
     vao.DisableAttribute(0);
@@ -103,7 +110,8 @@ void Renderer::RunComputeShader(GLComputeShader* cs, float dt)
 
     cs->SetProjMatrix(currentScene->GetCamera()->GetProjectionMatrix());
     cs->SetViewMatrix(currentScene->GetCamera()->GetViewMatrix());
-    renderAPIContext->DrawPointsInstanced(cs->GetNumObjects());
+    
+    RenderCmd::DrawPointsInstanced(cs->GetNumObjects());
     
     glBindVertexArray(0);
     cs->Unbind();
@@ -111,7 +119,7 @@ void Renderer::RunComputeShader(GLComputeShader* cs, float dt)
 
 GraphicsAPI Renderer::GetCurrentGraphicsAPI()
 {
-    return GraphicsAPI::OpenGL; //return renderAPIContext->GetActiveAPI();
+    return RenderCmd::GetActiveAPI();
 }
 
 void Renderer::SwitchGraphicsAPI(GraphicsAPI rendererAPI)

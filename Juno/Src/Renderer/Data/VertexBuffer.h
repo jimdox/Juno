@@ -1,7 +1,6 @@
 #pragma once
 #include "Utils/Memory.h"
 #include <vector>
-#include <glad/glad.h>
 namespace Juno
 {
 enum class VertexBufferDataType : unsigned char
@@ -32,27 +31,5 @@ public:
 
 protected:
     unsigned int vboID;
-};
-
-class GLVertexBuffer : public VertexBuffer
-{
-public:
-    GLVertexBuffer(VertexBufferDataType bufferType, VertexBufferUsageType bufferUsage);
-    ~GLVertexBuffer() override;
-    void Bind();
-    void Unbind();
-    void StoreDataInAttribute(unsigned int attribNum, unsigned int dim, std::vector<float>& data);
-    GLenum bufferDataType;
-    GLenum bufferUsageType;
-};
-
-class VKVertexBuffer : public VertexBuffer
-{
-public:
-    VKVertexBuffer(VertexBufferDataType bufferType, VertexBufferUsageType bufferUsage);
-    ~VKVertexBuffer() override;
-    void Bind();
-    void Unbind();
-    void StoreDataInAttribute(unsigned int attribNum, unsigned int dim, std::vector<float>& data);
 };
 }

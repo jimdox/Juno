@@ -336,7 +336,7 @@ std::string AssetManager::ReadShaderComponentFile(const std::string& filepath, S
 	//glShaderSource(shaderID, 1, &srcPtr, NULL);
 	//glCompileShader(shaderID);
     //Renderer::Get().GetRenderAPI()->CompileShader();
-    JN_CLI_INFO("Read shader component from: {}", fullFilePath);
+    JN_CLI_INFO("Loaded Shader component from: {}", fullFilePath);
     return source;
 }
 

@@ -35,6 +35,11 @@ private:
 
 };
 
+enum class GraphicsAPI
+{
+    OpenGL, Vulkan
+};
+
 static float g_aspectRatio = 1.0f;
 static unsigned int g_antiAliasingFactor = 4;
 static unsigned int g_defaultScreen_Width = 1000;
