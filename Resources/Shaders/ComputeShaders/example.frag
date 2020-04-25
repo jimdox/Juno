@@ -9,9 +9,9 @@ out vec4 outColor;
 void main()
 {
 	vec3 pos = normalize(pass_position);
-	float r = min(pos.x, 0.5);
-	float g = min(pos.y, 0.5);
-	float b = min(pos.z, 0.5);
+	float r = max(pos.x, 0.3);
+	float g = max(pos.y, 0.3);
+	float b = max(pos.z, 0.3);
 
 	outColor = vec4(r, g, b, 1.0);
 }

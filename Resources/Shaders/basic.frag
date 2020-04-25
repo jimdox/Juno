@@ -1,6 +1,6 @@
 #version 450 core
 
-in vec3 baseColor;
+in vec3 pass_baseColor;
 in vec3 surfaceNormal;
 in vec3 toLightDir[4];
 in vec3 cameraDir;
@@ -52,7 +52,7 @@ void main()
 
         //vec3 test = vec3(0.5, 0.5, 0.5);
 
-        output_color = vec4(net_diffuse, 1.0) * vec4(baseColor, 1.0) + vec4(net_specular, 1.0);
+        output_color = vec4(net_diffuse, 1.0) * vec4(pass_baseColor, 1.0) + vec4(net_specular, 1.0);
 
 
 }

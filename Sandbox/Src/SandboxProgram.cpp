@@ -1,49 +1,45 @@
-#define JN_RENDERER_OPENGL
 #include <Juno.h>
 #include <StartPoint.h>
+#include "Utils/Memory.h"
+#include "Physics/Particle.h"
 using namespace Juno;
 
-static ComputeShader* g_computeShader;
+static GLComputeShader* g_computeShader;
 
 class SandboxProgram : public Program
-{
+{ 
 	void OnUserCreate()
 	{
-		// Mesh plane = AssetManager::Get().LoadMesh("./Resources/Models/plane.obj");
-		// Mesh dragon = AssetManager::Get().LoadMesh("./Resources/Models/dragon.obj");
+		SPtr<Mesh> plane = AssetManager::Get().LoadMesh("./Resources/Models/plane.obj");
+		SPtr<Mesh> dragon = AssetManager::Get().LoadMesh("./Resources/Models/dragon.obj");
 
-		// plane.GetMaterial().SetBaseColor({0.1f, 0.1f, 0.1f});
-		// plane.GetMaterial().SetReflectivity(0.12);
-
-		// dragon.GetMaterial().SetBaseColor({0.4f, 0.1f, 0.1f});
-		// dragon.GetMaterial().SetShineDamper(0.99f);
-		// dragon.GetMaterial().SetReflectivity(0.25f);
+		plane->GetMaterial()->SetBaseColor({0.1f, 0.1f, 0.1f});
+		plane->GetMaterial()->SetReflectivity(0.12);
 		
-		// Entity entityOne(plane, {0.0f, -5.5f, 0.0f}, {0, 0, 0}, 100.0f, "default plane");
-		// Entity entityTwo(dragon, {60, -5, -30}, {0,-50, 0}, 5.0f, "Big Boi");
-		
-		// Light lightA({-110.5f, 500.01f, 100.0f}, {0.9f, 0.9f, 0.9f}, {1.0, 1, 0.005});
-		// Light lightB({300,100,-1010}, {0.4f, 0.4f, 0.70f}, {1.0, 0.00001f, 0.0005f});
+		SPtr<Scene> scene = SceneManager::Get().GetScene();
 
-		// scene.Add(entityOne);
-		// scene.Add(entityTwo);
-		// scene.Add(lightA);
-		// scene.Add(lightB);
-		// Renderer::Get().Submit(scene);
+		scene->CreateEntity(plane, {0, -5.5, 0}, {0,0,0}, 100.0f, "Default Plane");
+		scene->CreateEntity(dragon, {60, -5, -30}, {0,-50, 0}, 5.0f, "Big Boi");
+		scene->CreateLight({1000, 1000, 1000}, {1.0f, 0.2f, 0.5f});
 
-		// /* sample code for how compute shaders can be used */
+		Renderer::Get().Submit(scene);
+
+		/* sample code for how compute shaders can be used */
 		// std::vector<Particle> particles;
-		// for(unsigned int i = 0; i < 100000; i++)
+		// for(unsigned int i = 0; i < 10000; i++)
 		// {
-		// 	float x = 100 * sinf(i) * cosf(i) + 60;
-		// 	float z = 100 * cosf(i) * cosf(i) - 90;
-		// 	float y = 100 * sinf(i * M_PI/300) + 50;
-		// 	glm::vec3 position(x,y,z);
-		// 	glm::vec3 velocity(sinf(2 * M_PI * i) + cosf(-i), cosf(i/(2 * M_PI)), sinf(2 * M_PI / i));   
-		// 	particles.emplace_back(position, velocity, 1.0f);
+		// 	float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		// 	float x = 100.0f * r;
+		// 	float r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		// 	float y = 100 * r2;
+		// 	float r3 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+		// 	float z =  100 * r3 - 50;
+		// 	glm::vec3 position(x, y, z);
+		// 	glm::vec3 velocity(0, 0, 0);   
+		// 	particles.emplace_back(position, velocity, 0.0001f);
 		// }
 
-		// g_computeShader = new ComputeShader(particles, "./Resources/Shaders/ComputeShaders/example", 512);
+		// g_computeShader = new GLComputeShader(particles, "./Resources/Shaders/ComputeShaders/example", 512);
 		
 
 		//renderer->getWindow().getGuiDock().enableDebug();
@@ -59,7 +55,7 @@ class SandboxProgram : public Program
 	/* updates on each new frame */
 	void OnUserUpdateWindow()
 	{
-		//Renderer::Get().RunComputeShader(*g_computeShader, frameTime);
+		// Renderer::Get().RunComputeShader(g_computeShader, frameTime);
 
 	}
 
@@ -67,7 +63,7 @@ class SandboxProgram : public Program
 	void OnUserExit()
 	{
 		/* mem. cleanup */
-		delete g_computeShader;
+		//delete g_computeShader;
 		
 	}
 

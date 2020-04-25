@@ -1,10 +1,12 @@
 #version 450 core
 
+#define NUM_PARTICLES 10000
+#define GRAVITATIONAL_CONST 0.000000000667408
+
 struct Particle {
 	vec3 position;
 	vec3 velocity;
 	float mass;
-
 };
 
 
@@ -13,25 +15,43 @@ layout(std430, binding=0) buffer ParticleBuffer
     Particle particles[];
 };
 
-layout(local_size_x=512, local_size_y=1, local_size_z=1) in;
+// this is the number of 'groups' of data, or, how many times the original list of particles gets divided up. 
+layout(local_size_x=512) in;
 
 
 uniform float timestep;
-uniform vec3 forceRadii;
+uniform float forceRadii;
 
-// vec3 calculateForce(uint g_id, float actingMass, vec3 pos)
-// {
-// 	float dist = distance(pos, particles[g_id].position);
-// 	float m = (actingMass * particles[g_id].mass) / dist;
-// 	return (pos - particles[g_id].position) * m;
-// }
+vec3 calculateForce(uint g_id)
+{
+	vec3 netForce = vec3(0,0,0);
+	vec3 posA = particles[g_id].position;
+
+	for(uint i = 0; i < NUM_PARTICLES; i++)
+	{
+		if(g_id != i)
+		{
+			vec3 relativeDist = posA - particles[i].position;
+			float distMag = length(relativeDist) * 10;
+			netForce += (relativeDist * -0.000000667) * particles[i].mass * particles[g_id].mass;
+		}
+	}
+	return netForce;
+}
 
 void main()
-{
+{	
 	uint g_id = gl_GlobalInvocationID.x;
+	
 	vec3 pos = particles[g_id].position;
 	vec3 vel =  particles[g_id].velocity;
-	pos += vel * timestep;
+
+	pos += vel * timestep * 0.5;
+
+	vel += calculateForce(g_id) * timestep/2;
+
+	pos += vel * timestep * 0.5;
 	
 	particles[g_id].position = pos;
+	particles[g_id].velocity = vel;
 }

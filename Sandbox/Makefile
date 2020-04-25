@@ -17,8 +17,8 @@ ifeq ($(config),debug)
   OBJDIR = ../Bin/Int/Debug/Debug/Sandbox
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DSTB_IMAGE_IMPLEMENTATION -D_X11 -DJUNO_PLATFORM_LINUX
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
+  DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_X11 -DJUNO_PLATFORM_LINUX
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
@@ -46,8 +46,8 @@ ifeq ($(config),release)
   OBJDIR = ../Bin/Int/Release/Release/Sandbox
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
-  DEFINES += -DSTB_IMAGE_IMPLEMENTATION -D_X11 -DJUNO_PLATFORM_LINUX
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
+  DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_X11 -DJUNO_PLATFORM_LINUX
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64

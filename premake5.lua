@@ -33,11 +33,13 @@ project "Juno"
 
         "%{prj.name}/Src",
         "%{prj.name}/Include",
-        "%{prj.name}/Vendor/stb",
+		"%{prj.name}/",
+		"%{prj.name}/Vendor/jpl",
+
+		"%{prj.name}/Vendor/stb",
         "%{prj.name}/Vendor/spdlog/include",
-        "%{prj.name}/Vendor/jpl",
-        "%{prj.name}/Vendor/glm",
-        "%{prj.name}/",
+		"%{prj.name}/Vendor/glm",
+		"%{prj.name}/Vendor/imgui",
         "%{prj.name}/Vendor/glad/include/",
 		"%{prj.name}/Vendor/glfw/include/"
     }
@@ -58,12 +60,13 @@ project "Juno"
         "%{prj.name}/Include/*.h",
 
 		"%{prj.name}/Vendor/stb/stb_image.h",
-
+		"%{prj.name}/Vendor/imgui/*.h",
+		"%{prj.name}/Vendor/imgui/*.cpp"
 	}
 	
 	defines {
 		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
 	}
 	
 	links { 
@@ -98,12 +101,13 @@ project "Sandbox"
         "Juno/Include",
         "Juno/Src",
 
-        "Juno/Vendor/glm",
+        "Juno/Vendor/glm/",
 		"Juno/Vendor/glad/include/",
 		"Juno/Vendor/glfw/include/",
-		"Juno/Vendor/stb",
+		"Juno/Vendor/imgui",
+		"Juno/Vendor/stb/",
 		"Juno/Vendor/jpl",
-		"Juno/Vendor/spdlog/include"
+		"Juno/Vendor/spdlog/include/"
 	}
 
 	files {
@@ -111,6 +115,9 @@ project "Sandbox"
 		"Sandbox/**.cpp",
 		"Juno/Include/jnpch.h",
 		"Juno/Include/jnpch.cpp"
+
+		
+		
 	}
 
 	links {
@@ -118,7 +125,7 @@ project "Sandbox"
 	}
 
 	defines {
-		"STB_IMAGE_IMPLEMENTATION"
+		"IMGUI_IMPL_OPENGL_LOADER_GLAD"
 	}
 
 	filter "system:linux"
