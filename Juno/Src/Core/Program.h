@@ -32,7 +32,7 @@ private:
 	void RunExampleGeneral();
 	Renderer* renderer;
 	SPtr<Scene> scene;
-	Dock dock;
+	//Dock dock;
 	float lastTime;     
 	float deltaTime;
 	bool f_programShouldClose;

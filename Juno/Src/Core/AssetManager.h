@@ -29,7 +29,7 @@ public:
 
     //SPtr<ComputeShader> LoadComputeShader(const std::string& fp);
     
-    std::array<GLint,4> LoadShaderFile(const std::string& filepath);
+    std::array<uint32_t,4> LoadShaderFile(const std::string& filepath);
     std::string ReadShaderComponentFile(const std::string& filepath, ShaderComponentType shaderType);
     SPtr<Shader> GetDefaultShader();
 

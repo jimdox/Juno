@@ -110,16 +110,6 @@ SPtr<Texture> AssetManager::LoadTexture(const std::string& filepath, TextureType
 //     return vaoID;
 // }
 
-void AssetManager::StoreDataInAttribList(unsigned int attribNum, unsigned int dimensions, std::vector<float> data)
-{
-    unsigned int VboID;
-    glGenBuffers(1, &VboID);
-    glBindBuffer(GL_ARRAY_BUFFER, VboID);
-    glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(float), &data[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(attribNum, dimensions, GL_FLOAT, GL_FALSE, 0, (void*)0);           /* check correct stride value for float array */
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
 //void AssetManager::StoreDataInAttribList(unsigned int attribNum, unsigned int)
 
 // static void bindIBO(std::vector<unsigned int> &indices)
@@ -170,7 +160,7 @@ std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>
 
     VertexBuffer* indexBuffer = VertexBuffer::Create(VertexBufferDataType::ELEMENT_BUFFER, VertexBufferUsageType::STATIC_DRAW);
     indexBuffer->Bind();
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    indexBuffer->StoreElements(indices);  
     indexBuffer->Unbind();
 
     positionsBuffer->Bind();
@@ -204,10 +194,10 @@ std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>
     return {vao, numIndices};
 }   
 
-std::array<GLint, 4> AssetManager::LoadShaderFile(const std::string& filepath)
+std::array<uint32_t, 4> AssetManager::LoadShaderFile(const std::string& filepath)
 {
     std::string glslVersion; 
-    std::array<GLint, 4> shaderIDs = {-1, -1, -1, -1};                     /* flags for what stages exist in shader */
+    std::array<uint32_t, 4> shaderIDs = {0, 0, 0, 0};                     /* flags for what stages exist in shader */
 
     std::string vertSrc, fragSrc, geomSrc, compSrc;
     std::string* activeSrc;

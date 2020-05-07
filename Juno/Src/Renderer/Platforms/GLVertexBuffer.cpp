@@ -60,6 +60,17 @@ void GLVertexBuffer::Unbind()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+// void GLVertexBuffer::StoreData(std::vector<float>& data, uint32_t dim)
+// {
+
+// }
+
+void GLVertexBuffer::StoreElements(std::vector<uint32_t>& data)
+{
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, data.size() * sizeof(unsigned int), &data[0], bufferUsageType);
+}
+
+
 void GLVertexBuffer::StoreDataInAttribute(unsigned int attribNum, unsigned int dim, std::vector<float>& data)
 {
     glBufferData(bufferDataType, data.size() * sizeof(float), &data[0], bufferUsageType);

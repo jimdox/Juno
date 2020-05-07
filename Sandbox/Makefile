@@ -18,13 +18,13 @@ ifeq ($(config),debug)
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_X11 -DJUNO_PLATFORM_LINUX
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -IVendor/vulkan/x86_64/include -IVendor/vulkan/x86_64/lib -I../Juno/Vendor/glm -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Bin/Debug/libJuno.a ../Bin/Debug/libGLFW.a ../Bin/Debug/libGLAD.a -lX11 -ldl -lpthread
+  LIBS += ../Bin/Debug/libJuno.a ../Bin/Debug/libGLFW.a ../Bin/Debug/libGLAD.a -lvulkan -lX11 -ldl -lpthread
   LDDEPS += ../Bin/Debug/libJuno.a ../Bin/Debug/libGLFW.a ../Bin/Debug/libGLAD.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
@@ -47,13 +47,13 @@ ifeq ($(config),release)
   PCH = ../Juno/Include/jnpch.h
   GCH = $(OBJDIR)/$(notdir $(PCH)).gch
   DEFINES += -DIMGUI_IMPL_OPENGL_LOADER_GLAD -D_X11 -DJUNO_PLATFORM_LINUX
-  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glm -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
+  INCLUDES += -I../Juno -I../Juno/Include -I../Juno/Src -I../Juno/Vendor/glad/include -I../Juno/Vendor/glfw/include -IVendor/vulkan/x86_64/include -IVendor/vulkan/x86_64/lib -I../Juno/Vendor/glm -I../Juno/Vendor/imgui -I../Juno/Vendor/stb -I../Juno/Vendor/jpl -I../Juno/Vendor/spdlog/include
   FORCE_INCLUDE += -include $(OBJDIR)/$(notdir $(PCH))
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -std=c++17
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS += ../Bin/Release/libJuno.a ../Bin/Release/libGLFW.a ../Bin/Release/libGLAD.a -lX11 -ldl -lpthread
+  LIBS += ../Bin/Release/libJuno.a ../Bin/Release/libGLFW.a ../Bin/Release/libGLAD.a -lvulkan -lX11 -ldl -lpthread
   LDDEPS += ../Bin/Release/libJuno.a ../Bin/Release/libGLFW.a ../Bin/Release/libGLAD.a
   ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
   LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)

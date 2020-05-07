@@ -27,6 +27,7 @@ public:
     unsigned int getVboID();
     virtual void Bind() = 0;
     virtual void Unbind() = 0;
+    virtual void StoreElements(std::vector<uint32_t>& data) = 0;
     virtual void StoreDataInAttribute(unsigned int attribNum, unsigned int dim, std::vector<float>& data) = 0;
 
 protected:

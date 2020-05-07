@@ -41,7 +41,12 @@ project "Juno"
 		"%{prj.name}/Vendor/glm",
 		"%{prj.name}/Vendor/imgui",
         "%{prj.name}/Vendor/glad/include/",
-		"%{prj.name}/Vendor/glfw/include/"
+		"%{prj.name}/Vendor/glfw/include/",
+
+		"%{prj.name}/Vendor/vulkan/x86_64/include/",
+		"%{prj.name}/Vendor/vulkan/x86_64/lib/",
+
+
     }
 	
 	targetdir ("./Bin/%{cfg.buildcfg}/")
@@ -61,18 +66,20 @@ project "Juno"
 
 		"%{prj.name}/Vendor/stb/stb_image.h",
 		"%{prj.name}/Vendor/imgui/*.h",
-		"%{prj.name}/Vendor/imgui/*.cpp"
+		"%{prj.name}/Vendor/imgui/*.cpp",
+		
 	}
 	
 	defines {
 		"_CRT_SECURE_NO_WARNINGS",
 		"GLFW_INCLUDE_NONE",
-		"JN_RENDERER_OPENGL"
+		--"JN_RENDERER_OPENGL"
 	}
 	
 	links { 
 		"GLAD",
-		"GLFW"
+		"GLFW",
+		"vulkan"
 	}
 
 	filter "configurations:Debug"
@@ -102,9 +109,12 @@ project "Sandbox"
         "Juno/Include",
         "Juno/Src",
 
-        "Juno/Vendor/glm/",
 		"Juno/Vendor/glad/include/",
 		"Juno/Vendor/glfw/include/",
+		"%{prj.name}/Vendor/vulkan/x86_64/include/",
+		"%{prj.name}/Vendor/vulkan/x86_64/lib/",
+
+		"Juno/Vendor/glm/",
 		"Juno/Vendor/imgui",
 		"Juno/Vendor/stb/",
 		"Juno/Vendor/jpl",
@@ -123,6 +133,8 @@ project "Sandbox"
 
 	links {
 		"Juno",
+		"vulkan"
+
 	}
 
 	defines {

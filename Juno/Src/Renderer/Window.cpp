@@ -2,6 +2,7 @@
 #include "Renderer/Window.h"
 #include "Core/Config.h"
 #include <imgui.h>
+#include <vulkan/vulkan.h>
 
 /*
 	Rendering context: manages the window, initialization of rendering environment. 
@@ -17,15 +18,15 @@ static WindowEventDispatcher* s_winDispatcher;
 
 static void KeyboardHandler(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if(!ImGui::GetIO().WantCaptureKeyboard)
-	{
+	// if(!ImGui::GetIO().WantCaptureKeyboard)
+	// {
 		if(action == GLFW_PRESS || action == GLFW_REPEAT)
 		{
 			s_keyDispatcher->Notify(KeyPressEvent(key, 0));						/* todo: key repeat counting */
 		} else {
 			s_keyDispatcher->Notify(KeyReleaseEvent(key));
 		}
-	}
+	//}
 }
 
 static void MousePositionHandler(GLFWwindow* window, double xPos, double yPos)
@@ -39,8 +40,8 @@ static void MousePositionHandler(GLFWwindow* window, double xPos, double yPos)
 
 static void MouseButtonHandler(GLFWwindow* window, int button, int action, int mods)
 {
-	if(!ImGui::GetIO().WantCaptureMouse)
-	{
+	// if(!ImGui::GetIO().WantCaptureMouse)
+	// {
 		if(action == GLFW_PRESS)
 		{
 			switch(button)
@@ -73,12 +74,12 @@ static void MouseButtonHandler(GLFWwindow* window, int button, int action, int m
 				break;
 			}
 		}
-	}
+	//}
 }
 
 static void MouseScrollHandler(GLFWwindow* window, double x_offset, double y_offset)
 {
-	if(!ImGui::GetIO().WantCaptureMouse)
+	//if(!ImGui::GetIO().WantCaptureMouse)
 		s_mouseDispatcher->Notify(MouseScrollEvent(x_offset, y_offset));
 }
 
@@ -141,27 +142,33 @@ void Window::Destroy()
 
 void Window::Init()
 {
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Version of GLSL (4.5)
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	// glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);										// Version of GLSL (4.5)
+	// glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);	
+	// glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwInit();
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+
 
 	if (!glfwInit())	
 	{
 		JN_ERR("GLFW failed to initialize!");
 	}
-
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	this->window = glfwCreateWindow(width, height, this->title.c_str(), NULL, NULL);	// third argument makes window full screen if:
 
 	if (!window)
 	{
 		JN_ERR("Window creation failed!");
 	}
-	glfwMakeContextCurrent(window);
+	//glfwMakeContextCurrent(window);
 
-	glfwSwapInterval(1);																	/* limits fps to native refresh rate */
-	glfwWindowHint(GLFW_SAMPLES, 8);				
+
+
+
+
+	//glfwSwapInterval(1);																	/* limits fps to native refresh rate */
+	//glfwWindowHint(GLFW_SAMPLES, 8);				
 
 	s_keyDispatcher = &this->keyDispatcher;
 	s_mouseDispatcher = &this->mouseDispatcher;				
@@ -173,7 +180,7 @@ void Window::Init()
 	glfwSetCursorPosCallback(window, MousePositionHandler);
 	glfwSetScrollCallback(window, MouseScrollHandler);
 	glfwSetFramebufferSizeCallback(window, WindowResizeHandler);
-
+	
 	// GLFWcursor* cursor = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	// glfwSetCursor(window, cursor);
 
@@ -204,7 +211,7 @@ void Window::OnEvent(const Event& e)
 
 void Window::Update()
 {
-	glfwSwapBuffers(window);
+	//glfwSwapBuffers(window);
 	glfwPollEvents();
 }
 

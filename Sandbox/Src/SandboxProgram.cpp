@@ -4,25 +4,25 @@
 #include "Physics/Particle.h"
 using namespace Juno;
 
-static GLComputeShader* g_computeShader;
+//static GLComputeShader* g_computeShader;
 
 class SandboxProgram : public Program
 { 
 	void OnUserCreate()
 	{
-		SPtr<Mesh> plane = AssetManager::Get().LoadMesh("./Resources/Models/plane.obj");
-		SPtr<Mesh> dragon = AssetManager::Get().LoadMesh("./Resources/Models/dragon.obj");
+		// SPtr<Mesh> plane = AssetManager::Get().LoadMesh("./Resources/Models/plane.obj");
+		// SPtr<Mesh> dragon = AssetManager::Get().LoadMesh("./Resources/Models/dragon.obj");
 
-		plane->GetMaterial()->SetBaseColor({0.1f, 0.1f, 0.1f});
-		plane->GetMaterial()->SetReflectivity(0.12);
+		// plane->GetMaterial()->SetBaseColor({0.1f, 0.1f, 0.1f});
+		// plane->GetMaterial()->SetReflectivity(0.12);
 		
-		SPtr<Scene> scene = SceneManager::Get().GetScene();
+		// SPtr<Scene> scene = SceneManager::Get().GetScene();
 
-		scene->CreateEntity(plane, {0, -5.5, 0}, {0,0,0}, 100.0f, "Default Plane");
-		scene->CreateEntity(dragon, {60, -5, -30}, {0,-50, 0}, 5.0f, "Big Boi");
-		scene->CreateLight({1000, 1000, 1000}, {1.0f, 0.2f, 0.5f});
-
-		Renderer::Get().Submit(scene);
+		// scene->CreateEntity(plane, {0, -5.5, 0}, {0,0,0}, 100.0f, "Default Plane");
+		// scene->CreateEntity(dragon, {60, -5, -30}, {0,-50, 0}, 5.0f, "Big Boi");
+		// scene->CreateLight({1000, 1000, 1000}, {0.5f, 0.5f, 1.0f});
+		// scene->CreateLight({-1000, 1000, 0}, {1,1,1});
+		// Renderer::Get().Submit(scene);
 
 		/* sample code for how compute shaders can be used */
 		// std::vector<Particle> particles;

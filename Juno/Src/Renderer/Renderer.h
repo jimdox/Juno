@@ -8,7 +8,7 @@
 // #include "Renderer/Platforms/GLRenderContext.h"
 // #include "Renderer/Platforms/VKRenderContext.h"
 
-#include "Renderer/Platforms/GLComputeShader.h"
+// #include "Renderer/Platforms/GLComputeShader.h"
 
 namespace Juno 
 {
@@ -38,7 +38,7 @@ public:
     void RenderEntity(Entity& entity);
     void RenderEntityInstanced(std::vector<SPtr<Entity>>& entities);
 
-    void RunComputeShader(GLComputeShader* cs, float dt);
+    //void RunComputeShader(GLComputeShader* cs, float dt);
 
     // void SetClearColorBrightness(GLclampf brightness);
     // GLclampf GetClearColorBrightness();
@@ -51,12 +51,14 @@ private:
 
     // UPtr<GraphicsAPIContext> renderAPIContext;
     // GraphicsAPI currentGraphicsAPI = GraphicsAPI::OpenGL;
+    VkInstance vulkanInstance;
+    
     Window window;
     SPtr<Scene> currentScene;
     SPtr<Camera> currentCamera;
     ThirdPersonCamera thirdPersonCamera;
     SPtr<Shader> defaultShader;
     float clearColorBrightness;
-
+    friend class VKRenderCmd;
 };
 }

@@ -2,9 +2,10 @@
 #include "Utils/Memory.h"
 #include "Core/Config.h"
 #include "Renderer/Renderer.h"
+// #include <vulkan/vulkan.h>
 namespace Juno
 {
-class RenderCmd
+class VKRenderCmd
 {
 protected:   
     static void Init();
@@ -26,6 +27,8 @@ protected:
     static void DrawTrianglesInstanced(unsigned int instanceCount);
     static void DrawPointsInstanced(unsigned int instanceCount);
 
+private:
+    //static bool ValidationLayersSupported();
 
 friend class Renderer;
 };

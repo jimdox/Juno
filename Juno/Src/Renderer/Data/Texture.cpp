@@ -12,11 +12,11 @@ using namespace Juno;
 
 SPtr<Texture> Texture::Create(TextureType texType, bool transparency)
 {
-    #ifdef JN_RENDERER_OPENGL
-        return std::make_shared<GLTexture>(texType, transparency);
-    #else   
+    // #ifdef JN_RENDERER_OPENGL
+    //     return std::make_shared<GLTexture>(texType, transparency);
+    // #else   
         return std::make_shared<VKTexture>(texType, transparency);
-    #endif
+    // #endif
 }
 
 

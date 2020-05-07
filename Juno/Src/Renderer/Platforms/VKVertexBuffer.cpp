@@ -23,6 +23,12 @@ void VKVertexBuffer::Unbind()
 {
 
 }
+
+void VKVertexBuffer::StoreElements(std::vector<uint32_t>& data)
+{
+    
+}
+
 void VKVertexBuffer::StoreDataInAttribute(unsigned int attribNum, unsigned int dim, std::vector<float>& data)
 {
 

@@ -2,90 +2,91 @@
 #include "Renderer/Platforms/VKRenderAPI.h"
 using namespace Juno;
 
-// VKRenderContext::VKRenderContext()
-// {
+static VkInstance s_vulkanInstance;
 
-// }
 
-void RenderCmd::Init()
+static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, 
+                                                    const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
 {
-    JN_INFO("Initializing Vulkan Context!");
-
-
+    JN_ERR("Validation Layer: {}", callbackData->pMessage);
+    return VK_FALSE;
 }
 
-void RenderCmd::ShutDown()
-{
 
+void VKRenderCmd::Init()
+{
+	
+
+    
 }
 
-GraphicsAPI RenderCmd::GetActiveAPI()
+void VKRenderCmd::ShutDown()
+{
+    vkDestroyInstance(s_vulkanInstance, nullptr);
+    
+}
+
+GraphicsAPI VKRenderCmd::GetActiveAPI()
 {
     return GraphicsAPI::Vulkan;
 }
 
-
-// VKRenderContext::~VKRenderContext()
-// {
-
-// }
-
-void RenderCmd::ErrorCheck()
+void VKRenderCmd::ErrorCheck()
 {
     
 }
 
-void RenderCmd::ClearScreen()
+void VKRenderCmd::ClearScreen()
 {
 
 }
 
-void RenderCmd::ResizeViewport(float width, float height)
+void VKRenderCmd::ResizeViewport(float width, float height)
 {
 
 }
 
-void RenderCmd::SetBackFaceCulling(bool flag)
+void VKRenderCmd::SetBackFaceCulling(bool flag)
 {
 
 }
 
-void RenderCmd::SetWireFrameMode(bool flag)
+void VKRenderCmd::SetWireFrameMode(bool flag)
 {
 
 }
 
-void RenderCmd::EnableDepthTest()
+void VKRenderCmd::EnableDepthTest()
 {
 
 }
 
-void RenderCmd::DisableDepthTest()
+void VKRenderCmd::DisableDepthTest()
 {
 
 }
 
-void RenderCmd::DrawTriangles(unsigned int numIndices)
+void VKRenderCmd::DrawTriangles(unsigned int numIndices)
 {
 
 }
 
-void RenderCmd::DrawLines(unsigned int numIndices)
+void VKRenderCmd::DrawLines(unsigned int numIndices)
 {
 
 }
 
-void RenderCmd::DrawPoints(unsigned int numIndices)
+void VKRenderCmd::DrawPoints(unsigned int numIndices)
 {
 
 }
 
-void RenderCmd::DrawTrianglesInstanced(unsigned int instanceCount)
+void VKRenderCmd::DrawTrianglesInstanced(unsigned int instanceCount)
 {
 
 }
 
-void RenderCmd::DrawPointsInstanced(unsigned int instanceCount)
+void VKRenderCmd::DrawPointsInstanced(unsigned int instanceCount)
 {
     
 }

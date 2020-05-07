@@ -1,13 +1,13 @@
 
 
-![alt text](https://github.com/jimdox/Juno/blob/master/Resources/Textures/JunoLogoSmall.png) 
+![alt text](https://github.com/jimdox/Juno/blob/master/Resources/Textures/Juno3D.png) 
 
 
 ## Project Setup
 Sandbox is an example project which has everything you need to start simulating some simple phyics scenarios. To get started, all you need to do is to install the latest alpha release of [Premake 5](https://premake.github.io/download.html#v5).
 
 ### Running the Sandbox Project
-For anyone unfamiliar with how to use Premake, when you initially download the project, or create whenever you create a new file you want to include in your project, you need to use it to generate new Makefiles for your project. I've Included a bash script to do this automatically for Linux users, just run `build.sh`.
+For those unfamiliar with how to use Premake, when you initially download the project, or whenever you create a new file you want to include in your project, you need you will need to generate new Makefiles (using Premake). I've Included a bash script to do this automatically for Linux users, just run `build.sh`.
 #### Linux
     to generate makefiles: premake5 gmake 
     then to build project: make config=release all -j [number of cores on machine] 

@@ -1,11 +1,11 @@
 #include "jnpch.h"
 #include "VertexArray.h"
 
-#ifdef JN_RENDERER_OPENGL
-    #include "Renderer/Platforms/GLVertexArray.h"
-#else 
+// #ifdef JN_RENDERER_OPENGL
+//     #include "Renderer/Platforms/GLVertexArray.h"
+// #else 
     #include "Renderer/Platforms/VKVertexArray.h"
-#endif
+//#endif
 
 using namespace Juno;
 
@@ -13,11 +13,11 @@ using namespace Juno;
 VertexArray* VertexArray::Generate()
 {
 
-    #ifdef JN_RENDERER_OPENGL
-        return new GLVertexArray();
-    #else 
+    // #ifdef JN_RENDERER_OPENGL
+    //     return new GLVertexArray();
+    // #else 
         return new VKVertexArray();
-    #endif
+//    #endif
 }
 
 unsigned int VertexArray::GetVaoID()

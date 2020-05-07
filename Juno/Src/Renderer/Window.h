@@ -6,10 +6,12 @@
 #include "Events/MouseEvents.h"
 #include "Events/KeyEvents.h"
 #include "Events/WindowEvents.h"
-// #define GLFW_INCLUDE_VULKAN
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
+#ifdef JN_RENDERER_OPENGL
+	#include <glad/glad.h>
+#endif
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 
 namespace Juno 
 {

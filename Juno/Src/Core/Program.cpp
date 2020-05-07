@@ -25,11 +25,11 @@ void Program::Init()
 	renderer = &Renderer::Get();
 	AssetManager* assetManager = &AssetManager::Get();
 	scene = SceneManager::Get().CreateScene();
-	renderer->GetWindow().GetWinEventDispatcher().AddListener(this);
-	renderer->GetWindow().GetMouseDispatcher().AddListener(scene->GetCamera().get());
-	renderer->GetWindow().GetKeyDispatcher().AddListener(scene->GetCamera().get());
+	// renderer->GetWindow().GetWinEventDispatcher().AddListener(this);
+	// renderer->GetWindow().GetMouseDispatcher().AddListener(scene->GetCamera().get());
+	// renderer->GetWindow().GetKeyDispatcher().AddListener(scene->GetCamera().get());
 	
-	dock.Init();
+	//dock.Init();
 
 	OnUserCreate();
 }
@@ -70,8 +70,8 @@ void Program::Run()
 
 		if(frameTime > (1/120.0f))
 		{
-			Renderer::Get().Begin(frameTime);
-			dock.Update(scene, frameTime);
+			//Renderer::Get().Begin(frameTime);
+			//dock.Update(scene, frameTime);
 			OnUserUpdateWindow();
 			Renderer::Get().End();
 			frameTime = 0;
