@@ -24,4 +24,4 @@ In the current version of the project, the templates in the startup menu will no
 In order to correctly load a wavefront file (.obj), apply 'split edges' along any texture seams for the model, this will duplicate vertices along that seam, as the renderer currently can only process unique vertices per any texture coordinate. Additionally, mark all faces as 'shade smooth', as otherwise blender will generate multiple normals per face, which is not currently supported.
 
 ### If your Hardware does not have Driver Support for Vulkan
-I am working on not only implementing the new renderer in Vulkan, but also structuring so that I can continue to have limited OpenGL support for hardware that cannot use Vulkan. I will likely include offer a `compatibility` flag when building the project, so that the renderer will use OpenGL instead. 
+I am working on not only implementing the new renderer in Vulkan, but also structuring so that I can continue to have limited OpenGL support for hardware that cannot use Vulkan. I will probably just include an optional `compatibility` flag when building the project, so that the renderer will use OpenGL instead. 
