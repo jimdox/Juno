@@ -27,5 +27,5 @@ In order to correctly load a wavefront file (.obj), apply 'split edges' along an
 I am working on not only implementing the new renderer in Vulkan, but also structuring so that I can continue to have limited OpenGL support for hardware that cannot use Vulkan. I will probably just include an optional `compatibility` premake config when building the project, so that the renderer will use OpenGL instead. 
 
 ### Particles!
-Using Compute Shaders Adds New Possibilities for High Volumes of Particles in real time:
+Using Compute Shaders adds new possibilities for high volumes of particles in real time:
 ![alt text](https://github.com/jimdox/Juno/blob/master/Resources/WIP/Screenshot_2020-04-16_14-40-41.png)
