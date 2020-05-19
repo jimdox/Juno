@@ -21,8 +21,13 @@ void Renderer::SetGraphicsAPI(GraphicsAPI rendererAPI)
 
 Renderer::Renderer(int sWidth, int sHeight, const std::string& wTitle) : window(sWidth, sHeight, wTitle), thirdPersonCamera({0,0,0},{0,0,0})
 {
-    VKRenderCmd::Init();
+    RenderCmd::Init();
     currentCamera = std::make_shared<ThirdPersonCamera>(Vec3(0,0,0), Vec3(0,0,0));
+}
+
+Renderer::~Renderer()
+{
+    RenderCmd::ShutDown();
 }
 
 Window& Renderer::GetWindow()
@@ -118,7 +123,7 @@ void Renderer::RenderEntityInstanced(std::vector<SPtr<Entity>>& entity)
 
 GraphicsAPI Renderer::GetCurrentGraphicsAPI()
 {
-    return VKRenderCmd::GetActiveAPI();
+    return RenderCmd::GetActiveAPI();
 }
 
 void Renderer::SwitchGraphicsAPI(GraphicsAPI rendererAPI)

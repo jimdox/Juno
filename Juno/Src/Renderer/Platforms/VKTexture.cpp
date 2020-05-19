@@ -1,5 +1,6 @@
 #include "jnpch.h"
 #include "Renderer/Data/Texture.h"
+#include "Renderer/Platforms/GLTexture.h"
 #include "Renderer/Platforms/VKTexture.h"
 
 using namespace Juno;

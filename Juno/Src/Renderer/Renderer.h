@@ -48,6 +48,7 @@ public:
 
 private:
     Renderer(int sWidth, int sHeight, const std::string& wTitle);
+    ~Renderer();
 
     // UPtr<GraphicsAPIContext> renderAPIContext;
     // GraphicsAPI currentGraphicsAPI = GraphicsAPI::OpenGL;

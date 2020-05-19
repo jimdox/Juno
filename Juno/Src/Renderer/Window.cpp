@@ -164,9 +164,6 @@ void Window::Init()
 	//glfwMakeContextCurrent(window);
 
 
-
-
-
 	//glfwSwapInterval(1);																	/* limits fps to native refresh rate */
 	//glfwWindowHint(GLFW_SAMPLES, 8);				
 

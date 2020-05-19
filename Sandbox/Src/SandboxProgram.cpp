@@ -10,6 +10,46 @@ class SandboxProgram : public Program
 { 
 	void OnUserCreate()
 	{
+
+	}
+
+	/* updates every cycle */
+	void OnUserUpdate()
+	{
+	
+	}
+
+	/* updates on each new frame */
+	void OnUserUpdateWindow()
+	{
+		// Renderer::Get().RunComputeShader(g_computeShader, frameTime);
+
+	}
+
+
+	void OnUserExit()
+	{
+		/* mem. cleanup */
+		//delete g_computeShader;
+		
+	}
+
+private:
+	float delta_x = 0.0f;
+	float counter = 0;
+};
+
+
+
+
+
+Juno::Program* CreateProgram()
+{	
+	SandboxProgram* program = new SandboxProgram();
+	return program;
+}
+
+	//{
 		// SPtr<Mesh> plane = AssetManager::Get().LoadMesh("./Resources/Models/plane.obj");
 		// SPtr<Mesh> dragon = AssetManager::Get().LoadMesh("./Resources/Models/dragon.obj");
 
@@ -40,44 +80,4 @@ class SandboxProgram : public Program
 		// }
 
 		// g_computeShader = new GLComputeShader(particles, "./Resources/Shaders/ComputeShaders/example", 512);
-		
-
-		//renderer->getWindow().getGuiDock().enableDebug();
-	}
-
-	/* updates every cycle */
-	void OnUserUpdate()
-	{
-		//delta_x += 0.001f;
-	
-	}
-
-	/* updates on each new frame */
-	void OnUserUpdateWindow()
-	{
-		// Renderer::Get().RunComputeShader(g_computeShader, frameTime);
-
-	}
-
-
-	void OnUserExit()
-	{
-		/* mem. cleanup */
-		//delete g_computeShader;
-		
-	}
-
-private:
-	float delta_x = 0.0f;
-	float counter = 0;
-};
-
-
-
-
-
-Juno::Program* CreateProgram()
-{	
-	SandboxProgram* prog = new SandboxProgram();
-	return prog;
-}
+	//}

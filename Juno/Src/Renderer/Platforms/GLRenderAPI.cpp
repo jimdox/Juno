@@ -1,4 +1,6 @@
 #include "jnpch.h"
+
+#ifdef JN_RENDERAPI_OPENGL                  /* only use OpenGL impl. if building w/ compatibility profile -> uses GL instead of Vk. */
 #include "Renderer/Platforms/GLRenderAPI.h"
 //#include "Renderer/Window.h"
 using namespace Juno;
@@ -106,3 +108,6 @@ void RenderCmd::DrawPointsInstanced(unsigned int instanceCount)
 {
     //glDrawArraysInstanced(GL_POINTS, 0, 1, instanceCount);
 }
+
+/*____*/
+#endif

@@ -9,16 +9,21 @@
 using namespace Juno;
 
 /* */
+AssetManager::AssetManager()
+{
 
-unsigned int AssetManager::GenAssetID()
+}
+
+
+uint32_t AssetManager::GenAssetID()
 {
     return ++currentIDPtr;                                           /* id = 0 is reserved for an ID search failure */
 }
 
-unsigned int AssetManager::FindAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath)
+uint32_t AssetManager::FindAssetID(std::map<const std::string, uint32_t>& fileMap, const std::string& filepath)
 {
-    std::map<const std::string, unsigned int>::iterator iter;
-    unsigned int assetID;
+    std::map<const std::string, uint32_t>::iterator iter;
+    uint32_t assetID;
 
     iter = fileMap.find(filepath);
     if(iter != fileMap.end())                                       /* asset has already been loaded */
@@ -30,29 +35,29 @@ unsigned int AssetManager::FindAssetID(std::map<const std::string, unsigned int>
 
 SPtr<Mesh> AssetManager::LoadMesh(const std::string& filepath)
 {
-    unsigned int assetID = FindAssetID(meshFilepaths, filepath);
+    uint32_t assetID = FindAssetID(meshFilepaths, filepath);
 
     if(assetID != 0)
     {
         meshRefs[assetID];
     }
     assetID = GenAssetID();
-    meshRefs.insert(std::pair<unsigned int, SPtr<Mesh>>(assetID, std::make_shared<Mesh>(filepath)));
-    meshFilepaths.insert(std::pair<std::string, unsigned int>(filepath, assetID));
+    meshRefs.insert(std::pair<uint32_t, SPtr<Mesh>>(assetID, std::make_shared<Mesh>(filepath)));
+    meshFilepaths.insert(std::pair<std::string, uint32_t>(filepath, assetID));
     return meshRefs[assetID];
 }
 
 SPtr<Shader> AssetManager::LoadShader(std::array<ShaderComponentType, 3>& components, const std::string& filepath)
 {
-    unsigned int assetID = FindAssetID(shaderFilepaths, filepath);
+    uint32_t assetID = FindAssetID(shaderFilepaths, filepath);
 
     if(assetID != 0)
     {
         return shaderRefs[assetID];
     }
     assetID = GenAssetID();
-    shaderRefs.insert(std::pair<unsigned int, SPtr<Shader>>(assetID, Shader::Create(components, filepath)));
-    shaderFilepaths.insert(std::pair<std::string, unsigned int>(filepath, assetID));
+    shaderRefs.insert(std::pair<uint32_t, SPtr<Shader>>(assetID, Shader::Create(components, filepath)));
+    shaderFilepaths.insert(std::pair<std::string, uint32_t>(filepath, assetID));
     return shaderRefs[assetID];
 }
 
@@ -64,7 +69,7 @@ SPtr<Shader> AssetManager::GetDefaultShader()
 
 SPtr<Texture> AssetManager::LoadTexture(const std::string& filepath, TextureType texType)
 {
-    unsigned int assetID = FindAssetID(textureFilepaths, filepath);
+    uint32_t assetID = FindAssetID(textureFilepaths, filepath);
 
     if(assetID != 0)
     {
@@ -75,14 +80,14 @@ SPtr<Texture> AssetManager::LoadTexture(const std::string& filepath, TextureType
     texture->Bind();
     LoadTextureFile(texture, filepath, texType);
     texture->Unbind();
-    textureRefs.insert(std::pair<unsigned int, SPtr<Texture>>(assetID, Texture::Create(texType, false)));
-    textureFilepaths.insert(std::pair<std::string, unsigned int>(filepath, assetID));
+    textureRefs.insert(std::pair<uint32_t, SPtr<Texture>>(assetID, Texture::Create(texType, false)));
+    textureFilepaths.insert(std::pair<std::string, uint32_t>(filepath, assetID));
     return textureRefs[assetID];
 }
 
 // SPtr<CubeMap> AssetManager::LoadCubeMap(const std::string& filepath, TextureType texType)
 // {
-//    unsigned int assetID = FindAssetID(cubeMapFilepaths, filepath);
+//    uint32_t assetID = FindAssetID(cubeMapFilepaths, filepath);
 //     if(assetID != 0)
 //     {
 //         return cubeMapRefs[assetID];
@@ -97,43 +102,43 @@ SPtr<Texture> AssetManager::LoadTexture(const std::string& filepath, TextureType
 //     mapFaceFilepaths[5] = filepath + "/back.png";
     
 //     assetID = GenAssetID();
-//     cubeMapRefs.insert(std::pair<unsigned int, std::unique_ptr<CubeMap>>(assetID, std::make_unique<CubeMap>(mapFaceFilepaths, texType)));
+//     cubeMapRefs.insert(std::pair<uint32_t, std::unique_ptr<CubeMap>>(assetID, std::make_unique<CubeMap>(mapFaceFilepaths, texType)));
 //     return cubeMapRefs[assetID];
 // }
 
-// unsigned int AssetManager::GenerateVAO()
+// uint32_t AssetManager::GenerateVAO()
 // {
-//     unsigned int vaoID;
+//     uint32_t vaoID;
 //     VertexArray::GenArray
 //     glGenVertexArrays(1, &vaoID);
 //     glBindVertexArray(vaoID);
 //     return vaoID;
 // }
 
-//void AssetManager::StoreDataInAttribList(unsigned int attribNum, unsigned int)
+//void AssetManager::StoreDataInAttribList(uint32_t attribNum, uint32_t)
 
-// static void bindIBO(std::vector<unsigned int> &indices)
+// static void bindIBO(std::vector<uint32_t> &indices)
 // {
-//     unsigned int iboID;
+//     uint32_t iboID;
 //     glGenBuffers(1, &iboID);
 //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-//     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+//     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 
 // }
 
-std::map<unsigned int, SPtr<Texture>>* AssetManager::GetTextureMap()
+std::map<uint32_t, SPtr<Texture>>* AssetManager::GetTextureMap()
 {
     return &textureRefs;
 }
 
-std::map<unsigned int, SPtr<Shader>>* AssetManager::GetShaderMap()
+std::map<uint32_t, SPtr<Shader>>* AssetManager::GetShaderMap()
 {
     return &shaderRefs;
 }
 
 
 /* loads a single vertex buffer object to VAO */
-std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, unsigned int dim)
+std::pair<VertexArray*, uint32_t> AssetManager::LoadToVAO(std::vector<float>& positions, uint32_t dim)
 {
     VertexArray* vao = VertexArray::Generate();                                                                            /* should I be calling 'new' here? */
     vao->Bind();
@@ -149,8 +154,8 @@ std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>
 }
 
 /* used for .obj file loading */
-std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>& positions, std::vector<float>& texCoordinates,
-                                                               std::vector<float>& normals, std::vector<unsigned int>& indices)
+std::pair<VertexArray*, uint32_t> AssetManager::LoadToVAO(std::vector<float>& positions, std::vector<float>& texCoordinates,
+                                                               std::vector<float>& normals, std::vector<uint32_t>& indices)
 {
     VertexArray* vao = VertexArray::Generate();
     vao->Bind();
@@ -180,12 +185,12 @@ std::pair<VertexArray*, unsigned int> AssetManager::LoadToVAO(std::vector<float>
     // vbo->StoreData(1, 3, normals);
     // vbo->StoreData(2, 2, texCoordinates);
 
-    // unsigned int iboID;
+    // uint32_t iboID;
     // glGenBuffers(1, &iboID);
     // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
 
-    unsigned int numIndices = indices.size();
+    uint32_t numIndices = indices.size();
     vao->Unbind();
     delete positionsBuffer;
     delete normalsBuffer;
@@ -254,7 +259,7 @@ std::array<uint32_t, 4> AssetManager::LoadShaderFile(const std::string& filepath
 	JN_INFO("Compiling glsl shader file: {}", filepath);
 
     const char* srcPtr;
-    unsigned int i;
+    uint32_t i;
     if(shaderIDs[0] != -1)
     {
         srcPtr = vertSrc.c_str();
@@ -333,7 +338,7 @@ std::string AssetManager::ReadShaderComponentFile(const std::string& filepath, S
 void AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType texType)
 {
     int width, height, channels;
-    unsigned int id;
+    uint32_t id;
 	
     texture->Bind();
 	unsigned char* imageData = stbi_load((filepath.c_str()), &width, &height, &channels, 0);
@@ -369,14 +374,14 @@ void AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& fi
     stbi_image_free(imageData);
 }
 
-// unsigned int AssetManager::LoadCubeMapFiles(const std::array<std::string, 6>& filepaths, TextureType tx_type)
+// uint32_t AssetManager::LoadCubeMapFiles(const std::array<std::string, 6>& filepaths, TextureType tx_type)
 // {
 //     int width, height, channels;
-//     unsigned int id;
+//     uint32_t id;
 // 	glGenTextures(1, &id);
 // 	glBindTexture(GL_TEXTURE_CUBE_MAP, id);
 //     unsigned char* imageData;
-//     for(unsigned int i = 0; i < 6; i++)
+//     for(uint32_t i = 0; i < 6; i++)
 //     {
 //         imageData = stbi_load((filepaths[i].c_str()), &width, &height, &channels, 0);
 
@@ -408,7 +413,7 @@ void AssetManager::LoadTextureFile(SPtr<Texture>& texture, const std::string& fi
     where the mesh requires double vertices along any given texture coordinate seam for correct indices 
 */
 
-void AssetManager::ProcessFace(int faceVertices[3][3], std::vector<unsigned int> &indices, std::vector<glm::vec2> &textures, 
+void AssetManager::ProcessFace(int faceVertices[3][3], std::vector<uint32_t> &indices, std::vector<glm::vec2> &textures, 
                                std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float> &normalsData )
 {
     for(int i = 0; i < 3; i++)
@@ -431,7 +436,7 @@ void AssetManager::ProcessFace(int faceVertices[3][3], std::vector<unsigned int>
     }
 }
 
-std::tuple<VertexArray*, unsigned int, unsigned int> AssetManager::LoadOBJFile(const std::string& filepath)
+std::tuple<VertexArray*, uint32_t, uint32_t> AssetManager::LoadOBJFile(const std::string& filepath)
 {
     std::string line;                            /* per line .obj info */
     std::ifstream openFile(filepath.c_str());
@@ -443,7 +448,7 @@ std::tuple<VertexArray*, unsigned int, unsigned int> AssetManager::LoadOBJFile(c
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> normals;
     std::vector<glm::vec2> textures;
-    std::vector<unsigned int> indices;
+    std::vector<uint32_t> indices;
     
     std::vector<float> verticesData;
     std::vector<float> texturesData;
@@ -509,7 +514,7 @@ std::tuple<VertexArray*, unsigned int, unsigned int> AssetManager::LoadOBJFile(c
         {
             int faceVertices[3][3];
 
-            for(unsigned int i = 0; i < 3; i++)
+            for(uint32_t i = 0; i < 3; i++)
             {
                 std::stringstream ssVert(lineData[i+1]);
                 std::string tokVert;
@@ -535,7 +540,7 @@ std::tuple<VertexArray*, unsigned int, unsigned int> AssetManager::LoadOBJFile(c
         verticesData.push_back(vertex.y);
         verticesData.push_back(vertex.z);
     }
-    auto [vao, numIndices] = LoadToVAO(verticesData, texturesData, normalsData, indices);
+    std::pair<VertexArray*, uint32_t> vaoData = LoadToVAO(verticesData, texturesData, normalsData, indices);
     JN_CLI_INFO("Loaded Mesh from location: {}", filepath);
-    return { vao, numIndices, vertices.size() };
+    return { vaoData.first, vaoData.second, vertices.size() };
 }

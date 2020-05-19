@@ -2,6 +2,8 @@
 #include "Utils/Memory.h"
 #include "Core/Config.h"
 #include "Renderer/Renderer.h"
+
+#ifdef JN_RENDERAPI_OPENGL
 namespace Juno
 {
 class RenderCmd
@@ -33,4 +35,4 @@ friend class Renderer;
 };
 }
 
-
+#endif

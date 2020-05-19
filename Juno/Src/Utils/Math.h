@@ -20,6 +20,19 @@ namespace Juno
 
 namespace Math 
 {
+
+/* polynomial rolling hash func. 
+    https://cp-algorithms.com/string/string-hashing.html
+*/
+// uint32_t hash_filepath(const std::string& fp)
+// {
+//     const uint32_t poly = 53;               /* optimal for upper and lowercase strings, which has to be supported. */
+//     const uint32_t m = 1e9 + 9;
+//     uint32_t hash_val;
+
+
+// } 
+
 inline float Max(float a, float b)
 {
     if(a > b)

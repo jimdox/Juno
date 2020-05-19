@@ -6,6 +6,7 @@
 #else   
     #include "Renderer/Platforms/VKTexture.h"
 #endif
+#include "Renderer/Platforms/VKTexture.h"
 
 
 using namespace Juno;

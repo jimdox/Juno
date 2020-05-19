@@ -3,9 +3,10 @@
 #include "Core/Config.h"
 #include "Renderer/Renderer.h"
 // #include <vulkan/vulkan.h>
+#ifndef JN_RENDERAPI_OPENGL
 namespace Juno
 {
-class VKRenderCmd
+class RenderCmd
 {
 protected:   
     static void Init();
@@ -33,3 +34,5 @@ private:
 friend class Renderer;
 };
 }
+
+#endif

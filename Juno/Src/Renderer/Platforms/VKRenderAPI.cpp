@@ -1,4 +1,5 @@
 #include "jnpch.h"
+#ifndef JN_RENDERAPI_OPENGL
 #include "Renderer/Platforms/VKRenderAPI.h"
 using namespace Juno;
 
@@ -8,86 +9,92 @@ static VkInstance s_vulkanInstance;
 static VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, 
                                                     const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
 {
-    JN_ERR("Validation Layer: {}", callbackData->pMessage);
+    JN_ERR("Validation Layer error: {0}", callbackData->pMessage);
     return VK_FALSE;
 }
+                                                                                   
 
-
-void VKRenderCmd::Init()
+void RenderCmd::Init()
 {
-	
+    JN_INFO("Initializing Vulkan Context...");
 
-    
+
+
+
+
 }
 
-void VKRenderCmd::ShutDown()
+void RenderCmd::ShutDown()
 {
+    JN_INFO("Destroying Vulkan Context...");
     vkDestroyInstance(s_vulkanInstance, nullptr);
     
 }
 
-GraphicsAPI VKRenderCmd::GetActiveAPI()
+GraphicsAPI RenderCmd::GetActiveAPI()
 {
     return GraphicsAPI::Vulkan;
 }
 
-void VKRenderCmd::ErrorCheck()
+void RenderCmd::ErrorCheck()
 {
     
 }
 
-void VKRenderCmd::ClearScreen()
+void RenderCmd::ClearScreen()
 {
 
 }
 
-void VKRenderCmd::ResizeViewport(float width, float height)
+void RenderCmd::ResizeViewport(float width, float height)
 {
 
 }
 
-void VKRenderCmd::SetBackFaceCulling(bool flag)
+void RenderCmd::SetBackFaceCulling(bool flag)
 {
 
 }
 
-void VKRenderCmd::SetWireFrameMode(bool flag)
+void RenderCmd::SetWireFrameMode(bool flag)
 {
 
 }
 
-void VKRenderCmd::EnableDepthTest()
+void RenderCmd::EnableDepthTest()
 {
 
 }
 
-void VKRenderCmd::DisableDepthTest()
+void RenderCmd::DisableDepthTest()
 {
 
 }
 
-void VKRenderCmd::DrawTriangles(unsigned int numIndices)
+void RenderCmd::DrawTriangles(unsigned int numIndices)
 {
 
 }
 
-void VKRenderCmd::DrawLines(unsigned int numIndices)
+void RenderCmd::DrawLines(unsigned int numIndices)
 {
 
 }
 
-void VKRenderCmd::DrawPoints(unsigned int numIndices)
+void RenderCmd::DrawPoints(unsigned int numIndices)
 {
 
 }
 
-void VKRenderCmd::DrawTrianglesInstanced(unsigned int instanceCount)
+void RenderCmd::DrawTrianglesInstanced(unsigned int instanceCount)
 {
 
 }
 
-void VKRenderCmd::DrawPointsInstanced(unsigned int instanceCount)
+void RenderCmd::DrawPointsInstanced(unsigned int instanceCount)
 {
     
 }
 
+/*____*/
+#endif

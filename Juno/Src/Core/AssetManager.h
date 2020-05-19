@@ -24,7 +24,7 @@ public:
     }
     AssetManager(const AssetManager& assetManager) = delete;
 
-    unsigned int FindAssetID(std::map<const std::string, unsigned int>& fileMap, const std::string& filepath);
+    uint32_t FindAssetID(std::map<const std::string, uint32_t>& fileMap, const std::string& filepath);
     SPtr<Shader> LoadShader(std::array<ShaderComponentType, 3>& components, const std::string& filepath);
 
     //SPtr<ComputeShader> LoadComputeShader(const std::string& fp);
@@ -37,38 +37,44 @@ public:
     void LoadTextureFile(SPtr<Texture>& texture, const std::string& filepath, TextureType tx_type);
 
     //SPtr<CubeMap> LoadCubeMap(const std::string& filepath, TextureType tx_type);
-    //unsigned int LoadCubeMapFiles(const std::array<std::string, 6>& filepaths, TextureType tx_type);
+    //uint32_t LoadCubeMapFiles(const std::array<std::string, 6>& filepaths, TextureType tx_type);
     
     SPtr<Mesh> LoadMesh(const std::string& filepath);
 
-    std::tuple<VertexArray*, unsigned int, unsigned int> LoadOBJFile(const std::string& filepath);
-    std::pair<VertexArray*, unsigned int> LoadToVAO(std::vector<float>& data, unsigned int dim);
-    std::pair<VertexArray*, unsigned int> LoadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
-                                                     std::vector<float>& normals, std::vector<unsigned int>& indices);
+    std::tuple<VertexArray*, uint32_t, uint32_t> LoadOBJFile(const std::string& filepath);
+    std::pair<VertexArray*, uint32_t> LoadToVAO(std::vector<float>& data, uint32_t dim);
+    std::pair<VertexArray*, uint32_t> LoadToVAO(std::vector<float>& pos, std::vector<float>& textCoords, 
+                                                     std::vector<float>& normals, std::vector<uint32_t>& indices);
 
 
 private:
-    AssetManager(){}
-    unsigned int GenAssetID();
+    AssetManager();
+    uint32_t GenAssetID();
 
-    unsigned int GenerateVAO();
-    void StoreDataInAttribList(unsigned int attribNum, unsigned int components, std::vector<float> data);
+    uint32_t GenerateVAO();
+    void StoreDataInAttribList(uint32_t attribNum, uint32_t components, std::vector<float> data);
 
-    void ProcessFace(int faceVertices[3][3], std::vector<unsigned int>& indices, std::vector<glm::vec2>& textures, 
+    void ProcessFace(int faceVertices[3][3], std::vector<uint32_t>& indices, std::vector<glm::vec2>& textures, 
                     std::vector<glm::vec3> &normals, std::vector<float> &texturesData, std::vector<float>& normalsData);
     
-    std::map<unsigned int, SPtr<Texture>>* GetTextureMap(); 
-    std::map<unsigned int, SPtr<Shader>>* GetShaderMap();
+    std::map<uint32_t, SPtr<Texture>>* GetTextureMap(); 
+    std::map<uint32_t, SPtr<Shader>>* GetShaderMap();
 
-    unsigned int currentIDPtr;
-    std::map<unsigned int, SPtr<Shader>> shaderRefs;
-    std::map<unsigned int, SPtr<Texture>> textureRefs;
-    std::map<unsigned int, SPtr<CubeMap>> cubeMapRefs;
-    std::map<unsigned int, SPtr<Mesh>> meshRefs;
+    uint32_t currentIDPtr;
 
-    std::map<const std::string, unsigned int> shaderFilepaths;
-    std::map<const std::string, unsigned int> textureFilepaths;
-    std::map<const std::string, unsigned int> cubeMapFilepaths;
-    std::map<const std::string, unsigned int> meshFilepaths;
+    /* todo: will switch to Juno::HashMap to improve access times on maps, but will need to research 
+            good hashing function for filepaths, which will be difficult with the presence of 
+            '/' or '\' chars possibly affecting collision probabilities. 
+    */
+
+    std::map<uint32_t, SPtr<Shader>> shaderRefs;
+    std::map<uint32_t, SPtr<Texture>> textureRefs;
+    std::map<uint32_t, SPtr<CubeMap>> cubeMapRefs;
+    std::map<uint32_t, SPtr<Mesh>> meshRefs;
+
+    std::map<const std::string, uint32_t> shaderFilepaths;
+    std::map<const std::string, uint32_t> textureFilepaths;
+    std::map<const std::string, uint32_t> cubeMapFilepaths;
+    std::map<const std::string, uint32_t> meshFilepaths;
 };
 }
