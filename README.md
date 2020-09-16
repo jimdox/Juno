@@ -1,8 +1,4 @@
 
-
-![alt text](https://github.com/jimdox/Juno/blob/master/Resources/Textures/Juno3D.png) 
-
-
 ## Project Setup
 Sandbox is an example project which has everything you need to start simulating some simple phyics scenarios. To get started, all you need to do is to install the latest alpha release of [Premake 5](https://premake.github.io/download.html#v5).
 
